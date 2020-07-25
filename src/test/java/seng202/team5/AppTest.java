@@ -40,4 +40,6 @@ public class AppTest
      * Does maths work?
      */
     public void testMaths() { assertEquals(2, 1+1); }
+
+    public void testStuff() { assertFalse(1 + 1 == 11);}
 }
