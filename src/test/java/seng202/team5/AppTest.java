@@ -35,4 +35,9 @@ public class AppTest
     {
         assertTrue( true );
     }
+
+    /**
+     * Does maths work?
+     */
+    public void testMaths() { assertEquals(2, 1+1); }
 }
