@@ -42,4 +42,6 @@ public class AppTest
     public void testMaths() { assertEquals(2, 1+1); }
 
     public void testStuff() { assertFalse(1 + 1 == 11);}
+
+    public void testTest() { assertEquals(5, 5); }
 }
