@@ -46,4 +46,6 @@ public class AppTest
     public void testTest() { assertEquals(5, 5); }
 
     public void testString() { assertEquals("word", "wo" + "rd"); }
+
+    public void testBoolean() { assertFalse(true==false); }
 }
