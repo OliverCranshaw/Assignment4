@@ -16,6 +16,7 @@ public class DBInitializer {
         try (Connection con = DriverManager.getConnection(url)) {
             if (con != null) {
                 DatabaseMetaData meta = con.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("DB created.");
             }
         } catch (SQLException e) {
