@@ -1,4 +1,4 @@
-package seng202.team5.resources;
+package seng202.team5.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class TableInitializer {
+public class DBTableInitializer {
 
     public static void initializeTables() {
 

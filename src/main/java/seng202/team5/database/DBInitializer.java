@@ -1,4 +1,4 @@
-package seng202.team5.resources;
+package seng202.team5.database;
 
 import java.io.File;
 import java.sql.Connection;
@@ -15,7 +15,7 @@ public class DBInitializer {
         String url = "jdbc:sqlite:" + directory + "/" + filename;
 
         File f = new File(filename); // checks to see if the database already exists
-        if (f.exists() != true) {
+        if (!f.exists()) {
             try (Connection con = DriverManager.getConnection(url)) {
                 if (con != null) {
                     DatabaseMetaData meta = con.getMetaData();
