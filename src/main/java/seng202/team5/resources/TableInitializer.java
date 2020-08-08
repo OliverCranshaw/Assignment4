@@ -64,7 +64,7 @@ public class TableInitializer {
                 + "             ON DELETE CASCADE\n"
                 + ");";
 
-        String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA"
+        String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA (\n"
                 + "     id INTEGER PRIMARY KEY,\n"
                 + "     flight_id INTEGER NOT NULL,\n"
                 + "     airline TEXT NOT NULL,\n" // icao of airline
