@@ -13,8 +13,71 @@ public class TableInitializer {
         String directory = (System.getProperty("user.dir")).replace("\\", "/");
         String url = "jdbc:sqlite:" + directory + "/flightdata.db";
 
-        //String airport_sql = "CREATE TABLE IF NOT EXISTS airports (\n"
-                        //+ "     id integer PRIMARY KEY,\n"
-                        //+ "     "
+        String airport_sql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
+                + "     airport_id INTEGER PRIMARY KEY,\n" // merged id and airport_id together, both unique so should work
+                + "     airport_name TEXT NOT NULL,\n"
+                + "     city TEXT NOT NULL,\n"
+                + "     country TEXT NOT NULL,\n"
+                + "     iata TEXT,\n"
+                + "     icao TEXT,\n"
+                + "     latitude REAL NOT NULL,\n"
+                + "     longitude REAL NOT NULL,\n"
+                + "     altitude INTEGER NOT NULL,\n"
+                + "     timezone INTEGER NOT NULL,\n"
+                + "     dst TEXT NOT NULL,\n"
+                + "     tz_database_timezone TEXT NOT NULL\n"
+                + ");";
+
+        String airline_sql = "CREATE TABLE IF NOT EXISTS AIRLINE_DATA (\n"
+                + "     airline_id INTEGER PRIMARY KEY,\n"
+                + "     airline_name TEXT NOT NULL,\n"
+                + "     alias TEXT,\n"
+                + "     iata TEXT,\n"
+                + "     icao TEXT,\n"
+                + "     callsign TEXT,\n"
+                + "     country TEXT,\n"
+                + "     active TEXT NOT NULL\n"
+                + ");";
+
+        String route_sql = "CREATE TABLE IF NOT EXISTS ROUTE_DATA (\n"
+                + "     route_id INTEGER PRIMARY KEY,\n"
+                + "     airline TEXT NOT NULL,\n" // does every airline/airport always have an iata/icao, should we handle a foreign key
+                + "     airline_id INTEGER NOT NULL,\n"
+                + "     source_airport TEXT NOT NULL,\n"
+                + "     source_airport_id INTEGER NOT NULL,\n"
+                + "     destination_airport TEXT NOT NULL,\n"
+                + "     destination_airport_id INTEGER NOT NULL,\n"
+                + "     codeshare TEXT,\n"
+                + "     stops INTEGER NOT NULL,\n"
+                + "     equipment TEXT NOT NULL,\n"
+                + "     FOREIGN KEY (airline_id)\n"
+                + "         REFERENCES AIRLINE_DATA(airline_id)\n"
+                + "             ON UPDATE CASCADE\n" //set everything to cascade if the entry its referencing is updated/deleted
+                + "             ON DELETE CASCADE,\n"
+                + "     FOREIGN KEY (source_airport_id)\n"
+                + "         REFERENCES AIRPORT_DATA(airport_id)\n"
+                + "             ON UPDATE CASCADE\n"
+                + "             ON DELETE CASCADE,\n"
+                + "     FOREIGN KEY (destination_airport_id)\n"
+                + "         REFERENCES AIRPORT_DATA(airport_id)\n"
+                + "             ON UPDATE CASCADE\n"
+                + "             ON DELETE CASCADE\n"
+                + ");";
+
+        //do we want to create a flight table as well
+
+        try (Connection con = DriverManager.getConnection(url);
+            Statement statement = con.createStatement()) {
+            statement.execute(airline_sql); //creates the tables
+            statement.execute(airport_sql);
+            statement.execute(route_sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        initializeTables();
+        System.out.println("Tables created.");
     }
 }
