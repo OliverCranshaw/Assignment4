@@ -41,18 +41,18 @@ public class TableInitializer {
 
         String route_sql = "CREATE TABLE IF NOT EXISTS ROUTE_DATA (\n"
                 + "     route_id INTEGER PRIMARY KEY,\n"
-                + "     airline TEXT NOT NULL,\n" //iata or icao
+                + "     airline TEXT NOT NULL,\n" // iata or icao
                 + "     airline_id INTEGER NOT NULL,\n"
-                + "     source_airport TEXT NOT NULL,\n" //iata or icao
+                + "     source_airport TEXT NOT NULL,\n" // iata or icao
                 + "     source_airport_id INTEGER NOT NULL,\n"
-                + "     destination_airport TEXT NOT NULL,\n" //iata or icao
+                + "     destination_airport TEXT NOT NULL,\n" // iata or icao
                 + "     destination_airport_id INTEGER NOT NULL,\n"
                 + "     codeshare TEXT,\n"
                 + "     stops INTEGER NOT NULL,\n"
                 + "     equipment TEXT NOT NULL,\n"
                 + "     FOREIGN KEY (airline_id)\n"
                 + "         REFERENCES AIRLINE_DATA(airline_id)\n"
-                + "             ON UPDATE CASCADE\n" //set everything to cascade if the entry its referencing is updated/deleted
+                + "             ON UPDATE CASCADE\n" // set everything to cascade if the entry its referencing is updated/deleted
                 + "             ON DELETE CASCADE,\n"
                 + "     FOREIGN KEY (source_airport_id)\n"
                 + "         REFERENCES AIRPORT_DATA(airport_id)\n"
@@ -65,10 +65,10 @@ public class TableInitializer {
                 + ");";
 
         String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA"
-                + "     flight_id INTEGER NOT NULL,\n"
                 + "     id INTEGER PRIMARY KEY,\n"
-                + "     airline TEXT NOT NULL,\n" //iata or icao
-                + "     airport TEXT NOT NULL,\n" //iata or icao
+                + "     flight_id INTEGER NOT NULL,\n"
+                + "     airline TEXT NOT NULL,\n" // icao of airline
+                + "     airport TEXT NOT NULL,\n" // icao of airport
                 + "     altitude INTEGER NOT NULL,\n"
                 + "     latitude INTEGER NOT NULL,\n"
                 + "     longitude INTEGER NOT NULL\n"
