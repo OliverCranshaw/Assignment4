@@ -41,11 +41,11 @@ public class TableInitializer {
 
         String route_sql = "CREATE TABLE IF NOT EXISTS ROUTE_DATA (\n"
                 + "     route_id INTEGER PRIMARY KEY,\n"
-                + "     airline TEXT NOT NULL,\n" // does every airline/airport always have an iata/icao, should we handle a foreign key
+                + "     airline TEXT NOT NULL,\n" //iata or icao
                 + "     airline_id INTEGER NOT NULL,\n"
-                + "     source_airport TEXT NOT NULL,\n"
+                + "     source_airport TEXT NOT NULL,\n" //iata or icao
                 + "     source_airport_id INTEGER NOT NULL,\n"
-                + "     destination_airport TEXT NOT NULL,\n"
+                + "     destination_airport TEXT NOT NULL,\n" //iata or icao
                 + "     destination_airport_id INTEGER NOT NULL,\n"
                 + "     codeshare TEXT,\n"
                 + "     stops INTEGER NOT NULL,\n"
@@ -64,13 +64,22 @@ public class TableInitializer {
                 + "             ON DELETE CASCADE\n"
                 + ");";
 
-        //do we want to create a flight table as well
+        String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA"
+                + "     flight_id INTEGER NOT NULL,\n"
+                + "     id INTEGER PRIMARY KEY,\n"
+                + "     airline TEXT NOT NULL,\n" //iata or icao
+                + "     airport TEXT NOT NULL,\n" //iata or icao
+                + "     altitude INTEGER NOT NULL,\n"
+                + "     latitude INTEGER NOT NULL,\n"
+                + "     longitude INTEGER NOT NULL\n"
+                + ");";
 
         try (Connection con = DriverManager.getConnection(url);
             Statement statement = con.createStatement()) {
             statement.execute(airline_sql); //creates the tables
             statement.execute(airport_sql);
             statement.execute(route_sql);
+            statement.execute(flight_sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
