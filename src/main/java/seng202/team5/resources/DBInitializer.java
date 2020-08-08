@@ -14,7 +14,7 @@ public class DBInitializer {
         String directory = (System.getProperty("user.dir")).replace("\\", "/");
         String url = "jdbc:sqlite:" + directory + "/" + filename;
 
-        File f = new File(filename);
+        File f = new File(filename); // checks to see if the database already exists
         if (f.exists() != true) {
             try (Connection con = DriverManager.getConnection(url)) {
                 if (con != null) {
