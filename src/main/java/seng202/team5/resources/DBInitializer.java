@@ -1,5 +1,6 @@
 package seng202.team5.resources;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -13,14 +14,19 @@ public class DBInitializer {
         String directory = (System.getProperty("user.dir")).replace("\\", "/");
         String url = "jdbc:sqlite:" + directory + "/" + filename;
 
-        try (Connection con = DriverManager.getConnection(url)) {
-            if (con != null) {
-                DatabaseMetaData meta = con.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("DB created.");
+        File f = new File(filename);
+        if (f.exists() != true) {
+            try (Connection con = DriverManager.getConnection(url)) {
+                if (con != null) {
+                    DatabaseMetaData meta = con.getMetaData();
+                    System.out.println("The driver name is " + meta.getDriverName());
+                    System.out.println("DB created.");
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } else {
+            System.out.println("Database already exists.");
         }
     }
 
