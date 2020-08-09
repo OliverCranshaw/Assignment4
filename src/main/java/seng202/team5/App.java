@@ -32,8 +32,9 @@ public class App extends Application {
         stage.show();
     }
 
+
     public static void main(String[] args) {
-        AddAirportMenu.main(args);//launch();
+        SingleRecordAirline.main(args);
     }
 
 }
