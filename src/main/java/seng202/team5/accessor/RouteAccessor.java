@@ -4,6 +4,7 @@ import seng202.team5.database.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -27,6 +28,73 @@ public class RouteAccessor implements Accessor {
         } catch (SQLException e) {
             result = -1;
             System.out.println("Failed to save new airport data.");
+        }
+        return result;
+    }
+
+    //public ArrayList getData(int id) {
+
+    //}
+
+    public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
+                      String new_codeshare, int new_stops, String new_equipment) throws SQLException {
+        int result;
+        try {
+            // grab airline, airport ids
+            PreparedStatement airline_stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
+            airline_stmt.setObject(1, new_airline);
+            airline_stmt.setObject(2, new_airline);
+            ResultSet airlines = airline_stmt.executeQuery();
+            int new_airline_id = airlines.getInt(1);
+
+            PreparedStatement source_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            source_airport_stmt.setObject(1, new_source_airport);
+            source_airport_stmt.setObject(2, new_source_airport);
+            ResultSet source_airports = source_airport_stmt.executeQuery();
+            int new_source_airport_id = source_airports.getInt(1);
+
+            PreparedStatement dest_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            dest_airport_stmt.setObject(1, new_dest_airport);
+            dest_airport_stmt.setObject(2, new_dest_airport);
+            ResultSet destination_airports = dest_airport_stmt.executeQuery();
+            int new_dest_airport_id = destination_airports.getInt(1);
+
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "UPDATE ROUTE_DATA SET airline = ?, airline_id = ?, source_airport = ?, source_airport_id = ?, "
+                            + "destination_airport = ?, destination_airport_id = ?, codeshare = ?, stops = ?, equipment = ? "
+                            + "WHERE airline_id = ?");
+            stmt.setObject(1, new_airline);
+            stmt.setInt(2, new_airline_id);
+            stmt.setObject(3, new_source_airport);
+            stmt.setInt(4, new_source_airport_id);
+            stmt.setObject(5, new_dest_airport);
+            stmt.setInt(6, new_dest_airport_id);
+            stmt.setObject(7, new_codeshare);
+            stmt.setInt(8, new_stops);
+            stmt.setObject(9, new_equipment);
+            stmt.setInt(10, id);
+
+            result = stmt.executeUpdate();
+        } catch (Exception e) {
+            result = -1;
+            String str = "Unable to update route data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public boolean delete(int id) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM ROUTE_DATA WHERE route_id = ?");
+            stmt.setInt(1, id);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to delete route data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
         }
         return result;
     }

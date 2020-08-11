@@ -49,4 +49,49 @@ public class AirlineAccessor implements Accessor {
         }
         return result;
     }
+
+    //public ArrayList getData(int id) {
+
+    //}
+
+    public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
+                      String new_callsign, String new_country, String new_active) throws SQLException {
+        int result;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "UPDATE AIRLINE_DATA SET airline_name = ?, alias = ?, iata = ?, "
+                            + "icao = ?, callsign = ?, country = ?, active = ? WHERE airline_id = ?");
+            stmt.setObject(1, new_name);
+            stmt.setObject(2, new_alias);
+            stmt.setObject(3, new_iata);
+            stmt.setObject(4, new_icao);
+            stmt.setObject(5, new_callsign);
+            stmt.setObject(6, new_country);
+            stmt.setObject(7, new_active);
+            stmt.setInt(8, id);
+
+            result = stmt.executeUpdate();
+        } catch (Exception e) {
+            result = -1;
+            String str = "Unable to update airline data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public boolean delete(int id) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRLINE_DATA WHERE airline_id = ?");
+            stmt.setInt(1, id);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to delete airline data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
 }

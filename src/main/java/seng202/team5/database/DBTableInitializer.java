@@ -70,8 +70,8 @@ public class DBTableInitializer {
                 + "     airline TEXT NOT NULL,\n" // icao of airline
                 + "     airport TEXT NOT NULL,\n" // icao of airport
                 + "     altitude INTEGER NOT NULL,\n"
-                + "     latitude INTEGER NOT NULL,\n"
-                + "     longitude INTEGER NOT NULL\n"
+                + "     latitude REAL NOT NULL,\n"
+                + "     longitude REAL NOT NULL\n"
                 + ");";
 
         try (Connection con = DriverManager.getConnection(url);
