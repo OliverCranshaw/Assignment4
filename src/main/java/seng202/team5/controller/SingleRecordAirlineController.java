@@ -8,25 +8,25 @@ public class SingleRecordAirlineController {
     public SingleRecordAirlineController() {}
 
     @FXML
-    private Text IDLabel;
+    private Text airlineID;
 
     @FXML
-    private Text NameLabel;
+    private Text airlineName;
 
     @FXML
-    private Text IATALabel;
+    private Text airlineIATA;
 
     @FXML
-    private Text ICAOLabel;
+    private Text airlineICAO;
 
     @FXML
-    private Text CallsignLabel;
+    private Text airlineCallsign;
 
     @FXML
-    private Text CountryLabel;
+    private Text airlineCountry;
 
     @FXML
-    private Text ActiveLabel;
+    private Text airlineActive;
 
     @FXML
     public void modifyButton() {
