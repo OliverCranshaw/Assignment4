@@ -20,4 +20,11 @@ public class SingleRecordFlight extends Application {
 
     public static void main(String[] args) { launch(args);}
 
+    public static class ViewTableOfRecordsMenu extends Application {
+
+        @Override
+        public void start(Stage stage) {
+
+        }
+    }
 }
