@@ -1,13 +1,12 @@
 package seng202.team5.accessor;
 
-public abstract class Accessor {
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-    public int save() {
-        return -1;
-    }
+public interface Accessor {
 
-    public void getData() {
-        return;
-    }
+    int save(ArrayList data) throws SQLException;
+
+//    public void getData();
 
 }
