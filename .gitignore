@@ -1,4 +1,5 @@
 target/
 /.idea/
 *.iml
+*.db
 dependency-reduced-pom.xml
