@@ -22,7 +22,7 @@ public class FlightAccessor implements Accessor{
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO FLIGHT_DATA VALUES (?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 7; i++) {
-                stmt.setObject(i, data.get(i));
+                stmt.setObject(i, data.get(i-1));
             }
             result = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -31,10 +31,6 @@ public class FlightAccessor implements Accessor{
         }
         return result;
     }
-
-    //public ArrayList getData(int id) {
-
-    //}
 
     public int update(int id, String new_airline, String new_airport, int new_altitude,
                       double new_latitude, double new_longitude) throws SQLException {
@@ -101,6 +97,56 @@ public class FlightAccessor implements Accessor{
             System.out.println(str);
             System.out.println(e);
         }
+        return result;
+    }
+
+    public ResultSet getData(int id) throws SQLException {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM FLIGHT_DATA WHERE flight_id = ?");
+            stmt.setObject(1, id);
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airline with id " + id);
+        }
+
+        return result;
+    }
+
+    public ResultSet getData(String airline, String airport) throws SQLException {
+        ResultSet result = null;
+        String query = "SELECT * FROM FLIGHT_DATA";
+        ArrayList<String> elements = new ArrayList<>();
+
+        try {
+            if (airline != null) {
+                query = query + " WHERE airline = ?";
+                elements.add(airline);
+            }
+
+            if (airport != null) {
+                if (airline != null) {
+                    query = query + " and airport = ?";
+                } else {
+                    query = query + " WHERE airport = ?";
+                }
+                elements.add(airport);
+            }
+
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            int index = 1;
+            for (String element: elements) {
+                stmt.setObject(index, element);
+                index++;
+            }
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airline data");
+        }
+
         return result;
     }
 }

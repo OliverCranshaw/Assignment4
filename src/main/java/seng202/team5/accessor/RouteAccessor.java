@@ -22,7 +22,7 @@ public class RouteAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO ROUTE_DATA VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 10; i++) {
-                stmt.setObject(i, data.get(i));
+                stmt.setObject(i, data.get(i-1));
             }
             result = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -31,10 +31,6 @@ public class RouteAccessor implements Accessor {
         }
         return result;
     }
-
-    //public ArrayList getData(int id) {
-
-    //}
 
     public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
                       String new_codeshare, int new_stops, String new_equipment) throws SQLException {
@@ -96,6 +92,83 @@ public class RouteAccessor implements Accessor {
             System.out.println(str);
             System.out.println(e);
         }
+        return result;
+    }
+
+    public ResultSet getData(int id) throws SQLException {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM ROUTE_DATA WHERE route_id = ?");
+            stmt.setObject(1, id);
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airline with id " + id);
+        }
+
+        return result;
+    }
+
+    public ResultSet getData(String airline, String source_airport, String dest_airport, int stops, String equipment) throws SQLException {
+        ResultSet result = null;
+        String query = "SELECT * FROM ROUTE_DATA";
+        ArrayList<Object> elements = new ArrayList<>();
+
+        try {
+            if (airline != null) {
+                query = query + " WHERE airline = ?";
+                elements.add(airline);
+            }
+
+            if (source_airport != null && airline == null) {
+                if (airline != null) {
+                    query = query + " and airport = ?";
+                } else {
+                    query = query + " WHERE airport = ?";
+                }
+                elements.add(source_airport);
+            }
+
+            if (dest_airport != null) {
+                if (airline != null || source_airport != null) {
+                    query = query + " and destination_airport = ?";
+                } else {
+                    query = query + " WHERE destination_airport = ?";
+                }
+                elements.add(dest_airport);
+            }
+
+            if (stops != -1) {
+                if (airline != null || source_airport != null || dest_airport != null) {
+                    query = query + " and stops = ?";
+                } else {
+                    query = query + " WHERE stops = ?";
+                }
+                elements.add(stops);
+            }
+
+            if (equipment != null) {
+                if (airline != null || source_airport != null || dest_airport != null || stops != -1) {
+                    query = query + " and equipment = ?";
+                } else {
+                    query = query + " WHERE equipment = ?";
+                }
+                elements.add(equipment);
+            }
+
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            int index = 1;
+            for (Object element: elements) {
+                stmt.setObject(index, element);
+                index++;
+            }
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airline data");
+        }
+
         return result;
     }
 }
