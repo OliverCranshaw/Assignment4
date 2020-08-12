@@ -33,25 +33,68 @@ public class AirportAccessor implements Accessor {
     }
 
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
-                      double new_latitude, double new_longitude, int new_altitude, int new_timezone, String dst, String new_tz)
+                      double new_latitude, double new_longitude, int new_altitude, int new_timezone, String new_dst, String new_tz)
             throws SQLException {
         int result;
+        ArrayList<Object> elements = new ArrayList<>();
+        String search = "UPDATE AIRPORT_DATA SET ";
+
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, "
-                            + "longitude = ?, altitude = ?, timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?");
-            stmt.setObject(1, new_name);
-            stmt.setObject(2, new_city);
-            stmt.setObject(3, new_country);
-            stmt.setObject(4, new_iata);
-            stmt.setObject(5, new_icao);
-            stmt.setDouble(6, new_latitude);
-            stmt.setDouble(7, new_longitude);
-            stmt.setInt(8, new_altitude);
-            stmt.setInt(9, new_timezone);
-            stmt.setObject(10, dst);
-            stmt.setObject(11, new_tz);
-            stmt.setInt(12, id);
+            if (new_name != null) {
+                search = search + "airport_name = ?, ";
+                elements.add(new_name);
+            }
+            if (new_city != null) {
+                search = search + "city = ?, ";
+                elements.add(new_city);
+            }
+            if (new_country != null) {
+                search = search + "country = ?, ";
+                elements.add(new_country);
+            }
+            if (new_iata != null) {
+                search = search + "iata = ?, ";
+                elements.add(new_iata);
+            }
+            if (new_icao != null) {
+                search = search + "icao = ?, ";
+                elements.add(new_icao);
+            }
+            if (new_latitude != -1) {
+                search = search + "latitude = ?, ";
+                elements.add(new_latitude);
+            }
+            if (new_longitude != -1) {
+                search = search + "longitude = ?, ";
+                elements.add(new_longitude);
+            }
+            if (new_altitude != -1) {
+                search = search + "altitude = ?, ";
+                elements.add(new_altitude);
+            }
+            if (new_timezone != -1) {
+                search = search + "timezone = ?, ";
+                elements.add(new_timezone);
+            }
+            if (new_dst != null) {
+                search = search + "dst = ?, ";
+                elements.add(new_dst);
+            }
+            if (new_tz != null) {
+                search = search + "tz_database_timezone = ? ";
+                elements.add(new_tz);
+            }
+            if (search.endsWith(", ")) {
+                search = search.substring(0, search.length() - 2) + " WHERE airport_id = ?";
+            } else {
+                search = search + "WHERE airport_id = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            int index = 1;
+            for (Object element: elements) {
+                stmt.setObject(index, element);
+                index++;
+            }
 
             result = stmt.executeUpdate();
         } catch (Exception e) {

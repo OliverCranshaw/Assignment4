@@ -36,6 +36,8 @@ public class FlightAccessor implements Accessor{
                       double new_latitude, double new_longitude) throws SQLException {
         int result;
         int flight_id;
+        ArrayList<Object> elements = new ArrayList<>();
+        String search = "UPDATE FLIGHT_DATA SET ";
 
         try {
             // grab flight id
@@ -44,15 +46,37 @@ public class FlightAccessor implements Accessor{
             ResultSet flights = flight_stmt.executeQuery();
             flight_id = flights.getInt(1);
             try {
-                PreparedStatement stmt = dbHandler.prepareStatement(
-                        "UPDATE FLIGHT_DATA SET airline = ?, airport = ?, altitude = ?, "
-                                + "latitude = ?, longitude = ? WHERE id = ?");
-                stmt.setObject(1, new_airline);
-                stmt.setObject(2, new_airport);
-                stmt.setInt(3, new_altitude);
-                stmt.setDouble(4, new_latitude);
-                stmt.setDouble(5, new_longitude);
-                stmt.setInt(6, id);
+                if (new_airline != null) {
+                    search = search + "airline = ?, ";
+                    elements.add(new_airline);
+                }
+                if (new_airport != null) {
+                    search = search + "airport = ?, ";
+                    elements.add(new_airport);
+                }
+                if (new_altitude != -1) {
+                    search = search + "altitude = ?, ";
+                    elements.add(new_altitude);
+                }
+                if (new_latitude != -1) {
+                    search = search + "latitude = ?, ";
+                    elements.add(new_latitude);
+                }
+                if (new_longitude != -1) {
+                    search = search + "longitude = ? ";
+                    elements.add(new_longitude);
+                }
+                if (search.endsWith(", ")) {
+                    search = search.substring(0, search.length() - 2) + " WHERE id = ?";
+                } else {
+                    search = search + "WHERE id = ?";
+                }
+                PreparedStatement stmt = dbHandler.prepareStatement(search);
+                int index = 1;
+                for (Object element: elements) {
+                    stmt.setObject(index, element);
+                    index++;
+                }
 
                 result = stmt.executeUpdate();
             } catch (Exception e) {

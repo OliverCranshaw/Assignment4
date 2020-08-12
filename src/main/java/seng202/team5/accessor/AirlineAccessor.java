@@ -35,18 +35,50 @@ public class AirlineAccessor implements Accessor {
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
                       String new_callsign, String new_country, String new_active) throws SQLException {
         int result;
+        ArrayList<String> elements = new ArrayList<>();
+        String search = "UPDATE AIRLINE_DATA SET ";
+
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "UPDATE AIRLINE_DATA SET airline_name = ?, alias = ?, iata = ?, "
-                            + "icao = ?, callsign = ?, country = ?, active = ? WHERE airline_id = ?");
-            stmt.setObject(1, new_name);
-            stmt.setObject(2, new_alias);
-            stmt.setObject(3, new_iata);
-            stmt.setObject(4, new_icao);
-            stmt.setObject(5, new_callsign);
-            stmt.setObject(6, new_country);
-            stmt.setObject(7, new_active);
-            stmt.setInt(8, id);
+            if (new_name != null) {
+                search = search + "airline_name = ?, ";
+                elements.add(new_name);
+            }
+            if (new_alias != null) {
+                search = search + "alias = ?, ";
+                elements.add(new_alias);
+            }
+            if (new_iata != null) {
+                search = search + "iata = ?, ";
+                elements.add(new_iata);
+            }
+            if (new_icao != null) {
+                search = search + "icao = ?, ";
+                elements.add(new_icao);
+            }
+            if (new_callsign != null) {
+                search = search + "callsign = ?, ";
+                elements.add(new_callsign);
+            }
+            if (new_country != null) {
+                search = search + "country = ?, ";
+                elements.add(new_country);
+            }
+            if (new_active != null) {
+                search = search + "active = ? ";
+                elements.add(new_active);
+            }
+            if (search.endsWith(", ")) {
+                search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
+            } else {
+                search = search + "WHERE airline_id = ?";
+            }
+
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            int index = 1;
+            for (String element: elements) {
+                stmt.setObject(index, element);
+                index++;
+            }
 
             result = stmt.executeUpdate();
         } catch (Exception e) {

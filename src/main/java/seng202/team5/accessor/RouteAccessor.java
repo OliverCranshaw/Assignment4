@@ -35,40 +35,67 @@ public class RouteAccessor implements Accessor {
     public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
                       String new_codeshare, int new_stops, String new_equipment) throws SQLException {
         int result;
+        ArrayList<Object> elements = new ArrayList<>();
+        String search = "UPDATE ROUTE_DATA SET ";
+
         try {
-            // grab airline, airport ids
-            PreparedStatement airline_stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
-            airline_stmt.setObject(1, new_airline);
-            airline_stmt.setObject(2, new_airline);
-            ResultSet airlines = airline_stmt.executeQuery();
-            int new_airline_id = airlines.getInt(1);
+            if (new_airline != null) {
+                // grab airline, airport ids
+                PreparedStatement airline_stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
+                airline_stmt.setObject(1, new_airline);
+                airline_stmt.setObject(2, new_airline);
+                ResultSet airlines = airline_stmt.executeQuery();
+                int new_airline_id = airlines.getInt(1);
 
-            PreparedStatement source_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
-            source_airport_stmt.setObject(1, new_source_airport);
-            source_airport_stmt.setObject(2, new_source_airport);
-            ResultSet source_airports = source_airport_stmt.executeQuery();
-            int new_source_airport_id = source_airports.getInt(1);
+                search = search + "airline = ?, airline_id = ?, ";
+                elements.add(new_airline);
+                elements.add(new_airline_id);
+            }
+            if (new_source_airport != null) {
+                PreparedStatement source_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+                source_airport_stmt.setObject(1, new_source_airport);
+                source_airport_stmt.setObject(2, new_source_airport);
+                ResultSet source_airports = source_airport_stmt.executeQuery();
+                int new_source_airport_id = source_airports.getInt(1);
 
-            PreparedStatement dest_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
-            dest_airport_stmt.setObject(1, new_dest_airport);
-            dest_airport_stmt.setObject(2, new_dest_airport);
-            ResultSet destination_airports = dest_airport_stmt.executeQuery();
-            int new_dest_airport_id = destination_airports.getInt(1);
+                search = search + "source_airport = ?, source_airport_id = ?, ";
+                elements.add(new_source_airport);
+                elements.add(new_source_airport_id);
+            }
+            if (new_dest_airport != null) {
+                PreparedStatement dest_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+                dest_airport_stmt.setObject(1, new_dest_airport);
+                dest_airport_stmt.setObject(2, new_dest_airport);
+                ResultSet destination_airports = dest_airport_stmt.executeQuery();
+                int new_dest_airport_id = destination_airports.getInt(1);
 
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "UPDATE ROUTE_DATA SET airline = ?, airline_id = ?, source_airport = ?, source_airport_id = ?, "
-                            + "destination_airport = ?, destination_airport_id = ?, codeshare = ?, stops = ?, equipment = ? "
-                            + "WHERE airline_id = ?");
-            stmt.setObject(1, new_airline);
-            stmt.setInt(2, new_airline_id);
-            stmt.setObject(3, new_source_airport);
-            stmt.setInt(4, new_source_airport_id);
-            stmt.setObject(5, new_dest_airport);
-            stmt.setInt(6, new_dest_airport_id);
-            stmt.setObject(7, new_codeshare);
-            stmt.setInt(8, new_stops);
-            stmt.setObject(9, new_equipment);
-            stmt.setInt(10, id);
+                search = search + "destination_airport = ?, destination_airport_id = ?, ";
+                elements.add(new_dest_airport);
+                elements.add(new_dest_airport_id);
+            }
+            if (new_codeshare != null) {
+                search = search + "codeshare = ?, ";
+                elements.add(new_codeshare);
+            }
+            if (new_stops != -1) {
+                search = search + "stops = ?, ";
+                elements.add(new_stops);
+            }
+            if (new_equipment != null) {
+                search = search + "equipment = ? ";
+                elements.add(new_equipment);
+            }
+            if (search.endsWith(", ")) {
+                search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
+            } else {
+                search = search + "WHERE route_id = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            int index = 1;
+            for (Object element: elements) {
+                stmt.setObject(index, element);
+                index++;
+            }
 
             result = stmt.executeUpdate();
         } catch (Exception e) {
