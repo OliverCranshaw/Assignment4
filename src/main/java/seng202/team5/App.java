@@ -22,7 +22,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         stage.setTitle("Flight Data Manager");
-        stage.setScene(new Scene(root, 640, 480));
+        stage.setScene(new Scene(root, 1280, 720));
         stage.show();
     }
 
