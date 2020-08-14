@@ -165,11 +165,28 @@ public class AirlineAccessor implements Accessor {
         return result;
     }
 
+    public boolean dataExists(int id) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_id = ?");
+
+            stmt.setObject(1, id);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to retrieve airline data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
+
     public boolean dataExists(String name, String iata, String icao) throws SQLException {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(airport_id) FROM AIRLINE_DATA WHERE airline_name = ? and iata = ? and icao = ?");
+                    "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_name = ? and iata = ? and icao = ?");
 
             stmt.setObject(1, name);
             stmt.setObject(2, iata);
@@ -178,6 +195,24 @@ public class AirlineAccessor implements Accessor {
             result = stmt.execute();
         } catch (Exception e) {
             String str = "Unable to retrieve airline data with name " + name + ", IATA " + iata + ", ICAO " + icao;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public boolean dataExists(String code) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE iata = ? or icao = ?");
+
+            stmt.setObject(1, code);
+            stmt.setObject(2, code);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to retrieve airline data with IATA or ICAO code" + code;
             System.out.println(str);
             System.out.println(e);
         }

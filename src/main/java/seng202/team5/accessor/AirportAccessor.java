@@ -130,7 +130,7 @@ public class AirportAccessor implements Accessor {
             stmt.setObject(1, id);
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline with id " + id);
+            System.out.println("Failed to retrieve airport data with id " + id);
         }
 
         return result;
@@ -174,9 +174,26 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline data");
+            System.out.println("Failed to retrieve airport data");
         }
 
+        return result;
+    }
+
+    public boolean dataExists(int id) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE airport_id = ?");
+
+            stmt.setInt(1, id);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to retrieve airport data with id " + id;
+            System.out.println(str);
+            System.out.println(e);
+        }
         return result;
     }
 
@@ -193,6 +210,24 @@ public class AirportAccessor implements Accessor {
             result = stmt.execute();
         } catch (Exception e) {
             String str = "Unable to retrieve airport data with name " + name + ", IATA " + iata + ", ICAO " + icao;
+            System.out.println(str);
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public boolean dataExists(String code) throws SQLException {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
+
+            stmt.setObject(1, code);
+            stmt.setObject(2, code);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            String str = "Unable to retrieve airport data with IATA or ICAO code " + code;
             System.out.println(str);
             System.out.println(e);
         }
