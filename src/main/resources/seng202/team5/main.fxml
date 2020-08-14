@@ -7,365 +7,297 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
+<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainScreenController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="600.0" text="TITLE" textAlignment="CENTER">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
-      <TabPane maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="83.0" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="mainTabs" prefHeight="670.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="198.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <tabs>
-            <Tab text="General">
+            <Tab fx:id="generalTab" text="General">
                <content>
-                  <StackPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="1080.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="127.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="315.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <VBox>
-                           <children>
-                              <GridPane>
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <TextField prefHeight="25.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="5.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="To:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets right="5.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <Label text="From:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <TextField prefHeight="25.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3">
-                                       <children>
-                                          <RadioButton mnemonicParsing="false" text="Flights">
-                                             <padding>
-                                                <Insets right="50.0" />
-                                             </padding>
-                                          </RadioButton>
-                                          <RadioButton mnemonicParsing="false" text="Airports" />
-                                          <RadioButton mnemonicParsing="false" text="Routes">
-                                             <padding>
-                                                <Insets left="50.0" />
-                                             </padding>
-                                          </RadioButton>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </GridPane>
-                              <HBox alignment="BOTTOM_LEFT">
-                                 <children>
-                                    <Label maxWidth="1.7976931348623157E308" text="Results" HBox.hgrow="ALWAYS">
-                                       <font>
-                                          <Font name="System Bold" size="27.0" />
-                                       </font>
-                                    </Label>
-                                    <Button mnemonicParsing="false" text="View More" />
-                                    <Button mnemonicParsing="false" text="Download" />
-                                 </children>
-                              </HBox>
-                              <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="135.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
-                           </children>
-                           <StackPane.margin>
-                              <Insets bottom="25.0" left="25.0" right="25.0" />
-                           </StackPane.margin>
-                        </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <RadioButton mnemonicParsing="false" text="Flights" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                        <RadioButton mnemonicParsing="false" text="Airports" GridPane.columnIndex="1" />
+                        <RadioButton mnemonicParsing="false" text="Routes" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <Label text="Results" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                            <font>
-                              <Font size="12.0" />
+                              <Font name="System Bold" size="27.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Label text="To:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <Label text="From:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <TextField prefHeight="25.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <TextField minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="994.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Button>
+                        <ListView prefHeight="135.0" prefWidth="520.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" onAction="#onViewMorePressed" text="View More" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Button>
+                        <Button layoutX="50.0" mnemonicParsing="false" text="Download" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                      </children>
-                  </StackPane>
+                  </GridPane>
                </content>
             </Tab>
-            <Tab text="Table of Records">
+            <Tab fx:id="tableRecordsTab" text="Table of Records">
                <content>
-                  <StackPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="1080.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="460.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Title from search options">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <GridPane>
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Label text="Results">
-                                       <font>
-                                          <Font name="System Bold" size="27.0" />
-                                       </font>
-                                    </Label>
-                                    <CheckBox mnemonicParsing="false" text="Rank by..." GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                    <CheckBox mnemonicParsing="false" text="Rank by..." GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                    <CheckBox mnemonicParsing="false" text="Rank by..." GridPane.columnIndex="3" />
-                                 </children>
-                              </GridPane>
-                              <ListView prefHeight="238.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
-                           </children>
-                           <padding>
-                              <Insets bottom="25.0" left="25.0" right="25.0" />
-                           </padding>
-                        </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Label alignment="CENTER" prefHeight="37.0" prefWidth="348.0" text="Title from search options" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
-                              <Font size="12.0" />
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <content>
+                              <ListView prefHeight="459.0" prefWidth="1080.0" />
+                           </content>
+                        </ScrollPane>
+                        <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="106.0" text="Rank by..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="106.0" text="Rank by..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="120.0" />
+                           </GridPane.margin>
+                        </CheckBox>
+                        <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="106.0" text="Rank by..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="240.0" />
+                           </GridPane.margin>
+                        </CheckBox>
+                        <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="106.0" text="Rank by..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="360.0" />
+                           </GridPane.margin>
+                        </CheckBox>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onBackPressed" prefHeight="44.0" prefWidth="84.0" text="Back" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Button>
                      </children>
-                  </StackPane>
+                  </GridPane>
                </content>
             </Tab>
             <Tab text="Extra Tab">
                <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
                </content>
             </Tab>
             <Tab text="Airport Data">
                <content>
-                  <StackPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="1080.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="60.0" minHeight="2.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="460.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="75.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Airport Raw Data">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <HBox alignment="TOP_CENTER" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="CENTER_RIGHT" text="Filter Options:" wrapText="true" HBox.hgrow="ALWAYS">
-                                       <font>
-                                          <Font name="System Bold" size="19.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airport" onAction="#onAddAirportPressed"/>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
-                                 </children>
-                              </HBox>
-                              <ListView prefHeight="160.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
-                              <GridPane>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </padding>
-                              </GridPane>
-                           </children>
-                           <padding>
-                              <Insets left="25.0" right="25.0" />
-                           </padding>
-                        </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <ListView prefHeight="459.0" prefWidth="1080.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label alignment="CENTER" prefHeight="37.0" prefWidth="348.0" text="Airport Raw Data" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
-                              <Font size="12.0" />
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" text="Modify Data" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <Button mnemonicParsing="false" onAction="#onAddAirportPressed" text="Add Airport" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets right="90.0" />
+                           </GridPane.margin></Button>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Button>
                      </children>
-                  </StackPane>
+                  </GridPane>
                </content>
             </Tab>
             <Tab text="Airline Data">
                <content>
-                  <StackPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="460.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Airline Raw Data">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <HBox alignment="TOP_CENTER" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="CENTER_RIGHT" text="Filter Options:" wrapText="true" HBox.hgrow="ALWAYS">
-                                       <font>
-                                          <Font name="System Bold" size="19.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" />
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Active" visibleRowCount="2" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airline" onAction="#onAddAirlinePressed"/>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
-                                 </children>
-                              </HBox>
-                              <ListView prefHeight="160.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
-                              <GridPane>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </padding>
-                              </GridPane>
-                           </children>
-                           <padding>
-                              <Insets left="25.0" right="25.0" />
-                           </padding>
-                        </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Label alignment="CENTER" prefHeight="37.0" prefWidth="348.0" text="Airline Raw Data" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
-                              <Font size="12.0" />
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Active" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="120.0" />
+                           </GridPane.margin></ComboBox>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ListView prefHeight="160.0" prefWidth="520.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" text="Modify Data" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <Button mnemonicParsing="false" onAction="#onAddAirlinePressed" text="Add Airline" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets right="90.0" />
+                           </GridPane.margin></Button>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Button>
                      </children>
-                  </StackPane>
+                  </GridPane>
                </content>
             </Tab>
             <Tab text="Route Data">
                <content>
-                  <StackPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="1080.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="460.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Route Raw Data">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <HBox alignment="TOP_CENTER" prefWidth="200.0">
-                                 <children>
-                                    <Label alignment="CENTER_RIGHT" text="Filter Options:" wrapText="true" HBox.hgrow="ALWAYS">
-                                       <font>
-                                          <Font name="System Bold" size="19.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
-                                    </Label>
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Departs From" visibleRowCount="2" />
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Arrives At" visibleRowCount="2" />
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Direct Flight" visibleRowCount="2" />
-                                    <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Equipment" visibleRowCount="2" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Route" onAction="#onAddRoutePressed"/>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
-                                 </children>
-                              </HBox>
-                              <ListView prefHeight="160.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
-                              <GridPane>
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </padding>
-                              </GridPane>
-                           </children>
-                           <padding>
-                              <Insets left="25.0" right="25.0" />
-                           </padding>
-                        </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Label alignment="CENTER" prefHeight="37.0" prefWidth="348.0" text="Route Raw Data" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
-                              <Font size="12.0" />
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Departs From" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Arrives At" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="120.0" />
+                           </GridPane.margin></ComboBox>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Direct Flight" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="240.0" />
+                           </GridPane.margin></ComboBox>
+                        <ComboBox prefHeight="25.0" prefWidth="114.0" promptText="Equipment" visibleRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="360.0" />
+                           </GridPane.margin></ComboBox>
+                        <ListView prefHeight="160.0" prefWidth="520.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" text="Modify Data" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                        <Button mnemonicParsing="false" onAction="#onAddRoutePressed" text="Add Route" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets right="90.0" />
+                           </GridPane.margin></Button>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font size="20.0" />
                            </font>
                         </Button>
                      </children>
-                  </StackPane>
+                  </GridPane>
                </content>
             </Tab>
          </tabs>
       </TabPane>
+      <Label alignment="CENTER" prefHeight="52.0" prefWidth="1280.0" text="TITLE" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
    </children>
-</VBox>
+</GridPane>
