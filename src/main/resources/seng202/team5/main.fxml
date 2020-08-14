@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
    <children>
       <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="600.0" text="TITLE" textAlignment="CENTER">
          <font>
@@ -190,7 +190,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airport" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airport" onAction="#onAddAirportPressed"/>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
@@ -258,7 +258,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airline" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airline" onAction="#onAddAirlinePressed"/>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
@@ -328,7 +328,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Route" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Route" onAction="#onAddRoutePressed"/>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
