@@ -28,40 +28,6 @@ public class App extends Application {
         mainStage.show();
     }
 
-    public static void launchAddAirportStage() throws IOException {
-
-        Stage addAirportStage = new Stage();
-
-        Parent root = FXMLLoader.load(App.class.getResource("add_airport.fxml"));
-        addAirportStage.setTitle("Add Airport");
-        addAirportStage.setScene(new Scene(root, 1280, 720));
-
-        addAirportStage.show();
-
-    }
-
-
-    public static void launchAddAirlineStage() throws IOException {
-
-        Stage addAirlineStage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("add_airline.fxml"));
-        addAirlineStage.setTitle("Add Airport");
-        addAirlineStage.setScene(new Scene(root, 1280, 720));
-
-        addAirlineStage.show();
-    }
-
-
-
-    public static void launchAddRouteStage() throws IOException {
-
-        Stage addRouteStage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("add_route.fxml"));
-        addRouteStage.setTitle("Add Airport");
-        addRouteStage.setScene(new Scene(root, 1280, 720));
-
-        addRouteStage.show();
-    }
 
 
     public static void main(String[] args) {

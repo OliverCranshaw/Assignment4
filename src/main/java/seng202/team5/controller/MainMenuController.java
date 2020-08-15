@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
@@ -13,6 +15,24 @@ import seng202.team5.App;
 import java.io.IOException;
 
 public class MainMenuController {
+    @FXML
+    private TabPane mainTabs;
+
+    @FXML
+    private Tab tableRecordsTab;
+
+    @FXML
+    private Tab generalTab;
+
+    @FXML
+    public void onViewMorePressed() {
+        mainTabs.getSelectionModel().select(tableRecordsTab);
+    }
+
+    @FXML
+    public void onBackPressed() {
+        mainTabs.getSelectionModel().select(generalTab);
+    }
     @FXML
     public void onAddAirportPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
