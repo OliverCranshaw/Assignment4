@@ -16,7 +16,7 @@ public class RouteAccessor implements Accessor {
         dbHandler = DBConnection.getConnection();
     }
 
-    public int save(ArrayList data) throws SQLException {
+    public int save(ArrayList data) {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -24,51 +24,35 @@ public class RouteAccessor implements Accessor {
             for (int i=1; i < 10; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
+
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             result = -1;
-            System.out.println("Failed to save new route data.");
+            System.out.println("Failed to save new route data");
+            System.out.println(e);
         }
+
         return result;
     }
 
-    public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
-                      String new_codeshare, int new_stops, String new_equipment) throws SQLException {
+    public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
+                      String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE ROUTE_DATA SET ";
 
         try {
             if (new_airline != null) {
-                // grab airline, airport ids
-                PreparedStatement airline_stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
-                airline_stmt.setObject(1, new_airline);
-                airline_stmt.setObject(2, new_airline);
-                ResultSet airlines = airline_stmt.executeQuery();
-                int new_airline_id = airlines.getInt(1);
-
                 search = search + "airline = ?, airline_id = ?, ";
                 elements.add(new_airline);
                 elements.add(new_airline_id);
             }
             if (new_source_airport != null) {
-                PreparedStatement source_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
-                source_airport_stmt.setObject(1, new_source_airport);
-                source_airport_stmt.setObject(2, new_source_airport);
-                ResultSet source_airports = source_airport_stmt.executeQuery();
-                int new_source_airport_id = source_airports.getInt(1);
-
                 search = search + "source_airport = ?, source_airport_id = ?, ";
                 elements.add(new_source_airport);
                 elements.add(new_source_airport_id);
             }
             if (new_dest_airport != null) {
-                PreparedStatement dest_airport_stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
-                dest_airport_stmt.setObject(1, new_dest_airport);
-                dest_airport_stmt.setObject(2, new_dest_airport);
-                ResultSet destination_airports = dest_airport_stmt.executeQuery();
-                int new_dest_airport_id = destination_airports.getInt(1);
-
                 search = search + "destination_airport = ?, destination_airport_id = ?, ";
                 elements.add(new_dest_airport);
                 elements.add(new_dest_airport_id);
@@ -100,14 +84,14 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (Exception e) {
             result = -1;
-            String str = "Unable to update route data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to update route data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM ROUTE_DATA WHERE route_id = ?");
@@ -115,14 +99,14 @@ public class RouteAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to delete route data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to delete route data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public ResultSet getData(int id) throws SQLException {
+    public ResultSet getData(int id) {
         ResultSet result = null;
 
         try {
@@ -132,12 +116,13 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route with id " + id);
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public ResultSet getData(String airline, String source_airport, String dest_airport, int stops, String equipment) throws SQLException {
+    public ResultSet getData(String airline, String dest_airport, int stops, String equipment) {
         ResultSet result = null;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
@@ -148,17 +133,8 @@ public class RouteAccessor implements Accessor {
                 elements.add(airline);
             }
 
-            if (source_airport != null && airline == null) {
-                if (airline != null) {
-                    query = query + " and airport = ?";
-                } else {
-                    query = query + " WHERE airport = ?";
-                }
-                elements.add(source_airport);
-            }
-
             if (dest_airport != null) {
-                if (airline != null || source_airport != null) {
+                if (airline != null) {
                     query = query + " and destination_airport = ?";
                 } else {
                     query = query + " WHERE destination_airport = ?";
@@ -167,7 +143,7 @@ public class RouteAccessor implements Accessor {
             }
 
             if (stops != -1) {
-                if (airline != null || source_airport != null || dest_airport != null) {
+                if (airline != null || dest_airport != null) {
                     query = query + " and stops = ?";
                 } else {
                     query = query + " WHERE stops = ?";
@@ -176,7 +152,7 @@ public class RouteAccessor implements Accessor {
             }
 
             if (equipment != null) {
-                if (airline != null || source_airport != null || dest_airport != null || stops != -1) {
+                if (airline != null || dest_airport != null || stops != -1) {
                     query = query + " and equipment = ?";
                 } else {
                     query = query + " WHERE equipment = ?";
@@ -194,12 +170,13 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route data");
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public boolean dataExists(int id) throws SQLException {
+    public boolean dataExists(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -209,10 +186,10 @@ public class RouteAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to retrieve route data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to retrieve route data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 }

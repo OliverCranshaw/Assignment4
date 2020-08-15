@@ -16,7 +16,7 @@ public class AirportAccessor implements Accessor {
         dbHandler = DBConnection.getConnection();
     }
 
-    public int save(ArrayList data) throws SQLException {
+    public int save(ArrayList data) {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -24,17 +24,19 @@ public class AirportAccessor implements Accessor {
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
+
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             result = -1;
-            System.out.println("Failed to save new airport data.");
+            System.out.println("Failed to save new airport data");
+            System.out.println(e);
         }
+
         return result;
     }
 
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
-                      double new_latitude, double new_longitude, int new_altitude, int new_timezone, String new_dst, String new_tz)
-            throws SQLException {
+                      double new_latitude, double new_longitude, int new_altitude, int new_timezone, String new_dst, String new_tz) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE AIRPORT_DATA SET ";
@@ -99,14 +101,14 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (Exception e) {
             result = -1;
-            String str = "Unable to update airport data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to update airport data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRPORT_DATA WHERE airport_id = ?");
@@ -114,29 +116,31 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to delete airport data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to delete airport data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public ResultSet getData(int id) throws SQLException {
+    public ResultSet getData(int id) {
         ResultSet result = null;
 
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRPORT_DATA WHERE airport_id = ?");
             stmt.setObject(1, id);
+
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airport data with id " + id);
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public ResultSet getData(String name, String city, String country) throws SQLException {
+    public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
         String query = "SELECT * FROM AIRPORT_DATA";
         ArrayList<String> elements = new ArrayList<>();
@@ -175,12 +179,30 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airport data");
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public boolean dataExists(int id) throws SQLException {
+    public int getAirportId(String code) {
+        int result;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            stmt.setObject(1, code);
+            stmt.setObject(2, code);
+
+            result = stmt.executeQuery().getInt(1);
+        } catch (SQLException e) {
+            result = -1;
+            System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
+            System.out.println(e);
+        }
+
+        return result;
+    }
+
+    public boolean dataExists(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -190,33 +212,14 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to retrieve airport data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to retrieve airport data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public boolean dataExists(String name, String iata, String icao) throws SQLException {
-        boolean result = false;
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE airport_name = ? and iata = ? and icao = ?");
-
-            stmt.setObject(1, name);
-            stmt.setObject(2, iata);
-            stmt.setObject(3, icao);
-
-            result = stmt.execute();
-        } catch (Exception e) {
-            String str = "Unable to retrieve airport data with name " + name + ", IATA " + iata + ", ICAO " + icao;
-            System.out.println(str);
-            System.out.println(e);
-        }
-        return result;
-    }
-
-    public boolean dataExists(String code) throws SQLException {
+    public boolean dataExists(String code) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -227,10 +230,10 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to retrieve airport data with IATA or ICAO code " + code;
-            System.out.println(str);
+            System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
             System.out.println(e);
         }
+
         return result;
     }
 }
