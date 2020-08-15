@@ -86,19 +86,26 @@ public class AirportAccessor implements Accessor {
                 search = search + "tz_database_timezone = ? ";
                 elements.add(new_tz);
             }
-            if (search.endsWith(", ")) {
-                search = search.substring(0, search.length() - 2) + " WHERE airport_id = ?";
-            } else {
-                search = search + "WHERE airport_id = ?";
-            }
-            PreparedStatement stmt = dbHandler.prepareStatement(search);
-            int index = 1;
-            for (Object element: elements) {
-                stmt.setObject(index, element);
-                index++;
-            }
 
-            result = stmt.executeUpdate();
+            if (elements.size() == 0) {
+                result = -2;
+            } else {
+                if (search.endsWith(", ")) {
+                    search = search.substring(0, search.length() - 2) + " WHERE airport_id = ?";
+                } else {
+                    search = search + "WHERE airport_id = ?";
+                }
+                elements.add(id);
+
+                PreparedStatement stmt = dbHandler.prepareStatement(search);
+                int index = 1;
+                for (Object element: elements) {
+                    stmt.setObject(index, element);
+                    index++;
+                }
+
+                result = stmt.executeUpdate();
+            }
         } catch (Exception e) {
             result = -1;
             System.out.println("Unable to update airport data with id " + id);
@@ -125,7 +132,6 @@ public class AirportAccessor implements Accessor {
 
     public ResultSet getData(int id) {
         ResultSet result = null;
-
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRPORT_DATA WHERE airport_id = ?");

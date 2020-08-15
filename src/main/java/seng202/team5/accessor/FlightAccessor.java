@@ -69,19 +69,26 @@ public class FlightAccessor implements Accessor{
                     search = search + "longitude = ? ";
                     elements.add(new_longitude);
                 }
-                if (search.endsWith(", ")) {
-                    search = search.substring(0, search.length() - 2) + " WHERE id = ?";
-                } else {
-                    search = search + "WHERE id = ?";
-                }
-                PreparedStatement stmt = dbHandler.prepareStatement(search);
-                int index = 1;
-                for (Object element: elements) {
-                    stmt.setObject(index, element);
-                    index++;
-                }
 
-                result = stmt.executeUpdate();
+                if (elements.size() == 0) {
+                    result = -2;
+                } else {
+                    if (search.endsWith(", ")) {
+                        search = search.substring(0, search.length() - 2) + " WHERE id = ?";
+                    } else {
+                        search = search + "WHERE id = ?";
+                    }
+                    elements.add(id);
+
+                    PreparedStatement stmt = dbHandler.prepareStatement(search);
+                    int index = 1;
+                    for (Object element: elements) {
+                        stmt.setObject(index, element);
+                        index++;
+                    }
+
+                    result = stmt.executeUpdate();
+                }
             } catch (Exception e) {
                 result = -1;
                 String str = "Unable to update flight data with id " + id + " and flight id " + flight_id;
@@ -154,7 +161,6 @@ public class FlightAccessor implements Accessor{
                 query = query + " WHERE airline = ?";
                 elements.add(airline);
             }
-
             if (airport != null) {
                 if (airline != null) {
                     query = query + " and airport = ?";

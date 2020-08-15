@@ -38,7 +38,7 @@ public class AirlineAccessor implements Accessor {
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
                       String new_callsign, String new_country, String new_active) {
         int result;
-        ArrayList<String> elements = new ArrayList<>();
+        ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE AIRLINE_DATA SET ";
 
         try {
@@ -70,20 +70,26 @@ public class AirlineAccessor implements Accessor {
                 search = search + "active = ? ";
                 elements.add(new_active);
             }
-            if (search.endsWith(", ")) {
-                search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
+
+            if (elements.size() == 0) {
+                result = -2;
             } else {
-                search = search + "WHERE airline_id = ?";
-            }
+                if (search.endsWith(", ")) {
+                    search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
+                } else {
+                    search = search + "WHERE airline_id = ?";
+                }
+                elements.add(id);
 
-            PreparedStatement stmt = dbHandler.prepareStatement(search);
-            int index = 1;
-            for (String element: elements) {
-                stmt.setObject(index, element);
-                index++;
-            }
+                PreparedStatement stmt = dbHandler.prepareStatement(search);
+                int index = 1;
+                for (Object element: elements) {
+                    stmt.setObject(index, element);
+                    index++;
+                }
 
-            result = stmt.executeUpdate();
+                result = stmt.executeUpdate();
+            }
         } catch (Exception e) {
             result = -1;
             System.out.println("Unable to update airline data with id " + id);
@@ -110,7 +116,6 @@ public class AirlineAccessor implements Accessor {
 
     public ResultSet getData(int id) {
         ResultSet result = null;
-
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRLINE_DATA WHERE airline_id = ?");
@@ -135,7 +140,6 @@ public class AirlineAccessor implements Accessor {
                 query = query + " WHERE airline_name = ?";
                 elements.add(name);
             }
-
             if (country != null && name == null) {
                 if (name != null) {
                     query = query + " and country = ?";
@@ -144,7 +148,6 @@ public class AirlineAccessor implements Accessor {
                 }
                 elements.add(country);
             }
-
             if (callsign != null) {
                 if (country != null || name != null) {
                     query = query + " and callsign = ?";

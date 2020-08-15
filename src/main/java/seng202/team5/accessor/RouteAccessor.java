@@ -69,19 +69,26 @@ public class RouteAccessor implements Accessor {
                 search = search + "equipment = ? ";
                 elements.add(new_equipment);
             }
-            if (search.endsWith(", ")) {
-                search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
-            } else {
-                search = search + "WHERE route_id = ?";
-            }
-            PreparedStatement stmt = dbHandler.prepareStatement(search);
-            int index = 1;
-            for (Object element: elements) {
-                stmt.setObject(index, element);
-                index++;
-            }
 
-            result = stmt.executeUpdate();
+            if (elements.size() == 0) {
+                result = -2;
+            } else {
+                if (search.endsWith(", ")) {
+                    search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
+                } else {
+                    search = search + "WHERE route_id = ?";
+                }
+                elements.add(id);
+
+                PreparedStatement stmt = dbHandler.prepareStatement(search);
+                int index = 1;
+                for (Object element: elements) {
+                    stmt.setObject(index, element);
+                    index++;
+                }
+
+                result = stmt.executeUpdate();
+            }
         } catch (Exception e) {
             result = -1;
             System.out.println("Unable to update route data with id " + id);
@@ -108,11 +115,11 @@ public class RouteAccessor implements Accessor {
 
     public ResultSet getData(int id) {
         ResultSet result = null;
-
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM ROUTE_DATA WHERE route_id = ?");
             stmt.setObject(1, id);
+
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route with id " + id);
@@ -132,7 +139,6 @@ public class RouteAccessor implements Accessor {
                 query = query + " WHERE airline = ?";
                 elements.add(airline);
             }
-
             if (dest_airport != null) {
                 if (airline != null) {
                     query = query + " and destination_airport = ?";
@@ -141,7 +147,6 @@ public class RouteAccessor implements Accessor {
                 }
                 elements.add(dest_airport);
             }
-
             if (stops != -1) {
                 if (airline != null || dest_airport != null) {
                     query = query + " and stops = ?";
@@ -150,7 +155,6 @@ public class RouteAccessor implements Accessor {
                 }
                 elements.add(stops);
             }
-
             if (equipment != null) {
                 if (airline != null || dest_airport != null || stops != -1) {
                     query = query + " and equipment = ?";
