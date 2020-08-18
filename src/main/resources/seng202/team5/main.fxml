@@ -27,9 +27,9 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <TabPane maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="83.0" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="83.0" VBox.vgrow="ALWAYS">
          <tabs>
-            <Tab text="General">
+            <Tab fx:id="generalTab" text="General">
                <content>
                   <StackPane>
                      <children>
@@ -40,55 +40,84 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField prefHeight="25.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <TextField fx:id="firstSearchEntry" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="5.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="To:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                          <Insets right="20.0" />
+                                       </GridPane.margin></TextField>
+                                    <Label fx:id="firstSearchType" text="Airline:" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets right="5.0" />
+                                          <Insets right="180.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <Label text="From:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                                       <padding>
-                                          <Insets right="5.0" />
-                                       </padding>
+                                    <Label fx:id="secondSearchType" text="Airport:" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="180.0" />
+                                       </GridPane.margin>
                                     </Label>
-                                    <TextField prefHeight="25.0" prefWidth="246.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3">
+                                    <TextField fx:id="secondSearchEntry" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin></TextField>
+                                    <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="4">
                                        <children>
-                                          <RadioButton mnemonicParsing="false" text="Flights">
+                                          <RadioButton fx:id="flightsRadioButton" mnemonicParsing="false" onAction="#onFlightsRadioPressed" selected="true" text="Flights">
                                              <padding>
-                                                <Insets right="50.0" />
+                                                <Insets right="75.0" />
                                              </padding>
                                           </RadioButton>
-                                          <RadioButton mnemonicParsing="false" text="Airports" />
-                                          <RadioButton mnemonicParsing="false" text="Routes">
+                                          <RadioButton fx:id="airportsRadioButton" mnemonicParsing="false" onAction="#onAirportsRadioPressed" text="Airports" />
+                                          <RadioButton fx:id="airlinesRadioButton" mnemonicParsing="false" onAction="#onAirlinesRadioPressed" text="Airlines">
                                              <padding>
-                                                <Insets left="50.0" />
+                                                <Insets left="75.0" />
+                                             </padding>
+                                          </RadioButton>
+                                          <RadioButton fx:id="routesRadioButton" mnemonicParsing="false" onAction="#onRoutesRadioPressed" text="Routes">
+                                             <padding>
+                                                <Insets left="75.0" />
                                              </padding>
                                           </RadioButton>
                                        </children>
                                     </HBox>
+                                    <Label fx:id="thirdSearchType" text="Country:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="fourthSearchType" text="Equipment:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="thirdSearchEntry" disable="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="70.0" right="25.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="fourthSearchEntry" disable="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="70.0" right="25.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" text="Search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
                               <HBox alignment="BOTTOM_LEFT">
                                  <children>
-                                    <Label maxWidth="1.7976931348623157E308" text="Results" HBox.hgrow="ALWAYS">
+                                    <Label maxWidth="1.7976931348623157E308" prefWidth="298.0" text="Results" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font name="System Bold" size="27.0" />
                                        </font>
                                     </Label>
-                                    <Button mnemonicParsing="false" text="View More" />
+                                    <Button mnemonicParsing="false" onAction="#onViewMorePressed" text="View More" />
                                     <Button mnemonicParsing="false" text="Download" />
                                  </children>
                               </HBox>
@@ -107,7 +136,7 @@
                   </StackPane>
                </content>
             </Tab>
-            <Tab text="Table of Records">
+            <Tab fx:id="tableRecordsTab" text="Table of Records">
                <content>
                   <StackPane>
                      <children>
@@ -190,7 +219,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airport" onAction="#onAddAirportPressed"/>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirportPressed" text="Add Airport" />
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
@@ -258,7 +287,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Airline" onAction="#onAddAirlinePressed"/>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" text="Add Airline" />
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
@@ -328,7 +357,7 @@
                               <HBox>
                                  <children>
                                     <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Route" onAction="#onAddRoutePressed"/>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddRoutePressed" text="Add Route" />
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
                                  </children>
                               </HBox>
