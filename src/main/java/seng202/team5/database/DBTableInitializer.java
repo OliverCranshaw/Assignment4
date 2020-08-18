@@ -8,10 +8,10 @@ import java.sql.Statement;
 
 public class DBTableInitializer {
 
-    public static void initializeTables() {
+    public static void initializeTables(String filename) {
 
         String directory = (System.getProperty("user.dir")).replace("\\", "/");
-        String url = "jdbc:sqlite:" + directory + "/flightdata.db";
+        String url = "jdbc:sqlite:" + directory + "/" + filename;
 
         String airport_sql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
                 + "     airport_id INTEGER PRIMARY KEY,\n" // merged id and airport_id together, both unique so should work
@@ -86,7 +86,7 @@ public class DBTableInitializer {
     }
 
     public static void main(String[] args) {
-        initializeTables();
+        initializeTables("flightdata.db");
         System.out.println("Tables created.");
     }
 }
