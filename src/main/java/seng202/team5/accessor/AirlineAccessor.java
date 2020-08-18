@@ -16,7 +16,7 @@ public class AirlineAccessor implements Accessor {
         dbHandler = DBConnection.getConnection();
     }
 
-    public int save(ArrayList data) throws SQLException {
+    public int save(ArrayList data) {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -24,18 +24,21 @@ public class AirlineAccessor implements Accessor {
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
+
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             result = -1;
-            System.out.println("Failed to save new airport data.");
+            System.out.println("Failed to save new airport data");
+            System.out.println(e);
         }
+
         return result;
     }
 
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) throws SQLException {
+                      String new_callsign, String new_country, String new_active) {
         int result;
-        ArrayList<String> elements = new ArrayList<>();
+        ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE AIRLINE_DATA SET ";
 
         try {
@@ -67,30 +70,36 @@ public class AirlineAccessor implements Accessor {
                 search = search + "active = ? ";
                 elements.add(new_active);
             }
-            if (search.endsWith(", ")) {
-                search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
+
+            if (elements.size() == 0) {
+                result = -2;
             } else {
-                search = search + "WHERE airline_id = ?";
-            }
+                if (search.endsWith(", ")) {
+                    search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
+                } else {
+                    search = search + "WHERE airline_id = ?";
+                }
+                elements.add(id);
 
-            PreparedStatement stmt = dbHandler.prepareStatement(search);
-            int index = 1;
-            for (String element: elements) {
-                stmt.setObject(index, element);
-                index++;
-            }
+                PreparedStatement stmt = dbHandler.prepareStatement(search);
+                int index = 1;
+                for (Object element: elements) {
+                    stmt.setObject(index, element);
+                    index++;
+                }
 
-            result = stmt.executeUpdate();
+                result = stmt.executeUpdate();
+            }
         } catch (Exception e) {
             result = -1;
-            String str = "Unable to update airline data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to update airline data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRLINE_DATA WHERE airline_id = ?");
@@ -98,29 +107,30 @@ public class AirlineAccessor implements Accessor {
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to delete airline data with id " + id;
-            System.out.println(str);
+            System.out.println("Unable to delete airline data with id " + id);
             System.out.println(e);
         }
+
         return result;
     }
 
-    public ResultSet getData(int id) throws SQLException {
+    public ResultSet getData(int id) {
         ResultSet result = null;
-
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRLINE_DATA WHERE airline_id = ?");
             stmt.setObject(1, id);
+
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airline with id " + id);
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public ResultSet getData(String name, String country, String callign) throws SQLException {
+    public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
         String query = "SELECT * FROM AIRLINE_DATA";
         ArrayList<String> elements = new ArrayList<>();
@@ -130,7 +140,6 @@ public class AirlineAccessor implements Accessor {
                 query = query + " WHERE airline_name = ?";
                 elements.add(name);
             }
-
             if (country != null && name == null) {
                 if (name != null) {
                     query = query + " and country = ?";
@@ -139,14 +148,13 @@ public class AirlineAccessor implements Accessor {
                 }
                 elements.add(country);
             }
-
-            if (callign != null) {
+            if (callsign != null) {
                 if (country != null || name != null) {
                     query = query + " and callsign = ?";
-                    elements.add(callign);
+                    elements.add(callsign);
                 } else {
                     query = query + " WHERE callsign = ?";
-                    elements.add(callign);
+                    elements.add(callsign);
                 }
             }
 
@@ -160,27 +168,61 @@ public class AirlineAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airline data");
+            System.out.println(e);
         }
 
         return result;
     }
 
-    public boolean dataExists(String name, String iata, String icao) throws SQLException {
+    public int getAirlineId(String code) {
+        int result;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
+            stmt.setObject(1, code);
+            stmt.setObject(2, code);
+
+            result = stmt.executeQuery().getInt(1);
+        } catch (SQLException e) {
+            result = -1;
+            System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
+            System.out.println(e);
+        }
+
+        return result;
+    }
+
+    public boolean dataExists(int id) {
         boolean result = false;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(airport_id) FROM AIRLINE_DATA WHERE airline_name = ? and iata = ? and icao = ?");
+                    "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_id = ?");
 
-            stmt.setObject(1, name);
-            stmt.setObject(2, iata);
-            stmt.setObject(3, icao);
+            stmt.setObject(1, id);
 
             result = stmt.execute();
         } catch (Exception e) {
-            String str = "Unable to retrieve airline data with name " + name + ", IATA " + iata + ", ICAO " + icao;
-            System.out.println(str);
+            System.out.println("Unable to retrieve airline data with id " + id);
             System.out.println(e);
         }
+
+        return result;
+    }
+
+    public boolean dataExists(String code) {
+        boolean result = false;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE iata = ? or icao = ?");
+
+            stmt.setObject(1, code);
+            stmt.setObject(2, code);
+
+            result = stmt.execute();
+        } catch (Exception e) {
+            System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
+            System.out.println(e);
+        }
+
         return result;
     }
 }

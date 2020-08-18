@@ -13,6 +13,10 @@ public class DBConnection {
     private static File dbFile =  new File("flightdata.db");
     private static Connection conn;
 
+    public static void setDatabaseFile(File file) {
+        dbFile = file;
+    }
+
     public static Connection getConnection() {
         try {
             conn = DriverManager.getConnection(format(url, dbFile.getAbsolutePath()));

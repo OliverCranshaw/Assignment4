@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public interface Accessor {
 
-    int save(ArrayList data) throws SQLException;
+    int save(ArrayList data);
 
-    boolean delete(int id) throws SQLException;
+    boolean delete(int id);
 
-    ResultSet getData(int id) throws SQLException;
+    ResultSet getData(int id);
 
 }
