@@ -1,10 +1,13 @@
 package seng202.team5.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,8 @@ public class AddRouteMenuController {
     }
 
     @FXML
-    public void onCancelPressed() {
-        System.out.println("Cancelled");
+    public void onCancelPressed(ActionEvent event) {
+        Window window = ((Node)event.getSource()).getScene().getWindow();
+        window.hide();
     }
 }
