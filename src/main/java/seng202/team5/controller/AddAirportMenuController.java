@@ -1,8 +1,11 @@
 package seng202.team5.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Window;
 
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
@@ -101,8 +104,9 @@ public class AddAirportMenuController {
     }
 
     @FXML
-    public void cancelButtonPressed() {
-        System.out.println("Cancelled!");
+    public void onCancelPressed(ActionEvent event) {
+        Window window = ((Node)event.getSource()).getScene().getWindow();
+        window.hide();
     }
 
 }
