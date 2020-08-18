@@ -23,7 +23,7 @@ public class FlightServiceTest extends TestCase {
 
     public FlightServiceTest(String testName) { super(testName); }
 
-    public static Test suite() { return new TestSuite(AirportServiceTest.class); }
+    public static Test suite() { return new TestSuite(FlightServiceTest.class); }
 
 
     protected void setUp() {
