@@ -1,8 +1,12 @@
 package seng202.team5.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +55,8 @@ public class AddAirlineMenuController {
     }
 
     @FXML
-    public void onCancelPressed() {
-        System.out.println("Add airline cancelled");
+    public void onCancelPressed(ActionEvent event) {
+        Window window = ((Node)event.getSource()).getScene().getWindow();
+        window.hide();
     }
 }
