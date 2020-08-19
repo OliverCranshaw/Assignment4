@@ -63,11 +63,11 @@ public class RouteServiceTest extends TestCase {
 
 
 
-        String query2 = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
                 + "longitude, altitude, timezone, dst, tz_database_timezone) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement stmt2 = dbHandler.prepareStatement(query2);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(airportQuery);
         List<Object> tmp2 = Arrays.asList("Heathrow", "London", "England", "ATA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
         ArrayList<Object> testAirport1 = new ArrayList<>();
         testAirport1.addAll(tmp2);
@@ -76,11 +76,8 @@ public class RouteServiceTest extends TestCase {
         }
         stmt2.executeUpdate();
 
-        String query3 = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
-                + "longitude, altitude, timezone, dst, tz_database_timezone) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement stmt3 = dbHandler.prepareStatement(query2);
+        PreparedStatement stmt3 = dbHandler.prepareStatement(airportQuery);
         List<Object> tmp3 = Arrays.asList("ChCh", "Christchurch", "New Zealand", "AUS", "NZNZ", 70, 231, 6000, 42, "JFP", "TZF");
         ArrayList<Object> testAirport2 = new ArrayList<>();
         testAirport2.addAll(tmp3);
@@ -91,10 +88,10 @@ public class RouteServiceTest extends TestCase {
 
 
 
-        String query = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
                 + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt = dbHandler.prepareStatement(airLineQuery);
         List<String> tmp = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
         ArrayList<String> testAirline = new ArrayList<>();
         testAirline.addAll(tmp);
