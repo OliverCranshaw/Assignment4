@@ -216,9 +216,8 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
-            ResultSet data = stmt.executeQuery().getObject();
-            System.out.println();
-            System.out.println(data);
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e);
