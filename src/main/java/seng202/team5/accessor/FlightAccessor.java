@@ -194,7 +194,8 @@ public class FlightAccessor implements Accessor{
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with flight id " + id);
             System.out.println(e);
@@ -211,7 +212,8 @@ public class FlightAccessor implements Accessor{
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with id " + id);
             System.out.println(e);

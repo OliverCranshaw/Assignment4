@@ -216,7 +216,8 @@ public class AirportAccessor implements Accessor {
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airport data with id " + id);
             System.out.println(e);
@@ -234,7 +235,8 @@ public class AirportAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
             System.out.println(e);
