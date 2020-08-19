@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
+import seng202.team5.Search;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,7 +194,7 @@ public class MainMenuController {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
-        firstSearchType.setText("Airline:");
+        firstSearchType.setText("Source Airport:");
         secondSearchType.setText("Dest. Airport:");
         thirdSearchType.setVisible(true);
         thirdSearchType.setText("No. Stops:");
@@ -210,7 +211,9 @@ public class MainMenuController {
     @FXML
     public void onSearchPressed() {
 
-        List<Object> fields = new ArrayList<>();
+        ArrayList<Object> fields = new ArrayList<>();
+        Search searchInstance = new Search();
+
 
         if (flightsRadioButton.isSelected()) {
 
@@ -218,6 +221,9 @@ public class MainMenuController {
             fields.add(secondSearchEntry.getText());
 
             System.out.println(String.format("Airline: %s, Airport: %s\n", fields.get(0), fields.get(1)));
+
+            searchInstance.setSearchData(fields);
+            searchInstance.searchFlight();
 
         } else if (airportsRadioButton.isSelected()) {
 
@@ -227,13 +233,20 @@ public class MainMenuController {
 
             System.out.println(String.format("Name: %s, City: %s, Country: %s\n", fields.get(0), fields.get(1), fields.get(2)));
 
+            searchInstance.setSearchData(fields);
+            searchInstance.searchAirpot();
+
         } else if (airlinesRadioButton.isSelected()) {
 
             fields.add(firstSearchEntry.getText());
             fields.add(secondSearchEntry.getText());
             fields.add(thirdSearchEntry.getText());
 
+
             System.out.println(String.format("Name: %s, Country: %s, Callsign: %s\n", fields.get(0), fields.get(1), fields.get(2)));
+
+            searchInstance.setSearchData(fields);
+            searchInstance.searchAirline();
 
 
         } else if (routesRadioButton.isSelected()) {
@@ -243,7 +256,10 @@ public class MainMenuController {
             fields.add(thirdSearchEntry.getText());
             fields.add(fourthSearchEntry.getText());
 
-            System.out.println(String.format("Airline: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n", fields.get(0), fields.get(1), fields.get(2), fields.get(3)));
+            System.out.println(String.format("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n", fields.get(0), fields.get(1), fields.get(2), fields.get(3)));
+
+            searchInstance.setSearchData(fields);
+            searchInstance.searchRoute();
         }
 
     }
