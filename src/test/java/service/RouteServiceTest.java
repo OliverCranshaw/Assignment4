@@ -25,7 +25,8 @@ public class RouteServiceTest extends TestCase {
 
     public static Test suite() { return new TestSuite(RouteServiceTest.class); }
 
-    protected Connection dbHandler;
+    //protected Connection dbHandler;
+
 
     protected void setUp() {
         System.out.println("Setup");
@@ -58,9 +59,7 @@ public class RouteServiceTest extends TestCase {
         Integer stops = 6;
         String equipment = "AJF";
 
-        dbHandler = DBConnection.getConnection();
-
-
+        Connection dbHandler = DBConnection.getConnection();
 
 
         String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
@@ -100,13 +99,24 @@ public class RouteServiceTest extends TestCase {
         }
         stmt.executeUpdate();
 
+        dbHandler.close();
+
         System.out.println("Here!!!!");
         int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
         System.out.println("Here: " + res);
 
+        /*
+        NOT USED ATM JUST HERE FOR ONCE ABOVE PART WORKING 8)
+        String routeQuery = "SELECT route_id FROM ROUTE_DATA WHERE airline = ITA and " +
+                "source_airport = ATA and destination_airport = AUS and stops = 6";
 
 
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(routeQuery);
+        ResultSet result = stmtRoute.executeQuery();
+        System.out.println("result: " + result);
 
+
+        */
 
     }
 
