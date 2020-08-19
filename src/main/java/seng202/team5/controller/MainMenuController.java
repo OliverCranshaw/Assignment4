@@ -217,33 +217,35 @@ public class MainMenuController {
 
         if (flightsRadioButton.isSelected()) {
 
-            fields.add(firstSearchEntry.getText());
-            fields.add(secondSearchEntry.getText());
 
-            System.out.println(String.format("Airline: %s, Airport: %s\n", fields.get(0), fields.get(1)));
+            fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
+            fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
+
+
+            System.out.printf("Airline: %s, Airport: %s\n%n", fields.get(0), fields.get(1));
 
             searchInstance.setSearchData(fields);
             searchInstance.searchFlight();
 
         } else if (airportsRadioButton.isSelected()) {
 
-            fields.add(firstSearchEntry.getText());
-            fields.add(secondSearchEntry.getText());
-            fields.add(thirdSearchEntry.getText());
+            fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
+            fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
+            fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
 
-            System.out.println(String.format("Name: %s, City: %s, Country: %s\n", fields.get(0), fields.get(1), fields.get(2)));
+            System.out.printf("Name: %s, City: %s, Country: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
-            searchInstance.searchAirpot();
+            searchInstance.searchAirport();
 
         } else if (airlinesRadioButton.isSelected()) {
 
-            fields.add(firstSearchEntry.getText());
-            fields.add(secondSearchEntry.getText());
-            fields.add(thirdSearchEntry.getText());
+            fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
+            fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
+            fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
 
 
-            System.out.println(String.format("Name: %s, Country: %s, Callsign: %s\n", fields.get(0), fields.get(1), fields.get(2)));
+            System.out.printf("Name: %s, Country: %s, Callsign: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
             searchInstance.searchAirline();
@@ -251,15 +253,19 @@ public class MainMenuController {
 
         } else if (routesRadioButton.isSelected()) {
 
-            fields.add(firstSearchEntry.getText());
-            fields.add(secondSearchEntry.getText());
-            fields.add(thirdSearchEntry.getText());
-            fields.add(fourthSearchEntry.getText());
+            try {
+                fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
+                fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
+                fields.add(thirdSearchEntry.getText().isBlank() ? -1 : Integer.parseInt(thirdSearchEntry.getText()));
+                fields.add(fourthSearchEntry.getText().isBlank() ? null : fourthSearchEntry.getText());
 
-            System.out.println(String.format("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n", fields.get(0), fields.get(1), fields.get(2), fields.get(3)));
+                System.out.printf("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n%n", fields.get(0), fields.get(1), fields.get(2), fields.get(3));
 
-            searchInstance.setSearchData(fields);
-            searchInstance.searchRoute();
+                searchInstance.setSearchData(fields);
+                searchInstance.searchRoute();
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid entry for number of stops. Must be an integer.");
+            }
         }
 
     }

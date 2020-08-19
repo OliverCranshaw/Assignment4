@@ -48,25 +48,41 @@ public class Search {
 
     public void searchAirline() {
 
-        airlineService.getAirlines(searchData.get(0).toString(), searchData.get(1).toString(), searchData.get(2).toString());
+        String name = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String country = searchData.get(1) == null ? null : searchData.get(1).toString();
+        String callsign = searchData.get(2) == null ? null : searchData.get(2).toString();
+
+        airlineService.getAirlines(name, country, callsign);
 
     }
 
-    public void searchAirpot() {
+    public void searchAirport() {
 
-        airportService.getAirports(searchData.get(0).toString(), searchData.get(1).toString(), searchData.get(2).toString());
+        String name = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String city = searchData.get(1) == null ? null : searchData.get(1).toString();
+        String country = searchData.get(2) == null ? null : searchData.get(2).toString();
+
+        airportService.getAirports(name, city, country);
 
     }
 
     public void searchFlight() {
 
-        flightService.getFlights(searchData.get(0).toString(), searchData.get(1).toString());
+        String airline = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String airport = searchData.get(1) == null ? null : searchData.get(1).toString();
+
+        flightService.getFlights(airline, airport);
 
     }
 
     public void searchRoute() {
 
-        routeService.getRoutes(searchData.get(0).toString(), searchData.get(1).toString(), (int) searchData.get(2), searchData.get(3).toString());
+        String sourceAirport = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String destAirport = searchData.get(1) == null ? null : searchData.get(1).toString();
+        int numStops = (int) searchData.get(2);
+        String equipment = searchData.get(3) == null ? null : searchData.get(3).toString();
+
+        routeService.getRoutes(sourceAirport, destAirport, numStops, equipment);
 
     }
 
