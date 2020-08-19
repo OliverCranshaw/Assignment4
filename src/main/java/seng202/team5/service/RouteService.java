@@ -90,8 +90,8 @@ public class RouteService implements Service {
         return accessor.getData(id);
     }
 
-    public ResultSet getRoutes(String airline, String source_airport, String dest_airport, int stops, String equipment) {
-        return accessor.getData(airline, dest_airport, stops, equipment);
+    public ResultSet getRoutes(String source_airport, String dest_airport, int stops, String equipment) {
+        return accessor.getData(source_airport, dest_airport, stops, equipment);
     }
 
     public boolean codeshareIsValid(String codeshare) {

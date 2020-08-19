@@ -129,18 +129,18 @@ public class RouteAccessor implements Accessor {
         return result;
     }
 
-    public ResultSet getData(String airline, String dest_airport, int stops, String equipment) {
+    public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
         ResultSet result = null;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
         try {
-            if (airline != null) {
-                query = query + " WHERE airline = ?";
-                elements.add(airline);
+            if (source_airport != null) {
+                query = query + " WHERE source_airport = ?";
+                elements.add(source_airport);
             }
             if (dest_airport != null) {
-                if (airline != null) {
+                if (source_airport != null) {
                     query = query + " and destination_airport = ?";
                 } else {
                     query = query + " WHERE destination_airport = ?";
@@ -148,7 +148,7 @@ public class RouteAccessor implements Accessor {
                 elements.add(dest_airport);
             }
             if (stops != -1) {
-                if (airline != null || dest_airport != null) {
+                if (source_airport != null || dest_airport != null) {
                     query = query + " and stops = ?";
                 } else {
                     query = query + " WHERE stops = ?";
@@ -156,7 +156,7 @@ public class RouteAccessor implements Accessor {
                 elements.add(stops);
             }
             if (equipment != null) {
-                if (airline != null || dest_airport != null || stops != -1) {
+                if (source_airport != null || dest_airport != null || stops != -1) {
                     query = query + " and equipment = ?";
                 } else {
                     query = query + " WHERE equipment = ?";
