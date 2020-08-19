@@ -20,7 +20,7 @@ public class FlightAccessor implements Accessor{
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA VALUES (?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 7; i++) {
                 stmt.setObject(i, data.get(i-1));
             }

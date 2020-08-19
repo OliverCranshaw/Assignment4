@@ -20,7 +20,9 @@ public class AirportAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO AIRPORT_DATA VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }

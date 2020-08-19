@@ -20,7 +20,8 @@ public class AirlineAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO AIRLINE_DATA VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                            + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
