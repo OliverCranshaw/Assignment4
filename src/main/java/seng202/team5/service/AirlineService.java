@@ -67,11 +67,11 @@ public class AirlineService implements Service {
     }
 
     public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
-        return (iata == null || iata.length() == 2);
+        return (iata == null || iata.length() == 3);
     }
 
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 3);
+        return (icao == null || icao.length() == 4);
     }
 
     public boolean activeIsValid(String active) {

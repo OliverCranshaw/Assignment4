@@ -51,12 +51,13 @@ public class AirlineServiceTest extends TestCase {
         String name = "AirportName";
         String alias = "AliasName";
         String country = "CountryName";
-        String iata = "IAT";
+        String iata = "ITS";
         String icao = "ICAO";
         String callsign = "CallsignStuff";
         String active = "Y";
 
         int res = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
+
         assertTrue(res != -1);
 
         ResultSet resultSet = airlineService.getAirlines(null, null, null);

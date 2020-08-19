@@ -204,7 +204,6 @@ public class AirlineAccessor implements Accessor {
             System.out.println("Unable to retrieve airline data with id " + id);
             System.out.println(e);
         }
-
         return result;
     }
 
@@ -217,12 +216,14 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
-            result = stmt.execute();
+            ResultSet data = stmt.executeQuery().getObject();
+            System.out.println();
+            System.out.println(data);
         } catch (Exception e) {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e);
         }
-
+        System.out.println(result);
         return result;
     }
 }
