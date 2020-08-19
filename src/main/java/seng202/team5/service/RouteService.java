@@ -38,7 +38,12 @@ public class RouteService implements Service {
             return -1;
         }
 
-        List<Object> tmp = Arrays.asList(airline, source_airport, dest_airport, codeshare, stops, equipment);
+        int airline_id = airlineAccessor.getAirlineId(airline);
+        int source_airport_id = airportAccessor.getAirportId(source_airport);
+        int dest_airport_id = airportAccessor.getAirportId(dest_airport);
+
+        List<Object> tmp = Arrays.asList(airline, airline_id, source_airport, source_airport_id, dest_airport,
+                dest_airport_id, codeshare, stops, equipment);
         ArrayList<Object> elements = new ArrayList<>();
         elements.addAll(tmp);
 
