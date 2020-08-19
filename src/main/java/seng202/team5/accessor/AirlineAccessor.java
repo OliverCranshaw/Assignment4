@@ -29,7 +29,7 @@ public class AirlineAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             result = -1;
-            System.out.println("Failed to save new airport data");
+            System.out.println("Failed to save new airline data");
             System.out.println(e);
         }
 
@@ -224,7 +224,7 @@ public class AirlineAccessor implements Accessor {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e);
         }
-        System.out.println(result);
+
         return result;
     }
 }

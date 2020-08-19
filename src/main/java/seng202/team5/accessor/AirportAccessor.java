@@ -196,7 +196,7 @@ public class AirportAccessor implements Accessor {
     public int getAirportId(String code) {
         int result;
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
