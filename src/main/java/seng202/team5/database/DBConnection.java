@@ -25,7 +25,7 @@ public class DBConnection {
 
             SQLiteConnectionPoolDataSource dataSource = new SQLiteConnectionPoolDataSource();
             dataSource.setUrl(url);
-            ConnectionPoolManager poolMgr = new ConnectionPoolManager(dataSource, maxConnections);
+//            ConnectionPoolManager poolMgr = new ConnectionPoolManager(dataSource, maxConnections);
 
             org.sqlite.SQLiteConfig config = new org.sqlite.SQLiteConfig();
             config.enforceForeignKeys(true);
