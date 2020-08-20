@@ -15,9 +15,7 @@ import java.sql.SQLException;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.service.FlightService;
 
-public class FlightServiceTest extends TestCase {
-    private static final String dbFile = "test.db";
-
+public class FlightServiceTest extends BaseDatabaseTest {
 
     private FlightService flightService;
 
@@ -25,20 +23,10 @@ public class FlightServiceTest extends TestCase {
 
     public static Test suite() { return new TestSuite(FlightServiceTest.class); }
 
-
+    @Override
     protected void setUp() {
-        DBInitializer.createNewDatabase(dbFile);
-        DBTableInitializer.initializeTables(dbFile);
-
-        DBConnection.setDatabaseFile(new File(dbFile));
+        super.setUp();
         flightService = new FlightService();
-    }
-
-    protected void tearDown() throws SQLException {
-        Connection conn = DBConnection.getConnection();
-        conn.close();
-
-        new File(dbFile).delete();
     }
 
     public void testInitialState() throws SQLException {

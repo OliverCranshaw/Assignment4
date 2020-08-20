@@ -17,33 +17,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RouteServiceTest extends TestCase {
-
-    private static final String dbFile = "test.db";
+public class RouteServiceTest extends BaseDatabaseTest {
 
     private RouteService routeService;
+
+    public RouteServiceTest(String testName) { super(testName); }
 
     public static Test suite() { return new TestSuite(RouteServiceTest.class); }
 
     //protected Connection dbHandler;
 
-
+    @Override
     protected void setUp() {
-        System.out.println("Setup");
-        DBInitializer.createNewDatabase(dbFile);
-        DBTableInitializer.initializeTables(dbFile);
-
-        DBConnection.setDatabaseFile(new File(dbFile));
+        super.setUp();
         routeService = new RouteService();
-    }
-
-
-    protected  void tearDown() throws SQLException {
-        System.out.println("Tear down");
-        Connection conn = DBConnection.getConnection();
-        conn.close();
-
-        new File(dbFile).delete();
     }
 
     public void testInitialState() throws SQLException {
