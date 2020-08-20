@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -61,51 +60,107 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0">
+                  <GridPane hgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <Text fx:id="airlineID" strokeType="OUTSIDE" strokeWidth="0.0" text="Airline ID:">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airline ID:">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineName" strokeType="OUTSIDE" strokeWidth="0.0" text="Name: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineIATA" strokeType="OUTSIDE" strokeWidth="0.0" text="IATA: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IATA:" GridPane.rowIndex="3">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineICAO" strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO:" GridPane.rowIndex="4">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineCallsign" strokeType="OUTSIDE" strokeWidth="0.0" text="Callsign: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Callsign:" GridPane.rowIndex="5">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineCountry" strokeType="OUTSIDE" strokeWidth="0.0" text="Country: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country:" GridPane.rowIndex="6">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <Text fx:id="airlineActive" strokeType="OUTSIDE" strokeWidth="0.0" text="Active: ">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active:" GridPane.rowIndex="7">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineID" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineName" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineIATA" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineICAO" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineCallsign" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineCountry" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineActive" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Alias:" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="airlineAlias" strokeType="OUTSIDE" strokeWidth="0.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
                      </children>
-                     <GridPane.margin>
-                        <Insets left="10.0" top="15.0" />
-                     </GridPane.margin>
-                  </VBox>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </GridPane>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="1">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -121,4 +176,7 @@
          </items>
       </SplitPane>
    </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
 </GridPane>
