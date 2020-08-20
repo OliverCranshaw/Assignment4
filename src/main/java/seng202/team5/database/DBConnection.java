@@ -1,5 +1,7 @@
 package seng202.team5.database;
 
+import org.sqlite.javax.SQLiteConnectionPoolDataSource;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,8 +22,19 @@ public class DBConnection {
     public static Connection getConnection() {
         try {
             conn = DriverManager.getConnection(format(url, dbFile.getAbsolutePath()));
+
+            SQLiteConnectionPoolDataSource dataSource = new SQLiteConnectionPoolDataSource();
+            dataSource.setUrl(url);
+            ConnectionPoolManager poolMgr = new ConnectionPoolManager(dataSource, maxConnections);
+
+            org.sqlite.SQLiteConfig config = new org.sqlite.SQLiteConfig();
+            config.enforceForeignKeys(true);
+            config.enableLoadExtension(true);
+            dataSource.setConfig(config);
+
+
         } catch (SQLException e) {
-            System.out.println("Failed to create the database connnection.");
+            System.out.println("Failed to create the database connection.");
         }
         return conn;
     }
