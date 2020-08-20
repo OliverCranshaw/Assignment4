@@ -1,10 +1,12 @@
 package seng202.team5.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import seng202.team5.model.SingleRecordAirlineModel;
 
 public class SingleRecordAirlineController {
+    private SingleRecordAirlineModel model;
+
     public SingleRecordAirlineController() {}
 
     @FXML
@@ -12,6 +14,9 @@ public class SingleRecordAirlineController {
 
     @FXML
     private Text airlineName;
+
+    @FXML
+    private Text airlineAlias;
 
     @FXML
     private Text airlineIATA;
@@ -49,5 +54,17 @@ public class SingleRecordAirlineController {
     }
 
 
+    public void setModel(SingleRecordAirlineModel model) {
+        assert this.model == null;
+        this.model = model;
 
+        airlineID.setText(String.valueOf(model.ID));
+        airlineName.textProperty().bindBidirectional(model.nameProperty);
+        airlineAlias.textProperty().bindBidirectional(model.aliasProperty);
+        airlineIATA.textProperty().bindBidirectional(model.iataProperty);
+        airlineICAO.textProperty().bindBidirectional(model.icaoProperty);
+        airlineCallsign.textProperty().bindBidirectional(model.callsignProperty);
+        airlineCountry.textProperty().bindBidirectional(model.countryProperty);
+        airlineActive.textProperty().bindBidirectional(model.activeProperty);
+    }
 }
