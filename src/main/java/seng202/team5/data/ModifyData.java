@@ -6,4 +6,10 @@ public abstract class ModifyData {
 
 //    an operation method thats only in this class
 
+
+
+
+
+
+
 }
