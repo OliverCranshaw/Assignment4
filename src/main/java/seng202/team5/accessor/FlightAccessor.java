@@ -20,7 +20,8 @@ public class FlightAccessor implements Accessor{
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA VALUES (?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+                                                + "VALUES (?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 7; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -29,7 +30,7 @@ public class FlightAccessor implements Accessor{
         } catch (SQLException e) {
             result = -1;
             System.out.println("Failed to save new flight data.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -93,12 +94,12 @@ public class FlightAccessor implements Accessor{
                 result = -1;
                 String str = "Unable to update flight data with id " + id + " and flight id " + flight_id;
                 System.out.println(str);
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         } catch (Exception e) {
             result = -1;
             System.out.println("Unable to get flight id of data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -113,7 +114,7 @@ public class FlightAccessor implements Accessor{
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to delete flight data with flight id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -128,7 +129,7 @@ public class FlightAccessor implements Accessor{
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to delete flight data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -145,7 +146,7 @@ public class FlightAccessor implements Accessor{
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve flight with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -180,7 +181,7 @@ public class FlightAccessor implements Accessor{
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve flight data");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -197,7 +198,7 @@ public class FlightAccessor implements Accessor{
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with flight id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -214,24 +215,23 @@ public class FlightAccessor implements Accessor{
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
     }
 
     public int getMaxID() {
-        ResultSet result = null;
         int id = 0;
 
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(flight_id) FROM FLIGHT_DATA");
-            result = stmt.executeQuery();
-            id = result.getInt(0);
+            ResultSet result = stmt.executeQuery();
+            id = result.getInt(1);
 
         } catch (SQLException e) {
             System.out.println("Unable to get maximum flight id.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return id;

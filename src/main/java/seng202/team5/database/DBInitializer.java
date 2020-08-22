@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 public class DBInitializer {
 
+    private static DBTableInitializer tableInitializer = new DBTableInitializer();
+
     public static void createNewDatabase(String filename) {
 
         String directory = (System.getProperty("user.dir")).replace("\\", "/");
@@ -21,6 +23,8 @@ public class DBInitializer {
                     DatabaseMetaData meta = con.getMetaData();
                     System.out.println("The driver name is " + meta.getDriverName());
                     System.out.println("DB created.");
+
+                    tableInitializer.initializeTables(url);
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());

@@ -26,19 +26,21 @@ public class ReadFile {
     }
 
     public String removeQuotes(String string) {
-        return string.replaceAll("^\"+|\"+$", "");
+        return string.replaceAll("\"", "");
     }
 
     public ArrayList<String> getEntries(String line) {
         splitLine = new ArrayList<>(Arrays.asList(line.split(",")));
-        for (String string: splitLine) {
-            string = removeQuotes(string);
+        for (int i = 0; i < splitLine.size(); i++) {
+            splitLine.set(i, removeQuotes(splitLine.get(i)));
         }
         return splitLine;
     }
 
-    public void readAirlineData(File file) {
+    public int readAirlineData(File file) {
+        int id = -1;
         getFile(file);
+
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 splitLine = getEntries(line);
@@ -48,32 +50,37 @@ public class ReadFile {
                 if (splitLine.get(1).equals("\\N")) {
                     splitLine.set(1, "");
                 }
-                concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
-                                splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
+                id = concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                                                splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
             }
         } catch (IOException e) {
             System.out.println("Unable to read file.");
             System.out.println(e);
         }
+
+        return id;
     }
 
-    public void readAirportData(File file) {
+    public int readAirportData(File file) {
+        int id = -1;
         getFile(file);
+
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 splitLine = getEntries(line);
-                if (splitLine.size() == 11) {
+                if (splitLine.size() == 12) {
                     splitLine.remove(0);
                 }
+                System.out.println(splitLine);
                 try {
                     double latitude = Double.parseDouble(splitLine.get(5));
                     double longitude = Double.parseDouble(splitLine.get(6));
                     int altitude = Integer.parseInt(splitLine.get(7));
                     int timezone = Integer.parseInt(splitLine.get(8));
 
-                    concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
-                                    splitLine.get(4), latitude, longitude, altitude, timezone, splitLine.get(9),
-                                    splitLine.get(10));
+                    id = concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                                                    splitLine.get(4), latitude, longitude, altitude, timezone, splitLine.get(9),
+                                                    splitLine.get(10));
                 } catch (NumberFormatException e) {
                     System.out.println("File in wrong format, could not convert numbers, could not add airport.");
                     System.out.println(e);
@@ -83,13 +90,17 @@ public class ReadFile {
             System.out.println("Unable to read file.");
             System.out.println(e);
         }
+
+        return id;
     }
 
-    public void readFlightData(File file) {
+    public ArrayList<Integer> readFlightData(File file) {
+        int flightID = -1;
+        int id = -1;
         getFile(file);
 
         try {
-            int flightID = flightService.getMaxFlightID() + 1;
+            flightID = flightService.getMaxFlightID() + 1;
 
             while ((line = bufferedReader.readLine()) != null) {
                 splitLine = getEntries(line);
@@ -99,9 +110,9 @@ public class ReadFile {
                     double latitude = Double.parseDouble(splitLine.get(3));
                     double longitude = Double.parseDouble(splitLine.get(4));
 
-                    concreteAddData.addFlightEntry(flightID, splitLine.get(0), splitLine.get(1), altitude, latitude, longitude);
+                    id = concreteAddData.addFlightEntry(flightID, splitLine.get(0), splitLine.get(1), altitude, latitude, longitude);
                 } catch (NumberFormatException e) {
-                    System.out.println("File in wrong format, could not convert numbers, could not add airport.");
+                    System.out.println("File in wrong format, could not convert numbers, could not add flight.");
                     System.out.println(e);
                 }
             }
@@ -109,10 +120,15 @@ public class ReadFile {
             System.out.println("Unable to read file.");
             System.out.println(e);
         }
+
+        ArrayList<Integer> ids = new ArrayList<>(Arrays.asList(flightID, id));
+        return ids;
     }
 
-    public void readRouteData(File file) {
+    public int readRouteData(File file) {
+        int id = -1;
         getFile(file);
+
         try {
             while ((line = bufferedReader.readLine()) != null) {
                 splitLine = getEntries(line);
@@ -123,7 +139,7 @@ public class ReadFile {
                 try {
                     int stops = Integer.parseInt(splitLine.get(4));
 
-                    concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), stops, splitLine.get(5));
+                    id = concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), stops, splitLine.get(5));
                 } catch (NumberFormatException e) {
                     System.out.println("File in wrong format, could not convert numbers, could not add route.");
                     System.out.println(e);
@@ -134,6 +150,8 @@ public class ReadFile {
             System.out.println("Unable to read file.");
             System.out.println(e);
         }
+
+        return id;
     }
 
 }

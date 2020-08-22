@@ -20,7 +20,9 @@ public class RouteAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO ROUTE_DATA VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, "
+                                            + "destination_airport, destination_airport_id, codeshare, stops, equipment) "
+                                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 10; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -29,7 +31,7 @@ public class RouteAccessor implements Accessor {
         } catch (SQLException e) {
             result = -1;
             System.out.println("Failed to save new route data");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -92,7 +94,7 @@ public class RouteAccessor implements Accessor {
         } catch (Exception e) {
             result = -1;
             System.out.println("Unable to update route data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -107,7 +109,7 @@ public class RouteAccessor implements Accessor {
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to delete route data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -123,7 +125,7 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -174,7 +176,7 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route data");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
@@ -191,7 +193,7 @@ public class RouteAccessor implements Accessor {
             result = stmt.execute();
         } catch (Exception e) {
             System.out.println("Unable to retrieve route data with id " + id);
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return result;
