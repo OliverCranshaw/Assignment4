@@ -1,7 +1,15 @@
 package seng202.team5.data;
 
-public class DeleteData extends ModifyData{
+public abstract class DeleteData {
 
-//    @Overide method here
+    public abstract void deleteAirline(int id);
+
+    public abstract void deleteAirport(int id);
+
+    public abstract void deleteFlightEntry(int id);
+
+    public abstract void deleteFlight(int flight_id);
+
+    public abstract void deleteRoute(int id);
 
 }

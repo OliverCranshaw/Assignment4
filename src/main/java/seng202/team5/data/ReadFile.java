@@ -12,10 +12,10 @@ public class ReadFile {
     private BufferedReader bufferedReader;
     private String line;
     private ArrayList<String> splitLine;
-    private AddData addData = new AddData();
+    private ConcreteAddData concreteAddData = new ConcreteAddData();
     private FlightService flightService = new FlightService();
 
-    private void getFile(File file) {
+    public void getFile(File file) {
         try {
             fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
@@ -25,16 +25,11 @@ public class ReadFile {
         }
     }
 
-    private String removeQuotes(String string) {
-        if (string.length() > 2) {
-            return string.replaceAll("^\"+|\"+$", "");
-        }
-        else {
-            return string;
-        }
+    public String removeQuotes(String string) {
+        return string.replaceAll("^\"+|\"+$", "");
     }
 
-    private ArrayList<String> getEntries(String line) {
+    public ArrayList<String> getEntries(String line) {
         splitLine = new ArrayList<>(Arrays.asList(line.split(",")));
         for (String string: splitLine) {
             string = removeQuotes(string);
@@ -53,7 +48,7 @@ public class ReadFile {
                 if (splitLine.get(1).equals("\\N")) {
                     splitLine.set(1, "");
                 }
-                addData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
                                 splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
             }
         } catch (IOException e) {
@@ -76,7 +71,7 @@ public class ReadFile {
                     int altitude = Integer.parseInt(splitLine.get(7));
                     int timezone = Integer.parseInt(splitLine.get(8));
 
-                    addData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                    concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
                                     splitLine.get(4), latitude, longitude, altitude, timezone, splitLine.get(9),
                                     splitLine.get(10));
                 } catch (NumberFormatException e) {
@@ -104,7 +99,7 @@ public class ReadFile {
                     double latitude = Double.parseDouble(splitLine.get(3));
                     double longitude = Double.parseDouble(splitLine.get(4));
 
-                    addData.addFlightEntry(flightID, splitLine.get(0), splitLine.get(1), altitude, latitude, longitude);
+                    concreteAddData.addFlightEntry(flightID, splitLine.get(0), splitLine.get(1), altitude, latitude, longitude);
                 } catch (NumberFormatException e) {
                     System.out.println("File in wrong format, could not convert numbers, could not add airport.");
                     System.out.println(e);
@@ -128,7 +123,7 @@ public class ReadFile {
                 try {
                     int stops = Integer.parseInt(splitLine.get(4));
 
-                    addData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), stops, splitLine.get(5));
+                    concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), stops, splitLine.get(5));
                 } catch (NumberFormatException e) {
                     System.out.println("File in wrong format, could not convert numbers, could not add route.");
                     System.out.println(e);
