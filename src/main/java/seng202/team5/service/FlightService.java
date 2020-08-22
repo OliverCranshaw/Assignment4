@@ -37,7 +37,7 @@ public class FlightService implements Service {
     }
 
     public int updateFlight(int id, String new_airline, String new_airport, int new_altitude,
-                      double new_latitude, double new_longitude) {
+                            double new_latitude, double new_longitude) {
         if (!airlineAccessor.dataExists(new_airline)) {
             return -1;
         }
@@ -48,13 +48,13 @@ public class FlightService implements Service {
         return accessor.update(id, new_airline, new_airport, new_altitude, new_latitude, new_longitude);
     }
 
-    public boolean deleteFlight(int id) {
-        if (!accessor.flightExists(id)) {
+    public boolean deleteFlight(int flight_id) {
+        if (!accessor.flightExists(flight_id)) {
             System.out.println("Could not delete flight, does not exist.");
             return false;
         }
 
-        return accessor.deleteFlight(id);
+        return accessor.deleteFlight(flight_id);
     }
 
     public boolean deleteEntry(int id) {

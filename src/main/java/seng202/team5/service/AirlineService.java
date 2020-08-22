@@ -34,7 +34,7 @@ public class AirlineService implements Service {
     }
 
     public int updateAirline(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) {
+                            String new_callsign, String new_country, String new_active) {
         if (!iataIsValid(new_iata)) {
             return -1;
         }
