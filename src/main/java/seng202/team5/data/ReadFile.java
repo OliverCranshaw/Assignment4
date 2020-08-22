@@ -1,5 +1,7 @@
 package seng202.team5.data;
 
+import seng202.team5.service.FlightService;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +13,7 @@ public class ReadFile {
     private String line;
     private ArrayList<String> splitLine;
     private AddData addData = new AddData();
+    private FlightService flightService = new FlightService();
 
     private void getFile(File file) {
         try {
@@ -89,9 +92,10 @@ public class ReadFile {
 
     public void readFlightData(File file) {
         getFile(file);
+
         try {
-            // grab MAX(flight_id) + 1 for the next flight id to add to all the entries ??
-            int flightID = 0;
+            int flightID = flightService.getMaxFlightID() + 1;
+
             while ((line = bufferedReader.readLine()) != null) {
                 splitLine = getEntries(line);
 

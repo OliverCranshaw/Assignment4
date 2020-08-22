@@ -219,4 +219,21 @@ public class FlightAccessor implements Accessor{
 
         return result;
     }
+
+    public int getMaxID() {
+        ResultSet result = null;
+        int id = 0;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(flight_id) FROM FLIGHT_DATA");
+            result = stmt.executeQuery();
+            id = result.getInt(0);
+
+        } catch (SQLException e) {
+            System.out.println("Unable to get maximum flight id.");
+            System.out.println(e);
+        }
+
+        return id;
+    }
 }

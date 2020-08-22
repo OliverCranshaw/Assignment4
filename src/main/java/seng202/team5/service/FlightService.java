@@ -73,4 +73,8 @@ public class FlightService implements Service {
     public ResultSet getFlights(String airline, String airport) {
         return accessor.getData(airline, airport);
     }
+
+    public int getMaxFlightID() {
+        return accessor.getMaxID();
+    }
 }
