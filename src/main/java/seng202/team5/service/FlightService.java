@@ -21,7 +21,7 @@ public class FlightService implements Service {
         airportAccessor = new AirportAccessor();
     }
 
-    public int saveFlight(String airline, String airport, int altitude, double latitude, double longitude) {
+    public int saveFlight(int flightID, String airline, String airport, int altitude, double latitude, double longitude) {
         if (!airlineAccessor.dataExists(airline)) {
             return -1;
         }
@@ -29,7 +29,7 @@ public class FlightService implements Service {
             return -1;
         }
 
-        List<Object> tmp = Arrays.asList(airline, airport, altitude, latitude, longitude);
+        List<Object> tmp = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
         ArrayList<Object> elements = new ArrayList<>();
         elements.addAll(tmp);
 
