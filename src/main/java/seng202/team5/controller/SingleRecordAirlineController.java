@@ -2,10 +2,14 @@ package seng202.team5.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
-import seng202.team5.model.SingleRecordAirlineModel;
+import seng202.team5.service.AirlineService;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SingleRecordAirlineController {
-    private SingleRecordAirlineModel model;
+    private AirlineService service = new AirlineService();
+    private int ID = -1;
 
     public SingleRecordAirlineController() {}
 
@@ -53,18 +57,25 @@ public class SingleRecordAirlineController {
         System.out.println("Help!");
     }
 
+    public void setID(int ID) {
+        this.ID = ID;
+        update();
+    }
 
-    public void setModel(SingleRecordAirlineModel model) {
-        assert this.model == null;
-        this.model = model;
+    private void update() {
+        assert ID != -1;
 
-        airlineID.setText(String.valueOf(model.ID));
-        airlineName.textProperty().bindBidirectional(model.nameProperty);
-        airlineAlias.textProperty().bindBidirectional(model.aliasProperty);
-        airlineIATA.textProperty().bindBidirectional(model.iataProperty);
-        airlineICAO.textProperty().bindBidirectional(model.icaoProperty);
-        airlineCallsign.textProperty().bindBidirectional(model.callsignProperty);
-        airlineCountry.textProperty().bindBidirectional(model.countryProperty);
-        airlineActive.textProperty().bindBidirectional(model.activeProperty);
+        ResultSet resultSet = service.getAirline(ID);
+
+        try {
+            airlineID.setText(resultSet.getString(2));
+            airlineName.setText(resultSet.getString(3));
+            airlineIATA.setText(resultSet.getString(4));
+            airlineICAO.setText(resultSet.getString(5));
+            airlineCallsign.setText(resultSet.getString(6));
+            airlineCountry.setText(resultSet.getString(7));
+            airlineActive.setText(resultSet.getString(8));
+        } catch (SQLException e) {
+        }
     }
 }
