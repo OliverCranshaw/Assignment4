@@ -11,6 +11,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import seng202.team5.database.DBInitializer;
 
@@ -46,8 +47,18 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
         assertTrue(res != -1);
 
-        ResultSet resultSet = airlineService.getAirlines(null, null, null);
+        Statement stmt = DBConnection.getConnection().createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRLINE_DATA");
         assertTrue(resultSet.next());
+
+        assertEquals(name, resultSet.getString(2));
+        assertEquals(alias, resultSet.getString(3));
+        assertEquals(iata, resultSet.getString(4));
+        assertEquals(icao, resultSet.getString(5));
+        assertEquals(callsign, resultSet.getString(6));
+        assertEquals(country, resultSet.getString(7));
+        assertEquals(active, resultSet.getString(8));
+
         assertFalse(resultSet.next());
     }
 }

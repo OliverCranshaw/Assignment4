@@ -11,6 +11,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import seng202.team5.database.DBInitializer;
 
@@ -49,8 +50,25 @@ public class AirportServiceTest extends BaseDatabaseTest {
         int res = airportService.saveAirport(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
         assertTrue(res != -1);
 
-        ResultSet resultSet = airportService.getAirports(null, null, null);
+        Statement stmt = DBConnection.getConnection().createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRPORT_DATA");
         assertTrue(resultSet.next());
+
+        assertEquals(name, resultSet.getString(2));
+        assertEquals(city, resultSet.getString(3));
+        assertEquals(country, resultSet.getString(4));
+
+        assertEquals(iata, resultSet.getString(5));
+        assertEquals(icao, resultSet.getString(6));
+
+        assertEquals(latitude, resultSet.getDouble(7));
+        assertEquals(longitude, resultSet.getDouble(8));
+        assertEquals(altitude, resultSet.getInt(9));
+
+        assertEquals(timezone, resultSet.getInt(10));
+        assertEquals(dst, resultSet.getString(11));
+        assertEquals(tz, resultSet.getString(12));
+
         assertFalse(resultSet.next());
     }
 }
