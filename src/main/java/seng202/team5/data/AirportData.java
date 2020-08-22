@@ -1,8 +1,9 @@
 package seng202.team5.data;
 
+import java.util.ArrayList;
+
 public class AirportData implements Data {
 
-    private Integer airportId;
     private String airportName;
     private String city;
     private String country;
@@ -15,11 +16,6 @@ public class AirportData implements Data {
     private String dst;
     private String tzDatabaseTimezone;
 
-
-
-    public Integer getAirportId() {
-        return airportId;
-    }
 
     public String getAirportName() {
         return airportName;
@@ -66,11 +62,10 @@ public class AirportData implements Data {
     }
 
 
-    public AirportData(Integer airportId, String airportName, String city, String country, String iata,
-                       String icao, Double latitude, Double longitude, Integer altitude, Integer timezone, String dst, String tzDatabaseTimezone) {
 
-        this.airportId = airportId;
-        this.airportName = airportName;
+    public AirportData(String name, String city, String country, String iata, String icao, Double latitude, Double longitude,
+                       Integer altitude, Integer timezone, String dst, String tzDatabaseTimezone) {
+        this.airportName = name;
         this.city = city;
         this.country = country;
         this.iata = iata;
@@ -83,12 +78,67 @@ public class AirportData implements Data {
         this.tzDatabaseTimezone = tzDatabaseTimezone;
     }
 
+    public AirportData(String airportName, String city, String country, String iata, String icao, String latitude,
+                       String longitude, String altitude, String timezone, String dst, String tzDatabaseTimezone) {
+
+        this.airportName = airportName;
+        this.city = city;
+        this.country = country;
+        this.iata = iata;
+        this.icao = icao;
+        this.dst = dst;
+        this.tzDatabaseTimezone = tzDatabaseTimezone;
+
+        // Parsing Latitude to a double
+        try {
+            this.latitude = Double.parseDouble(latitude);
+        } catch(NumberFormatException e){
+            System.out.println("Airport Data (latitude): " + e);
+        }
+        // Parsing Longitude to a double
+        try {
+            this.longitude = Double.parseDouble(longitude);
+        } catch(NumberFormatException e) {
+            System.out.println("Airport Data (longitude): " + e);
+        }
+        // Parsing Altitude to a integer
+        try {
+            this.altitude = Integer.parseInt(altitude);
+        } catch(NumberFormatException e) {
+            System.out.println("Airport Data (altitude): " + e);
+        }
+        // Parsing Timezone to an integer
+        try {
+            this.timezone = Integer.parseInt(timezone);
+        } catch(NumberFormatException e) {
+            System.out.println("Airport Data (timezone): " + e);
+        }
+
+
+    }
+
+
+    public ArrayList<Object> getValues() {
+        ArrayList<Object> toReturn = new ArrayList<Object>();
+        toReturn.add(this.airportName);
+        toReturn.add(this.city);
+        toReturn.add(this.country);
+        toReturn.add(this.iata);
+        toReturn.add(this.icao);
+        toReturn.add(this.latitude);
+        toReturn.add(this.longitude);
+        toReturn.add(this.altitude);
+        toReturn.add(this.timezone);
+        toReturn.add(this.dst);
+        toReturn.add(this.tzDatabaseTimezone);
+        return toReturn;
+    }
+
+
 
     @Override
     public int checkValues() {
-        if (this.airportId == null) {
-            return -1;
-        } else if (this.airportName == null) {
+        if (this.airportName == null) {
             return -2;
         } else if (this.city == null) {
             return -3;
@@ -118,13 +168,27 @@ public class AirportData implements Data {
 
     @Override
     public void convertBlanksToNull() {
-        if (this.iata == null) {
-            this.iata = "";
+        if (this.airportName.equals("")) {
+            this.airportName = null;
         }
-        if (this.icao == null) {
-            this.icao = "";
+        if (this.city.equals("")) {
+            this.city = null;
         }
-
+        if (this.country.equals("")) {
+            this.country = null;
+        }
+        if (this.iata.equals("")) {
+            this.iata = null;
+        }
+        if (this.icao.equals("")) {
+            this.icao = null;
+        }
+        if (this.dst.equals("")) {
+            this.dst = null;
+        }
+        if (this.tzDatabaseTimezone.equals("")) {
+            this.tzDatabaseTimezone = null;
+        }
     }
 
 

@@ -13,6 +13,7 @@ public class FlightData implements Data {
 
     public FlightData(Integer id, Integer flightID, String airline, String airport, Integer altitude,
                       Double latitude, Double longitude) {
+        this.id = id;
         this.flightId = flightID;
         this.airline = airline;
         this.airport = airport;
@@ -26,13 +27,27 @@ public class FlightData implements Data {
 
     @Override
     public int checkValues() {
-        //TODO
-        return 0;
+        if (this.id == null) {
+            return -1;
+        } else if (this.flightId == null) {
+            return -2;
+        } else if (this.airline == null || this.airline.length() != 4) {
+            return -3;
+        } else if (this.airport == null || this.airport.length() != 3) {
+            return -4;
+        } else if (this.altitude == null) {
+            return -5;
+        } else if (this.latitude == null) {
+            return -6;
+        } else if (this.longitude == null) {
+            return -7;
+        } else {
+            return 1;
+        }
     }
 
     @Override
     public void convertBlanksToNull() {
-        //TODO
 
     }
 }

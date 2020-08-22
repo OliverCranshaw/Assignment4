@@ -1,8 +1,9 @@
 package seng202.team5.data;
 
+import java.util.ArrayList;
+
 public class AirlineData implements Data {
 
-    private Integer airlineID;
     private String name;
     private String alias;
     private String iata;
@@ -11,10 +12,6 @@ public class AirlineData implements Data {
     private String country;
     private String active;
 
-
-    public Integer getAirlineID() {
-        return airlineID;
-    }
 
     public String getName() {
         return name;
@@ -46,10 +43,8 @@ public class AirlineData implements Data {
 
 
 
-    public AirlineData(Integer airlineID, String name, String alias, String iata,
+    public AirlineData(String name, String alias, String iata,
                        String icao, String callsign, String country, String active) {
-
-        this.airlineID = airlineID;
         this.name = name;
         this.alias = alias;
         this.iata = iata;
@@ -59,6 +54,20 @@ public class AirlineData implements Data {
         this.active = active;
     }
 
+
+    public ArrayList<String> getValues() {
+        ArrayList<String> toReturn = new ArrayList<>();
+        toReturn.add(this.name);
+        toReturn.add(this.alias);
+        toReturn.add(this.iata);
+        toReturn.add(this.icao);
+        toReturn.add(this.callsign);
+        toReturn.add(this.country);
+        toReturn.add(this.active);
+        return toReturn;
+    }
+
+
     /**
      * Checks that the variables of the Airline data are of appropriate form.
      * @return integer (negative if error, positive if success).
@@ -66,13 +75,11 @@ public class AirlineData implements Data {
 
     @Override
     public int checkValues() {
-        if (this.airlineID == null) {
-            return -1;
-        } else if (this.name == null) {
+        if (this.name == null) {
             return -2;
-        } else if (!(this.iata == null || this.iata.length() == 2)) {
+        } else if (this.iata.length() != 2) {
             return -3;
-        } else if (!(this.icao == null || this.icao.length() == 3)) {
+        } else if (this.icao.length() != 3){
             return -4;
         } else if (this.active == null || !(this.active.equals("Y") || this.active.equals("N"))) {
             return -5;
@@ -87,20 +94,26 @@ public class AirlineData implements Data {
      */
     @Override
     public void convertBlanksToNull() {
-        if (this.alias == null) {
-            this.alias = "\\N";
+        if (this.name.equals("")) {
+            this.name = null;
         }
-        if (this.iata == null) {
-            this.iata = "\\N";
+        if (this.alias.equals("") || this.alias.equals("\\N")) {
+            this.alias = null;
         }
-        if (this.icao == null) {
-            this.icao = "N/A";
+        if (this.iata.equals("") || this.iata.equals("\\N")) {
+            this.iata = null;
         }
-        if (this.callsign == null) {
-            this.callsign = "";
+        if (this.icao.equals("") || this.icao.equals("N/A")) {
+            this.icao = null;
         }
-        if (this.country == null) {
-            this.country = "";
+        if (this.callsign.equals("")) {
+            this.callsign = null;
+        }
+        if (this.country.equals("")) {
+            this.country = null;
+        }
+        if (this.active.equals("")) {
+            this.active = null;
         }
     }
 

@@ -5,6 +5,8 @@ import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 
+import java.util.ArrayList;
+
 public class AddData extends ModifyData {
 
     private AirlineService airlineService = new AirlineService();
@@ -13,52 +15,60 @@ public class AddData extends ModifyData {
     private RouteService routeService = new RouteService();
 
     @Override
-    public void addAirline(String name, String alias, String iata, String icao,
+    public int addAirline(String name, String alias, String iata, String icao,
                           String callsign, String country, String active) {
-        if (alias.equals("")) {
-            name = null;
-        }
-        if (iata.equals("")) {
-            iata = null;
-        }
-        if (icao.equals("")) {
-            icao = null;
-        }
-        if (callsign.equals("")) {
-            callsign = null;
-        }
-        if (country.equals("")) {
-            country = null;
+
+
+        AirlineData airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
+        airlineData.convertBlanksToNull();
+        if (airlineData.checkValues() > 0) {
+
+            ArrayList<String> values = airlineData.getValues();
+
+            int id = airlineService.saveAirline(values.get(0), values.get(1), values.get(2),
+                    values.get(3), values.get(4), values.get(5), values.get(6));
+
+            if (id != -1) {
+                System.out.println("Airline added with id " + id);
+                return id;
+            }
+            else {
+                System.out.println("Failed to add airline.");
+                return -1;
+            }
+        } else {
+            return airlineData.checkValues();
         }
 
-        int id = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
 
-        if (id != -1) {
-            System.out.println("Airline added with id " + id);
-        }
-        else {
-            System.out.println("Failed to add airline.");
-        }
+
     }
 
     @Override
-    public void addAirport(String name, String city, String country, String iata, String icao, double latitude,
+    public int addAirport(String name, String city, String country, String iata, String icao, double latitude,
                           double longitude, int altitude, int timezone, String dst, String tz) {
-        if (iata.equals("")) {
-            iata = null;
-        }
-        if (icao.equals("")) {
-            icao = null;
+
+        AirportData airportData = new AirportData(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
+        airportData.convertBlanksToNull();
+        int validityValue = airportData.checkValues();
+        if (validityValue > 0) {
+            // Valid data
+            int id = airportService.saveAirport(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
+                    airportData.getIata(), airportData.getIcao(), airportData.getLatitude(), airportData.getLongitude(),
+                    airportData.getAltitude(), airportData.getTimezone(), airportData.getDst(), airportData.getTzDatabaseTimezone());
+
+            if (id != -1) {
+                System.out.println("Airport added with id " + id);
+                return id;
+            }
+            else {
+                System.out.println("Failed to add airport.");
+                return -1;
+            }
+        } else {
+            return validityValue;
         }
 
-        int id = airportService.saveAirport(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
-
-        if (id != -1) {
-            System.out.println("Airport added with id " + id);
-        }
-        else {
-            System.out.println("Failed to add airport.");
-        }
     }
 
     @Override
