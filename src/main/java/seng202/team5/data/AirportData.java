@@ -1,6 +1,8 @@
 package seng202.team5.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AirportData implements Data {
 
@@ -117,27 +119,9 @@ public class AirportData implements Data {
 
     }
 
-
-    public ArrayList<Object> getValues() {
-        ArrayList<Object> toReturn = new ArrayList<Object>();
-        toReturn.add(this.airportName);
-        toReturn.add(this.city);
-        toReturn.add(this.country);
-        toReturn.add(this.iata);
-        toReturn.add(this.icao);
-        toReturn.add(this.latitude);
-        toReturn.add(this.longitude);
-        toReturn.add(this.altitude);
-        toReturn.add(this.timezone);
-        toReturn.add(this.dst);
-        toReturn.add(this.tzDatabaseTimezone);
-        return toReturn;
-    }
-
-
-
     @Override
     public int checkValues() {
+        List<String> dstValues = Arrays.asList("E", "A", "S", "O", "Z", "N", "U");
         if (this.airportName == null) {
             return -2;
         } else if (this.city == null) {
@@ -156,7 +140,7 @@ public class AirportData implements Data {
             return -9;
         } else if (this.timezone == null) {
             return -10;
-        } else if (this.dst == null) {
+        } else if (this.dst == null || !(dstValues.contains(this.dst)) ) {
             return -11;
         } else if (this.tzDatabaseTimezone == null) {
             return -12;
@@ -168,25 +152,26 @@ public class AirportData implements Data {
 
     @Override
     public void convertBlanksToNull() {
-        if (this.airportName.equals("")) {
+        List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
+        if (nullRepr.contains(this.airportName)) {
             this.airportName = null;
         }
-        if (this.city.equals("")) {
+        if (nullRepr.contains(this.city)) {
             this.city = null;
         }
-        if (this.country.equals("")) {
+        if (nullRepr.contains(this.country)) {
             this.country = null;
         }
-        if (this.iata.equals("")) {
+        if (nullRepr.contains(this.iata)) {
             this.iata = null;
         }
-        if (this.icao.equals("")) {
+        if (nullRepr.contains(this.icao)) {
             this.icao = null;
         }
-        if (this.dst.equals("")) {
+        if (nullRepr.contains(this.dst)) {
             this.dst = null;
         }
-        if (this.tzDatabaseTimezone.equals("")) {
+        if (nullRepr.contains(this.tzDatabaseTimezone)) {
             this.tzDatabaseTimezone = null;
         }
     }

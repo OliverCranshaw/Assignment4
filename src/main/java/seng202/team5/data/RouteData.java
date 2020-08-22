@@ -1,44 +1,27 @@
 package seng202.team5.data;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class RouteData implements Data {
 
-    private Integer routeId;
     private String airline;
-    private Integer airlineId;
     private String sourceAirport;
-    private Integer sourceAirportId;
     private String destinationAirport;
-    private Integer destinationAirportId;
     private String codeShare;
     private Integer stops;
     private String equipment;
 
-    public Integer getRouteId() {
-        return routeId;
-    }
-
     public String getAirline() {
         return airline;
-    }
-
-    public Integer getAirlineId() {
-        return airlineId;
     }
 
     public String getSourceAirport() {
         return sourceAirport;
     }
 
-    public Integer getSourceAirportId() {
-        return sourceAirportId;
-    }
-
     public String getDestinationAirport() {
         return destinationAirport;
-    }
-
-    public Integer getDestinationAirportId() {
-        return destinationAirportId;
     }
 
     public String getCodeShare() {
@@ -54,44 +37,48 @@ public class RouteData implements Data {
     }
 
 
-    public RouteData(Integer routeId, String airline, Integer airlineId, String sourceAirport, Integer sourceAirportId,
-    String destinationAirport, Integer destinationAirportId, String codeShare, Integer stops, String equipment) {
-        this.routeId = routeId;
+    public RouteData(String airline,String sourceAirport, String destinationAirport, String codeShare, Integer stops,
+                     String equipment) {
         this.airline = airline;
-        this.airlineId = airlineId;
         this.sourceAirport = sourceAirport;
-        this.sourceAirportId = sourceAirportId;
         this.destinationAirport = destinationAirport;
-        this.destinationAirportId = destinationAirportId;
         this.codeShare = codeShare;
         this.stops = stops;
         this.equipment = equipment;
+    }
+
+    public RouteData(String airline,String sourceAirport, String destinationAirport,String codeShare, String stops,
+                     String equipment) {
+        this.airline = airline;
+        this.sourceAirport = sourceAirport;
+        this.destinationAirport = destinationAirport;
+        this.codeShare = codeShare;
+        this.equipment = equipment;
+
+        // Parsing stops to integer
+        try {
+            this.stops = Integer.parseInt(stops);
+        } catch(NumberFormatException e) {
+            System.out.println("Route Data (stops): " + e);
+        }
     }
 
 
 
     @Override
     public int checkValues() {
-        if (this.routeId == null) {
-            return -1;
-        } else if (this.airline == null || this.airline.length() != 2) {
+        if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
             return -2;
-        } else if (this.airlineId == null) {
-            return -3;
         } else if (this.sourceAirport == null || (this.sourceAirport.length() != 3 && this.sourceAirport.length() != 4)) {
-            return -4;
-        } else if (this.sourceAirportId == null) {
-            return -5;
+            return -3;
         } else if (this.destinationAirport == null || (this.destinationAirport.length() != 3 && this.destinationAirport.length() != 4)) {
-            return -6;
-        } else if (this.destinationAirportId == null) {
-            return -7;
+            return -4;
         } else if (!(this.codeShare == null || this.codeShare.equals("Y"))) {
-            return -8;
+            return -5;
         } else if (this.stops == null) {
-            return -9;
-        } else if (this.equipment == null || this.equipment.length() != 3) {
-            return -10;
+            return -6;
+        } else if (this.equipment == null) {
+            return -7;
         } else {
             return 1;
         }
@@ -99,8 +86,21 @@ public class RouteData implements Data {
 
     @Override
     public void convertBlanksToNull() {
-        if (this.codeShare == null) {
-            //TODO determine codeShare null representation.
+        List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
+        if (nullRepr.contains(this.airline)) {
+            this.airline = null;
+        }
+        if (nullRepr.contains(this.sourceAirport)) {
+            this.sourceAirport = null;
+        }
+        if (nullRepr.contains(this.destinationAirport)) {
+            this.destinationAirport = null;
+        }
+        if (nullRepr.contains(this.codeShare)) {
+            this.codeShare = null;
+        }
+        if (nullRepr.contains(this.equipment)) {
+            this.equipment = null;
         }
     }
 }

@@ -1,6 +1,7 @@
 package seng202.team5.data;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AirlineData implements Data {
 
@@ -33,9 +34,7 @@ public class AirlineData implements Data {
         return callsign;
     }
 
-    public String getCountry() {
-        return country;
-    }
+    public String getCountry() { return country; }
 
     public String getActive() {
         return active;
@@ -55,21 +54,9 @@ public class AirlineData implements Data {
     }
 
 
-    public ArrayList<String> getValues() {
-        ArrayList<String> toReturn = new ArrayList<>();
-        toReturn.add(this.name);
-        toReturn.add(this.alias);
-        toReturn.add(this.iata);
-        toReturn.add(this.icao);
-        toReturn.add(this.callsign);
-        toReturn.add(this.country);
-        toReturn.add(this.active);
-        return toReturn;
-    }
-
 
     /**
-     * Checks that the variables of the Airline data are of appropriate form.
+     * Checks that the variables of the Airline data are of appropriate form and domain (if needed).
      * @return integer (negative if error, positive if success).
      */
 
@@ -89,30 +76,30 @@ public class AirlineData implements Data {
     }
 
     /**
-     * Converts the null variables of the AirlineData class (if any) to their
-     * appropriate null representation for the database.
+     Converts the various null representations used to the java null.
      */
     @Override
     public void convertBlanksToNull() {
-        if (this.name.equals("")) {
+        List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
+        if (nullRepr.contains(this.name)) {
             this.name = null;
         }
-        if (this.alias.equals("") || this.alias.equals("\\N")) {
+        if (nullRepr.contains(this.alias)) {
             this.alias = null;
         }
-        if (this.iata.equals("") || this.iata.equals("\\N")) {
+        if (nullRepr.contains(this.iata)) {
             this.iata = null;
         }
-        if (this.icao.equals("") || this.icao.equals("N/A")) {
+        if (nullRepr.contains(this.icao)) {
             this.icao = null;
         }
-        if (this.callsign.equals("")) {
+        if (nullRepr.contains(this.callsign)) {
             this.callsign = null;
         }
-        if (this.country.equals("")) {
+        if (nullRepr.contains(this.country)) {
             this.country = null;
         }
-        if (this.active.equals("")) {
+        if (nullRepr.contains(this.active)) {
             this.active = null;
         }
     }

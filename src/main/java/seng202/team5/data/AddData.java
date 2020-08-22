@@ -7,8 +7,8 @@ public abstract class AddData {
     public abstract int addAirport(String name, String city, String country, String iata, String icao, double latitude,
                                     double longitude, int altitude, int timezone, String dst, String tz);
 
-    public abstract void addFlightEntry(int flightID, String airline, String airport, int altitude, double latitude, double longitude);
+    public abstract int addFlightEntry(int flightID, String airline, String airport, int altitude, double latitude, double longitude);
 
-    public abstract void addRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment);
+    public abstract int addRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment);
 
 }

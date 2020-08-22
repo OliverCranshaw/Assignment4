@@ -21,12 +21,11 @@ public class ConcreteAddData extends AddData {
 
         AirlineData airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
         airlineData.convertBlanksToNull();
-        if (airlineData.checkValues() > 0) {
+        int validityValue = airlineData.checkValues();
+        if (validityValue > 0) {
 
-            ArrayList<String> values = airlineData.getValues();
-
-            int id = airlineService.saveAirline(values.get(0), values.get(1), values.get(2),
-                    values.get(3), values.get(4), values.get(5), values.get(6));
+            int id = airlineService.saveAirline(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
+                    airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
             if (id != -1) {
                 System.out.println("Airline added with id " + id);
@@ -37,7 +36,7 @@ public class ConcreteAddData extends AddData {
                 return -1;
             }
         } else {
-            return airlineData.checkValues();
+            return validityValue;
         }
 
 
@@ -72,32 +71,51 @@ public class ConcreteAddData extends AddData {
     }
 
     @Override
-    public void addFlightEntry(int flightID, String airline, String airport, int altitude, double latitude, double longitude) {
-        int id = flightService.saveFlight(flightID, airline, airport, altitude, latitude, longitude);
+    public int addFlightEntry(int flightID, String airline, String airport, int altitude, double latitude, double longitude) {
 
-        if (id != -1) {
-            System.out.println("Flight entry added with id " + id + " and flight id " + flightID);
+        FlightData flightData = new FlightData(flightID, airline, airport, altitude, latitude, longitude);
+        flightData.convertBlanksToNull();
+        int validityValue = flightData.checkValues();
+        if (validityValue > 0) {
+            int id = flightService.saveFlight(flightID, airline, airport, altitude, latitude, longitude);
+
+            if (id != -1) {
+                System.out.println("Flight entry added with id " + id + " and flight id " + flightID);
+                return id;
+            }
+            else {
+                System.out.println("Failed to add flight entry.");
+                return -1;
+            }
+        } else {
+            return validityValue;
         }
-        else {
-            System.out.println("Failed to add flight entry.");
-        }
+
+
     }
 
     @Override
-    public void addRoute(String airline, String source_airport, String dest_airport,
+    public int addRoute(String airline, String source_airport, String dest_airport,
                         String codeshare, int stops, String equipment) {
-        if (codeshare.equals("")) {
-            codeshare = null;
+        RouteData routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+        routeData.convertBlanksToNull();
+        int validityValue = routeData.checkValues();
+        if (validityValue > 0) {
+            int id = routeService.saveRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+
+            if (id != -1) {
+                System.out.println("Route added with id " + id);
+                return id;
+            }
+            else {
+                System.out.println("Failed to add route.");
+                return -1;
+            }
+        } else {
+            return validityValue;
         }
 
-        int id = routeService.saveRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
 
-        if (id != -1) {
-            System.out.println("Route added with id " + id);
-        }
-        else {
-            System.out.println("Failed to add route.");
-        }
     }
 
 }

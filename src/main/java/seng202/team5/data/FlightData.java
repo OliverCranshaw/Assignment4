@@ -1,9 +1,11 @@
 package seng202.team5.data;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlightData implements Data {
 
 
-    private Integer id;
     private Integer flightId;
     private String airline;
     private String airport;
@@ -11,9 +13,24 @@ public class FlightData implements Data {
     private Double latitude;
     private Double longitude;
 
-    public FlightData(Integer id, Integer flightID, String airline, String airport, Integer altitude,
+
+
+    public Integer getFlightId() { return flightId; }
+
+    public String getAirline() { return airline; }
+
+    public String getAirport() { return airport; }
+
+    public Integer getAltitude() { return altitude; }
+
+    public Double getLatitude() { return latitude; }
+
+    public Double getLongitude() { return longitude; }
+
+
+
+    public FlightData(Integer flightID, String airline, String airport, Integer altitude,
                       Double latitude, Double longitude) {
-        this.id = id;
         this.flightId = flightID;
         this.airline = airline;
         this.airport = airport;
@@ -22,14 +39,46 @@ public class FlightData implements Data {
         this.longitude = longitude;
     }
 
+    public FlightData(String flightId, String airline, String airport, String altitude,
+                      String latitude, String longitude) {
+        this.airline = airline;
+        this.airport = airport;
+
+        // Parsing flight id to integer
+        try {
+            this.flightId = Integer.parseInt(flightId);
+        } catch(NumberFormatException e) {
+            System.out.println("Flight Data (flightID): " + e);
+        }
+
+        // Parsing altitude to integer
+        try {
+            this.altitude = Integer.parseInt(altitude);
+        } catch(NumberFormatException e) {
+            System.out.println("Flight Data (altitude): " + e);
+        }
+
+        // Parsing latitude to double
+        try {
+            this.latitude = Double.parseDouble(latitude);
+        } catch(NumberFormatException e) {
+            System.out.println("Flight Data (latitude): " + e);
+        }
+
+        // Parsing longitude to double
+        try {
+            this.longitude = Double.parseDouble(longitude);
+        } catch(NumberFormatException e) {
+            System.out.println("Flight Data (longitude): " + e);
+        }
+    }
+
 
 
 
     @Override
     public int checkValues() {
-        if (this.id == null) {
-            return -1;
-        } else if (this.flightId == null) {
+        if (this.flightId == null) {
             return -2;
         } else if (this.airline == null || this.airline.length() != 4) {
             return -3;
@@ -48,6 +97,12 @@ public class FlightData implements Data {
 
     @Override
     public void convertBlanksToNull() {
-
+        List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
+        if (nullRepr.contains(this.airline)) {
+            this.airline = null;
+        }
+        if (nullRepr.contains(this.airport)) {
+            this.airport = null;
+        }
     }
 }
