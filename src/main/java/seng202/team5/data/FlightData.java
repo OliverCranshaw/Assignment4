@@ -80,9 +80,9 @@ public class FlightData implements Data {
     public int checkValues() {
         if (this.flightId == null) {
             return -2;
-        } else if (this.airline == null || this.airline.length() != 4) {
+        } else if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
             return -3;
-        } else if (this.airport == null || this.airport.length() != 3) {
+        } else if (this.airport == null || (this.airport.length() != 3 && this.airline.length() != 4)) {
             return -4;
         } else if (this.altitude == null) {
             return -5;

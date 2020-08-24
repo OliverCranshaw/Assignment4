@@ -22,7 +22,7 @@ public class AirportService implements Service {
         if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
             return -1;
         }
-        if (!icaoIsValid(icao) || (accessor.dataExists(iata) && iata != null)) {
+        if (!icaoIsValid(icao) || (accessor.dataExists(icao) && iata != null)) {
             return -1;
         }
         if (dst != null) {
