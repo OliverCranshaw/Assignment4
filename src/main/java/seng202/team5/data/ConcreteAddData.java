@@ -45,7 +45,7 @@ public class ConcreteAddData extends AddData {
 
     @Override
     public int addAirport(String name, String city, String country, String iata, String icao, double latitude,
-                          double longitude, int altitude, int timezone, String dst, String tz) {
+                          double longitude, int altitude, float timezone, String dst, String tz) {
 
         AirportData airportData = new AirportData(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
         airportData.convertBlanksToNull();

@@ -20,7 +20,7 @@ public class DBTableInitializer {
                 + "     latitude REAL NOT NULL,\n"
                 + "     longitude REAL NOT NULL,\n"
                 + "     altitude INTEGER NOT NULL,\n"
-                + "     timezone INTEGER NOT NULL,\n"
+                + "     timezone REAL NOT NULL,\n"
                 + "     dst TEXT NOT NULL,\n"
                 + "     tz_database_timezone TEXT NOT NULL\n"
                 + ");";

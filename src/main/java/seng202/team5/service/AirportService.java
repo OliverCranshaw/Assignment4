@@ -18,7 +18,7 @@ public class AirportService implements Service {
     }
 
     public int saveAirport(String name, String city, String country, String iata, String icao, double latitude,
-                           double longitude, int altitude, int timezone, String dst, String tz) {
+                           double longitude, int altitude, float timezone, String dst, String tz) {
         if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
             return -1;
         }
@@ -40,7 +40,7 @@ public class AirportService implements Service {
 
     public int updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
                              String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                             int new_timezone, String new_dst, String new_tz) {
+                             float new_timezone, String new_dst, String new_tz) {
         if (!iataIsValid(new_iata)) {
             return -1;
         }

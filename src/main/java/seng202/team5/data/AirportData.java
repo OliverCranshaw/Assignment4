@@ -14,7 +14,7 @@ public class AirportData implements Data {
     private Double latitude;
     private Double longitude;
     private Integer altitude;
-    private Integer timezone;
+    private Float timezone;
     private String dst;
     private String tzDatabaseTimezone;
 
@@ -51,7 +51,7 @@ public class AirportData implements Data {
         return altitude;
     }
 
-    public Integer getTimezone() {
+    public Float getTimezone() {
         return timezone;
     }
 
@@ -66,7 +66,7 @@ public class AirportData implements Data {
 
 
     public AirportData(String name, String city, String country, String iata, String icao, Double latitude, Double longitude,
-                       Integer altitude, Integer timezone, String dst, String tzDatabaseTimezone) {
+                       Integer altitude, Float timezone, String dst, String tzDatabaseTimezone) {
         this.airportName = name;
         this.city = city;
         this.country = country;
@@ -109,9 +109,9 @@ public class AirportData implements Data {
         } catch(NumberFormatException e) {
             System.out.println("Airport Data (altitude): " + e);
         }
-        // Parsing Timezone to an integer
+        // Parsing Timezone to a float
         try {
-            this.timezone = Integer.parseInt(timezone);
+            this.timezone = Float.parseFloat(timezone);
         } catch(NumberFormatException e) {
             System.out.println("Airport Data (timezone): " + e);
         }

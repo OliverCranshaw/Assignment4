@@ -7,7 +7,7 @@ public abstract class UpdateData {
 
     public abstract void updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
                                        String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                                       int new_timezone, String new_dst, String new_tz);
+                                       float new_timezone, String new_dst, String new_tz);
 
     public abstract void updateFlightEntry(int id, String new_airline, String new_airport, int new_altitude,
                                            double new_latitude, double new_longitude);

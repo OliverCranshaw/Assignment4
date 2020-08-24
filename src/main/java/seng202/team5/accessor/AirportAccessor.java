@@ -21,8 +21,8 @@ public class AirportAccessor implements Accessor {
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
-                                                + "longitude, altitude, timezone, tz_database_timezone) "
-                                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -38,7 +38,7 @@ public class AirportAccessor implements Accessor {
     }
 
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
-                      double new_latitude, double new_longitude, int new_altitude, int new_timezone, String new_dst, String new_tz) {
+                      double new_latitude, double new_longitude, int new_altitude, float new_timezone, String new_dst, String new_tz) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE AIRPORT_DATA SET ";

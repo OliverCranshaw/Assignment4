@@ -22,7 +22,7 @@ public class ConcreteUpdateData extends UpdateData {
     @Override
     public void updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
                               String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                              int new_timezone, String new_dst, String new_tz) {
+                              float new_timezone, String new_dst, String new_tz) {
         airportService.updateAirport(id, new_name, new_city, new_country, new_iata, new_icao, new_latitude, new_longitude, new_altitude, new_timezone, new_dst, new_tz);
     }
 

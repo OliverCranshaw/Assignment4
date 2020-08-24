@@ -76,7 +76,7 @@ public class ReadFile {
                     double latitude = Double.parseDouble(splitLine.get(5));
                     double longitude = Double.parseDouble(splitLine.get(6));
                     int altitude = Integer.parseInt(splitLine.get(7));
-                    int timezone = Integer.parseInt(splitLine.get(8));
+                    float timezone = Float.parseFloat(splitLine.get(8));
 
                     id = concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
                                                     splitLine.get(4), latitude, longitude, altitude, timezone, splitLine.get(9),
