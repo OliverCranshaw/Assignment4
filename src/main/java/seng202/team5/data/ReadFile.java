@@ -36,7 +36,7 @@ public class ReadFile {
             bufferedReader = new BufferedReader(fileReader);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to get file.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ public class ReadFile {
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return id;
@@ -138,7 +138,7 @@ public class ReadFile {
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return id;
@@ -174,7 +174,7 @@ public class ReadFile {
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         // Creates an ArrayList containing the flightID and unique id of the flight entry that was created
@@ -213,7 +213,7 @@ public class ReadFile {
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return id;
