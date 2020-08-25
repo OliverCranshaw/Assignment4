@@ -33,7 +33,7 @@ public class DBTableInitializer {
                 + "     longitude REAL NOT NULL,\n" // Negative is West, positive is East, double
                 + "     altitude INTEGER NOT NULL,\n" // In feet
                 + "     timezone REAL NOT NULL,\n" // Hours offset from UTC, float
-                + "     dst TEXT NOT NULL,\n" // One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)
+                + "     dst TEXT NOT NULL,\n" // Daylight savings time, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)
                 + "     tz_database_timezone TEXT NOT NULL\n" // Timezone in "tz" (Olson) format, i.e. Country/Region
                 + ");";
 
@@ -56,7 +56,7 @@ public class DBTableInitializer {
                 + "     source_airport_id INTEGER NOT NULL,\n"
                 + "     destination_airport TEXT NOT NULL,\n" // IATA/ICAO code
                 + "     destination_airport_id INTEGER NOT NULL,\n"
-                + "     codeshare TEXT,\n" // "Y" if the flight is operated by a different airline, otherwise null
+                + "     codeshare TEXT NOT NULL,\n" // "Y" if the flight is operated by a different airline, otherwise ""
                 + "     stops INTEGER NOT NULL,\n" // Number of stops for the flight, 0 if it is direct
                 + "     equipment TEXT NOT NULL,\n" // 3-letter codes for plane types(s) commonly used for this flight, separated by spaces
                 + "     FOREIGN KEY (airline_id)\n"

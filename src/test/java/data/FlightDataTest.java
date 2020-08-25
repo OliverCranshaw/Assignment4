@@ -10,7 +10,7 @@ public class FlightDataTest {
 
     @Test
     public void testValidStringConstructor() {
-        String flightId = "545";
+        Integer flightId = 545;
         String airline = "Lufthansa";
         String airport = "aflsf";
         String altitude = "4343";
@@ -27,7 +27,7 @@ public class FlightDataTest {
 
     @Test
     public void testConvertBlanksToNull() {
-        String flightId = "545";
+        Integer flightId = 545;
         String airline = "\\N";
         String airport = "-";
         String altitude = "4343";
@@ -46,7 +46,7 @@ public class FlightDataTest {
 
     @Test
     public void testCheckValidValues() {
-        String flightId = "545";
+        Integer flightId = 545;
         String airline = "FJFF";
         String airport = "FFF";
         String altitude = "4343";
@@ -63,7 +63,7 @@ public class FlightDataTest {
 
     @Test
     public void testCheckInvalidValues() {
-        String flightId = "545";
+        Integer flightId = 545;
         String airline = "alfl";
         String airport = "Fkfa";
         String altitude = "4343";
@@ -76,6 +76,5 @@ public class FlightDataTest {
         assertEquals(-4, validityValue);
 
     }
-
 
 }

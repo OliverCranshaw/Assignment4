@@ -39,17 +39,10 @@ public class FlightData implements Data {
         this.longitude = longitude;
     }
 
-    public FlightData(String flightId, String airline, String airport, String altitude,
+    public FlightData(Integer flightId, String airline, String airport, String altitude,
                       String latitude, String longitude) {
         this.airline = airline;
         this.airport = airport;
-
-        // Parsing flight id to integer
-        try {
-            this.flightId = Integer.parseInt(flightId);
-        } catch(NumberFormatException e) {
-            System.out.println("Flight Data (flightID): " + e);
-        }
 
         // Parsing altitude to integer
         try {
@@ -78,7 +71,7 @@ public class FlightData implements Data {
 
     @Override
     public int checkValues() {
-        if (this.flightId == null) {
+        if (this.flightId < 0) {
             return -2;
         } else if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
             return -3;

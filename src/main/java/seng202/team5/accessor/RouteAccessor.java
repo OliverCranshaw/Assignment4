@@ -66,6 +66,24 @@ public class RouteAccessor implements Accessor {
         return result;
     }
 
+    /**
+     * Updates a given route with new data.
+     * Not every field must be updated.
+     *
+     * @param id The route_id of the given route you want to update.
+     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param new_airline_id The airline_id of the airline with the given IATA or ICAO code.
+     * @param new_source_airport The new 3-letter IATA or 4-letter ICAO code of the source airport, may be null if not to be updated.
+     * @param new_source_airport_id The airport_id of the source airline with the given IATA or ICAO code.
+     * @param new_dest_airport The new 3-letter IATA or 4-letter ICAO code of the destination airport, may be null if not to be updated.
+     * @param new_dest_airport_id The airport_id of the destination airline with the given IATA or ICAO code.
+     * @param new_codeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
+     * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
+     * @param new_equipment The new equipment for the route, may be null if not to be updated.
+     * @return int result The route_id of the route that was just updated.
+     *
+     * @author Billie Johnson
+     */
     public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
                       String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
         int result;
