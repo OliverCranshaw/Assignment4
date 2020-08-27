@@ -34,7 +34,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
     }
 
     public void testInitialState() throws SQLException {
-        ResultSet stuff = routeService.getRoutes(null, null, null, 0, null);
+        ResultSet stuff = routeService.getRoutes(null, null, 0, null);
         assertFalse(stuff.next());
     }
 
