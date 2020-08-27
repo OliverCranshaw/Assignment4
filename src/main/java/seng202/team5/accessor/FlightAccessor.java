@@ -25,7 +25,8 @@ public class FlightAccessor implements Accessor{
      * Constructor for FlightAccessor.
      * Gets the connection to the database.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public FlightAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -38,7 +39,8 @@ public class FlightAccessor implements Accessor{
      * @param data An ArrayList containing the data to be inserted into an entry in the database.
      * @return int result The unique id of the flight entry that was just created.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public int save(ArrayList data) {
         int result;
@@ -76,6 +78,7 @@ public class FlightAccessor implements Accessor{
      * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
      * @return int result The unique id of the flight entry that was just updated.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int update(int id, String new_airline, String new_airport, int new_altitude,
@@ -164,6 +167,7 @@ public class FlightAccessor implements Accessor{
      * @param id The flight_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean deleteFlight(int id) {
@@ -190,6 +194,7 @@ public class FlightAccessor implements Accessor{
      * @param id The unique id of the flight entry to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean delete(int id) {
@@ -216,7 +221,8 @@ public class FlightAccessor implements Accessor{
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -242,7 +248,8 @@ public class FlightAccessor implements Accessor{
      * @param airport
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(String airline, String airport) {
         ResultSet result = null;
@@ -285,7 +292,8 @@ public class FlightAccessor implements Accessor{
      * @param id An integer flight_id.
      * @return boolean result True if any flight entries exist with the given flight_id, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean flightExists(int id) {
         boolean result = false;
@@ -296,8 +304,9 @@ public class FlightAccessor implements Accessor{
                     "SELECT COUNT(id) FROM FLIGHT_DATA WHERE flight_id = ?");
             // Adds the given flight_id into the search query
             stmt.setInt(1, id);
-            // Executes the search operation
-            result = stmt.execute();
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with flight id " + id);
@@ -313,7 +322,8 @@ public class FlightAccessor implements Accessor{
      * @param id An integer, a unique id of a flight entry.
      * @return boolean result True if a flight entry exists with the given id, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -324,8 +334,9 @@ public class FlightAccessor implements Accessor{
                     "SELECT COUNT(id) FROM FLIGHT_DATA WHERE id = ?");
             // Adds the given unique id into the search query
             stmt.setInt(1, id);
-            // Executes the search operation
-            result = stmt.execute();
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with id " + id);
@@ -340,6 +351,7 @@ public class FlightAccessor implements Accessor{
      *
      * @return int id The maximum flight_id in the database.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int getMaxID() {

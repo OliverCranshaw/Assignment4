@@ -25,7 +25,8 @@ public class RouteAccessor implements Accessor {
      * Constructor for RouteAccessor.
      * Gets the connection to the database.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public RouteAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -82,6 +83,7 @@ public class RouteAccessor implements Accessor {
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
      * @return int result The route_id of the route that was just updated.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
@@ -162,6 +164,7 @@ public class RouteAccessor implements Accessor {
      * @param id The route_id of the route to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean delete(int id) {
@@ -188,7 +191,8 @@ public class RouteAccessor implements Accessor {
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -206,29 +210,31 @@ public class RouteAccessor implements Accessor {
         return result;
     }
 
+<<<<<<< src/main/java/seng202/team5/accessor/RouteAccessor.java
     /**
      *
      *
-     * @param airline The 2-letter IATA or 3-letter ICAO code of the airline.
+     * @param source_airpoty The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param dest_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param stops The number of stops on this route, 0 if it is direct. An integer.
      * @param equipment 3-letter codes for plane type(s) typically used on this flight, separated by spaces.
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
-    public ResultSet getData(String airline, String dest_airport, int stops, String equipment) {
+    public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
         ResultSet result = null;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
         try {
-            if (airline != null) {
-                query = query + " WHERE airline = ?";
-                elements.add(airline);
+            if (source_airport != null) {
+                query = query + " WHERE source_airport = ?";
+                elements.add(source_airport);
             }
             if (dest_airport != null) {
-                if (airline != null) {
+                if (source_airport != null) {
                     query = query + " and destination_airport = ?";
                 } else {
                     query = query + " WHERE destination_airport = ?";
@@ -236,7 +242,7 @@ public class RouteAccessor implements Accessor {
                 elements.add(dest_airport);
             }
             if (stops != -1) {
-                if (airline != null || dest_airport != null) {
+                if (source_airport != null || dest_airport != null) {
                     query = query + " and stops = ?";
                 } else {
                     query = query + " WHERE stops = ?";
@@ -244,7 +250,7 @@ public class RouteAccessor implements Accessor {
                 elements.add(stops);
             }
             if (equipment != null) {
-                if (airline != null || dest_airport != null || stops != -1) {
+                if (source_airport != null || dest_airport != null || stops != -1) {
                     query = query + " and equipment = ?";
                 } else {
                     query = query + " WHERE equipment = ?";
@@ -274,7 +280,8 @@ public class RouteAccessor implements Accessor {
      * @param id An integer route_id.
      * @return boolean result True if a route exists with the given route_id, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -285,8 +292,9 @@ public class RouteAccessor implements Accessor {
                     "SELECT COUNT(route_id) FROM ROUTE_DATA WHERE route_id = ?");
             // Adds the given route_id into the search query
             stmt.setInt(1, id);
-            // Executes the search operation
-            result = stmt.execute();
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data with id " + id);

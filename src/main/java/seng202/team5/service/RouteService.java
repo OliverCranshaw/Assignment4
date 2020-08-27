@@ -28,7 +28,7 @@ public class RouteService implements Service {
      * Constructor for RouteService.
      * Creates a RouteAccessor, AirlineAccessor, and AirportAccessor.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
      */
     public RouteService() {
         accessor = new RouteAccessor();
@@ -47,32 +47,42 @@ public class RouteService implements Service {
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int result The route_id of the route that was just created by the RouteAccessor.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
      */
     public int saveRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airlineAccessor.dataExists(airline)) {
+            System.out.println("Here1");
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airportAccessor.dataExists(source_airport)) {
+            System.out.println("Here2");
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airportAccessor.dataExists(dest_airport)) {
+            System.out.println("here3");
             return -1;
         }
         // Checks that the codeshare is valid, if it isn't returns an error code of -1
         if (!codeshareIsValid(codeshare)) {
+            System.out.println("Here4");
             return -1;
         }
         // Checks that the equipment is valid, if it isn't returns an error code of -1
         if (!equipmentIsValid(equipment)) {
+            System.out.println("HEre5");
             return -1;
         }
 
+        int airline_id = airlineAccessor.getAirlineId(airline);
+        int source_airport_id = airportAccessor.getAirportId(source_airport);
+        int dest_airport_id = airportAccessor.getAirportId(dest_airport);
+
         // Adds the parameters into an ArrayList to pass into the save method of the RouteAccessor
-        List<Object> tmp = Arrays.asList(airline, source_airport, dest_airport, codeshare, stops, equipment);
+        List<Object> tmp = Arrays.asList(airline, airline_id, source_airport, source_airport_id, dest_airport,
+                dest_airport_id, codeshare, stops, equipment);
         ArrayList<Object> elements = new ArrayList<>();
         elements.addAll(tmp);
 
@@ -170,7 +180,7 @@ public class RouteService implements Service {
      * @param id
      * @return
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
      */
     public ResultSet getRoute(int id) {
         return accessor.getData(id);
@@ -179,7 +189,6 @@ public class RouteService implements Service {
     /**
      *
      *
-     * @param airline
      * @param source_airport
      * @param dest_airport
      * @param stops
@@ -188,8 +197,8 @@ public class RouteService implements Service {
      *
      * @author Inga Tokarenko
      */
-    public ResultSet getRoutes(String airline, String source_airport, String dest_airport, int stops, String equipment) {
-        return accessor.getData(airline, dest_airport, stops, equipment);
+    public ResultSet getRoutes(String source_airport, String dest_airport, int stops, String equipment) {
+        return accessor.getData(source_airport, dest_airport, stops, equipment);
     }
 
     /**

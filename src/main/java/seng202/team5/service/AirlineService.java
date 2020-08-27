@@ -107,7 +107,7 @@ public class AirlineService implements Service {
      *
      * @param id The airline_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
+     * 
      * @author Billie Johnson
      */
     public boolean deleteAirline(int id) {
@@ -147,15 +147,15 @@ public class AirlineService implements Service {
 
     /**
      * Checks that a given airline IATA code is valid.
-     * IATA code must either be null or of length 2 to be valid.
+     * IATA code must either be null or of length 3 to be valid.
      *
      * @param iata An airline IATA code.
      * @return boolean True if the IATA code is valid, False otherwise.
      *
      * @author Billie Johnson
      */
-    public boolean iataIsValid(String iata) {
-        return (iata == null || iata.length() == 2);
+    public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
+        return (iata == null || iata.length() == 3);
     }
 
     /**
@@ -168,7 +168,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 3);
+        return (icao == null || icao.length() == 4);
     }
 
     /**

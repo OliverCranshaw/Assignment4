@@ -26,6 +26,7 @@ public class AirlineAccessor implements Accessor {
      * Gets the connection to the database.
      *
      * @author Inga Tokarenko
+     * @author Billie Johnson 
      */
     public AirlineAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -38,7 +39,8 @@ public class AirlineAccessor implements Accessor {
      * @param data An ArrayList containing the data to be inserted into an entry in the database.
      * @return int result The airline_id of the airline that was just created.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public int save(ArrayList data) {
         int result;
@@ -78,6 +80,7 @@ public class AirlineAccessor implements Accessor {
      * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The airline_id of the airline that was just updated.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
@@ -159,6 +162,7 @@ public class AirlineAccessor implements Accessor {
      * @param id The airline_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean delete(int id) {
@@ -185,7 +189,8 @@ public class AirlineAccessor implements Accessor {
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -211,7 +216,8 @@ public class AirlineAccessor implements Accessor {
      * @param callsign
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
@@ -263,6 +269,7 @@ public class AirlineAccessor implements Accessor {
      * @param code A 2-letter IATA or 3-letter ICAO code.
      * @return int result The airline_id of the airline with the given IATA or ICAO code if one exists.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int getAirlineId(String code) {
@@ -292,7 +299,8 @@ public class AirlineAccessor implements Accessor {
      * @param id An integer airline_id.
      * @return boolean result True if an airline exists with the given airline_id, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -303,14 +311,14 @@ public class AirlineAccessor implements Accessor {
                     "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_id = ?");
             // Adds the given airline_id into the search query
             stmt.setObject(1, id);
-            // Executes the search operation
-            result = stmt.execute();
+            
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airline data with id " + id);
             System.out.println(e.getMessage());
         }
-
         return result;
     }
 
@@ -320,6 +328,7 @@ public class AirlineAccessor implements Accessor {
      * @param code A 2-letter IATA or 3-letter ICAO code.
      * @return boolean result True if an airline with the given code exists, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean dataExists(String code) {
@@ -332,8 +341,9 @@ public class AirlineAccessor implements Accessor {
             // Adds the given code into the search query
             stmt.setObject(1, code);
             stmt.setObject(2, code);
-            // Executes the search operation
-            result = stmt.execute();
+            
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);

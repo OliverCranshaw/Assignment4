@@ -25,7 +25,8 @@ public class AirportAccessor implements Accessor {
      * Constructor for AirportAccessor.
      * Gets the connection to the database.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public AirportAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -39,7 +40,8 @@ public class AirportAccessor implements Accessor {
      * @param data An ArrayList containing the data to be inserted into an entry in the database.
      * @return int result The airport_id of the airport that was just created.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public int save(ArrayList data) {
         int result;
@@ -84,6 +86,7 @@ public class AirportAccessor implements Accessor {
      * @param new_tz The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
      * @return int result The airport_id of the airport that was just updated.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
@@ -181,6 +184,7 @@ public class AirportAccessor implements Accessor {
      * @param id The airport_id of the airport to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public boolean delete(int id) {
@@ -207,7 +211,8 @@ public class AirportAccessor implements Accessor {
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -233,7 +238,8 @@ public class AirportAccessor implements Accessor {
      * @param country
      * @return ResultSet result
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
@@ -286,6 +292,7 @@ public class AirportAccessor implements Accessor {
      * @param code A 2-letter IATA or 3-letter ICAO code.
      * @return int result The airport_id of the airport with the given IATA or ICAO code if one exists.
      *
+     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
     public int getAirportId(String code) {
@@ -315,7 +322,8 @@ public class AirportAccessor implements Accessor {
      * @param id An integer airport_id.
      * @return boolean result True if an airport exists with the given airport_id, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -326,8 +334,9 @@ public class AirportAccessor implements Accessor {
                     "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE airport_id = ?");
             // Adds the given airport_id into the search query
             stmt.setInt(1, id);
-            // Executes the search operation
-            result = stmt.execute();
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airport data with id " + id);
@@ -343,7 +352,8 @@ public class AirportAccessor implements Accessor {
      * @param code A 3-letter IATA or 4-letter ICAO code.
      * @return boolean result True if an airport with the given code exists, False otherwise.
      *
-     * @author Inga Tokarenko
+     * @author Inga Tokarenko 
+     * @author Billie Johnson
      */
     public boolean dataExists(String code) {
         boolean result = false;
@@ -355,8 +365,9 @@ public class AirportAccessor implements Accessor {
             // Adds the given code into the search query
             stmt.setObject(1, code);
             stmt.setObject(2, code);
-            // Executes the search operation
-            result = stmt.execute();
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);

@@ -21,6 +21,10 @@ public class DBTableInitializer {
      * @param url The url of the database, intended to be passed in from DBInitializer
      */
     public static void initializeTables(String url) {
+    // public static void initializeTables(String filename) {
+
+    //     String directory = (System.getProperty("user.dir")).replace("\\", "/");
+    //     String url = "jdbc:sqlite:" + directory + "/" + filename;
 
         String airport_sql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
                 + "     airport_id INTEGER PRIMARY KEY,\n" // Auto-increments as it is an integer primary key, unique
@@ -98,4 +102,9 @@ public class DBTableInitializer {
             System.out.println(e.getMessage());
         }
     }
+
+    // public static void main(String[] args) {
+    //     initializeTables("flightdata.db");
+    //     System.out.println("Tables created.");
+    // }
 }
