@@ -210,11 +210,10 @@ public class RouteAccessor implements Accessor {
         return result;
     }
 
-<<<<<<< src/main/java/seng202/team5/accessor/RouteAccessor.java
     /**
      *
      *
-     * @param source_airpoty The 3-letter IATA or 3-letter ICAO code of the destination airport.
+     * @param source_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param dest_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param stops The number of stops on this route, 0 if it is direct. An integer.
      * @param equipment 3-letter codes for plane type(s) typically used on this flight, separated by spaces.
