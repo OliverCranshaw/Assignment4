@@ -86,7 +86,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         }
         stmt.executeUpdate();
 
-        dbHandler.close();
+        //dbHandler.close();   // the connection can't be closed here as it is needed in the below operation.
 
         System.out.println("Here!!!!");
         int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
