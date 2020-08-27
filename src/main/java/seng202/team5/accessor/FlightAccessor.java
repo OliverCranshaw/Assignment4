@@ -20,7 +20,7 @@ public class FlightAccessor implements Accessor{
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA VALUES (?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 7; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -194,7 +194,8 @@ public class FlightAccessor implements Accessor{
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with flight id " + id);
             System.out.println(e);
@@ -211,7 +212,8 @@ public class FlightAccessor implements Accessor{
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve flight data with id " + id);
             System.out.println(e);

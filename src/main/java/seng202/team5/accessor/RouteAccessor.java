@@ -20,7 +20,9 @@ public class RouteAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO ROUTE_DATA VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, "
+                            + "source_airport_id, destination_airport, destination_airport_id, "
+                            + "codeshare, stops, equipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 10; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -188,7 +190,8 @@ public class RouteAccessor implements Accessor {
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve route data with id " + id);
             System.out.println(e);

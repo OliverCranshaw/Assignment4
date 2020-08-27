@@ -20,7 +20,9 @@ public class AirportAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO AIRPORT_DATA VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -194,7 +196,7 @@ public class AirportAccessor implements Accessor {
     public int getAirportId(String code) {
         int result;
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
@@ -216,7 +218,8 @@ public class AirportAccessor implements Accessor {
 
             stmt.setInt(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airport data with id " + id);
             System.out.println(e);
@@ -234,7 +237,8 @@ public class AirportAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
             System.out.println(e);

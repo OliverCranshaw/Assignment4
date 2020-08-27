@@ -20,7 +20,8 @@ public class AirlineAccessor implements Accessor {
         int result;
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO AIRLINE_DATA VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                            + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)");
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
@@ -28,7 +29,7 @@ public class AirlineAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             result = -1;
-            System.out.println("Failed to save new airport data");
+            System.out.println("Failed to save new airline data");
             System.out.println(e);
         }
 
@@ -199,12 +200,12 @@ public class AirlineAccessor implements Accessor {
 
             stmt.setObject(1, id);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airline data with id " + id);
             System.out.println(e);
         }
-
         return result;
     }
 
@@ -217,7 +218,8 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
-            result = stmt.execute();
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
         } catch (Exception e) {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e);
