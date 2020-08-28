@@ -44,13 +44,17 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         String active = "Y";
 
         int res = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
-
+        // Check operation did not fail
         assertTrue(res != -1);
 
+        // Query all airline data
         Statement stmt = DBConnection.getConnection().createStatement();
         ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRLINE_DATA");
+
+        // Check that there is at least one result
         assertTrue(resultSet.next());
 
+        // Check the result contents
         assertEquals(name, resultSet.getString(2));
         assertEquals(alias, resultSet.getString(3));
         assertEquals(iata, resultSet.getString(4));
@@ -59,6 +63,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         assertEquals(country, resultSet.getString(7));
         assertEquals(active, resultSet.getString(8));
 
+        // Check there are no more than 1 result
         assertFalse(resultSet.next());
     }
 }

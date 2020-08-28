@@ -48,12 +48,17 @@ public class AirportServiceTest extends BaseDatabaseTest {
         String tz = "Timezone";
 
         int res = airportService.saveAirport(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
+        // Check operation did not fail
         assertTrue(res != -1);
 
+        // Query all airport data
         Statement stmt = DBConnection.getConnection().createStatement();
         ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRPORT_DATA");
+
+        // Check that there is at least one result
         assertTrue(resultSet.next());
 
+        // Check the result contents
         assertEquals(name, resultSet.getString(2));
         assertEquals(city, resultSet.getString(3));
         assertEquals(country, resultSet.getString(4));
@@ -69,6 +74,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         assertEquals(dst, resultSet.getString(11));
         assertEquals(tz, resultSet.getString(12));
 
+        // Check there are no more than 1 result
         assertFalse(resultSet.next());
     }
 }
