@@ -9,6 +9,18 @@ import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * Search
+ *
+ * Contains the functions searchAirline, searchAirport, searchFlight, searchRoute. Each
+ * function uses its relative accessor class to search for and return data specified by the
+ * users' input.
+ *
+ *
+ * @author Oliver Cranshaw
+ * @author Inga Tokarenko
+ */
+
 public class Search {
 
     private static Search searchInstance;
@@ -20,6 +32,14 @@ public class Search {
     private FlightService flightService;
     private RouteService routeService;
 
+
+    /** Constructor for the Search class.
+     * Creates an instance of each service class and
+     * an empty ArrayList of search data.
+     *
+     *  @author Oliver Cranshaw
+     *  @author Inga Tokarenko
+     */
     public Search() {
 
         //searchInstance = new Search();
@@ -32,8 +52,6 @@ public class Search {
 
     }
 
-
-
     public static Search getInstance() {
         return searchInstance;
     }
@@ -42,10 +60,25 @@ public class Search {
         return searchData;
     }
 
+    /** Setter for the search data.
+     *
+     * @param data A list of data input by the user to specify what they are searching for.
+     *
+     * @author Oliver Cranshaw
+     * @author Inga Tokarenko
+     */
     public void setSearchData(ArrayList<Object> data) {
         searchData = data;
     }
 
+    /**
+     * Checks that the input from the user is not null and then passes these values to a call
+     * for the arlineService getAirlines method which returns the ResultSet of data from
+     * the database.
+     *
+     *  @author Oliver Cranshaw
+     *  @author Inga Tokarenko
+     */
     public void searchAirline() {
 
         String name = searchData.get(0) == null ? null : searchData.get(0).toString();
@@ -56,6 +89,14 @@ public class Search {
 
     }
 
+    /**
+     * Checks that the input from the user is not null and then passes these values to a call
+     * for the airportService getAirports method which returns the ResultSet of data from
+     * the database.
+     *
+     *  @author Oliver Cranshaw
+     *  @author Inga Tokarenko
+     */
     public void searchAirport() {
 
         String name = searchData.get(0) == null ? null : searchData.get(0).toString();
@@ -66,6 +107,14 @@ public class Search {
 
     }
 
+    /**
+     * Checks that the input from the user is not null and then passes these values to a call
+     * for the flightService getFlights method which returns the ResultSet of data from
+     * the database.
+     *
+     *  @author Oliver Cranshaw
+     *  @author Inga Tokarenko
+     */
     public void searchFlight() {
 
         String airline = searchData.get(0) == null ? null : searchData.get(0).toString();
@@ -75,6 +124,14 @@ public class Search {
 
     }
 
+    /**
+     * Checks that the input from the user is not null and then passes these values to a call
+     * for the routeService getRoutes method which returns the ResultSet of data from
+     * the database.
+     *
+     *  @author Oliver Cranshaw
+     *  @author Inga Tokarenko
+     */
     public void searchRoute() {
 
         String sourceAirport = searchData.get(0) == null ? null : searchData.get(0).toString();
