@@ -29,7 +29,10 @@ public class FlightService implements Service {
             return -1;
         }
 
-        List<Object> tmp = Arrays.asList(airline, airport, altitude, latitude, longitude);
+        int airlineId = airlineAccessor.getAirlineId(airline);
+        int airportId = airportAccessor.getAirportId(airport);
+
+        List<Object> tmp = Arrays.asList(airlineId, airportId, altitude, latitude, longitude);
         ArrayList<Object> elements = new ArrayList<>();
         elements.addAll(tmp);
 
