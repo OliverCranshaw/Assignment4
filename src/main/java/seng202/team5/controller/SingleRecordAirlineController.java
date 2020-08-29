@@ -1,10 +1,16 @@
 package seng202.team5.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import seng202.team5.service.AirlineService;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SingleRecordAirlineController {
+    private AirlineService service = new AirlineService();
+    private int ID = -1;
+
     public SingleRecordAirlineController() {}
 
     @FXML
@@ -12,6 +18,9 @@ public class SingleRecordAirlineController {
 
     @FXML
     private Text airlineName;
+
+    @FXML
+    private Text airlineAlias;
 
     @FXML
     private Text airlineIATA;
@@ -48,6 +57,25 @@ public class SingleRecordAirlineController {
         System.out.println("Help!");
     }
 
+    public void setID(int ID) {
+        this.ID = ID;
+        update();
+    }
 
+    private void update() {
+        assert ID != -1;
 
+        ResultSet resultSet = service.getAirline(ID);
+
+        try {
+            airlineID.setText(resultSet.getString(2));
+            airlineName.setText(resultSet.getString(3));
+            airlineIATA.setText(resultSet.getString(4));
+            airlineICAO.setText(resultSet.getString(5));
+            airlineCallsign.setText(resultSet.getString(6));
+            airlineCountry.setText(resultSet.getString(7));
+            airlineActive.setText(resultSet.getString(8));
+        } catch (SQLException e) {
+        }
+    }
 }
