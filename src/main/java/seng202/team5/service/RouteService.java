@@ -23,23 +23,18 @@ public class RouteService implements Service {
 
     public int saveRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
         if (!airlineAccessor.dataExists(airline)) {
-            System.out.println("Here1");
             return -1;
         }
         if (!airportAccessor.dataExists(source_airport)) {
-            System.out.println("Here2");
             return -1;
         }
         if (!airportAccessor.dataExists(dest_airport)) {
-            System.out.println("here3");
             return -1;
         }
         if (!codeshareIsValid(codeshare)) {
-            System.out.println("Here4");
             return -1;
         }
         if (!equipmentIsValid(equipment)) {
-            System.out.println("HEre5");
             return -1;
         }
 
