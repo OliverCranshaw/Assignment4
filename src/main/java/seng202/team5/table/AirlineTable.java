@@ -1,6 +1,7 @@
 package seng202.team5.table;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class AirlineTable extends DataTable {
 
@@ -8,7 +9,7 @@ public class AirlineTable extends DataTable {
         super(newOrgData);
     }
 
-    public void FilterTable() {
+    public void FilterTable(ArrayList<String> countries, String active) {
 
     }
 }
