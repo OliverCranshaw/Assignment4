@@ -59,7 +59,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 for (String testCountry : new String[]{null, country, "Not"+country}) {
                     boolean validCountry = testCountry == null || testCountry.equals(country);
 
-                    ResultSet resultSet = airportService.getAirports(name, city, country);
+                    ResultSet resultSet = airportService.getAirports(testName, testCity, testCountry);
 
                     String combination = new StringBuilder()
                             .append("name=")
