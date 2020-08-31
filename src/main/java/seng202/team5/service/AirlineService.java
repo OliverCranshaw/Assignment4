@@ -155,7 +155,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
-        return (iata == null || iata.length() == 3);
+        return (iata == null || iata.length() == 2);
     }
 
     /**
@@ -168,7 +168,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 4);
+        return (icao == null || icao.length() == 3);
     }
 
     /**
@@ -182,6 +182,17 @@ public class AirlineService implements Service {
      */
     public boolean activeIsValid(String active) {
         return (active.equals("Y") || active.equals("N"));
+    }
+
+    /**
+     * Calls the getMaxID method of the AirlineAccessor to get the maximum airline_id contained in the database.
+     *
+     * @return int The maximum airline_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
     }
 }
 

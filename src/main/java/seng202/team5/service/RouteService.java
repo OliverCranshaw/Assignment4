@@ -203,7 +203,7 @@ public class RouteService implements Service {
 
     /**
      * Checks that a given codeshare is valid.
-     * Codeshare must be either "Y" or "N" to be valid.
+     * Codeshare must be either "Y" or null to be valid.
      *
      * @param codeshare
      * @return boolean True if the codeshare is valid, False otherwise.
@@ -211,7 +211,7 @@ public class RouteService implements Service {
      * @author Billie Johnson
      */
     public boolean codeshareIsValid(String codeshare) {
-        return (codeshare.equals("Y") || codeshare.equals("N"));
+        return (codeshare == null || codeshare.equals("Y"));
     }
 
     /**
@@ -224,6 +224,17 @@ public class RouteService implements Service {
      * @author Billie Johnson
      */
     public boolean equipmentIsValid(String equipment) {
-        return (equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9])*"));
+        return (equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*"));
+    }
+
+    /**
+     * Calls the getMaxID method of the RouteAccessor to get the maximum route_id contained in the database.
+     *
+     * @return int The maximum route_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
     }
 }

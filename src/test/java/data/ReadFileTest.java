@@ -1,5 +1,6 @@
 package data;
 
+import cucumber.api.java.bs.A;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
@@ -9,6 +10,10 @@ import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
 import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBTableInitializer;
+import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.FlightService;
+import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.Connection;
@@ -101,14 +106,17 @@ public class ReadFileTest {
         String airline_line = "1,\"Private flight\",\\N,\"-\",\"N/A\",\"\",\"\",\"Y\"";
         String airport_line = "9451,\"Port Authority\",\"New York\",\"United States\",\"\",\\N,40.756667,-73.991111,33,-5,\"A\",\"America/New_York\"";
         String route_line = "3H,\\N,YKG,5481,YVP,154,,0,DH8 DHT";
+        String blank_line = ",,,";
 
         ArrayList<String> expected_airline_entries = new ArrayList<>(Arrays.asList("1", "Private flight", "\\N", "-", "N/A", "", "", "Y"));
         ArrayList<String> expected_airport_entries = new ArrayList<>(Arrays.asList("9451", "Port Authority", "New York", "United States", "", "\\N", "40.756667", "-73.991111", "33", "-5", "A", "America/New_York"));
         ArrayList<String> expected_route_entries = new ArrayList<>(Arrays.asList("3H", "\\N", "YKG", "5481", "YVP", "154", "", "0", "DH8 DHT"));
+        ArrayList<String> expected_blank_entries = new ArrayList<>(Arrays.asList("", "", "", ""));
 
         assertEquals(expected_airline_entries, readFile.getEntries(airline_line));
         assertEquals(expected_airport_entries, readFile.getEntries(airport_line));
         assertEquals(expected_route_entries, readFile.getEntries(route_line));
+        assertEquals(expected_blank_entries, readFile.getEntries(blank_line));
     }
 
     @Test
@@ -117,10 +125,10 @@ public class ReadFileTest {
         assertEquals(1, readFile.readAirlineData(airlineFile));
 
         airlineFile = new File("src/test/java/data/testfiles/normal_airline.txt");
-        assertEquals(1, readFile.readAirlineData(airlineFile));
+        assertEquals(2, readFile.readAirlineData(airlineFile));
 
         airlineFile = new File("src/test/java/data/testfiles/abnormal_airline_with_id.txt");
-        assertEquals(1, readFile.readAirlineData(airlineFile));
+        assertEquals(3, readFile.readAirlineData(airlineFile));
     }
 
     @Test
@@ -135,13 +143,13 @@ public class ReadFileTest {
     @Test
     public void readAirlinesTest() {
         airlineFile = new File("src/test/java/data/testfiles/normal_airlines_multiple.txt");
-        assertEquals(1, readFile.readAirlineData(airlineFile));
+        assertEquals(5, readFile.readAirlineData(airlineFile));
     }
 
     @Test
     public void readAirlinesFailTest() {
         airlineFile = new File("src/test/java/data/testfiles/abnormal_airlines_multiple.txt");
-        assertEquals(1, readFile.readAirlineData(airlineFile));
+        assertEquals(3, readFile.readAirlineData(airlineFile));
     }
 
     @Test
@@ -150,10 +158,10 @@ public class ReadFileTest {
         assertEquals(1, readFile.readAirportData(airportFile));
 
         airportFile = new File("src/test/java/data/testfiles/normal_airport.txt");
-        assertEquals(1, readFile.readAirportData(airportFile));
+        assertEquals(2, readFile.readAirportData(airportFile));
 
         airportFile = new File("src/test/java/data/testfiles/abnormal_airport_with_id.txt");
-        assertEquals(1, readFile.readAirportData(airportFile));
+        assertEquals(3, readFile.readAirportData(airportFile));
     }
 
     @Test
@@ -168,13 +176,13 @@ public class ReadFileTest {
     @Test
     public void readAirportsTest() {
         airportFile = new File("src/test/java/data/testfiles/normal_airports_multiple.txt");
-        assertEquals(1, readFile.readAirportData(airportFile));
+        assertEquals(5, readFile.readAirportData(airportFile));
     }
 
     @Test
     public void readAirportsFailTest() {
         airportFile = new File("src/test/java/data/testfiles/abnormal_airports_multiple.txt");
-        assertEquals(1, readFile.readAirportData(airportFile));
+        assertEquals(3, readFile.readAirportData(airportFile));
     }
 
     @Test
@@ -203,7 +211,7 @@ public class ReadFileTest {
         readFile.readAirportData(airports);
 
         flightFile = new File("src/test/java/data/testfiles/normal_flight.txt");
-        expected = new ArrayList<>(Arrays.asList(1, 1));
+        expected = new ArrayList<>(Arrays.asList(1, 5));
         assertEquals(expected, readFile.readFlightData(flightFile));
     }
 
@@ -213,7 +221,7 @@ public class ReadFileTest {
         readFile.readAirportData(airports);
 
         flightFile = new File("src/test/java/data/testfiles/abnormal_flight.txt");
-        expected = new ArrayList<>(Arrays.asList(-1, -2));
+        expected = new ArrayList<>(Arrays.asList(-1, -1));
         assertEquals(expected, readFile.readFlightData(flightFile));
     }
 
@@ -226,7 +234,7 @@ public class ReadFileTest {
         assertEquals(1, readFile.readRouteData(routeFile));
 
         routeFile = new File("src/test/java/data/testfiles/normal_route_6_entries.txt");
-        assertEquals(1, readFile.readRouteData(routeFile));
+        assertEquals(2, readFile.readRouteData(routeFile));
     }
 
     @Test
@@ -247,7 +255,7 @@ public class ReadFileTest {
         readFile.readAirportData(airports);
 
         routeFile = new File("src/test/java/data/testfiles/normal_routes_multiple.txt");
-        assertEquals(1, readFile.readRouteData(routeFile));
+        assertEquals(5, readFile.readRouteData(routeFile));
     }
 
     @Test
@@ -256,6 +264,6 @@ public class ReadFileTest {
         readFile.readAirportData(airports);
 
         routeFile = new File("src/test/java/data/testfiles/abnormal_routes_multiple.txt");
-        assertEquals(1, readFile.readRouteData(routeFile));
+        assertEquals(3, readFile.readRouteData(routeFile));
     }
 }

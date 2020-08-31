@@ -60,7 +60,7 @@ public class DBTableInitializer {
                 + "     source_airport_id INTEGER NOT NULL,\n"
                 + "     destination_airport TEXT NOT NULL,\n" // IATA/ICAO code
                 + "     destination_airport_id INTEGER NOT NULL,\n"
-                + "     codeshare TEXT NOT NULL,\n" // "Y" if the flight is operated by a different airline, otherwise ""
+                + "     codeshare TEXT,\n" // "Y" if the flight is operated by a different airline, otherwise null
                 + "     stops INTEGER NOT NULL,\n" // Number of stops for the flight, 0 if it is direct
                 + "     equipment TEXT NOT NULL,\n" // 3-letter codes for plane types(s) commonly used for this flight, separated by spaces
                 + "     FOREIGN KEY (airline_id)\n"

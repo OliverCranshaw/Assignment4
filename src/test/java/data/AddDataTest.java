@@ -20,7 +20,7 @@ public class AddDataTest {
     private ReadFile readFile;
     private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
     private File airports = new File("src/test/java/data/testfiles/airports.txt");
-    private int outcome;
+    private int id;
     private static Connection con;
 
 
@@ -57,110 +57,110 @@ public class AddDataTest {
     @Test
     public void addAirlineTest() {
         // String name, String alias, String iata, String icao, String callsign, String country, String active
-        outcome = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "N");
-        assertEquals(1, outcome);
+        id = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "N");
+        assertEquals(1, id);
 
-        outcome = concreteAddData.addAirline("Airfix Aviation", "Airfix", "", "FIX", "AIRFIX", "Finland", "Y");
-        assertEquals(1, outcome);
+        id = concreteAddData.addAirline("Airfix Aviation", "Airfix", "", "FIX", "AIRFIX", "Finland", "Y");
+        assertEquals(2, id);
 
-        outcome = concreteAddData.addAirline("Airfix Aviation", "", "", "", "", "", "N");
-        assertEquals(1, outcome);
+        id = concreteAddData.addAirline("Airfix Aviation", "", "", "", "", "", "N");
+        assertEquals(3, id);
     }
 
     @Test
     public void addAirlineFailTest() {
-        outcome = concreteAddData.addAirline("", "Airfix", "", "FIX", "AIRFIX", "Finland", "Y");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addAirline("", "Airfix", "", "FIX", "AIRFIX", "Finland", "Y");
+        assertEquals(-2, id);
 
-        outcome = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9A", "AAB", "ABG", "Belgium", "N");
-        assertEquals(-3, outcome);
+        id = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9A", "AAB", "ABG", "Belgium", "N");
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addAirline("Airfix Aviation", "Airfix", "", "FX", "AIRFIX", "Finland", "Y");
-        assertEquals(-4, outcome);
+        id = concreteAddData.addAirline("Airfix Aviation", "Airfix", "", "F", "AIRFIX", "Finland", "Y");
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "");
-        assertEquals(-5, outcome);
+        id = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "");
+        assertEquals(-5, id);
 
-        outcome = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "A");
-        assertEquals(-5, outcome);
+        id = concreteAddData.addAirline("Abelag Aviation", "\\N", "W9", "AAB", "ABG", "Belgium", "A");
+        assertEquals(-5, id);
 
-        outcome = concreteAddData.addAirline("", "", "", "", "", "", "");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addAirline("", "", "", "", "", "", "");
+        assertEquals(-2, id);
     }
 
     @Test
     public void addAirportTest() {
         // String name, String city, String country, String iata, String icao, String latitude,
         //                          String longitude, String altitude, String timezone, String dst, String tz
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
         "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(1, outcome);
+        assertEquals(1, id);
 
-        outcome = concreteAddData.addAirport("Changi Intl", "Singapore", "Singapore", "", "WSSS", "1.350189",
+        id = concreteAddData.addAirport("Changi Intl", "Singapore", "Singapore", "", "WSSS", "1.350189",
         "103.994433", "22", "8", "N", "Asia/Singapore");
-        assertEquals(1, outcome);
+        assertEquals(2, id);
 
-        outcome = concreteAddData.addAirport("Tolmachevo", "Novosibirsk", "Russia", "OVB", "", "55.012622",
+        id = concreteAddData.addAirport("Tolmachevo", "Novosibirsk", "Russia", "OVB", "", "55.012622",
                  "82.650656", "365", "7", "A", "Asia/Omsk");
-        assertEquals(1, outcome);
+        assertEquals(3, id);
 
-        outcome = concreteAddData.addAirport("Balandino", "Chelyabinsk", "Russia", "", "", "55.305836",
+        id = concreteAddData.addAirport("Balandino", "Chelyabinsk", "Russia", "", "", "55.305836",
                 "61.503333", "769", "6","E", "Asia/Yekaterinburg");
-        assertEquals(1, outcome);
+        assertEquals(4, id);
     }
 
     @Test
     public void addAirportFailTest() {
-        outcome = concreteAddData.addAirport("", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(-2, outcome);
+        assertEquals(-2, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(-3, outcome);
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(-4, outcome);
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addAirport("Changi Intl", "Singapore", "Singapore", "CH", "WSSS", "1.350189",
+        id = concreteAddData.addAirport("Changi Intl", "Singapore", "Singapore", "CH", "WSSS", "1.350189",
                 "103.994433", "22", "8", "N", "Asia/Singapore");
-        assertEquals(-5, outcome);
+        assertEquals(-5, id);
 
-        outcome = concreteAddData.addAirport("Tolmachevo", "Novosibirsk", "Russia", "OVB", "TLMCV", "55.012622",
+        id = concreteAddData.addAirport("Tolmachevo", "Novosibirsk", "Russia", "OVB", "TLMCV", "55.012622",
                 "82.650656", "365", "7", "A", "Asia/Omsk");
-        assertEquals(-6, outcome);
+        assertEquals(-6, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "", "172.532225", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(-7, outcome);
+        assertEquals(-7, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "", "123", "12", "Z", "Pacific/Auckland");
-        assertEquals(-8, outcome);
+        assertEquals(-8, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "", "NZCH",
                 "-43.489358", "172.532225", "", "12", "Z", "Pacific/Auckland");
-        assertEquals(-9, outcome);
+        assertEquals(-9, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "",
                 "-43.489358", "172.532225", "123", "", "Z", "Pacific/Auckland");
-        assertEquals(-10, outcome);
+        assertEquals(-10, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "", "Pacific/Auckland");
-        assertEquals(-11, outcome);
+        assertEquals(-11, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "B", "Pacific/Auckland");
-        assertEquals(-11, outcome);
+        assertEquals(-11, id);
 
-        outcome = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
+        id = concreteAddData.addAirport("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "NZCH",
                 "-43.489358", "172.532225", "123", "12", "Z", "");
-        assertEquals(-12, outcome);
+        assertEquals(-12, id);
 
-        outcome = concreteAddData.addAirport("", "", "", "", "", "", "", "", "", "", "");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addAirport("", "", "", "", "", "", "", "", "", "", "");
+        assertEquals(-2, id);
     }
 
     @Test
@@ -169,41 +169,41 @@ public class AddDataTest {
         readFile.readAirportData(airports);
 
         // int flightID, String airline, String airport, String altitude, String latitude, String longitude
-        outcome = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "172.534");
-        assertEquals(1, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "172.534");
+        assertEquals(1, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "W9", "CHC", "0", "43.4866", "-172.534");
-        assertEquals(1, outcome);
+        id = concreteAddData.addFlightEntry(1, "W9", "CHC", "0", "43.4866", "-172.534");
+        assertEquals(2, id);
     }
 
     @Test
     public void addFlightEntryFailTest() {
-        outcome = concreteAddData.addFlightEntry(-1, "APT", "NZCH", "0", "-43.4866", "172.534");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addFlightEntry(-1, "APT", "NZCH", "0", "-43.4866", "172.534");
+        assertEquals(-2, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "", "NZCH", "0", "-43.4866", "172.534");
-        assertEquals(-3, outcome);
+        id = concreteAddData.addFlightEntry(1, "", "NZCH", "0", "-43.4866", "172.534");
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APTN", "NZCH", "0", "-43.4866", "172.534");
-        assertEquals(-3, outcome);
+        id = concreteAddData.addFlightEntry(1, "APTN", "NZCH", "0", "-43.4866", "172.534");
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APT", "", "0", "-43.4866", "172.534");
-        assertEquals(-4, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "", "0", "-43.4866", "172.534");
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APT", "NZ", "0", "-43.4866", "172.534");
-        assertEquals(-4, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "NZ", "0", "-43.4866", "172.534");
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APT", "NZCH", "", "-43.4866", "172.534");
-        assertEquals(-5, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "NZC", "", "-43.4866", "172.534");
+        assertEquals(-5, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "", "172.534");
-        assertEquals(-6, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "", "172.534");
+        assertEquals(-6, id);
 
-        outcome = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "");
-        assertEquals(-7, outcome);
+        id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "");
+        assertEquals(-7, id);
 
-        outcome = concreteAddData.addFlightEntry(-1, "", "", "", "", "");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addFlightEntry(-1, "", "", "", "", "");
+        assertEquals(-2, id);
     }
 
     @Test
@@ -212,49 +212,49 @@ public class AddDataTest {
         readFile.readAirportData(airports);
 
         // String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment
-        outcome = concreteAddData.addRoute("2B", "ASF", "KZN", "", "0", "CR2");
-        assertEquals(1, outcome);
+        id = concreteAddData.addRoute("2B", "ASF", "KZN", "", "0", "CR2");
+        assertEquals(1, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "1", "CR2 TN3");
-        assertEquals(1, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "1", "CR2 TN3");
+        assertEquals(2, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "NZCH", "Y", "0", "CR2 TN3 KT4");
-        assertEquals(1, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "NZCH", "Y", "0", "CR2 TN3 KT4");
+        assertEquals(3, id);
     }
 
     @Test
     public void addRouteFailTest() {
-        outcome = concreteAddData.addRoute("", "ASF", "KZN", "", "0", "CR2");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addRoute("", "ASF", "KZN", "", "0", "CR2");
+        assertEquals(-2, id);
 
-        outcome = concreteAddData.addRoute("2", "ASF", "KZN", "", "0", "CR2");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addRoute("2", "ASF", "KZN", "", "0", "CR2");
+        assertEquals(-2, id);
 
-        outcome = concreteAddData.addRoute("2B", "", "KZN", "", "0", "CR2");
-        assertEquals(-3, outcome);
+        id = concreteAddData.addRoute("2B", "", "KZN", "", "0", "CR2");
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addRoute("2B", "ASFHT", "KZN", "", "0", "CR2");
-        assertEquals(-3, outcome);
+        id = concreteAddData.addRoute("2B", "ASFHT", "KZN", "", "0", "CR2");
+        assertEquals(-3, id);
 
-        outcome = concreteAddData.addRoute("2B", "ASF", "", "", "0", "CR2");
-        assertEquals(-4, outcome);
+        id = concreteAddData.addRoute("2B", "ASF", "", "", "0", "CR2");
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addRoute("2B", "ASF", "KZ", "", "0", "CR2");
-        assertEquals(-4, outcome);
+        id = concreteAddData.addRoute("2B", "ASF", "KZ", "", "0", "CR2");
+        assertEquals(-4, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "KZN", "N", "1", "CR2 TN3");
-        assertEquals(-5, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "KZN", "N", "1", "CR2 TN3");
+        assertEquals(-5, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "-1", "CR2 TN3");
-        assertEquals(-1, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "-1", "CR2 TN3");
+        assertEquals(-1, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "", "CR2 TN3");
-        assertEquals(-6, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "", "CR2 TN3");
+        assertEquals(-6, id);
 
-        outcome = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "1", "");
-        assertEquals(-7, outcome);
+        id = concreteAddData.addRoute("APT", "WSSS", "KZN", "Y", "1", "");
+        assertEquals(-7, id);
 
-        outcome = concreteAddData.addRoute("", "", "", "", "", "");
-        assertEquals(-2, outcome);
+        id = concreteAddData.addRoute("", "", "", "", "", "");
+        assertEquals(-2, id);
     }
 }

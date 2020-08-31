@@ -115,7 +115,7 @@ public class FlightData implements Data {
         } else if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
             // Ensures airline cannot be null and is either of appropriate iata or icao length (2,3)
             return -3;
-        } else if (this.airport == null || (this.airport.length() != 3 && this.airline.length() != 4)) {
+        } else if (this.airport == null || (this.airport.length() != 3 && this.airport.length() != 4)) {
             // Ensures airport cannot be null and is either of appropriate iata or icao length (3, 4)
             return -4;
         } else if (this.altitude == null) {

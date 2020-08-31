@@ -352,4 +352,30 @@ public class AirlineAccessor implements Accessor {
 
         return result;
     }
+
+    /**
+     * Gets the maximum airline_id contained in the database.
+     *
+     * @return int id The maximum airline_id in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        int id = 0;
+
+        try {
+            // The SQL search query - finds the maximum airline_id in the database
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(airline_id) FROM AIRLINE_DATA");
+            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+            ResultSet result = stmt.executeQuery();
+            id = result.getInt(1);
+
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get maximum airline id.");
+            System.out.println(e.getMessage());
+        }
+
+        return id;
+    }
 }

@@ -63,7 +63,7 @@ public class ReadFile {
      */
     public ArrayList<String> getEntries(String line) {
         // Splits the given line at every comma into an ArrayList of strings
-        splitLine = new ArrayList<>(Arrays.asList(line.split(",")));
+        splitLine = new ArrayList<>(Arrays.asList(line.split(",", -1)));
         // Iterates through the strings in the ArrayList and removes the quotation marks from each of them
         for (int i = 0; i < splitLine.size(); i++) {
             splitLine.set(i, removeQuotes(splitLine.get(i)));
@@ -96,7 +96,7 @@ public class ReadFile {
                     id = -3;
                     System.out.println("Airline data in wrong format, too many entries.");
                 }
-                else if (splitLine.size() < 8) {
+                else if (splitLine.size() < 7) {
                     id = -2;
                     System.out.println("Airline data in wrong format, too few entries.");
                 }
@@ -185,7 +185,7 @@ public class ReadFile {
         try {
             // Gets the maximum flight_id currently in the database and adds one to it
             // This will be the flight_id of the entries read from the file
-            flightID = flightService.getMaxFlightID() + 1;
+            flightID = flightService.getNextFlightID();
 
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
@@ -233,13 +233,8 @@ public class ReadFile {
             while ((line = bufferedReader.readLine()) != null) {
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
-                // If the route data already contained an airline_id, a source airport_id, and a destination airport_id, removes them
-                if (splitLine.size() == 9) {
-                    splitLine.remove(1);
-                    splitLine.remove(2);
-                    splitLine.remove(3);
-                } // Checks that the route data has the right number of entries
-                else if (splitLine.size() < 6) {
+                // Checks that the route data has the right number of entries
+                if (splitLine.size() < 6) {
                     id = -2;
                     System.out.println("Route data in wrong format, too few entries.");
                 }
@@ -252,6 +247,12 @@ public class ReadFile {
                     System.out.println("Route data in wrong format, too many entries.");
                 }
                 else {
+                    // If the route data already contained an airline_id, a source airport_id, and a destination airport_id, removes them
+                    if (splitLine.size() == 9) {
+                        splitLine.remove(1);
+                        splitLine.remove(2);
+                        splitLine.remove(3);
+                    }
                     // Passes the parameters into the addRoute method of ConcreteAddData
                     id = concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), splitLine.get(4), splitLine.get(5));
                 }
