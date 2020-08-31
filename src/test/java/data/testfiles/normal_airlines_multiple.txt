@@ -1,0 +1,5 @@
+4,"2 Sqn No 1 Elementary Flying Training School",\N,"","WYT","","United Kingdom","N"
+5,"213 Flight Unit",\N,"","TFU","","Russia","N"
+"223 Flight Unit State Airline",\N,"","CHD","CHKALOVSK-AVIA","Russia","N"
+7,"224th Flight Unit",\N,"","TTF","CARGO UNIT","Russia","N"
+"247 Jet Ltd",\N,"","TWF","CLOUD RUNNER","United Kingdom","N"

@@ -85,10 +85,10 @@ public class AirlineData implements Data {
         if (this.name == null) {
             // Ensures the name of the Airline is not null
             return -2;
-        } else if (this.iata.length() != 2) {
+        } else if (this.iata != null && this.iata.length() != 2) {
             // Checks the iata is of the correct size (2)
             return -3;
-        } else if (this.icao.length() != 3){
+        } else if (this.iata != null && this.icao.length() != 3){
             // Checks the icao is of the correct size (3)
             return -4;
         } else if (this.active == null || !(this.active.equals("Y") || this.active.equals("N"))) {

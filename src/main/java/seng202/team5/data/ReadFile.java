@@ -20,6 +20,7 @@ public class ReadFile {
     private String line;
     private ArrayList<String> splitLine;
     private ConcreteAddData concreteAddData = new ConcreteAddData();
+    private ConcreteDeleteData concreteDeleteData = new ConcreteDeleteData();
     private FlightService flightService = new FlightService();
 
     /**
@@ -90,13 +91,24 @@ public class ReadFile {
             while ((line = bufferedReader.readLine()) != null) {
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
-                // If the file contains an airline_id already, removes it
-                if (splitLine.size() == 8) {
-                    splitLine.remove(0);
+                // Checks that the airline data has the right amount of entries
+                if (splitLine.size() > 8) {
+                    id = -3;
+                    System.out.println("Airline data in wrong format, too many entries.");
                 }
-                // Passes the parameters into the addAirline method of ConcreteAddData
-                id = concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
-                                                splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
+                else if (splitLine.size() < 8) {
+                    id = -2;
+                    System.out.println("Airline data in wrong format, too few entries.");
+                }
+                else {
+                    // If the airline data contains an airline_id already, removes it
+                    if (splitLine.size() == 8) {
+                        splitLine.remove(0);
+                    }
+                    // Passes the parameters into the addAirline method of ConcreteAddData
+                    id = concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                            splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
+                }
             }
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
@@ -126,14 +138,25 @@ public class ReadFile {
             while ((line = bufferedReader.readLine()) != null) {
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
-                // If the file contains an airport_id already, removes it
-                if (splitLine.size() == 12) {
-                    splitLine.remove(0);
+                // Checks that the airport data has the right amount of entries
+                if (splitLine.size() > 12) {
+                    id = -3;
+                    System.out.println("Airport data in wrong format, too many entries.");
                 }
-                // Passes the parameters into the addAirport method of ConcreteAddData
-                id = concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
-                                                splitLine.get(4), splitLine.get(5), splitLine.get(6), splitLine.get(7),
-                                                splitLine.get(8), splitLine.get(9), splitLine.get(10));
+                else if (splitLine.size() < 11) {
+                    id = -2;
+                    System.out.println("Airport data in wrong format, too few entries.");
+                }
+                else {
+                    // If the airport data contains an airport_id already, removes it
+                    if (splitLine.size() == 12) {
+                        splitLine.remove(0);
+                    }
+                    // Passes the parameters into the addAirport method of ConcreteAddData
+                    id = concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
+                            splitLine.get(4), splitLine.get(5), splitLine.get(6), splitLine.get(7),
+                            splitLine.get(8), splitLine.get(9), splitLine.get(10));
+                }
             }
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
@@ -168,6 +191,15 @@ public class ReadFile {
             while ((line = bufferedReader.readLine()) != null) {
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
+                // Checks that the flight entry has the right number of entries
+                // If it doesn't then deletes all previously added entries, rejects the data, and informs the user of the problem
+                if (splitLine.size() != 5) {
+                    System.out.println("Flight entry in the wrong format, does not have 5 entries. Flight could not be added.");
+                    concreteDeleteData.deleteFlight(flightID);
+                    flightID = -1;
+                    id = -1;
+                    break;
+                }
                 // Passes the parameters into the addFlightEntry method of ConcreteAddData
                 id = concreteAddData.addFlightEntry(flightID, splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), splitLine.get(4));
             }
@@ -201,14 +233,28 @@ public class ReadFile {
             while ((line = bufferedReader.readLine()) != null) {
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
-                // If the file already contained an airline_id, a source airport_id, and a destination airport_id, removes them
-                if (splitLine.size() > 6) {
+                // If the route data already contained an airline_id, a source airport_id, and a destination airport_id, removes them
+                if (splitLine.size() == 9) {
                     splitLine.remove(1);
                     splitLine.remove(2);
                     splitLine.remove(3);
+                } // Checks that the route data has the right number of entries
+                else if (splitLine.size() < 6) {
+                    id = -2;
+                    System.out.println("Route data in wrong format, too few entries.");
                 }
-                // Passes the parameters into the addRoute method of ConcreteAddData
-                id = concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), splitLine.get(4), splitLine.get(5));
+                else if (splitLine.size() > 6 && splitLine.size() < 9) {
+                    id = -3;
+                    System.out.println("Route data in wrong format, too many entries.");
+                }
+                else if (splitLine.size() > 9) {
+                    id = -4;
+                    System.out.println("Route data in wrong format, too many entries.");
+                }
+                else {
+                    // Passes the parameters into the addRoute method of ConcreteAddData
+                    id = concreteAddData.addRoute(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3), splitLine.get(4), splitLine.get(5));
+                }
             }
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
