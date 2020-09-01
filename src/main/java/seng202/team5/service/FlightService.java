@@ -157,7 +157,17 @@ public class FlightService implements Service {
      * @author Inga Tokarenko
      */
     public ResultSet getFlights(String airline, String airport) {
-        return accessor.getData(airline, airport);
+        ArrayList airlineIataIcao = null;
+        ArrayList airportIataIcao = null;
+
+        if (airline != null) {
+            airlineIataIcao = airlineAccessor.getAirlineIataIcao(airline);
+        }
+        if (airport != null) {
+            airportIataIcao = airportAccessor.getAirportIataIcao(airport);
+        }
+
+        return accessor.getData(airlineIataIcao, airportIataIcao);
     }
 
     /**

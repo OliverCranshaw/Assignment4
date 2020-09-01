@@ -155,7 +155,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
-        return (iata == null || iata.length() == 3);
+        return (iata == null || iata.length() == 2);
     }
 
     /**
@@ -168,7 +168,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 4);
+        return (icao == null || icao.length() == 3);
     }
 
     /**

@@ -52,27 +52,22 @@ public class RouteService implements Service {
     public int saveRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airlineAccessor.dataExists(airline)) {
-            System.out.println("Here1");
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airportAccessor.dataExists(source_airport)) {
-            System.out.println("Here2");
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airportAccessor.dataExists(dest_airport)) {
-            System.out.println("here3");
             return -1;
         }
         // Checks that the codeshare is valid, if it isn't returns an error code of -1
         if (!codeshareIsValid(codeshare)) {
-            System.out.println("Here4");
             return -1;
         }
         // Checks that the equipment is valid, if it isn't returns an error code of -1
         if (!equipmentIsValid(equipment)) {
-            System.out.println("HEre5");
             return -1;
         }
 
@@ -198,7 +193,16 @@ public class RouteService implements Service {
      * @author Inga Tokarenko
      */
     public ResultSet getRoutes(String source_airport, String dest_airport, int stops, String equipment) {
-        return accessor.getData(source_airport, dest_airport, stops, equipment);
+        ArrayList airportSourceIataIcao = null;
+        ArrayList airportDestIataIcao = null;
+
+        if (source_airport != null) {
+            airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
+        }
+        if (dest_airport != null) {
+            airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
+        }
+        return accessor.getData(airportSourceIataIcao, airportDestIataIcao, stops, equipment);
     }
 
     /**
