@@ -12,12 +12,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import seng202.team5.database.DBInitializer;
 
 public class AirlineServiceTest extends BaseDatabaseTest {
 
     private AirlineService airlineService;
+
+    private final List<String> testData = List.of("AirlineName", "AliasName", "CountryName", "ITS", "ICAO", "CallsignStuff", "Y");
 
     public AirlineServiceTest(String testName) { super(testName); }
 
@@ -35,15 +38,16 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     }
 
     public void testAddAirline() throws SQLException {
-        String name = "AirportName";
-        String alias = "AliasName";
-        String country = "CountryName";
-        String iata = "ITS";
-        String icao = "ICAO";
-        String callsign = "CallsignStuff";
-        String active = "Y";
+        int res = airlineService.saveAirline(
+                testData.get(0),
+                testData.get(1),
+                testData.get(2),
+                testData.get(3),
+                testData.get(4),
+                testData.get(5),
+                testData.get(6)
+        );
 
-        int res = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
         // Check operation did not fail
         assertTrue(res != -1);
 
@@ -55,13 +59,9 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         assertTrue(resultSet.next());
 
         // Check the result contents
-        assertEquals(name, resultSet.getString(2));
-        assertEquals(alias, resultSet.getString(3));
-        assertEquals(iata, resultSet.getString(4));
-        assertEquals(icao, resultSet.getString(5));
-        assertEquals(callsign, resultSet.getString(6));
-        assertEquals(country, resultSet.getString(7));
-        assertEquals(active, resultSet.getString(8));
+        for (int i = 0; i<testData.size(); i++) {
+            assertEquals(testData.get(i), resultSet.getString(i + 2));
+        }
 
         // Check there are no more than 1 result
         assertFalse(resultSet.next());
