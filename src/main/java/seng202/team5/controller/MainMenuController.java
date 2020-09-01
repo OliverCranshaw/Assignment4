@@ -83,6 +83,17 @@ public class MainMenuController {
     }
 
     @FXML
+    public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("upload_airports.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Upload Airport Data");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
+    }
+
+    @FXML
     public void onAddAirlinePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(App.class.getResource("add_airline.fxml"));
@@ -94,6 +105,17 @@ public class MainMenuController {
     }
 
     @FXML
+    public void onUploadAirlineDataPressed(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("upload_airlines.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Upload Airline Data");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
+    }
+
+    @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(App.class.getResource("add_route.fxml"));
@@ -101,6 +123,17 @@ public class MainMenuController {
         stage.setTitle("Add Route");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow() );
+        stage.show();
+    }
+
+    @FXML
+    public void onUploadRouteDataPressed(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("upload_routes.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Upload Route Data");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
 
