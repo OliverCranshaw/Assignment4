@@ -1,6 +1,5 @@
 package search;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -8,20 +7,14 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng202.team5.Search;
 import seng202.team5.service.AirlineService;
-import seng202.team5.service.AirportService;
-import seng202.team5.service.FlightService;
-import seng202.team5.service.RouteService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SearchScenario
+public class AirlineNameSearchScenario
 {
     private AirlineService airlineService;
-    private AirportService airportService;
-    private FlightService flightService;
-    private RouteService routeService;
     private Search search;
     private ArrayList<Object> data;
     private ResultSet searchResult;
@@ -51,7 +44,7 @@ public class SearchScenario
 
     @Then("^the results from the search will include all airlines with the airline name \"([^\"]*)\"$")
     public void theResultsFromTheSearchWillIncludeAllAirlinesWithTheAirlineName(String airlineName) throws SQLException {
-        while (searchResult.next() != false) {
+        while (searchResult.next()) {
             Assert.assertEquals(airlineName, searchResult.getString(1));
         }
     }
