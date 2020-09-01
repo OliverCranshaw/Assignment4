@@ -47,7 +47,7 @@ public class FlightDataTest {
     @Test
     public void testCheckValidValues() {
         Integer flightId = 545;
-        String airline = "FJFF";
+        String airline = "FJF";
         String airport = "FFF";
         String altitude = "4343";
         String latitude = "4223.2";
@@ -64,8 +64,8 @@ public class FlightDataTest {
     @Test
     public void testCheckInvalidValues() {
         Integer flightId = 545;
-        String airline = "alfl";
-        String airport = "Fkfa";
+        String airline = "alf";
+        String airport = "FkfaF";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
