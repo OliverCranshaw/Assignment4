@@ -317,6 +317,43 @@ public class AirportAccessor implements Accessor {
     }
 
     /**
+     * Gets the airport iata and icao of an airline with a given name.
+     *
+     * @param name The name of the airline.
+     * @return iata result The iata of the airport with the name.
+     *
+     * @author Inga Tokarenko
+     * @author Billie Johnson
+     */
+    public ArrayList getAirportIataIcao(String name) {
+        ArrayList<String> result = new ArrayList<>();
+
+        try {
+            // The SQL search query - finds the iata and icao of an airport with the given name
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT iata, icao FROM AIRPORT_DATA WHERE airport_name = ?");
+            // Adds the given code to the search query
+            stmt.setObject(1, name);
+            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+            ResultSet data = stmt.executeQuery();
+
+            while (data.next()) {
+                String iata = data.getString("iata");
+                String icao = data.getString("icao");
+
+                result.add(iata);
+                result.add(icao);
+            }
+        } catch (SQLException e) {
+            // If any of the above fails, sets result to the error code -1 and prints an error message
+            result = null;
+            System.out.println("Unable to retrieve airline data with name " + name);
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      * Checks if an airport with a given airport_id exists.
      *
      * @param id An integer airport_id.

@@ -251,23 +251,41 @@ public class FlightAccessor implements Accessor{
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public ResultSet getData(String airline, String airport) {
+    public ResultSet getData(ArrayList<String> airline, ArrayList<String> airport) {
+        boolean check = true;
+        String addString = "";
         ResultSet result = null;
         String query = "SELECT * FROM FLIGHT_DATA";
         ArrayList<String> elements = new ArrayList<>();
 
         try {
             if (airline != null) {
-                query = query + " WHERE airline = ?";
-                elements.add(airline);
+
+                query = query + " WHERE ";
+
+                for (String value:airline) {
+                    if (value != null) {
+                        addString = elements.size() == 0 ? " airline = ? " : " or airline = ? ";
+                        query = query + addString;
+                        elements.add(value);
+                    }
+                }
             }
             if (airport != null) {
                 if (airline != null) {
-                    query = query + " and airport = ?";
+                    query = query + " and ";
                 } else {
-                    query = query + " WHERE airport = ?";
+                    query = query + " WHERE ";
                 }
-                elements.add(airport);
+
+                for (String value:airport) {
+                    if (value != null) {
+                        addString = check ? " airport = ? " : " or airport = ? ";
+                        query = query + addString;
+                        elements.add(value);
+                        check = false;
+                    }
+                }
             }
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
