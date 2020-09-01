@@ -193,7 +193,16 @@ public class RouteService implements Service {
      * @author Inga Tokarenko
      */
     public ResultSet getRoutes(String source_airport, String dest_airport, int stops, String equipment) {
-        return accessor.getData(source_airport, dest_airport, stops, equipment);
+        ArrayList airportSourceIataIcao = null;
+        ArrayList airportDestIataIcao = null;
+
+        if (source_airport != null) {
+            airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
+        }
+        if (dest_airport != null) {
+            airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
+        }
+        return accessor.getData(airportSourceIataIcao, airportDestIataIcao, stops, equipment);
     }
 
     /**
