@@ -9,6 +9,7 @@ import seng202.team5.service.AirportService;
 
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import seng202.team5.database.DBInitializer;
@@ -83,6 +84,56 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
 
         dbHandler.close();
+    }
+
+    public void testGetAirportByID() throws SQLException {
+        List<Integer> keys = new ArrayList<>();
+
+        for (int i = 0; i<3; i++) {
+            Connection dbHandler = DBConnection.getConnection();
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            // Iterates through the List and adds the values to the insert statement
+            stmt.setObject(1, testData.get(0) + String.valueOf(i));
+            for (int j = 1; j<testData.size(); j++) {
+                stmt.setObject(j + 1, testData.get(j));
+            }
+
+            // Executes the insert operation, sets the result to the airport_id of the new airport
+            int changes = stmt.executeUpdate();
+            assertEquals(1, changes);
+
+            // Gets the airport ID
+            ResultSet rs = stmt.getGeneratedKeys();
+            assertTrue(rs.next());
+            int key = rs.getInt(1);
+            keys.add(key);
+
+            dbHandler.close();
+        }
+
+        for (int i = 0; i<3; i++) {
+            int key = keys.get(i);
+            ResultSet resultSet = airportService.getAirport(key);
+            assertNotNull("Key " + key + " not found", resultSet);
+
+            // Check that there is at least one result
+            assertTrue(resultSet.next());
+
+            // Check name
+            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+
+            // Check rest of the entry
+            for (int j = 1; j<testData.size(); j++) {
+                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+            }
+
+            // Check there are no more than 1 result
+            assertFalse(resultSet.next());
+        }
     }
 
     public void testAddAirport() throws SQLException {
