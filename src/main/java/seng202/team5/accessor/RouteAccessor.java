@@ -222,23 +222,40 @@ public class RouteAccessor implements Accessor {
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
+    public ResultSet getData(ArrayList<String> source_airport, ArrayList<String> dest_airport, int stops, String equipment) {
+        boolean check = true;
+        String addString = "";
         ResultSet result = null;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
         try {
             if (source_airport != null) {
-                query = query + " WHERE source_airport = ?";
-                elements.add(source_airport);
+                query = query + " WHERE ";
+
+                for (String value:source_airport) {
+                    if (value != null) {
+                        addString = elements.size() == 0 ? " source_airport = ? " : " or source_airport = ? ";
+                        query = query + addString;
+                        elements.add(value);
+                    }
+                }
             }
             if (dest_airport != null) {
                 if (source_airport != null) {
-                    query = query + " and destination_airport = ?";
+                    query = query + " and ";
                 } else {
-                    query = query + " WHERE destination_airport = ?";
+                    query = query + " WHERE ";
                 }
-                elements.add(dest_airport);
+
+                for (String value:dest_airport) {
+                    if (value != null) {
+                        addString = check ? " destination_airport = ? " : " or destination_airport = ? ";
+                        query = query + addString;
+                        elements.add(value);
+                        check = false;
+                    }
+                }
             }
             if (stops != -1) {
                 if (source_airport != null || dest_airport != null) {
