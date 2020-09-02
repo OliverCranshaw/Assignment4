@@ -508,7 +508,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         // Running the updateRoute method, using a destination airport that isn't in the database
         int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
         // Running the updateRoute method, using a codeShare that is invalid
-        int res2 = routeService.updateRoute(testRouteId, airline, sourceAirport, destinationAirport, "N", stops, equipment);
+        int res2 = routeService.updateRoute(testRouteId, airline, sourceAirport, destinationAirport, "E", stops, equipment);
         // Running the updateRoute method, using a routeId that doesn't exist
         int res3 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
