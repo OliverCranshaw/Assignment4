@@ -165,14 +165,16 @@ public class AddDataTest {
 
     @Test
     public void addFlightEntryTest() {
-        readFile.readAirlineData(airlines);
         readFile.readAirportData(airports);
 
-        // int flightID, String airline, String airport, String altitude, String latitude, String longitude
+        // int flightID, String location_type, String location, String altitude, String latitude, String longitude
         id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "172.534");
         assertEquals(1, id);
 
-        id = concreteAddData.addFlightEntry(1, "W9", "CHC", "0", "43.4866", "-172.534");
+        id = concreteAddData.addFlightEntry(1, "FIX", "CHC", "0", "43.4866", "-172.534");
+        assertEquals(2, id);
+
+        id = concreteAddData.addFlightEntry(1, "VOR", "CH", "0", "43.4866", "-172.534");
         assertEquals(2, id);
     }
 
@@ -184,19 +186,19 @@ public class AddDataTest {
         id = concreteAddData.addFlightEntry(1, "", "NZCH", "0", "-43.4866", "172.534");
         assertEquals(-3, id);
 
-        id = concreteAddData.addFlightEntry(1, "APTN", "NZCH", "0", "-43.4866", "172.534");
+        id = concreteAddData.addFlightEntry(1, "ART", "NZCH", "0", "-43.4866", "172.534");
         assertEquals(-3, id);
 
-        id = concreteAddData.addFlightEntry(1, "APT", "", "0", "-43.4866", "172.534");
+        id = concreteAddData.addFlightEntry(1, "VOR", "", "0", "-43.4866", "172.534");
         assertEquals(-4, id);
 
         id = concreteAddData.addFlightEntry(1, "APT", "NZ", "0", "-43.4866", "172.534");
         assertEquals(-4, id);
 
-        id = concreteAddData.addFlightEntry(1, "APT", "NZC", "", "-43.4866", "172.534");
+        id = concreteAddData.addFlightEntry(1, "FIX", "NZC", "", "-43.4866", "172.534");
         assertEquals(-5, id);
 
-        id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "", "172.534");
+        id = concreteAddData.addFlightEntry(1, "FIX", "NZCH", "0", "", "172.534");
         assertEquals(-6, id);
 
         id = concreteAddData.addFlightEntry(1, "APT", "NZCH", "0", "-43.4866", "");
