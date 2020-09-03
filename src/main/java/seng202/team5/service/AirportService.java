@@ -67,10 +67,8 @@ public class AirportService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the AirportAccessor
-        List<Object> tmp = Arrays.asList(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
-        ArrayList<Object> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the AirportAccessor
+        List<Object> elements = Arrays.asList(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
 
         return accessor.save(elements);
     }

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AirlineAccessor
@@ -36,13 +37,13 @@ public class AirlineAccessor implements Accessor {
      * Creates an airline in the database with the given data.
      * Requires airline_name, alias, IATA code, ICAO code, callsign, country, and active parameters, contained in an ArrayList.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The airline_id of the airline that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -50,12 +51,16 @@ public class AirlineAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the airline_id of the new airline
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;

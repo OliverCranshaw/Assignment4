@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AirportAccessor
@@ -37,13 +38,13 @@ public class AirportAccessor implements Accessor {
      * Requires airport_name, city, country, IATA code, ICAO code, latitude, longitude, altitude,
      * timezone, dst, and tz timezone parameters, contained in an ArrayList.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The airport_id of the airport that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -52,12 +53,16 @@ public class AirportAccessor implements Accessor {
                     "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
                                                 + "longitude, altitude, timezone, dst, tz_database_timezone) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the airport_id of the new airport
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;

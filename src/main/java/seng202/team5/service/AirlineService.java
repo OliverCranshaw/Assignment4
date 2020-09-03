@@ -58,10 +58,8 @@ public class AirlineService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the AirlineAccessor
-        List<String> tmp = Arrays.asList(name, alias, iata, icao, callsign, country, active);
-        ArrayList<String> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the AirlineAccessor
+        List<Object> elements = Arrays.asList(name, alias, iata, icao, callsign, country, active);
 
         return accessor.save(elements);
     }

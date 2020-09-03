@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FlightAccessor
@@ -36,13 +37,13 @@ public class FlightAccessor implements Accessor{
      * Creates a flight entry in the database with the given data.
      * Requires the flight_id, airline IATA or ICAO code, airport IATA or ICAO code, altitude, latitude, and longitude.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The unique id of the flight entry that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -50,12 +51,16 @@ public class FlightAccessor implements Accessor{
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 7; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the unique id of the new flight entry
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;

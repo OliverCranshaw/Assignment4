@@ -59,10 +59,8 @@ public class FlightService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the FlightAccessor
-        List<Object> tmp = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
-        ArrayList<Object> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the FlightAccessor
+        List<Object> elements = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
 
         return accessor.save(elements);
     }
