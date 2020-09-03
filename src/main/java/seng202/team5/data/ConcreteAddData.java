@@ -128,8 +128,8 @@ public class ConcreteAddData extends AddData {
      * Otherwise returns an error code.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param airport The 3-letter IATA code or 4-letter ICAO code of the airport, cannot be null.
+     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
@@ -139,9 +139,9 @@ public class ConcreteAddData extends AddData {
      * @author Jack Ryan
      */
     @Override
-    public int addFlightEntry(int flightID, String airline, String airport, String altitude, String latitude, String longitude) {
+    public int addFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
         // Creates a new instance of FlightData with the given parameters
-        FlightData flightData = new FlightData(flightID, airline, airport, altitude, latitude, longitude);
+        FlightData flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         // Converts any empty strings to null
         flightData.convertBlanksToNull();
         // Checks the validity of the parameters
@@ -149,7 +149,7 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveFlight method of FlightService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int id = flightService.saveFlight(flightData.getFlightId(), flightData.getAirline(), flightData.getAirport(),
+            int id = flightService.saveFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(),
                                             flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
 
             if (id != -1) {

@@ -1,5 +1,7 @@
 package seng202.team5.data;
 
+import seng202.team5.accessor.AirportAccessor;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,19 +18,20 @@ public class FlightData implements Data {
 
     // Variables of FlightData
     private Integer flightId;
-    private String airline;
-    private String airport;
+    private String location_type;
+    private String location;
     private Integer altitude;
     private Double latitude;
     private Double longitude;
+    private AirportAccessor airportAccessor;
 
 
     // Getters for all variables of FlightData
     public Integer getFlightId() { return flightId; }
 
-    public String getAirline() { return airline; }
+    public String getLocationType() { return location_type; }
 
-    public String getAirport() { return airport; }
+    public String getLocation() { return location; }
 
     public Integer getAltitude() { return altitude; }
 
@@ -42,20 +45,22 @@ public class FlightData implements Data {
      * are used within this class).
      *
      * @param flightId The integer flight_id of the new flight entry, cannot be null.
-     * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param airport The 3-letter IATA code or 4-letter ICAO code of the airport, cannot be null.
+     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
      */
-    public FlightData(Integer flightId, String airline, String airport, Integer altitude,
+    public FlightData(Integer flightId, String location_type, String location, Integer altitude,
                       Double latitude, Double longitude) {
         this.flightId = flightId;
-        this.airline = airline;
-        this.airport = airport;
+        this.location_type = location_type;
+        this.location = location;
         this.altitude = altitude;
         this.latitude = latitude;
         this.longitude = longitude;
+
+        airportAccessor = new AirportAccessor();
     }
 
 
@@ -63,17 +68,19 @@ public class FlightData implements Data {
      * Constructor for flightId that attempts to parse variables to their native type (type used in this class) from Strings
      *
      * @param flightId The integer flight_id of the new flight entry, cannot be null.
-     * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param airport The 3-letter IATA code or 4-letter ICAO code of the airport, cannot be null.
+     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
      */
-    public FlightData(Integer flightId, String airline, String airport, String altitude,
+    public FlightData(Integer flightId, String location_type, String location, String altitude,
                       String latitude, String longitude) {
-        this.airline = airline;
-        this.airport = airport;
+        this.location_type = location_type;
+        this.location = location;
         this.flightId = flightId;
+
+        airportAccessor = new AirportAccessor();
 
         // Parsing altitude to integer
         try {
@@ -112,11 +119,11 @@ public class FlightData implements Data {
         if (this.flightId == null || this.flightId < 0) {
             // Ensures flightId cannot by negative or null
             return -2;
-        } else if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
-            // Ensures airline cannot be null and is either of appropriate iata or icao length (2,3)
+        } else if (this.location_type == null || !Arrays.asList("APT", "VOR", "FIX").contains(this.location_type)) {
+            // Ensures location_type cannot be null and is one of "APT", "VOR", or "FIX"
             return -3;
-        } else if (this.airport == null || (this.airport.length() != 3 && this.airline.length() != 4)) {
-            // Ensures airport cannot be null and is either of appropriate iata or icao length (3, 4)
+        } else if (this.location == null || (this.location_type == "APT" && !airportAccessor.dataExists(this.location))) {
+            // Ensures that the airport exists if the location type is APT, or otherwise just isn't null
             return -4;
         } else if (this.altitude == null) {
             // Ensures altitude is not null
@@ -143,11 +150,11 @@ public class FlightData implements Data {
         // List of null representations
         List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
 
-        if (nullRepr.contains(this.airline)) {
-            this.airline = null;
+        if (nullRepr.contains(this.location_type)) {
+            this.location_type = null;
         }
-        if (nullRepr.contains(this.airport)) {
-            this.airport = null;
+        if (nullRepr.contains(this.location)) {
+            this.location = null;
         }
     }
 }

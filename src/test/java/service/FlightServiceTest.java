@@ -88,7 +88,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getMaxFlightID() + 1, airline, airport, altitude, longitude, latitude);
+        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, airport, altitude, longitude, latitude);
 
         assertEquals(1, res);
 
@@ -155,7 +155,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getMaxFlightID() + 1, airline, "LAX", altitude, longitude, latitude);
+        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, "LAX", altitude, longitude, latitude);
 
         assertEquals(-1, res);
 
@@ -190,7 +190,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
 
@@ -294,7 +294,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
 
@@ -378,7 +378,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         String flightQuery = "SELECT * FROM FLIGHT_DATA";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to get the count of ids from the flight data
@@ -459,7 +459,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         String flightQuery = "SELECT * FROM FLIGHT_DATA";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to get the count of ids from the flight data
@@ -537,7 +537,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         String flightQuery = "SELECT * FROM FLIGHT_DATA";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to get the count of ids from the flight data
@@ -606,7 +606,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         String flightQuery = "SELECT * FROM FLIGHT_DATA";
 
         // SQLite query used to populate database with a flight
-        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         // SQLite query used to get the count of ids from the flight data

@@ -40,14 +40,14 @@ public class ConcreteUpdateData extends UpdateData {
     }
 
     @Override
-    public int updateFlightEntry(int id, String new_airline, String new_airport, int new_altitude,
+    public int updateFlightEntry(int id, String new_location_type, String new_location, int new_altitude,
                                   double new_latitude, double new_longitude) {
-        FlightData flightData = new FlightData(id, new_airline, new_airport, new_altitude, new_latitude, new_longitude);
+        FlightData flightData = new FlightData(id, new_location_type, new_location, new_altitude, new_latitude, new_longitude);
         flightData.convertBlanksToNull();
         int validityValue = flightData.checkValues();
         if (validityValue < 0)
             return validityValue;
-        return flightService.updateFlight(flightData.getFlightId(), flightData.getAirline(), flightData.getAirport(), flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
+        return flightService.updateFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(), flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
     }
 
     @Override

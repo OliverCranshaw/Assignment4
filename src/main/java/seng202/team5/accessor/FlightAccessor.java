@@ -49,7 +49,7 @@ public class FlightAccessor implements Accessor{
         try {
             // The SQL insert statement
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+                    "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?)");
             // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 7; i++) {
@@ -76,8 +76,8 @@ public class FlightAccessor implements Accessor{
      * Not every field must be updated.
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_airline The new 2-letter airline IATA or 3-letter airline ICAO code of the flight entry, may be null if not to be updated.
-     * @param new_airport The new 3-letter airport IATA or 4-letter airport ICAO code of the flight entry, may be null if not to be updated.
+     * @param new_location_type The new location type of the flight entry location, one of "APT", "VOR", or "FIX", may be null if not to be updated.
+     * @param new_location The new location of the flight entry, may be null if not to be updated.
      * @param new_altitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
@@ -86,7 +86,7 @@ public class FlightAccessor implements Accessor{
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int update(int id, String new_airline, String new_airport, int new_altitude,
+    public int update(int id, String new_location_type, String new_location, int new_altitude,
                       double new_latitude, double new_longitude) {
         int result;
         int flight_id;
@@ -103,13 +103,13 @@ public class FlightAccessor implements Accessor{
             // Checks one by one if any of the parameters are null
             // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
             try {
-                if (new_airline != null) {
-                    search = search + "airline = ?, ";
-                    elements.add(new_airline);
+                if (new_location_type != null) {
+                    search = search + "location_type = ?, ";
+                    elements.add(new_location_type);
                 }
-                if (new_airport != null) {
-                    search = search + "airport = ?, ";
-                    elements.add(new_airport);
+                if (new_location != null) {
+                    search = search + "location = ?, ";
+                    elements.add(new_location);
                 }
                 if (new_altitude != -1) {
                     search = search + "altitude = ?, ";

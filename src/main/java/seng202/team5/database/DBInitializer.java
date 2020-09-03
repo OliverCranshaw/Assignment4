@@ -50,7 +50,4 @@ public class DBInitializer {
         }
     }
 
-    public static void main(String[] args) {
-        //createNewDatabase("flightdata.db");
-    }
 }
