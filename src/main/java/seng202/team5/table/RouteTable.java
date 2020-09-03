@@ -8,7 +8,12 @@ public class RouteTable extends DataTable {
         super(newOrgData);
     }
 
-    public void FilterTable() {
-
+    public void FilterTable(String srcAirport, String dstAirport, Integer stops, String equipment) {
+        FilterRouteTable filter = new FilterRouteTable(filteredData);
+        filter.setAirportDep(srcAirport);
+        filter.setAirportDes(dstAirport);
+        String direct = (stops == 0) ? "direct" : "not direct";
+        filter.setDirect(direct);
+        filter.setEquip(equipment);
     }
 }

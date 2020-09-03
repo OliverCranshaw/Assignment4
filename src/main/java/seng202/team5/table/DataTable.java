@@ -9,7 +9,7 @@ import java.util.HashSet;
 public abstract class DataTable {
 
     protected final ResultSet orgData;
-    protected static ArrayList<ArrayList> filteredData;
+    protected static ArrayList<ArrayList<Object>> filteredData;
 
     public DataTable(ResultSet newOrgData) {
         orgData = newOrgData;
@@ -18,7 +18,7 @@ public abstract class DataTable {
     public void createTable() throws SQLException {
         ResultSetMetaData md = orgData.getMetaData();
         int columns = md.getColumnCount();
-        ArrayList<ArrayList> list = new ArrayList<>();
+        ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
         while(orgData.next()) {
             ArrayList<Object> row = new ArrayList<>(columns);
             for (int i=1; i<=columns; ++i) {

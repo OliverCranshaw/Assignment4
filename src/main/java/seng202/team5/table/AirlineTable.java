@@ -20,10 +20,14 @@ public class AirlineTable extends DataTable {
 
 
     public void FilterTable(ArrayList<String> countries, String active) {
+        FilterAirlineTable filter = new FilterAirlineTable(filteredData);
+        filter.setCountries(countries);
+        filter.setActive(active);
+        filter.FilterTable();
 
     }
 
-    public static void main(String args[]) throws SQLException {
+    public static void main(String[] args) throws SQLException {
         String name = "AirportName";
         String alias = "AliasName";
         String country = "CountryName";

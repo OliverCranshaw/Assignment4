@@ -14,7 +14,9 @@ public class AirportTable extends DataTable {
 
 
     public void FilterTable(ArrayList<String> countries) {
-
+        FilterAirportTable filter = new FilterAirportTable(filteredData);
+        filter.setCountries(countries);
+        filter.FilterTable();
     }
 
     public static void main(String args[]) throws SQLException {
