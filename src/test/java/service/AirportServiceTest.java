@@ -3,6 +3,7 @@ package service;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.sqlite.core.DB;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBTableInitializer;
 import seng202.team5.service.AirportService;
@@ -18,7 +19,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
     private AirportService airportService;
 
-    private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353, "E", "Timezone");
+    private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
 
     public AirportServiceTest(String testName) { super(testName); }
 
@@ -124,8 +125,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
             assertTrue(resultSet.next());
 
             // Check name
-            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
-
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
                 assertEquals(testData.get(j), resultSet.getObject(2 + j));
@@ -137,35 +136,52 @@ public class AirportServiceTest extends BaseDatabaseTest {
     }
 
     public void testAddAirport() throws SQLException {
-        int res = airportService.saveAirport(
-                (String)testData.get(0),
-                (String)testData.get(1),
-                (String)testData.get(2),
-                (String)testData.get(3),
-                (String)testData.get(4),
-                (double)testData.get(5),
-                (double)testData.get(6),
-                (int)testData.get(7),
-                (int)testData.get(8),
-                (String)testData.get(9),
-                (String)testData.get(10)
-        );
-        // Check operation did not fail
-        assertTrue(res != -1);
+        Connection dbHandler = DBConnection.getConnection();
 
-        // Query all airport data
-        Statement stmt = DBConnection.getConnection().createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRPORT_DATA");
+        List<Object> testData2 = new ArrayList<>(testData);
+        testData2.set(0, testData.get(0) + "2");
+        testData2.set(3, "XYZ");
+        testData2.set(4, "WXYZ");
 
-        // Check that there is at least one result
-        assertTrue(resultSet.next());
+        for (List<Object> entry : List.of(testData, testData2)) {
+            int res = airportService.saveAirport(
+                    (String)entry.get(0),
+                    (String)entry.get(1),
+                    (String)entry.get(2),
+                    (String)entry.get(3),
+                    (String)entry.get(4),
+                    (double)entry.get(5),
+                    (double)entry.get(6),
+                    (int)entry.get(7),
+                    (float)entry.get(8),
+                    (String)entry.get(9),
+                    (String)entry.get(10)
+            );
+            // Check operation did not fail
+            assertTrue(res != -1);
 
-        // Check the result contents
-        for (int i = 0; i<testData.size(); i++) {
-            assertEquals(testData.get(i), resultSet.getObject(2 + i));
+            // Query airline data with airport_id=res
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRPORT_DATA WHERE airport_id = ?");
+            stmt.setObject(1, res);
+            ResultSet resultSet = stmt.executeQuery();
+
+            // Check that there is at least one result
+            assertTrue("Failed to fetch airport_id=" + res, resultSet.next());
+
+            // Check the result contents
+            for (int i = 0; i<entry.size(); i++) {
+                Object cell = entry.get(i);
+                if (cell instanceof Float) {
+                    cell = (double)((Float)cell);
+                }
+                assertEquals(cell, resultSet.getObject(2 + i));
+            }
+
+            // Check there are no more than 1 result
+            assertFalse(resultSet.next());
         }
 
-        // Check there are no more than 1 result
-        assertFalse(resultSet.next());
+        dbHandler.close();
     }
 }

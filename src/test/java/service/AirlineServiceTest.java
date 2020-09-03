@@ -18,7 +18,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
     private AirlineService airlineService;
 
-    private final List<String> testData = List.of("AirlineName", "AliasName", "ITS", "ICAO", "CallsignStuff", "CountryName", "Y");
+    private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
 
     public AirlineServiceTest(String testName) { super(testName); }
 
@@ -135,32 +135,44 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     }
 
     public void testAddAirline() throws SQLException {
-        int res = airlineService.saveAirline(
-                testData.get(0),
-                testData.get(1),
-                testData.get(2),
-                testData.get(3),
-                testData.get(4),
-                testData.get(5),
-                testData.get(6)
-        );
+        Connection dbHandler = DBConnection.getConnection();
 
-        // Check operation did not fail
-        assertTrue(res != -1);
+        List<String> testData2 = new ArrayList<>(testData);
+        testData2.set(0, testData.get(0) + "2");
+        testData2.set(2, "XY");
+        testData2.set(3, "XYZ");
 
-        // Query all airline data
-        Statement stmt = DBConnection.getConnection().createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRLINE_DATA");
+        for (List<String> entry : List.of(testData, testData2)) {
+            int res = airlineService.saveAirline(
+                    entry.get(0),
+                    entry.get(1),
+                    entry.get(2),
+                    entry.get(3),
+                    entry.get(4),
+                    entry.get(5),
+                    entry.get(6)
+            );
+            // Check operation did not fail
+            assertTrue(res != -1);
 
-        // Check that there is at least one result
-        assertTrue(resultSet.next());
+            // Query airline data with airport_id=res
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRLINE_DATA WHERE airline_id = ?");
+            stmt.setObject(1, res);
+            ResultSet resultSet = stmt.executeQuery();
 
-        // Check the result contents
-        for (int i = 0; i<testData.size(); i++) {
-            assertEquals(testData.get(i), resultSet.getString(i + 2));
+            // Check that there is at least one result
+            assertTrue("Failed to fetch airline_id=" + res, resultSet.next());
+
+            // Check the result contents
+            for (int i = 0; i<entry.size(); i++) {
+                assertEquals(entry.get(i), resultSet.getObject(2 + i));
+            }
+
+            // Check there are no more than 1 result
+            assertFalse(resultSet.next());
         }
 
-        // Check there are no more than 1 result
-        assertFalse(resultSet.next());
+        dbHandler.close();
     }
 }
