@@ -1,7 +1,6 @@
 package seng202.team5.table;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class FilterAirportTable extends ConcreteFilterTable {
 
@@ -18,6 +17,12 @@ public class FilterAirportTable extends ConcreteFilterTable {
 
         while (hasMore()) {
             current = elements.get(currentPos);
+            String country = (String) current.get(3);
+
+            if (!countries.contains(country)) {
+                elements.remove((currentPos));
+                currentPos = 0;
+            }
         }
     }
 

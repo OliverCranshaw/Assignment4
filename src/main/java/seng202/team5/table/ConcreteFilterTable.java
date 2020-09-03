@@ -5,12 +5,10 @@ import java.util.ArrayList;
 public class ConcreteFilterTable implements FilterTable {
 
     public ArrayList<ArrayList> elements;
-    public ArrayList<ArrayList> finalElements;
     public int currentPos;
 
     public ConcreteFilterTable(ArrayList data) {
         elements = data;
-        finalElements = new ArrayList();
     }
 
     public void FilterTable() {}
