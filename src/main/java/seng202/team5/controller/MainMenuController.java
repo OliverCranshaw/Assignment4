@@ -11,6 +11,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
 import seng202.team5.Search;
+import seng202.team5.service.AirlineService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class MainMenuController {
 
     @FXML
     private Tab generalTab;
+
+    @FXML
+    private Tab airlineDataTab;
 
     @FXML
     private RadioButton flightsRadioButton;
@@ -63,6 +67,30 @@ public class MainMenuController {
     @FXML
     private TextField fourthSearchEntry;
 
+    @FXML
+    private TableView airlineRawData;
+
+    @FXML
+    private TableColumn airlineNameCol;
+
+    @FXML
+    private TableColumn airlineAliasCol;
+
+    @FXML
+    private TableColumn airlineCountryCol;
+
+    @FXML
+    private TableColumn airlineActiveCol;
+
+
+
+    private AirlineService airlineService;
+    private ArrayList airlineRawTable;
+
+    public MainMenuController() {
+        airlineService = new AirlineService();
+
+    }
 
 
 
@@ -269,5 +297,15 @@ public class MainMenuController {
         }
 
     }
+
+
+    @FXML
+    private void onClickAirlineDataTab() {
+
+    }
+
+
+
+
 
 }
