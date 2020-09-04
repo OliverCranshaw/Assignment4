@@ -226,30 +226,28 @@ public class AirlineAccessor implements Accessor {
      */
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
-        String query = "SELECT * FROM AIRLINE_DATA";
-        ArrayList<String> elements = new ArrayList<>();
+
+        List<String> queryTerms = new ArrayList<>();
+        List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                query = query + " WHERE airline_name = ?";
+                queryTerms.add("airline_name = ?");
                 elements.add(name);
             }
-            if (country != null && name == null) {
-                if (name != null) {
-                    query = query + " and country = ?";
-                } else {
-                    query = query + " WHERE country = ?";
-                }
+            if (country != null) {
+                queryTerms.add("country = ?");
                 elements.add(country);
             }
             if (callsign != null) {
-                if (country != null || name != null) {
-                    query = query + " and callsign = ?";
-                    elements.add(callsign);
-                } else {
-                    query = query + " WHERE callsign = ?";
-                    elements.add(callsign);
-                }
+                queryTerms.add("callsign = ?");
+                elements.add(callsign);
+            }
+
+            String query = "SELECT * FROM AIRLINE_DATA";
+            if (queryTerms.size() != 0) {
+                query += " WHERE ";
+                query += String.join(" and ", queryTerms);
             }
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
