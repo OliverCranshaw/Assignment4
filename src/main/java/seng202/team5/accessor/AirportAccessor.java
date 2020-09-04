@@ -248,31 +248,30 @@ public class AirportAccessor implements Accessor {
      */
     public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
-        String query = "SELECT * FROM AIRPORT_DATA";
-        ArrayList<String> elements = new ArrayList<>();
+
+        List<String> queryTerms = new ArrayList<>();
+        List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                query = query + " WHERE airport_name = ?";
+                queryTerms.add("airport_name = ?");
                 elements.add(name);
             }
 
             if (city != null) {
-                if (name != null) {
-                    query = query + " and city = ?";
-                } else {
-                    query = query + " WHERE city = ?";
-                }
+                queryTerms.add("city = ?");
                 elements.add(city);
             }
 
             if (country != null) {
-                if (name != null || city != null) {
-                    query = query + " and country = ?";
-                } else {
-                    query = query + " WHERE country = ?";
-                }
+                queryTerms.add("country = ?");
                 elements.add(country);
+            }
+
+            String query = "SELECT * FROM AIRPORT_DATA";
+            if (queryTerms.size() != 0) {
+                query += " WHERE ";
+                query += String.join(" and ", queryTerms);
             }
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
