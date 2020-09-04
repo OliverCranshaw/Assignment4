@@ -76,7 +76,11 @@ public class AirportServiceTest extends BaseDatabaseTest {
                     if (validName && validCity && validCountry) {
                         assertTrue(combination, resultSet.next());
                         for (int i = 0; i<testData.size(); i++) {
-                            assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
+                            Object cell = testData.get(i);
+                            if (cell instanceof Float) {
+                                cell = (double)((Float)cell);
+                            }
+                            assertEquals(combination, cell, resultSet.getObject(2 + i));
                         }
                     }
                     assertFalse(combination, resultSet.next());
@@ -88,10 +92,10 @@ public class AirportServiceTest extends BaseDatabaseTest {
     }
 
     public void testGetAirportByID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
 
         for (int i = 0; i<3; i++) {
-            Connection dbHandler = DBConnection.getConnection();
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
                             + "longitude, altitude, timezone, dst, tz_database_timezone) "
@@ -112,8 +116,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
             assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
-
-            dbHandler.close();
         }
 
         for (int i = 0; i<3; i++) {
@@ -125,9 +127,15 @@ public class AirportServiceTest extends BaseDatabaseTest {
             assertTrue(resultSet.next());
 
             // Check name
+            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                Object cell = testData.get(j);
+                if (cell instanceof Float) {
+                    cell = (double)((Float)cell);
+                }
+                assertEquals(cell, resultSet.getObject(2 + j));
             }
 
             // Check there are no more than 1 result

@@ -86,10 +86,11 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     }
 
     public void testGetAirlineByID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
 
         for (int i = 0; i<3; i++) {
-            Connection dbHandler = DBConnection.getConnection();
+
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
                             + "VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -109,8 +110,6 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
-
-            dbHandler.close();
         }
 
         for (int i = 0; i<3; i++) {
