@@ -8,21 +8,25 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.After;
 import org.junit.Assert;
 import seng202.team5.data.ReadFile;
-import seng202.team5.database.DBTableInitializer;
+import seng202.team5.database.DBConnection;
+import seng202.team5.database.DBInitializer;
+import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.FlightService;
+import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class readFileScenario {
 
-    private ReadFile readFile = new ReadFile();
+    private ReadFile readFile;
     private String string;
     private String string_without_quotes;
+    private String line;
     private ArrayList<String> splitLine;
     private ArrayList<String> expected;
     private ArrayList<Integer> expected_ids;
@@ -32,33 +36,37 @@ public class readFileScenario {
     private File airportFile;
     private File flightFile;
     private File routeFile;
-    private static Connection con;
+    AirlineService airlineService;
+    AirportService airportService;
+    FlightService flightService;
+    RouteService routeService;
 
     @Before
-    public static void setup() {
-        String url = "jdbc:sqlite:test.db";
-        DBTableInitializer tableInitializer = new DBTableInitializer();
+    public void setup() {
+        String filename = "test.db";
+        File dbFile = new File(filename);
 
-        try (Connection tmp = DriverManager.getConnection(url)) {
-            con = tmp;
-            if (con != null) {
-                DatabaseMetaData meta = con.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("DB created.");
-                tableInitializer.initializeTables(url);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        DBInitializer.createNewDatabase(filename);
+
+        DBConnection.setDatabaseFile(dbFile);
+
+        readFile = new ReadFile();
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
     }
 
     @After
-    public static void teardown() {
-        File db = new File("test.db");
+    public void teardown() {
         try {
-            if (con != null) {
-                con.close();
-                db.delete();
+            File dbFile = new File("test.db");
+            Connection con = DBConnection.getConnection();
+            con.close();
+
+            boolean result = dbFile.delete();
+
+            if (result) {
                 System.out.println("DB deleted.");
             }
         } catch (SQLException e) {
@@ -66,10 +74,9 @@ public class readFileScenario {
         }
     }
 
-    // "\"\""
-    // ""
-    // "\\N"
-    // "\"New Zealand\""
+
+    // Removing Quotes
+
     @Given("^a string (.*) \"(.*)\"$")
     public void aString(String givenString) {
         string = givenString;
@@ -81,296 +88,370 @@ public class readFileScenario {
     }
 
     @Then("^the string (.*)$")
-    public void checkString(String string_without_quotes) {
+    public void checkString() {
         Assert.assertEquals(string.replaceAll("\"", ""), string_without_quotes);
     }
 
 
+    // Splitting Data
 
-    @Given("normal data with no blank entries and all with quotation marks")
-    public void normalData() {
-        string = "\"Goroka\",\"Goroka\",\"Papua New Guinea\"";
+    // Splitting line with multiple entries
+
+    @Given("^line \"(.*?)\" with (.*)$")
+    public void setLine(String givenLine) {
+        line = givenLine;
     }
 
-    @When("^splitting (.*)$")
-    public void splitData() {
-        splitLine = readFile.getEntries(string);
+    @When("^splitting line with (.*)$")
+    public void splittingLine() {
+        splitLine = readFile.getEntries(line);
     }
 
     @Then("the data is split into separate entries, all with quotation marks removed")
-    public void separatedNormalData() {
-        expected = new ArrayList<>(Arrays.asList("Goroka", "Goroka", "Papua New Guinea"));
-        Assert.assertEquals(expected, splitLine);
+    public void splitIntoSeparateEntries() {
+        string = "";
+        for (String entry : splitLine) {
+            string += entry;
+            string += ",";
+        }
+        string = string.substring(0, string.length() - 2);
+
+        Assert.assertEquals(readFile.removeQuotes(line), string);
     }
 
-    @Given("data with some blank entries, and not all entries having quotation marks")
-    public void abnormalData() {
-        string = "2,\"135 Airways\",\\N,\"\",,\"GNL\",\"GENERAL\",\"United States\",\"N\"";
-    }
-
-    @Then("the data is split into separate entries including any blank spaces, any entries with quotation marks now have them removed")
-    public void separatedAbnormalData() {
-        expected = new ArrayList<>(Arrays.asList("2", "135 Airways", "\\N", "", "", "GNL", "GENERAL", "United States", "N"));
-        Assert.assertEquals(expected, splitLine);
-    }
-
-    @Given("data with only blank entries")
-    public void blankData() {
-        string = ",,,";
-    }
-
-    @Then("the data is split into separate empty strings")
-    public void separatedBlankData() {
-        expected = new ArrayList<>(Arrays.asList("", "", "", ""));
-        Assert.assertEquals(expected, splitLine);
-    }
-
-    @Given("data with no commas but with quotation marks")
-    public void singleEntryQuotes() {
-        string = "\"Papua New Guinea\"";
-    }
+    // Splitting a line with only one entry
 
     @Then("the data is one string with quotation marks removed")
-    public void singleEntry() {
-        expected = new ArrayList<>(Arrays.asList("Papua New Guinea"));
-        Assert.assertEquals(expected, splitLine);
-    }
-
-    @Given("data with no commas and no quotation marks")
-    public void singleEntryNoQuotes() {
-        string = "Papua New Guinea";
-    }
-
-    @Then("the data is one string, the same as what was input")
-    public void sameSingleEntry() {
-        expected = new ArrayList<>(Arrays.asList("Papua New Guinea"));
-        Assert.assertEquals(expected, splitLine);
-    }
-
-    @Given("empty data with no commas")
-    public void emptyData() {
-        string = "";
-    }
-
-    @Then("the data is one empty string")
-    public void separatedEmptyString() {
-        expected = new ArrayList<>(Arrays.asList(""));
-        Assert.assertEquals(expected, splitLine);
+    public void splitIntoOneString() {
+        Assert.assertEquals(line, splitLine.get(0));
     }
 
 
+    // Reading Airline Data
 
-    @Given("a file with airline data with 8 entries")
-    public void setNormalAirlineIDFile() {
-        airlineFile = new File("normal_airline_with_id.txt");
+    // Reading valid airline data
+
+    @Given("^a file \"(.*?)\" with valid airline data$")
+    public void validAirlineFile(String filename) {
+        airlineFile = new File(filename);
     }
 
-    @When("^reading(.*)airline data(.*)$")
-    public void readAirline(File file) {
-        id = readFile.readAirlineData(file);
+    @When("reading valid airline data from a file")
+    public void readValidAirline() {
+        id = readFile.readAirlineData(airlineFile);
     }
 
-    @Then("^(.*) a(n)* (.*) is added with id 1$")
-    public void dataAdded() {
+    @Then("^an airline is added with id 1$")
+    public void airlineAdded() {
         Assert.assertEquals(1, id);
     }
 
-    @Given("a file with airline data with 7 entries")
-    public void setNormalAirlineFile() {
-        airlineFile = new File("normal_airline.txt");
+    // Reading invalid airline data with too few entries
+
+    @Given("^a file \"(.*?)\" with airline data with too few entries, i.e. less than 7 entries$")
+    public void invalidAirlineFileTooFewEntries(String filename) {
+        airlineFile = new File(filename);
     }
 
-    @Given("a file with airline data with an airline id, 8 entries, and abnormal entries such as blank spaces, N/A, etc.")
-    public void setAbnormalAirlineFile() {
-        airlineFile = new File("abnormal_airline_with_id.txt");
+    @When("reading airline data with less than 7 entries from a file")
+    public void readAirlineFileTooFewEntries() {
+        id = readFile.readAirlineData(airlineFile);
     }
 
-    @Given("a file with airline data with too few entries, i.e. less than 7 entries")
-    public void setTooFewEntriesAirlineFile() {
-        airlineFile = new File("airline_too_few_entries.txt");
-    }
-
-    @Then("^the (.*) data is rejected, and the user is told that their data has too few entries$")
-    public void rejectedTooFewEntries() {
+    @Then("the airline data is rejected with an error code -2")
+    public void rejectedAirlineTooFewEntries() {
         Assert.assertEquals(-2, id);
     }
 
-    @Given("a file with airline data with too many entries, i.e. more than 8 entries")
-    public void setTooManyEntriesAirlineFile() {
-        airlineFile = new File("airline_too_many_entries.txt");
+    // Reading invalid airline data with too many entries
+
+    @Given("^a file \"(.*?)\" with airline data with too many entries, i.e. more than 8 entries$")
+    public void invalidAirlineFileTooManyEntries(String filename) {
+        airlineFile = new File(filename);
     }
 
-    @Then("^the (.*?) data is rejected, and the user is told that their data (.*)$")
-    public void rejectedTooManyEntries() {
+    @When("reading airline data with more than 8 entries from a file")
+    public void readAirlineFileTooManyEntries() {
+        id = readFile.readAirlineData(airlineFile);
+    }
+
+    @Then("the airline data is rejected with an error code -3")
+    public void rejectedAirlineTooManyEntries() {
         Assert.assertEquals(-3, id);
     }
 
-    @Given("a file with multiple airlines, i.e. 5, of normal airline data, i.e. airline data with 7 or 8 entries")
-    public void setNormalAirlinesFile() {
-        airlineFile = new File("normal_airlines_multiple.txt");
+    // Reading multiple airlines from a file
+
+    @Given("^a file \"(.*?)\" with multiple airlines$")
+    public void multipleAirlinesFile(String filename) {
+        airlineFile = new File(filename);
     }
 
-    @Then("^each line is split with quotes removed, and adds each (.*) to the database with an incrementing id, i.e. last id is 5$")
-    public void normalMultipleAdded() {
-        Assert.assertEquals(5, id);
+    @When("reading multiple instances of airline data from a file")
+    public void readAirlines() {
+        id = readFile.readAirlineData(airlineFile);
     }
 
-    @Given("a file with multiple airlines, i.e. 5, where the first and third lines have the incorrect number of entries")
-    public void setAbnormalAirlinesFile() {
-        airlineFile = new File("abnormal_airlines_multiple.txt");
-    }
-
-    @Then("^each line is split with quotes removed, and adds each (.*) except for the ones with the incorrect number of entries to the database with incrementing ids, i.e. last id is 3$")
-    public void abnormalMultipleAdded() {
-        Assert.assertEquals(3, id);
+    @Then("each valid airline is added to the database with an incrementing id")
+    public void validAirlinesAdded() {
+        Assert.assertEquals(airlineService.getMaxID(), id);
     }
 
 
+    // Reading Airport Data
 
-    @Given("a file with airport data with 12 entries")
-    public void setNormalAirportIDFile() {
-        airportFile = new File("normal_airport_with_id.txt");
+    // Reading valid airport data
+
+    @Given("^a file \"(.*?)\" with valid airport data$")
+    public void validAirportFile(String filename) {
+        airportFile = new File(filename);
     }
 
-    @When("^reading(.*)airport data(.*)$")
-    public void readAirport(File file) {
-        id = readFile.readAirportData(file);
+    @When("reading valid airport data from a file")
+    public void readValidAirport() {
+        id = readFile.readAirportData(airportFile);
     }
 
-    @Given("a file with airport data with 11 entries")
-    public void setNormalAirportFile() {
-        airportFile = new File("normal_airport.txt");
+    @Then("an airport is added with id 1")
+    public void airportAdded() {
+        Assert.assertEquals(1, id);
     }
 
-    @Given("a file with airport data with an airport id, 12 entries, and abnormal entries such as blank spaces")
-    public void setAbnormalAirportFile() {
-        airportFile = new File("abnormal_airport_with_id.txt");
+    // Reading invalid airport data with too few entries
+
+    @Given("^a file \"(.*?)\" with airport data with too few entries, i.e. less than 11 entries$")
+    public void invalidAirportFileTooFewEntries(String filename) {
+        airportFile = new File(filename);
     }
 
-    @Given("a file with airport data with too few entries, i.e. less than 11 entries")
-    public void setTooFewEntriesAirportFile() {
-        airportFile = new File("airport_too_few_entries.txt");
+    @When("reading airport data with less than 11 entries from a file")
+    public void readAirportFileTooFewEntries() {
+        id = readFile.readAirportData(airportFile);
     }
 
-    @Given("a file with airport data with too many entries, i.e. more than 12 entries")
-    public void setTooManyEntriesAirportFile() {
-        airportFile = new File("airport_too_many_entries.txt");
+    @Then("the airport data is rejected with an error code -2")
+    public void rejectedAirportTooFewEntries() {
+        Assert.assertEquals(-2, id);
     }
 
-    @Given("a file with multiple airports, i.e. 5, of normal airport data, i.e. airport data with 11 or 12 entries")
-    public void setNormalAirportsFile() {
-        airportFile = new File("normal_airports_multiple.txt");
+    // Reading invalid airport data with too many entries
+
+    @Given("^a file \"(.*?)\" with airport data with too many entries, i.e. more than 12 entries$")
+    public void invalidAirportFileTooManyEntries(String filename) {
+        airportFile = new File(filename);
     }
 
-    @Given("a file with multiple airports, i.e. 5, where the first and third lines have the incorrect number of entries")
-    public void setAbnormalAirportsFile() {
-        airportFile = new File("abnormal_airports_multiple.txt");
+    @When("reading airport data with more than 12 entries from a file")
+    public void readAirportFileTooManyEntries() {
+        id = readFile.readAirportData(airportFile);
+    }
+
+    @Then("the airport data is rejected with an error code -3")
+    public void rejectedAirportTooManyEntries() {
+        Assert.assertEquals(-3, id);
+    }
+
+    // Reading multiple airports from a file
+
+    @Given("^a file \"(.*?)\" with multiple airports$")
+    public void multipleAirportsFile(String filename) {
+        airportFile = new File(filename);
+    }
+
+    @When("reading multiple instances of airport data from a file")
+    public void readAirports() {
+        id = readFile.readAirportData(airportFile);
+    }
+
+    @Then("each valid airport is added to the database with an incrementing id")
+    public void validAirportsAdded() {
+        Assert.assertEquals(airportService.getMaxID(), id);
     }
 
 
+    // Reading Flight Data
 
-    @Given("a file with a single flight entry with 5 entries")
-    public void setNormalFlightEntryFile() {
-        flightFile = new File("normal_flight_entry.txt");
+    // Reading valid flight entry data
+
+    @Given("^a file \"(.*?)\" with a single valid flight entry$")
+    public void validFlightEntryFile(String filename) {
+        flightFile = new File(filename);
     }
 
-    @And("^the(.*)airline(s)* and airport(.*)exist$")
-    public void setupAirportsAirlines() {
-        airlineFile = new File("airlines.txt");
-        airportFile = new File("airports.txt");
-
-        readFile.readAirlineData(airlineFile);
-        readFile.readAirportData(airportFile);
+    @And("^if the location type \"location_type\" is \"APT\" then the location \"location\" exists in the airport table$")
+    public void locationExistsLocationTypeIsAPT(String location, String location_type) {
+        // implement
     }
 
-    @When("^reading(.*)flight data(.*)$")
-    public void readFlight(File file) {
-        ids = readFile.readFlightData(file);
+    @When("reading valid flight data from a file")
+    public void readValidFlightEntry() {
+        ids = readFile.readFlightData(flightFile);
     }
 
-    @Then("the flight data is split into the 5 entries, with quotes removed, and a flight entry is added with id 1 and flight id 1")
+    @Then("a flight entry is added with id 1 and flight id 1")
     public void addedFlightEntry() {
         expected_ids = new ArrayList<>(Arrays.asList(1, 1));
         Assert.assertEquals(expected_ids, ids);
     }
 
-    @Given("a file with multiple flight data entries, each with 5 entries")
-    public void setNormalFlightFile() {
-        flightFile = new File("normal_flight.txt");
+    // Reading a valid flight from a file
+
+    @Given("^a file \"(.*?)\" with multiple valid flight entries$")
+    public void validFlightFile(String filename) {
+        flightFile = new File(filename);
     }
 
-    @Then("each flight entry is split into the 5 entries, with quotes removed, and the flight entries are all added with flight id 1")
+    @When("reading multiple instances of valid flight data from a file")
+    public void readValidFlight() {
+        ids = readFile.readFlightData(flightFile);
+    }
+
+    @Then("the flight entries are all added with flight id 1 and an incrementing unique id")
     public void addedFlight() {
-        expected_ids = new ArrayList<>(Arrays.asList(1, 5));
+        expected_ids = new ArrayList<>(Arrays.asList(1, flightService.getMaxID()));
         Assert.assertEquals(expected_ids, ids);
     }
 
-    @Given("a file with a single flight entry with too few entries, i.e. less than 5 entries")
-    public void setTooFewEntriesFlightFile() {
-        flightFile = new File("flight_entry_too_few_entries.txt");
+    // Reading invalid flight entry data with the wrong number of entries
+
+    @Given("^a file \"(.*?)\" with a single flight entry with the wrong number of entries, i.e. less or more than 5$")
+    public void invalidFlightEntryFileWrongNumberOfEntries(String filename) {
+        flightFile = new File(filename);
     }
 
-    @Given("a file with a single flight entry with too many entries, i.e. more than 5 entries")
-    public void setTooManyEntriesFlightFile() {
-        flightFile = new File("flight_entry_too_many_entries.txt");
+    @When("reading flight data with the wrong number of entries from a file")
+    public void readFlightEntryFileWrongNumberOfEntries() {
+        ids = readFile.readFlightData(flightFile);
     }
 
-    @Given("a file with multiple flight data entries, some of them with the incorrect number of entries")
-    public void setAbnormalFlightFile() {
-        flightFile = new File("abnormal_flight.txt");
+    @Then("the flight data is rejected, and two error codes of -1 are returned")
+    public void rejectedFlightEntryTooFewEntries() {
+        expected_ids = new ArrayList<>(Arrays.asList(-1, -1));
+        Assert.assertEquals(expected_ids, ids);
     }
 
-    @Then("if an entry with the incorrect number of entries is reached, the data is rejected, any of the entries added prior are deleted, and the user is told that their data is in the wrong format")
+    // Reading a flight from a file with some invalid flight entries
+
+    @Given("^a file \"(.*?)\" with multiple flight data entries, some of them invalid$")
+    public void invalidFlightFile(String filename) {
+        flightFile = new File(filename);
+    }
+
+    @When("reading multiple instances of flight data with some being invalid from a file")
+    public void readInvalidFlightFile() {
+        ids = readFile.readFlightData(flightFile);
+    }
+
+    @Then("an invalid flight entry is reached all previous ones are deleted, and two error codes of -1 are returned")
     public void rejectedFlight() {
-        expected_ids = new ArrayList<>(Arrays.asList(-1, -2));
+        expected_ids = new ArrayList<>(Arrays.asList(-1, -1));
+
         Assert.assertEquals(expected_ids, ids);
+        Assert.assertEquals(flightService.getMaxID(), 0);
+        Assert.assertEquals(flightService.getNextFlightID(), 1);
     }
 
 
+    // Reading Route Data
 
-    @Given("a file with route data with 9 entries")
-    void setNormalRouteIDFile() {
-        routeFile = new File("normal_route_9_entries.txt");
+    // Reading valid route data
+
+    @Given("^a file \"(.*?)\" with valid route data$")
+    public void validRouteFile(String filename) {
+        routeFile = new File(filename);
     }
 
-    @When("^reading(.*)route data(.*)$")
-    void readRoute(File file) {
-        id = readFile.readRouteData(file);
+    @And("^the airline with code \"(.*?)\" exists$")
+    public void airlineExists(String airline) {
+        // implement
     }
 
-    @Given("a file with route data with 6 entries")
-    void setNormalRouteFile() {
-        routeFile = new File("normal_route_6_entries.txt");
+    @And("^the source airport with code \"(.*?)\" exists$")
+    public void sourceAirportExists(String source_airport) {
+        // implement
     }
 
-    @Given("a file with route data with an airline id, source and destination airport ids, 9 entries, and abnormal entries such as blank spaces")
-    void setAbnormalRouteFile() {
-        routeFile = new File("abnormal_route.txt");
+    @And("^the destination airport with code \"(.*?)\" exists$")
+    public void destinationAirportExists(String dest_airport) {
+        // implement
     }
 
-    @Given("a file with route data with too few entries, i.e. less than 6 entries")
-    void setTooFewEntriesRoute() {
-        routeFile = new File("route_too_few_entries.txt");
+    @When("reading valid route data from a file")
+    public void readValidRouteFile() {
+        id = readFile.readRouteData(routeFile);
     }
 
-    @Given("a file with route data with the wrong number of entries, i.e. more than 6 entries but has less than 9 entries")
-    void setTooManyEntriesLessThan9Route() {
-        routeFile = new File("route_too_many_entries_less_than_9.txt");
+    @Then("a route is added with id 1")
+    public void routeAdded() {
+        Assert.assertEquals(1, id);
     }
 
-    @Given("a file with route data with too many entries, i.e. more than 9 entries")
-    void setTooManyEntriesRoute() {
-        routeFile = new File("route_too_many_entries.txt");
+    // Reading invalid route data with less than 6 entries
+
+    @Given("^a file \"(.*?)\" with route data with too few entries, i.e. less than 6 entries$")
+    public void invalidRouteFileTooFewEntries(String filename) {
+        routeFile = new File(filename);
     }
 
-    @Given("a file with multiple lines, i.e. 5, of normal route data, i.e. route data with 6 or 9 entries")
-    void setNormalRoutesFile() {
-        routeFile = new File("normal_routes_multiple.txt");
+    @When("reading route data with less than 6 entries from a file")
+    public void readRouteFileTooFewEntries() {
+        id = readFile.readRouteData(routeFile);
     }
 
-    @Given("a file with multiple lines, i.e. 5, where the first and third lines have the incorrect number of entries")
-    void setAbnormalRoutesFile() {
-        routeFile = new File("abnormal_routes_multiple.txt");
+    @Then("the route data is rejected, and an error code of -2 is returned")
+    public void rejectedRouteTooFewEntries() {
+        Assert.assertEquals(-2, id);
+    }
+
+    // Reading invalid route data with more than 6 entries but less than 9 entries
+
+    @Given("^a file \"(.*?)\" with route data with the wrong number of entries, i.e. more than 6 entries but has less than 9 entries$")
+    public void invalidRouteFileWrongNumberOfEntries(String filename) {
+        routeFile = new File(filename);
+    }
+
+    @When("reading route data with more than 6 but less than 9 entries from a file")
+    public void readRouteFileWrongNumberOfEntries() {
+        id = readFile.readRouteData(routeFile);
+    }
+
+    @Then("the route data is rejected, and an error code of -3 is returned")
+    public void rejectedRouteWrongNumberOfEntries() {
+        Assert.assertEquals(-3, id);
+    }
+
+    // Reading invalid route data with more than 9 entries
+
+    @Given("^a file \"(.*?)\" with route data with too many entries, i.e. more than 9 entries$")
+    public void invalidRouteFileTooManyEntries(String filename) {
+        routeFile = new File(filename);
+    }
+
+    @When("reading route data with more than 9 entries from a file")
+    public void readRouteFileTooManyEntries() {
+        id = readFile.readRouteData(routeFile);
+    }
+
+    @Then("the route data is rejected, and an error code of -4 is returned")
+    public void rejectedRouteTooManyEntries() {
+        Assert.assertEquals(-4, id);
+    }
+
+    // Reading multiple routes from a file
+
+    @Given("^a file \"(.*?)\" with multiple routes$")
+    public void multipleRoutesFile(String filename) {
+        routeFile = new File(filename);
+    }
+
+    @When("reading multiple instances of route data from a file")
+    public void readRoutes() {
+        id = readFile.readRouteData(routeFile);
+    }
+
+    @Then("each valid route is added to the database with an incrementing id")
+    public void validRoutesAdded() {
+        Assert.assertEquals(routeService.getMaxID(), id);
     }
 
 }
