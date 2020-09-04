@@ -12,8 +12,14 @@ import javafx.stage.Stage;
 import seng202.team5.App;
 import seng202.team5.Search;
 import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.RouteService;
+import seng202.team5.table.AirlineTable;
+import seng202.team5.table.AirportTable;
+import seng202.team5.table.RouteTable;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +91,18 @@ public class MainMenuController {
 
 
     private AirlineService airlineService;
-    private ArrayList airlineRawTable;
+    private AirportService airportService;
+    private RouteService routeService;
+    private AirlineTable airlineTable;
+    private AirportTable airportTable;
+    private RouteTable routeTable;
 
-    public MainMenuController() {
+    public MainMenuController() throws SQLException {
         airlineService = new AirlineService();
 
+        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+
+        airlineTable.createTable();
     }
 
 
@@ -300,7 +313,7 @@ public class MainMenuController {
 
 
     @FXML
-    private void onClickAirlineDataTab() {
+    private void filterAirlineTable() {
 
     }
 

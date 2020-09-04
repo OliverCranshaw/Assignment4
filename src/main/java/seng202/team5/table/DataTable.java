@@ -29,4 +29,8 @@ public abstract class DataTable {
         filteredData = list;
     }
 
+    public ArrayList<ArrayList<Object>> getData() {
+        return filteredData;
+    }
+
 }
