@@ -48,7 +48,7 @@ public class FlightAccessor implements Accessor{
         try {
             // The SQL insert statement
             PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA(flight_id, airline, airport, altitude, latitude, longitude) "
+                    "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?)");
             // Iterates through the ArrayList and adds the values to the insert statement
             for (int i=1; i < 7; i++) {
@@ -99,11 +99,11 @@ public class FlightAccessor implements Accessor{
             // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
             try {
                 if (new_airline != null) {
-                    search = search + "airline = ?, ";
+                    search = search + "location_type = ?, ";
                     elements.add(new_airline);
                 }
                 if (new_airport != null) {
-                    search = search + "airport = ?, ";
+                    search = search + "location = ?, ";
                     elements.add(new_airport);
                 }
                 if (new_altitude != -1) {
