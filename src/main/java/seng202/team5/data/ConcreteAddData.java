@@ -15,11 +15,22 @@ import seng202.team5.service.RouteService;
  * @author Jack Ryan
  */
 public class ConcreteAddData extends AddData {
-    // Initializes all the necessary Service classes
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
-    private FlightService flightService = new FlightService();
-    private RouteService routeService = new RouteService();
+
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final FlightService flightService;
+    private final RouteService routeService;
+
+    /**
+     * Constructor for ConcreteAddData.
+     * Initializes all of the necessary Services.
+     */
+    public ConcreteAddData() {
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
+    }
 
     /**
      * Overrides the abstract addAirline method of AddData.

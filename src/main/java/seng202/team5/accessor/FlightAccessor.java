@@ -216,6 +216,29 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
+     * Selects all flights from the database and returns them.
+     *
+     * @return ResultSet result Contains the flights in the database.
+     *
+     * @author Billie Johnson
+     */
+    public ResultSet getAllData() {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM FLIGHT_DATA");
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve flights.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      *
      *
      * @param id

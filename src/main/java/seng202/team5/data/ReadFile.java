@@ -19,9 +19,19 @@ public class ReadFile {
     private BufferedReader bufferedReader;
     private String line;
     private ArrayList<String> splitLine;
-    private ConcreteAddData concreteAddData = new ConcreteAddData();
-    private ConcreteDeleteData concreteDeleteData = new ConcreteDeleteData();
-    private FlightService flightService = new FlightService();
+    private final ConcreteAddData concreteAddData;
+    private final ConcreteDeleteData concreteDeleteData;
+    private final FlightService flightService;
+
+    /**
+     * Constructor for ReadFile.
+     * Initializes FlightService, ConcreteAddData, and ConcreteDeleteData.
+     */
+    public ReadFile() {
+        concreteAddData = new ConcreteAddData();
+        concreteDeleteData = new ConcreteDeleteData();
+        flightService = new FlightService();
+    }
 
     /**
      * Gets the input file, creates a FileReader with it, and then creates a BufferedReader with the new FileReader.
