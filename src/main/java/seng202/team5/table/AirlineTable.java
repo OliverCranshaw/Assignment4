@@ -10,43 +10,48 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * AirlineTable
+ *
+ * A class that extends DataTable and is used to store airline data to be used for display
+ * in the GUI, as well as providing methods that use th filtering tables to filter for a desired
+ * subset of data
+ *
+ * @author Jack Ryan
+ */
 public class AirlineTable extends DataTable {
 
 
-
+    /**
+     * Constructor for AirlineTable
+     *
+     * @param newOrgData ResultSet of full set of data
+     */
     public AirlineTable(ResultSet newOrgData) {
         super(newOrgData);
     }
 
-
+    /**
+     * filterTable(arraylist, string)
+     *
+     * A method that calls all relevant methods and passes in all parameters required to filter the
+     *  filteredData by the given parameters
+     *
+     * @param countries ArrayList(String) - ArrayList of countries to
+     * @param active String - "Y" if airline currently active "N" otherwise.
+     */
     public void FilterTable(ArrayList<String> countries, String active) {
+        // Creating a new instance of the filterAirlineTable
         FilterAirlineTable filter = new FilterAirlineTable(filteredData);
+        // Setting the filter to the given countries and active status
         filter.setCountries(countries);
         filter.setActive(active);
-        filter.FilterTable();
+        // Filtering the table, modifying the filteredData arraylist
+        filter.filterTable();
 
     }
 
-    public static void main(String[] args) throws SQLException {
-        String name = "AirportName";
-        String alias = "AliasName";
-        String country = "CountryName";
-        String iata = "FT";
-        String icao = "FAF";
-        String callsign = "CallsignStuff";
-        String active = "Y";
-        AirlineService airlineService = new AirlineService();
-        int res = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
-        System.out.println(res);
-        ResultSet result = null;
-        Connection dbHandler = DBConnection.getConnection();;
-        String query = "SELECT * FROM AIRLINE_DATA";
-        PreparedStatement stmt = dbHandler.prepareStatement(query);
-        result = stmt.executeQuery();
-        AirlineTable tab = new AirlineTable(result);
-        tab.createTable();
-        System.out.println(filteredData);
-    }
+
 
 
 }
