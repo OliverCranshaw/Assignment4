@@ -128,18 +128,46 @@ public class FilterRouteTable extends ConcreteFilterTable {
         }
     }
 
+    /**
+     * Sets the airportDep to newAirport.
+     *
+     * @param newAirport the airport iata/icao.
+     *
+     * @author Inga Tokarenko
+     */
     public void setAirportDep(String newAirport) {
         airportDep = newAirport;
     }
 
+    /**
+     * Sets the airportDes to newAirport.
+     *
+     * @param newAirport the airport iata/icao.
+     *
+     * @author Inga Tokarenko
+     */
     public void setAirportDes(String newAirport) {
         airportDes = newAirport;
     }
 
+    /**
+     * Sets the direct to newDirect.
+     *
+     * @param newDirect String that contains either direct or not direct string.
+     *
+     * @author Inga Tokarenko
+     */
     public void setDirect(String newDirect) {
         direct = newDirect;
     }
 
+    /**
+     * Sets the equip to newEquip.
+     *
+     * @param newEquip the equipment.
+     *
+     * @author Inga Tokarenko
+     */
     public void setEquip(String newEquip) {
         equip = newEquip;
     }

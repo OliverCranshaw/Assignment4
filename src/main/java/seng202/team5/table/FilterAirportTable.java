@@ -49,6 +49,13 @@ public class FilterAirportTable extends ConcreteFilterTable {
         }
     }
 
+    /**
+     * Sets the countries to newCountries.
+     *
+     * @param newCountries array of countries.
+     *
+     * @author Inga Tokarenko
+     */
     public void setCountries(ArrayList<String> newCountries) {
         countries = newCountries;
     }

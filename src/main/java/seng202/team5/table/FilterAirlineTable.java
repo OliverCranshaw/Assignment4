@@ -86,10 +86,24 @@ public class FilterAirlineTable extends ConcreteFilterTable {
         }
     }
 
+    /**
+     * Sets the countries to newCountries.
+     *
+     * @param newCountries array of countries.
+     *
+     * @author Inga Tokarenko
+     */
     public void setCountries(ArrayList<String> newCountries) {
         countries = newCountries;
     }
 
+    /**
+     * Sets active to newActive.
+     *
+     * @param newActive String contains the active status.
+     *
+     * @author Inga Tokarenko
+     */
     public void setActive(String newActive) {
         active = newActive;
     }
