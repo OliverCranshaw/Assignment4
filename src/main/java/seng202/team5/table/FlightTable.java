@@ -1,95 +1,86 @@
 package seng202.team5.table;
 
-import seng202.team5.database.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * FlightTable
  *
- * A class
+ * A class that extends DataTable and is used to store flight data to be used for display
+ * in the GUI, as well as providing methods that use the filtering tables to filter for a desired
+ * subset of the data.
+ *
+ * @author Jack Ryan
  */
 public class FlightTable extends DataTable {
 
+    /**
+     * Construcotr for the RouteData
+     *
+     * @param newOrgData ResultSEet of full set of data
+     */
     public FlightTable(ResultSet newOrgData) {
         super(newOrgData);
     }
 
+    /**
+     * createTable() method overridden from DataTable.
+     * This method is overridden as the data to be shown in the gui is just the first entry
+     * for each flight (each flight spans multiple entries), so the process of creating the table is different
+     *
+     * @throws SQLException
+     */
     @Override
     public void createTable() throws SQLException {
+        // Calling a method to get an arraylist of all the flight entries
         ArrayList<ArrayList<Object>> list = createUnreducedTable();
-        List<List<Integer>> currAdded = new ArrayList<>();
-        for (ArrayList<Object> flightSeg : list) {
-            int altitude = (int) flightSeg.get(4);
-            int ID = (int) flightSeg.get(0);
-            int flightID = (int) flightSeg.get(1);
-            if (altitude == 0) {
-                boolean isIn = false;
-                for (List<Integer> flightInf : currAdded) {
-                    if (flightInf.get(1) == flightID) {
-                        isIn = true;
-                        if (ID < flightInf.get(0)) {
-                            currAdded.remove(flightInf);
-                            currAdded.add(Arrays.asList(ID, flightID));
-                        }
-                    }
-                }
-                if (!isIn) {
-                    currAdded.add(Arrays.asList(ID, flightID));
-                }
+        // Sorting the flights by a custom comparator
+        list.sort(new FlightComparator());
+        // Preparing a list to hold currently found flightIds
+        List<Integer> foundIDs = new ArrayList<>();
+        // Preparing an ArrayList to hold the result
+        ArrayList<ArrayList<Object>> result = new ArrayList<>();
+        // Iterating through the list of all flight entries, adding it to the result when it is the first for each flight
+        for (ArrayList<Object> flight : list) {
+            int flightID = (int) flight.get(1);
+            if (!foundIDs.contains(flightID)) {
+                foundIDs.add(flightID);
+                result.add(flight);
             }
         }
-        for (ArrayList<Object> flightSeg : list) {
-            boolean flightUsed = false;
-            int ID = (int) flightSeg.get(0);
-            for (List<Integer> flightInf : currAdded) {
-                if (flightInf.get(0) == ID) {
-                    flightUsed = true;
-                    break;
-                }
-            }
-
-            if (!flightUsed) {
-                list.remove(flightSeg);
-            }
-        }
-
-        filteredData = list;
-
-
+        // Setting the filteredData to the result
+        filteredData = result;
     }
 
 
-
+    /**
+     * createUnreducedTable() behaves as the createTable() method of the DataTable does,
+     * Converting the resultSet orgData to an ArrayList of ArrayList of Objects
+     *
+     * @return ArrayList(ArrayList(Object)) - ArrayList of FlightData
+     * @throws SQLException
+     */
     public ArrayList<ArrayList<Object>> createUnreducedTable() throws SQLException {
-        List<Integer> currentFlights = new ArrayList<>();
+        // Retrieves all of the meta data of the original data resultSet
         ResultSetMetaData md = orgData.getMetaData();
+        // Gets the number of columns (ie the number of variables)
         int columns = md.getColumnCount();
+        // Initializing an arraylist of arraylists to store the extracted data in
         ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+        // Iterates through the result set
         while(orgData.next()) {
+            // An arraylist of each instance of the data type
             ArrayList<Object> row = new ArrayList<>(columns);
+            // Iterates through the data, storing it in the arraylist
             for (int i=1; i<=columns; ++i) {
                 row.add(orgData.getObject(i));
             }
+            // Adds the extracted data to the overall arraylist of data
             list.add(row);
         }
         return list;
     }
 
-
-    public static void main(String[] args) throws SQLException {
-        String query = "SELECT * FROM FLIGHT_DATA";
-        Connection dbHandler = DBConnection.getConnection();
-        PreparedStatement stmt = dbHandler.prepareStatement(query);
-        ResultSet result = stmt.executeQuery();
-        FlightTable flights = new FlightTable(result);
-        flights.createTable();
-        System.out.println(flights.getData());
-
-
-
-    }
 }
