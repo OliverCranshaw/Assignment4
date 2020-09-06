@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface FilterTable {
 
-    void FilterTable();
+    void filterTable();
 
     ArrayList getNext();
 

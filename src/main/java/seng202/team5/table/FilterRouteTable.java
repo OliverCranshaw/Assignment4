@@ -1,6 +1,15 @@
 package seng202.team5.table;
 
 import java.util.ArrayList;
+
+/**
+ * FilterRouteTable
+ *
+ * Contains the functions filterTable, checks for if the data in the row, and setters.
+ * Extends the ConcreteFilterTable abstract class.
+ *
+ * @author Inga Tokarenko
+ */
 public class FilterRouteTable extends ConcreteFilterTable {
 
     private String airportDep;
@@ -9,13 +18,28 @@ public class FilterRouteTable extends ConcreteFilterTable {
     private String equip;
     private boolean remove;
 
-    public FilterRouteTable(ArrayList data) {
+    /**
+     * Constructor for FilterRouteTable.
+     * Sets the elements.
+     *
+     * @param data The ArrayList that is passed through with information from the table.
+     *
+     * @author Inga Tokarenko
+     */
+    public FilterRouteTable(ArrayList<ArrayList<Object>> data) {
         super(data);
     }
 
+    /**
+     * Overrides the the parent class.
+     * Goes through each element and checks weather it matches any criteria that was set at the beginning.
+     * If an element does not match the criteria it is removed from the elements array and the currentPos is reset back to zero.
+     *
+     * @author Inga Tokarenko
+     */
     @Override
-    public void FilterTable() {
-        ArrayList current;
+    public void filterTable() {
+        ArrayList<Object> current;
         currentPos = 0;
         remove = false;
 
@@ -46,18 +70,42 @@ public class FilterRouteTable extends ConcreteFilterTable {
         }
     }
 
+    /**
+     * Checks weather the current airportDep equals to the set airportDep.
+     * Sets the remove to true if the airports don't match.
+     *
+     * @param currentDep the airportDep from the current element.
+     *
+     * @author Inga Tokarenko
+     */
     public void containsAirportDep(String currentDep) {
         if (currentDep != airportDep) {
             remove = true;
         }
     }
 
+    /**
+     * Checks weather the current airportDes equals to the set airportDes.
+     * Sets the remove to true if the airports don't match.
+     *
+     * @param currentDes the airportDes from the current element.
+     *
+     * @author Inga Tokarenko
+     */
     public void containsAirportDes(String currentDes) {
         if (currentDes != airportDes) {
             remove = true;
         }
     }
 
+    /**
+     * Checks weather the selection is direct is direct or not direct.
+     * Sets the remove to true depending on the number of stops.
+     *
+     * @param stops the number of stops from the current element.
+     *
+     * @author Inga Tokarenko
+     */
     public void isDirect(int stops) {
         if (direct == "direct") {
             remove = stops > 0 ? true : false;
@@ -66,6 +114,14 @@ public class FilterRouteTable extends ConcreteFilterTable {
         }
     }
 
+    /**
+     * Checks weather the current equipment equals to the set equipment.
+     * Sets the remove to true if the equipments don't match.
+     *
+     * @param currentEquip the equipment from the current element.
+     *
+     * @author Inga Tokarenko
+     */
     public void containsEquip(String currentEquip) {
         if (currentEquip != equip) {
             remove = true;
