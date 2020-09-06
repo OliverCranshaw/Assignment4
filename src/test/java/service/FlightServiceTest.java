@@ -343,7 +343,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
 
 
 
-        int res = flightService.updateFlight(id, "FLS", airport, altitude, latitude, longitude);
+        int res = flightService.updateFlight(id, "FIX", airport, altitude, latitude, longitude);
 
 
         assertEquals(-1, res);
