@@ -52,13 +52,13 @@ Feature: Adding data
     Then the airport parameters are rejected, and an error code -4 is returned
 
   Scenario: Adding an airport with an invalid IATA code
-    Given valid airport parameters ("Christchurch Intl", "Christchurch", "New Zealand", "NZCH", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") except for an invalid iata "CH"
-    When adding an airport with parameters ("Christchurch Intl", "Christchurch", "New Zealand", "NZCH", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") and invalid iata "CH"
+    Given valid airport parameters ("Christchurch Intl", "Christchurch", "New Zealand", "NZCH", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") except for an invalid iata code "CH"
+    When adding an airport with parameters ("Christchurch Intl", "Christchurch", "New Zealand", "NZCH", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") and invalid iata code "CH"
     Then the airport parameters are rejected, and an error code -5 is returned
 
   Scenario: Adding an airport with an invalid ICAO code
-    Given valid airport parameters ("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") except for an invalid icao "NZC"
-    When adding an airport with parameters ("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") and invalid icao "NZC"
+    Given valid airport parameters ("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") except for an invalid icao code "NZC"
+    When adding an airport with parameters ("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "-43.489358", "172.532225", "123", "12", "Z", "Pacific/Auckland") and invalid icao code "NZC"
     Then the airport parameters are rejected, and an error code -6 is returned
 
   Scenario: Adding an airport with an invalid latitude
@@ -148,7 +148,7 @@ Feature: Adding data
     Then the route parameters are rejected, and an error code -3 is returned
 
   Scenario: Adding a route with an invalid destination airport code
-    Given valid route parameters ("FIX", "NZCH", "", "0", "CR2"") except for an invalid destination airport code "HG"
+    Given valid route parameters ("FIX", "NZCH", "", "0", "CR2") except for an invalid destination airport code "HG"
     When adding a route with parameters ("FIX", "NZCH", "", "0", "CR2") and invalid destination airport code "HG"
     Then the route parameters are rejected, and an error code -4 is returned
 

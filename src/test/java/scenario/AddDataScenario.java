@@ -1,5 +1,6 @@
 package scenario;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -105,13 +106,13 @@ public class AddDataScenario {
 
     // Adding an airline with an invalid ICAO code
 
-    @Given("^valid airline parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid icao code \"([^\"]*)\"$")
+    @Given("^valid airline parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid icao code \"([^\"]*)\"$")
     public void airlineInvalidICAO(String name, String alias, String iata, String callsign, String country, String active, String icao) {
         airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
         Assert.assertEquals(-4, airlineData.checkValues());
     }
 
-    @When("^adding an airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid icao code \"([^\"]*)\"$")
+    @When("^adding an airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid icao code \"([^\"]*)\"$")
     public void addAirlineInvalidICAO(String name, String alias, String iata, String callsign, String country, String active, String icao) {
         id = concreteAddData.addAirline(name, alias, iata, callsign, country, active, icao);
     }
@@ -363,14 +364,14 @@ public class AddDataScenario {
 
     // Adding a valid flight entry
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
     public void validFlightEntryParameters(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         flight_id = flightID;
         Assert.assertEquals(1, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
     public void addValidFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -384,13 +385,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid flight ID
 
-    @Given("^valid flight entry parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid flight id ([^\"]*)$")
+    @Given("^valid flight entry parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid flight id -(\\d+)$")
     public void flightEntryInvalidFlightID(String location_type, String location, String altitude, String latitude, String longitude, int flightID) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-2, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid flight id ([^\"]*)$")
+    @When("^adding a flight entry with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid flight id -(\\d+)$")
     public void addFlightEntryInvalidFlightID(String location_type, String location, String altitude, String latitude, String longitude, int flightID) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -402,13 +403,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid location type
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location type \"([^\"]*)\"$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location type \"([^\"]*)\"$")
     public void flightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String location_type) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-3, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location type \"([^\"]*)\"$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid location type \"([^\"]*)\"$")
     public void addFlightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String location_type) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -420,13 +421,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid location
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location \"([^\"]*)\"$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location \"([^\"]*)\"$")
     public void flightEntryInvalidLocation(int flightID, String location_type, String altitude, String latitude, String longitude, String location) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-4, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid location \"([^\"]*)\"$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid location \"([^\"]*)\"$")
     public void addFlightEntryInvalidLocation(int flightID, String location_type, String altitude, String latitude, String longitude, String location) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -438,13 +439,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid altitude
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid altitude \"([^\"]*)\"$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid altitude \"([^\"]*)\"$")
     public void flightEntryInvalidAltitude(int flightID, String location_type, String location, String latitude, String longitude, String altitude) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-5, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid altitude \"([^\"]*)\"$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid altitude \"([^\"]*)\"$")
     public void addFlightEntryInvalidAltitude(int flightID, String location_type, String location, String latitude, String longitude, String altitude) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -456,13 +457,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid latitude
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid latitude \"([^\"]*)\"$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid latitude \"([^\"]*)\"$")
     public void flightEntryInvalidLatitude(int flightID, String location_type, String location, String altitude, String longitude, String latitude) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-6, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid latitude \"([^\"]*)\"$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid latitude \"([^\"]*)\"$")
     public void addFlightEntryInvalidLatitude(int flightID, String location_type, String location, String altitude, String longitude, String latitude) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -474,13 +475,13 @@ public class AddDataScenario {
 
     // Adding a flight entry with an invalid longitude
 
-    @Given("^valid flight entry parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid longitude \"([^\"]*)\"$")
+    @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid longitude \"([^\"]*)\"$")
     public void flightEntryInvalidLongitude(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         Assert.assertEquals(-7, flightData.checkValues());
     }
 
-    @When("^adding a flight entry with parameters \\(([^\"]*), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid longitude \"([^\"]*)\"$")
+    @When("^adding a flight entry with parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid longitude \"([^\"]*)\"$")
     public void addFlightEntryInvalidLongitude(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
@@ -521,7 +522,7 @@ public class AddDataScenario {
         Assert.assertEquals(-2, routeData.checkValues());
     }
 
-    @When("^adding a route with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid airline code \"([^\"]*)\"$")
+    @When("^adding a route with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) and invalid airline code \"([^\"]*)\"$")
     public void addRouteInvalidAirline(String source_airport, String dest_airport, String codeshare, String stops, String equipment, String airline) {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
