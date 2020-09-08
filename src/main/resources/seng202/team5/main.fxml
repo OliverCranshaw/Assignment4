@@ -107,7 +107,15 @@
                                           <Insets left="70.0" right="25.0" />
                                        </GridPane.margin>
                                     </TextField>
-                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" text="Search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <Label fx:id="errorMessage" maxWidth="-Infinity" textFill="RED" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                       <padding>
+                                          <Insets left="25.0" />
+                                       </padding>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </GridPane>
                               <HBox alignment="BOTTOM_LEFT">

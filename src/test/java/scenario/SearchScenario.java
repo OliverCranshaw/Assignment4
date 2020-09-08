@@ -1,6 +1,6 @@
 package scenario;
 
-import cucumber.api.PendingException;
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -44,7 +44,6 @@ public class SearchScenario {
         flightService.saveFlight(1, "AB", "ABC", 0, 0, 0);
         routeService.saveRoute("AB", "ABC", "DBS", "Y", 2, "GPS");
     }
-
     //Scenario: Search Airline by name
 
     @Given("^the airline name \"([^\"]*)\" is in the database$")
@@ -353,5 +352,211 @@ public class SearchScenario {
         while (searchResult.next()) {
             Assert.assertEquals(equipment, searchResult.getString(10));
         }
+    }
+
+    //Scenario: Search Airline by name when no record in database has this name.
+    @Given("^the airline name \"([^\"]*)\" is not in the database$")
+    public void theAirlineNameIsNotInTheDatabase(String airlineName) throws SQLException {
+        ResultSet result = airlineService.getAirlines(airlineName, null, null);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the airline name \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirlineNameWhichIsnTPresentInTheDatabase(String airlineName) {
+        data.add(airlineName);
+        data.add(null);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchAirline();
+    }
+
+    //Scenario: Search Airline by callsign when no record in database has this callsign.
+    @Given("^the airline callsign \"([^\"]*)\" is not in the database$")
+    public void theAirlineCallsignIsNotInTheDatabase(String airlineCallsign) throws SQLException {
+        ResultSet result = airlineService.getAirlines(null, null, airlineCallsign);
+        Assert.assertFalse(result.next());
+
+    }
+
+    @When("^user searches for the airline callsign \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirlineCallsignWhichIsnTPresentInTheDatabase(String airlineCallsign) {
+        data.add(null);
+        data.add(null);
+        data.add(airlineCallsign);
+        search.setSearchData(data);
+        searchResult = search.searchAirline();
+    }
+
+    //Scenario: Search Airline by country when no record in database has this country.
+    @Given("^the airline country \"([^\"]*)\" is not in the database$")
+    public void theAirlineCountryIsNotInTheDatabase(String airlineCountry) throws SQLException {
+        ResultSet result = airlineService.getAirlines(null, airlineCountry, null);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the airline country \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirlineCountryWhichIsnTPresentInTheDatabase(String airlineCountry) {
+        data.add(null);
+        data.add(airlineCountry);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchAirline();
+    }
+
+    //Scenario: Search Airport by name when no record in database has this name.
+    @Given("^the airport name \"([^\"]*)\" is not in the database$")
+    public void theAirportNameIsNotInTheDatabase(String airportName) throws SQLException {
+        ResultSet result = airportService.getAirports(airportName, null, null);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the airport name \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirportNameWhichIsnTPresentInTheDatabase(String airportName) {
+        data.add(airportName);
+        data.add(null);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchAirport();
+    }
+
+    //Scenario: Search Airport by city when no record in database has this city.
+    @Given("^the airport city \"([^\"]*)\" is not in the database$")
+    public void theAirportCityIsNotInTheDatabase(String airportCity) throws SQLException {
+        ResultSet result = airportService.getAirports(null, airportCity, null);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the airport city \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirportCityWhichIsnTPresentInTheDatabase(String airportCity) {
+        data.add(null);
+        data.add(airportCity);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchAirport();
+    }
+
+    //Scenario: Search Airport by country when no record in database has this country.
+    @Given("^the airport country \"([^\"]*)\" is not in the database$")
+    public void theAirportCountryIsNotInTheDatabase(String airportCountry) throws SQLException {
+        ResultSet result = airportService.getAirports(null, null, airportCountry);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the airport country \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheAirportCountryWhichIsnTPresentInTheDatabase(String airportCountry) {
+        data.add(null);
+        data.add(null);
+        data.add(airportCountry);
+        search.setSearchData(data);
+        searchResult = search.searchAirport();
+    }
+
+    //Scenario: Search Flight by airline when no record in database has this airline.
+    @Given("^the flight airline \"([^\"]*)\" is not in the database$")
+    public void theFlightAirlineIsNotInTheDatabase(String flightAirline) {
+        ResultSet result = flightService.getFlights(flightAirline, null);
+        Assert.assertNull(result);
+    }
+
+    @When("^user searches for the flight airline \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheFlightAirlineWhichIsnTPresentInTheDatabase(String flightAirline) {
+        data.add(flightAirline);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchFlight();
+    }
+
+    //Scenario: Search Flight by airport when no record in database has this airport.
+    @Given("^the flight airport \"([^\"]*)\" is not in the database$")
+    public void theFlightAirportIsNotInTheDatabase(String flightAirport) {
+        ResultSet result = flightService.getFlights(null, flightAirport);
+        Assert.assertNull(result);
+    }
+
+    @When("^user searches for the flight airport \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheFlightAirportWhichIsnTPresentInTheDatabase(String flightAirport) {
+        data.add(null);
+        data.add(flightAirport);
+        search.setSearchData(data);
+        searchResult = search.searchFlight();
+    }
+
+    //Scenario: Search Route by source airport when no record in database has this source airport.
+    @Given("^the route source airport \"([^\"]*)\" is not in the database$")
+    public void theRouteSourceAirportIsNotInTheDatabase(String sourceAirport) {
+        ResultSet result = routeService.getRoutes(sourceAirport, null, -1, null);
+        Assert.assertNull(result);
+    }
+
+    @When("^user searches for the route source airport \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) {
+        data.add(sourceAirport);
+        data.add(null);
+        data.add(-1);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchRoute();
+    }
+
+    //Scenario: Search Route by destination airport when no record in database has this destination airport.
+    @Given("^the route destination airport \"([^\"]*)\" is not in the database$")
+    public void theRouteDestinationAirportIsNotInTheDatabase(String destinationAirport) {
+        ResultSet result = routeService.getRoutes(null, destinationAirport, -1, null);
+        Assert.assertNull(result);
+    }
+
+    @When("^user searches for the route destination airport \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheRouteDestinationAirportWhichIsnTPresentInTheDatabase(String destinationAirport) {
+        data.add(null);
+        data.add(destinationAirport);
+        data.add(-1);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchRoute();
+    }
+
+    //Scenario: Search Route by number of stops when no record in database has this number of stops.
+    @Given("^the route number stops (\\d+) is not in the database$")
+    public void theRouteNumberStopsIsNotInTheDatabase(int numberStops) throws SQLException {
+        ResultSet result = routeService.getRoutes(null, null, numberStops, null);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the route number stops (\\d+) which isn't present in the database$")
+    public void userSearchesForTheRouteNumberStopsWhichIsnTPresentInTheDatabase(int numberStops) {
+        data.add(null);
+        data.add(null);
+        data.add(numberStops);
+        data.add(null);
+        search.setSearchData(data);
+        searchResult = search.searchRoute();
+    }
+
+    //Scenario: Search Route by equipment when no record in database has this equipment.
+    @Given("^the route equipment \"([^\"]*)\" is not in the database$")
+    public void theRouteEquipmentIsNotInTheDatabase(String equipment) throws SQLException {
+        ResultSet result = routeService.getRoutes(null, null, -1, equipment);
+        Assert.assertFalse(result.next());
+    }
+
+    @When("^user searches for the route equipment \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheRouteEquipmentWhichIsnTPresentInTheDatabase(String equipment) {
+        data.add(null);
+        data.add(null);
+        data.add(-1);
+        data.add(equipment);
+        search.setSearchData(data);
+        searchResult = search.searchRoute();
+    }
+
+    //Is used for all searches with data not present.
+    @Then("^the result from the search will be empty$")
+    public void theResultFromTheSearchWillBeEmpty() throws SQLException {
+        Assert.assertFalse(searchResult.next());
+    }
+
+    @Then("^the result from the search will be null$")
+    public void theResultFromTheSearchWillBeNull() {
+        Assert.assertNull(searchResult);
     }
 }
