@@ -1,5 +1,7 @@
 package seng202.team5.data;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -160,6 +162,27 @@ public class AirportData implements Data {
         }
     }
 
+    /**
+     * Convenience constructor for AirportData
+     *
+     * @param resultSet ResultSet object from AirportService
+     * @throws SQLException
+     */
+    public AirportData(ResultSet resultSet) throws SQLException {
+        this(
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getString(5),
+                resultSet.getString(6),
+                resultSet.getDouble(7),
+                resultSet.getDouble(8),
+                resultSet.getInt(9),
+                resultSet.getFloat(10),
+                resultSet.getString(11),
+                resultSet.getString(12)
+        );
+    }
 
     /**
      * Checks that the values of the variables of AirportData are in appropriate form,
