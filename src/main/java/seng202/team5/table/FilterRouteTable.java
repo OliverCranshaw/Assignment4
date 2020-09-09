@@ -15,7 +15,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
     private String airportDep;
     private String airportDes;
     private String direct;
-    private String equip;
+    private ArrayList<String> equip;
     private boolean remove;
 
     /**
@@ -123,7 +123,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void containsEquip(String currentEquip) {
-        if (currentEquip != equip) {
+        if (!equip.contains(currentEquip)) {
             remove = true;
         }
     }
@@ -168,7 +168,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
      *
      * @author Inga Tokarenko
      */
-    public void setEquip(String newEquip) {
+    public void setEquip(ArrayList<String> newEquip) {
         equip = newEquip;
     }
 }
