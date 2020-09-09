@@ -157,6 +157,10 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button routeApplyFilter;
 
+    @FXML
+    private ComboBox routeStopsComboBox;
+
+
     private AirlineService airlineService;
     private AirportService airportService;
     private RouteService routeService;
@@ -179,8 +183,12 @@ public class MainMenuController implements Initializable {
         airlineActiveDropdown.getItems().addAll("", "Yes", "No");
 
         airlineService = new AirlineService();
+        airportService = new AirportService();
+        routeService = new RouteService();
 
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        airportTable = new AirportTable(airportService.getAirports(null, null, null));
+        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
 
         try {
             airlineTable.createTable();

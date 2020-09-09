@@ -73,15 +73,14 @@ public class RouteTable extends DataTable {
      * @param stops Integer - The number of stops for the flight, 0 if it is direct.
      * @param equipment String - 3-letter codes for plane types(s) commonly used for this flight, separated by spaces
      */
-    public void FilterTable(String srcAirport, String dstAirport, Integer stops, ArrayList<String> equipment) {
+    public void FilterTable(String srcAirport, String dstAirport, String stops, ArrayList<String> equipment) {
         filteredData = new ArrayList<>(originalDataArrayList);
         // Creating a new instance of the FilterRouteTable
         FilterRouteTable filter = new FilterRouteTable(filteredData);
         // Setting the filter to the given source airport, destination airport, stops and equipment
         filter.setAirportDep(srcAirport);
         filter.setAirportDes(dstAirport);
-        String direct = (stops == 0) ? "direct" : "not direct";
-        filter.setDirect(direct);
+        filter.setDirect(stops);
         filter.setEquip(equipment);
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
