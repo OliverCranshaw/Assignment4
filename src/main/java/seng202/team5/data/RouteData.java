@@ -116,8 +116,8 @@ public class RouteData implements Data {
         } else if (this.destinationAirport == null || (this.destinationAirport.length() != 3 && this.destinationAirport.length() != 4)) {
             // Ensures the destinationAirport is not null and is either an appropriate iata or icao length (3,4)
             return -4;
-        } else if (this.codeShare == null || !this.codeShare.equals("Y")) {
-            // Ensures the codeShare is not null and is within an appropriate domain
+        } else if (!(this.codeShare == null || this.codeShare.equals("Y"))) {
+            // Ensures the codeShare is either null or is within an appropriate domain
             return -5;
         } else if (this.stops == null || this.stops < 0) {
             // Ensures the stops is not null

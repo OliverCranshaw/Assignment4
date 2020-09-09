@@ -149,8 +149,6 @@ public class UpdateDataTest extends BaseDatabaseTest {
         assertEquals(-4, updateData.updateRoute(1, "ab", "def","ab",  "Y", 1, "a"));
         assertEquals(-4, updateData.updateRoute(1, "ab", "def","abcde",  "Y", 1, "a"));
 
-        assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", null, 1, "a"));
-        assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", "", 1, "a"));
         assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", "N", 1, "a"));
 
         assertEquals(-6, updateData.updateRoute(1, "ab", "abc", "def", "Y", -1, "a"));
