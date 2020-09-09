@@ -30,43 +30,54 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label contentDisplay="RIGHT" text="Name:" GridPane.halignment="CENTER" />
-      <TextField fx:id="nameField" GridPane.columnIndex="1" />
-      <Label text="City:" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-      <TextField fx:id="cityField" GridPane.columnIndex="3" />
-      <TextField fx:id="countryField" GridPane.columnIndex="5" />
-      <Label text="Country:" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-      <Label text="IATA:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <TextField fx:id="iataField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label text="ICAO:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <TextField fx:id="icaoField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-      <Label text="Timezone:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <TextField fx:id="timezoneField" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Label text="DST:" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Label text="Tz:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Button mnemonicParsing="false" onAction="#addButtonPressed" text="Add" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-      <Button mnemonicParsing="false" onAction="#onCancelPressed" text="Cancel" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-      <ComboBox fx:id="dstField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-          <items>
-              <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="E (Europe)" />
-                  <String fx:value="A (US/Canada)" />
-                  <String fx:value="S (South America)" />
-                  <String fx:value="O (Australia)" />
-                  <String fx:value="Z (New Zealand)" />
-                  <String fx:value="N (None)" />
-                  <String fx:value="U (Unknown)" />
-              </FXCollections>
-          </items>
-      </ComboBox>
-      <Label contentDisplay="RIGHT" text="Latitude:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Label contentDisplay="RIGHT" text="Longitude:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <Label contentDisplay="RIGHT" text="Altitude:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <TextField fx:id="latitudeField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-      <TextField fx:id="longitudeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="altitudeField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <TextField fx:id="tzField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+       <Label contentDisplay="RIGHT" text="Name:" GridPane.halignment="CENTER" />
+       <TextField fx:id="nameField" GridPane.columnIndex="1" />
+
+       <Label text="City:" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+       <TextField fx:id="cityField" GridPane.columnIndex="3" />
+
+       <Label text="Country:" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+       <TextField fx:id="countryField" GridPane.columnIndex="5" />
+
+       <Label text="IATA:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+       <TextField fx:id="iataField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+       <Label text="ICAO:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+       <TextField fx:id="icaoField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+       <Label contentDisplay="RIGHT" text="Latitude:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+       <TextField fx:id="latitudeField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+
+       <Label contentDisplay="RIGHT" text="Longitude:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+       <TextField fx:id="longitudeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+       <Label contentDisplay="RIGHT" text="Altitude:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+       <TextField fx:id="altitudeField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+       <Label text="Timezone:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+       <TextField fx:id="timezoneField" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+
+       <Label text="DST:" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+       <ComboBox fx:id="dstField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+           <items>
+               <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="E (Europe)" />
+                   <String fx:value="A (US/Canada)" />
+                   <String fx:value="S (South America)" />
+                   <String fx:value="O (Australia)" />
+                   <String fx:value="Z (New Zealand)" />
+                   <String fx:value="N (None)" />
+                   <String fx:value="U (Unknown)" />
+               </FXCollections>
+           </items>
+       </ComboBox>
+
+       <Label text="Tz:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+       <TextField fx:id="tzField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+       <Button mnemonicParsing="false" onAction="#addButtonPressed" text="Add" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+       <Button mnemonicParsing="false" onAction="#onCancelPressed" text="Cancel" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+       <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
