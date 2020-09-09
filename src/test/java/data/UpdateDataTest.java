@@ -115,4 +115,47 @@ public class UpdateDataTest extends BaseDatabaseTest {
         assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", ""));
         assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", null));
     }
+
+    public void testUpdateFlightEntryFailed() {
+        assertEquals(-2, updateData.updateFlightEntry(-1, "ab", "abc", 1, 2, 3));
+
+        assertEquals(-3, updateData.updateFlightEntry(1, null, "abc", 1, 2, 3));
+        assertEquals(-3, updateData.updateFlightEntry(1, "", "abc", 1, 2, 3));
+        assertEquals(-3, updateData.updateFlightEntry(1, "a", "abc", 1, 2, 3));
+        assertEquals(-3, updateData.updateFlightEntry(1, "abcd", "abc", 1, 2, 3));
+
+        assertEquals(-4, updateData.updateFlightEntry(1, "ab", null, 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "a", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "ab", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "abcde", 1, 2, 3));
+    }
+
+    public void testUpdateRouteFailed() {
+        assertEquals(-2, updateData.updateRoute(1, null, "abc", "def", "Y", 1, "a"));
+        assertEquals(-2, updateData.updateRoute(1, "", "abc", "def", "Y", 1, "a"));
+        assertEquals(-2, updateData.updateRoute(1, "a", "abc", "def", "Y", 1, "a"));
+        assertEquals(-2, updateData.updateRoute(1, "abcd", "abc", "def", "Y", 1, "a"));
+
+        assertEquals(-3, updateData.updateRoute(1, "ab", null, "def", "Y", 1, "a"));
+        assertEquals(-3, updateData.updateRoute(1, "ab", "", "def", "Y", 1, "a"));
+        assertEquals(-3, updateData.updateRoute(1, "ab", "a", "def", "Y", 1, "a"));
+        assertEquals(-3, updateData.updateRoute(1, "ab", "ab", "def", "Y", 1, "a"));
+        assertEquals(-3, updateData.updateRoute(1, "ab", "abcde", "def", "Y", 1, "a"));
+
+        assertEquals(-4, updateData.updateRoute(1, "ab", "def",null, "Y", 1, "a"));
+        assertEquals(-4, updateData.updateRoute(1, "ab", "def","", "Y", 1, "a"));
+        assertEquals(-4, updateData.updateRoute(1, "ab", "def","a",  "Y", 1, "a"));
+        assertEquals(-4, updateData.updateRoute(1, "ab", "def","ab",  "Y", 1, "a"));
+        assertEquals(-4, updateData.updateRoute(1, "ab", "def","abcde",  "Y", 1, "a"));
+
+        assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", null, 1, "a"));
+        assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", "", 1, "a"));
+        assertEquals(-5, updateData.updateRoute(1, "ab", "abc", "def", "N", 1, "a"));
+
+        assertEquals(-6, updateData.updateRoute(1, "ab", "abc", "def", "Y", -1, "a"));
+
+        assertEquals(-7, updateData.updateRoute(1, "ab", "abc", "def", "Y", 1, null));
+        assertEquals(-7, updateData.updateRoute(1, "ab", "abc", "def", "Y", 1, ""));
+    }
 }
