@@ -42,10 +42,18 @@ public class FilterAirportTable extends ConcreteFilterTable {
             current = elements.get(currentPos);
             String country = (String) current.get(3);
 
-            if (!countries.contains(country)) {
-                elements.remove((currentPos));
-                currentPos = 0;
+
+            if (countries != null) {
+                if (!countries.contains(country)) {
+                    elements.remove((currentPos));
+                    currentPos = 0;
+                } else {
+                    currentPos++;
+                }
+            } else {
+                currentPos++;
             }
+
         }
     }
 
