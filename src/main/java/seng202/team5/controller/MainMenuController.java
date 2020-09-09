@@ -1,12 +1,16 @@
 package seng202.team5.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
@@ -16,15 +20,19 @@ import seng202.team5.service.AirportService;
 import seng202.team5.service.RouteService;
 import seng202.team5.table.AirlineTable;
 import seng202.team5.table.AirportTable;
-import seng202.team5.table.DataTable;
 import seng202.team5.table.RouteTable;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class MainMenuController {
+public class MainMenuController implements Initializable {
+
 
     @FXML
     private TabPane mainTabs;
@@ -75,19 +83,19 @@ public class MainMenuController {
     private TextField fourthSearchEntry;
 
     @FXML
-    private TableView airlineRawData;
+    public TableView rawAirlineTable;
 
     @FXML
-    private TableColumn airlineNameCol;
+    private TableColumn<AirlineModel, String> airlineNameCol;
 
     @FXML
-    private TableColumn airlineAliasCol;
+    private TableColumn<AirlineModel, String> airlineAliasCol;
 
     @FXML
-    private TableColumn airlineCountryCol;
+    private TableColumn<AirlineModel, String> airlineCountryCol;
 
     @FXML
-    private TableColumn airlineActiveCol;
+    private TableColumn<AirlineModel, String> airlineActiveCol;
 
     @FXML
     private TextField countryAirlineField;
@@ -143,8 +151,11 @@ public class MainMenuController {
     @FXML
     private TableColumn airportCountryCol;
 
+    @FXML
+    private Button airportApplyFilter;
 
-
+    @FXML
+    private Button routeApplyFilter;
 
     private AirlineService airlineService;
     private AirportService airportService;
@@ -153,15 +164,31 @@ public class MainMenuController {
     private AirportTable airportTable;
     private RouteTable routeTable;
 
-    public MainMenuController() throws SQLException {
+    private ObservableList<AirlineModel> airlineModels;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        airlineNameCol.setCellValueFactory(new PropertyValueFactory<>("AirlineName"));
+        airlineAliasCol.setCellValueFactory(new PropertyValueFactory<>("AirlineAlias"));
+        airlineCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirlineCountry"));
+        airlineActiveCol.setCellValueFactory(new PropertyValueFactory<>("AirlineActive"));
+
+        airlineActiveDropdown.getItems().removeAll(airlineActiveDropdown.getItems());
+        airlineActiveDropdown.getItems().addAll("", "Yes", "No");
+
         airlineService = new AirlineService();
 
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
 
-        airlineTable.createTable();
+        try {
+            airlineTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
-        //populateTable()
-
+        populateAirlineTable(airlineTable.getData());
 
     }
 
@@ -373,11 +400,52 @@ public class MainMenuController {
 
 
 
-    private void populateTable(TableView table, ArrayList<ArrayList<Object>> data) {
-
+    private void populateAirlineTable(ArrayList<ArrayList<Object>> data) {
+        ArrayList<AirlineModel> list = new ArrayList<>();
+        for (ArrayList<Object> datum : data) {
+            String name = (String) datum.get(1);
+            String alias = (String) datum.get(2);
+            String country = (String) datum.get(6);
+            String active = (String) datum.get(7);
+            list.add(new AirlineModel(name, alias, country, active));
+        }
+        airlineModels = FXCollections.observableArrayList(list);
+        rawAirlineTable.setItems(airlineModels);
     }
 
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
+        airlineTable.FilterTable(null, null);
+        String countryText = countryAirlineField.getText();
+        String activeText = (String) airlineActiveDropdown.getValue();
+        if (activeText == null || activeText.equals("")) {
+            activeText = null;
+        } else {
+            activeText = (activeText == "Yes") ? "Y" : "N";
+        }
+        String[] list = countryText.split(",");
+        ArrayList<String> newList = convertToArrayList(list);
+        for (int i = 0; i < newList.size(); i++) {
+            newList.set(i, newList.get(i).trim());
+            if (newList.get(i).equals("")) {
+                newList.remove(i--);
+            }
+        }
+        if (newList.isEmpty()) {
+            newList = null;
+        }
+        airlineTable.FilterTable(newList, activeText);
+        populateAirlineTable(airlineTable.getData());
     }
+
+    public ArrayList<String> convertToArrayList(String[] list) {
+        ArrayList<String> result = new ArrayList<>();
+        for (String component : list) {
+            result.add(component);
+        }
+        return result;
+    }
+
+
+
 }

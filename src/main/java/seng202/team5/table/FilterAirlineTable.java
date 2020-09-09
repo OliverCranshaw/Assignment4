@@ -1,6 +1,7 @@
 package seng202.team5.table;
 
 import java.util.ArrayList;
+import java.util.SortedMap;
 
 /**
  * FilterAirlineTable
@@ -54,6 +55,8 @@ public class FilterAirlineTable extends ConcreteFilterTable {
                 elements.remove((currentPos));
                 currentPos = 0;
                 remove = false;
+            } else {
+                currentPos++;
             }
         }
     }
@@ -81,7 +84,7 @@ public class FilterAirlineTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void containsActive(String currentActive) {
-        if (currentActive != active) {
+        if (!currentActive.equals(active)) {
             remove = true;
         }
     }

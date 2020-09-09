@@ -1,6 +1,10 @@
 package seng202.team5.table;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -23,6 +27,41 @@ public class RouteTable extends DataTable {
         super(newOrgData);
     }
 
+
+
+    @Override
+    public void createTable() throws SQLException {
+        // Retrieves all of the meta data of the original data resultSet
+        ResultSetMetaData md = orgData.getMetaData();
+        // Gets the number of columns (ie the number of variables)
+        int columns = md.getColumnCount();
+        // Initializing an arraylist of arraylists to store the extracted data in
+        ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+        // Iterates through the result set
+        while(orgData.next()) {
+            // An arraylist of each instance of the data type
+            ArrayList<Object> row = new ArrayList<>(columns);
+            // Iterates through the data, storing it in the arraylist
+            for (int i=1; i<=columns; ++i) {
+                if (i != 10) {
+                    row.add(orgData.getObject(i));
+                } else {
+                    // Converts the Equipment String into an ArrayList of strings
+                    String equipString = (String) orgData.getObject(i);
+                    String[] equipment = equipString.split(" ");
+                    ArrayList<String> equipArray = new ArrayList<>(Arrays.asList(equipment));
+                    row.add(equipArray);
+                }
+            }
+            // Adds the extracted data to the overall arraylist of data
+            list.add(row);
+        }
+        // Sets the filtered data to the new Arraylist of arraylists
+        filteredData = list;
+    }
+
+
+
     /**
      * filterTable(ArrayList)
      *
@@ -34,7 +73,8 @@ public class RouteTable extends DataTable {
      * @param stops Integer - The number of stops for the flight, 0 if it is direct.
      * @param equipment String - 3-letter codes for plane types(s) commonly used for this flight, separated by spaces
      */
-    public void FilterTable(String srcAirport, String dstAirport, Integer stops, String equipment) {
+    public void FilterTable(String srcAirport, String dstAirport, Integer stops, ArrayList<String> equipment) {
+        filteredData = new ArrayList<>(originalDataArrayList);
         // Creating a new instance of the FilterRouteTable
         FilterRouteTable filter = new FilterRouteTable(filteredData);
         // Setting the filter to the given source airport, destination airport, stops and equipment

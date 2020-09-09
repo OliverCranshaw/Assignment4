@@ -35,6 +35,7 @@ public class AirportTable extends DataTable {
      * @param countries ArrayList(String) - Arraylist of countries to filter by
      */
     public void FilterTable(ArrayList<String> countries) {
+        filteredData = new ArrayList<>(originalDataArrayList);
         // Creating a new instance of the FilterAirportTable
         FilterAirportTable filter = new FilterAirportTable(filteredData);
         // Setting the filter to the countries given

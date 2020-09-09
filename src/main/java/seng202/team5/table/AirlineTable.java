@@ -41,6 +41,7 @@ public class AirlineTable extends DataTable {
      * @param active String - "Y" if airline currently active "N" otherwise.
      */
     public void FilterTable(ArrayList<String> countries, String active) {
+        filteredData = new ArrayList<>(originalDataArrayList);
         // Creating a new instance of the filterAirlineTable
         FilterAirlineTable filter = new FilterAirlineTable(filteredData);
         // Setting the filter to the given countries and active status

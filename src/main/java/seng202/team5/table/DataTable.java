@@ -18,6 +18,7 @@ public abstract class DataTable {
     // Storing the original data table (usually all data for a certain table),
     // as well as the filtered data (the data intended to be diplayed).
     protected final ResultSet orgData;
+    protected static ArrayList<ArrayList<Object>> originalDataArrayList;
     protected static ArrayList<ArrayList<Object>> filteredData;
 
 
@@ -55,7 +56,8 @@ public abstract class DataTable {
             list.add(row);
         }
         // Sets the filtered data to the new Arraylist of arraylists
-        filteredData = list;
+        filteredData = new ArrayList<>(list);
+        originalDataArrayList = new ArrayList<>(list);
     }
 
 
