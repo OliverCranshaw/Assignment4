@@ -98,6 +98,51 @@ public class MainMenuController {
     @FXML
     private Button airlineApplyFilterButton;
 
+    @FXML
+    private TextField routeSourceAirportField;
+
+    @FXML
+    private TextField routeDestAirportField;
+
+    @FXML
+    private TextField routeStopsField;
+
+    @FXML
+    private TextField routeEquipmentField;
+
+    @FXML
+    private TextField airportCountryField;
+
+    @FXML
+    private TableView airportTableView;
+
+    @FXML
+    private TableView routeTableView;
+
+    @FXML
+    private TableColumn routeAirlineCol;
+
+    @FXML
+    private TableColumn routeSrcAirportCol;
+
+    @FXML
+    private TableColumn routeDestAirportCol;
+
+    @FXML
+    private TableColumn routeStopsCol;
+
+    @FXML
+    private TableColumn routeEquipmentCol;
+
+    @FXML
+    private TableColumn airportNameCol;
+
+    @FXML
+    private TableColumn airportCityCol;
+
+    @FXML
+    private TableColumn airportCountryCol;
+
 
 
 
