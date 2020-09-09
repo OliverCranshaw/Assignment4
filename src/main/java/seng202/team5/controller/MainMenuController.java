@@ -16,6 +16,7 @@ import seng202.team5.service.AirportService;
 import seng202.team5.service.RouteService;
 import seng202.team5.table.AirlineTable;
 import seng202.team5.table.AirportTable;
+import seng202.team5.table.DataTable;
 import seng202.team5.table.RouteTable;
 
 import java.io.IOException;
@@ -88,6 +89,16 @@ public class MainMenuController {
     @FXML
     private TableColumn airlineActiveCol;
 
+    @FXML
+    private TextField countryAirlineField;
+
+    @FXML
+    private ComboBox airlineActiveDropdown;
+
+    @FXML
+    private Button airlineApplyFilterButton;
+
+
 
 
     private AirlineService airlineService;
@@ -103,6 +114,10 @@ public class MainMenuController {
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
 
         airlineTable.createTable();
+
+        //populateTable()
+
+
     }
 
 
@@ -312,13 +327,12 @@ public class MainMenuController {
     }
 
 
-    @FXML
-    private void filterAirlineTable() {
+
+    private void populateTable(TableView table, ArrayList<ArrayList<Object>> data) {
 
     }
 
-
-
-
-
+    @FXML
+    public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
+    }
 }
