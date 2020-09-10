@@ -39,25 +39,33 @@ public abstract class DataTable {
      */
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
-        ResultSetMetaData md = orgData.getMetaData();
-        // Gets the number of columns (ie the number of variables)
-        int columns = md.getColumnCount();
-        // Initializing an arraylist of arraylists to store the extracted data in
-        ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
-        // Iterates through the result set
-        while(orgData.next()) {
-            // An arraylist of each instance of the data type
-            ArrayList<Object> row = new ArrayList<>(columns);
-            // Iterates through the data, storing it in the arraylist
-            for (int i=1; i<=columns; ++i) {
-                row.add(orgData.getObject(i));
+
+        System.out.print(orgData);
+        if (orgData != null) {
+            ResultSetMetaData md = orgData.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            // Iterates through the result set
+            while(orgData.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    row.add(orgData.getObject(i));
+                }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
             }
-            // Adds the extracted data to the overall arraylist of data
-            list.add(row);
+            // Sets the filtered data to the new Arraylist of arraylists
+            filteredData = new ArrayList<>(list);
+            originalDataArrayList = new ArrayList<>(list);
+        } else {
+            filteredData = new ArrayList<ArrayList<Object>>();
+            originalDataArrayList = new ArrayList<ArrayList<Object>>();
         }
-        // Sets the filtered data to the new Arraylist of arraylists
-        filteredData = new ArrayList<>(list);
-        originalDataArrayList = new ArrayList<>(list);
+
     }
 
 
