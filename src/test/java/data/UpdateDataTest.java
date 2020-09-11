@@ -117,18 +117,18 @@ public class UpdateDataTest extends BaseDatabaseTest {
     }
 
     public void testUpdateFlightEntryFailed() {
-        assertEquals(-2, updateData.updateFlightEntry(-1, "ab", "abc", 1, 2, 3));
+        assertEquals(-2, updateData.updateFlightEntry(-1, "APT", "abc", 1, 2, 3));
 
         assertEquals(-3, updateData.updateFlightEntry(1, null, "abc", 1, 2, 3));
         assertEquals(-3, updateData.updateFlightEntry(1, "", "abc", 1, 2, 3));
-        assertEquals(-3, updateData.updateFlightEntry(1, "a", "abc", 1, 2, 3));
-        assertEquals(-3, updateData.updateFlightEntry(1, "abcd", "abc", 1, 2, 3));
+        assertEquals(-3, updateData.updateFlightEntry(1, "aptt", "abc", 1, 2, 3));
+        assertEquals(-3, updateData.updateFlightEntry(1, "ap", "abc", 1, 2, 3));
 
-        assertEquals(-4, updateData.updateFlightEntry(1, "ab", null, 1, 2, 3));
-        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "", 1, 2, 3));
-        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "a", 1, 2, 3));
-        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "ab", 1, 2, 3));
-        assertEquals(-4, updateData.updateFlightEntry(1, "ab", "abcde", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "APT", null, 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "APT", "", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "APT", "a", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "APT", "ab", 1, 2, 3));
+        assertEquals(-4, updateData.updateFlightEntry(1, "APT", "abcde", 1, 2, 3));
     }
 
     public void testUpdateRouteFailed() {
