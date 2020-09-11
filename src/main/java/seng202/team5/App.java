@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng202.team5.database.DBInitializer;
 
 import java.io.IOException;
 
@@ -16,9 +17,14 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+    private DBInitializer dbInitializer;
 
     @Override
     public void start(Stage mainStage) throws IOException {
+
+        dbInitializer = new DBInitializer();
+        dbInitializer.createNewDatabase("flightdata.db");
+
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         mainStage.setTitle("Flight Data Manager");
         mainStage.setScene(new Scene(root, 1280, 720));
