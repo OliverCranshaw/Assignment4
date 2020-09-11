@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.UploadAirportsMenuController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="392.79998779296875" minHeight="10.0" prefHeight="270.3999877929688" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="289.59998168945316" minHeight="10.0" prefHeight="163.20001220703125" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="600.0" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints maxWidth="524.0" minWidth="10.0" prefWidth="260.0" />
+            <ColumnConstraints maxWidth="520.0" minWidth="60.0" prefWidth="75.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="260.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="27.999987792968753" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="119.20001220703124" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="selectFileButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onSelectFilePressed" text="Select File" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         </children>
+      </GridPane>
+      <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
+         <children>
+            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="57.0" prefWidth="344.0" text="Upload Airports From File" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label prefHeight="40.0" prefWidth="600.0" text="File must be a .txt file and have lines in the format of &lt;airport name&gt;,&lt;city&gt;,&lt;country&gt;,&lt;IATA code&gt;,&lt;ICAO code&gt;,&lt;latitude&gt;,&lt;longitude&gt;,&lt;altitude&gt;,&lt;timezone&gt;,&lt;daylight savings time&gt;,&lt;tz formatted timezone&gt;" textAlignment="CENTER" wrapText="true" />
+            <Label layoutX="10.0" layoutY="160.0" text="File must have 11 or 12 fields, IATA and ICAO codes may be empty." textAlignment="CENTER" wrapText="true" />
+            <Label text="Lines may contain an airport id at the start, however this will be removed." textAlignment="CENTER" wrapText="true" />
+            <Label text="IATA codes must be 3 characters, e.g. &quot;APT&quot;, and ICAO codes must be 4 characters, e.g. &quot;NZCH&quot;" textAlignment="CENTER" wrapText="true" />
+            <Label text="Altitude must be a whole number." textAlignment="CENTER" wrapText="true" />
+            <Label layoutX="203.0" layoutY="229.0" text="Timezone is the hours offset from UTC." textAlignment="CENTER" wrapText="true" />
+            <Label layoutX="203.0" layoutY="229.0" prefHeight="40.0" prefWidth="600.0" text="Daylight Savings Time must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)." textAlignment="CENTER" wrapText="true" />
+            <Label layoutX="203.0" layoutY="229.0" text="TZ formatted timezone is in the &quot;Olson&quot; format, e.g. America/Los Angeles" textAlignment="CENTER" wrapText="true" />
+         </children>
+      </VBox>
+   </children>
+</GridPane>

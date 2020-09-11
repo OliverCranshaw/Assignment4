@@ -176,13 +176,24 @@ public class FlightService implements Service {
     }
 
     /**
-     * Calls the getMaxID method of the FlightAccessor to get the maximum flight_id contained in the database.
+     * Calls the getMaxFlightID method of the FlightAccessor to get the maximum flight_id contained in the database, and then adds one to it.
      *
-     * @return int The maximum flight_id contained in the database.
+     * @return int The next available flight_id in the database.
      *
      * @author Billie Johnson
      */
     public int getNextFlightID() {
-        return accessor.getMaxID() + 1;
+        return accessor.getMaxFlightID() + 1;
+    }
+
+    /**
+     * Calls the getMaxID method of the FlightAccessor to get the maximum unique id contained in the flight data table.
+     *
+     * @return int The maximum unique id contained in the flight data table.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
     }
 }

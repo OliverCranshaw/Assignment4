@@ -1,0 +1,5 @@
+3207,"LAP Colombia - Lineas Aereas Petroleras",\N,"","APT"," S.A.","LAP","N"
+878,"Airfix Aviation",\N,"","FIX","AIRFIX","Finland","Y"
+1168,"Alada",\N,"","RAD","AIR ALADA","Angola","N"
+15,"Abelag Aviation",\N,"W9","AAB","ABG","Belgium","N"
+410,"Aerocondor",\N,"2B","ARD","AEROCONDOR","Portugal","Y"

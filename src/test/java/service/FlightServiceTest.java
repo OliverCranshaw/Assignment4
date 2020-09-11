@@ -1,13 +1,8 @@
 package service;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import seng202.team5.database.DBConnection;
-import seng202.team5.database.DBTableInitializer;
-import seng202.team5.service.AirlineService;
-
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seng202.team5.database.DBInitializer;
+
 import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {

@@ -221,6 +221,29 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
+     * Selects all flights from the database and returns them.
+     *
+     * @return ResultSet result Contains the flights in the database.
+     *
+     * @author Billie Johnson
+     */
+    public ResultSet getAllData() {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM FLIGHT_DATA");
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve flights.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      *
      *
      * @param id
@@ -374,10 +397,9 @@ public class FlightAccessor implements Accessor{
      *
      * @return int id The maximum flight_id in the database.
      *
-     * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int getMaxID() {
+    public int getMaxFlightID() {
         int id = 0;
 
         try {
@@ -390,6 +412,32 @@ public class FlightAccessor implements Accessor{
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
             System.out.println("Unable to get maximum flight id.");
+            System.out.println(e.getMessage());
+        }
+
+        return id;
+    }
+
+    /**
+     * Gets the maximum unique id contained in the flight data table.
+     *
+     * @return int id The maximum unique id in the flight data table.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        int id = 0;
+
+        try {
+            // The SQL search query - finds the maximum unique id in the flight data table
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(id) FROM FLIGHT_DATA");
+            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+            ResultSet result = stmt.executeQuery();
+            id = result.getInt(1);
+
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get maximum id.");
             System.out.println(e.getMessage());
         }
 

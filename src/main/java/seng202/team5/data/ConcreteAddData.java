@@ -15,11 +15,22 @@ import seng202.team5.service.RouteService;
  * @author Jack Ryan
  */
 public class ConcreteAddData extends AddData {
-    // Initializes all the necessary Service classes
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
-    private FlightService flightService = new FlightService();
-    private RouteService routeService = new RouteService();
+
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final FlightService flightService;
+    private final RouteService routeService;
+
+    /**
+     * Constructor for ConcreteAddData.
+     * Initializes all of the necessary Services.
+     */
+    public ConcreteAddData() {
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
+    }
 
     /**
      * Overrides the abstract addAirline method of AddData.
@@ -52,10 +63,11 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveAirline method of AirlineService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int id = airlineService.saveAirline(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
+            int result = airlineService.saveAirline(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
                     airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
-            if (id != -1) {
+            if (result != -1) {
+                int id = airlineService.getMaxID();
                 System.out.println("Airline added with id " + id);
                 return id;
             }
@@ -103,11 +115,12 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveAirport method of AirportService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int id = airportService.saveAirport(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
+            int result = airportService.saveAirport(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
                     airportData.getIata(), airportData.getIcao(), airportData.getLatitude(), airportData.getLongitude(),
                     airportData.getAltitude(), airportData.getTimezone(), airportData.getDst(), airportData.getTzDatabaseTimezone());
 
-            if (id != -1) {
+            if (result != -1) {
+                int id = airportService.getMaxID();
                 System.out.println("Airport added with id " + id);
                 return id;
             }
@@ -149,10 +162,11 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveFlight method of FlightService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int id = flightService.saveFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(),
+            int result = flightService.saveFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(),
                                             flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
 
-            if (id != -1) {
+            if (result != -1) {
+                int id = flightService.getMaxID();
                 System.out.println("Flight entry added with id " + id + " and flight id " + flightID);
                 return id;
             }
@@ -195,10 +209,11 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveRoute method of RouteService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int id = routeService.saveRoute(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
+            int result = routeService.saveRoute(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
                                             routeData.getCodeShare(), routeData.getStops(), routeData.getEquipment());
 
-            if (id != -1) {
+            if (result != -1) {
+                int id = routeService.getMaxID();
                 System.out.println("Route added with id " + id);
                 return id;
             }

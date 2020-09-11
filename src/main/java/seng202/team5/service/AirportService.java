@@ -197,4 +197,14 @@ public class AirportService implements Service {
         return (validDSTs.contains(dst));
     }
 
+    /**
+     * Calls the getMaxID method of the AirportAccessor to get the maximum airport_id contained in the database.
+     *
+     * @return int The maximum airport_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
+    }
 }

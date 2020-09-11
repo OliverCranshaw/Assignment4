@@ -181,5 +181,16 @@ public class AirlineService implements Service {
     public boolean activeIsValid(String active) {
         return (active.equals("Y") || active.equals("N"));
     }
+
+    /**
+     * Calls the getMaxID method of the AirlineAccessor to get the maximum airline_id contained in the database.
+     *
+     * @return int The maximum airline_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
+    }
 }
 

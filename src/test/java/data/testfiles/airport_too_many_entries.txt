@@ -1,0 +1,1 @@
+9460,"Martz Trailways Bus Terminal","Wilkes-Barre","United States","","WKBR",41.243958,-75.882365,525,-5,"A","","America/New_York"
