@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AirlineAccessor
@@ -36,13 +37,13 @@ public class AirlineAccessor implements Accessor {
      * Creates an airline in the database with the given data.
      * Requires airline_name, alias, IATA code, ICAO code, callsign, country, and active parameters, contained in an ArrayList.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The airline_id of the airline that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -50,12 +51,16 @@ public class AirlineAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the airline_id of the new airline
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
@@ -184,6 +189,29 @@ public class AirlineAccessor implements Accessor {
     }
 
     /**
+     * Selects all airlines from the database and returns them.
+     *
+     * @return ResultSet result Contains the airlines in the database.
+     *
+     * @author Billie Johnson
+     */
+    public ResultSet getAllData() {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRLINE_DATA");
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airlines.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      *
      *
      * @param id
@@ -221,30 +249,28 @@ public class AirlineAccessor implements Accessor {
      */
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
-        String query = "SELECT * FROM AIRLINE_DATA";
-        ArrayList<String> elements = new ArrayList<>();
+
+        List<String> queryTerms = new ArrayList<>();
+        List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                query = query + " WHERE airline_name = ?";
+                queryTerms.add("airline_name = ?");
                 elements.add(name);
             }
-            if (country != null && name == null) {
-                if (name != null) {
-                    query = query + " and country = ?";
-                } else {
-                    query = query + " WHERE country = ?";
-                }
+            if (country != null) {
+                queryTerms.add("country = ?");
                 elements.add(country);
             }
             if (callsign != null) {
-                if (country != null || name != null) {
-                    query = query + " and callsign = ?";
-                    elements.add(callsign);
-                } else {
-                    query = query + " WHERE callsign = ?";
-                    elements.add(callsign);
-                }
+                queryTerms.add("callsign = ?");
+                elements.add(callsign);
+            }
+
+            String query = "SELECT * FROM AIRLINE_DATA";
+            if (queryTerms.size() != 0) {
+                query += " WHERE ";
+                query += String.join(" and ", queryTerms);
             }
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
@@ -388,5 +414,31 @@ public class AirlineAccessor implements Accessor {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the maximum airline_id contained in the database.
+     *
+     * @return int id The maximum airline_id in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        int id = 0;
+
+        try {
+            // The SQL search query - finds the maximum airline_id in the database
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(airline_id) FROM AIRLINE_DATA");
+            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+            ResultSet result = stmt.executeQuery();
+            id = result.getInt(1);
+
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get maximum airline id.");
+            System.out.println(e.getMessage());
+        }
+
+        return id;
     }
 }

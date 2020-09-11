@@ -1,0 +1,1 @@
+"Susquehanna Trailways Terminal","Williamsport","United States","","WSPT",41.239395,-77.000245,518,-5,"America/New_York"
