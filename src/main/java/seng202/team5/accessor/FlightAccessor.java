@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FlightAccessor
@@ -36,13 +37,13 @@ public class FlightAccessor implements Accessor{
      * Creates a flight entry in the database with the given data.
      * Requires the flight_id, airline IATA or ICAO code, airport IATA or ICAO code, altitude, latitude, and longitude.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The unique id of the flight entry that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -50,12 +51,16 @@ public class FlightAccessor implements Accessor{
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 7; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the unique id of the new flight entry
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
@@ -71,8 +76,8 @@ public class FlightAccessor implements Accessor{
      * Not every field must be updated.
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_airline The new 2-letter airline IATA or 3-letter airline ICAO code of the flight entry, may be null if not to be updated.
-     * @param new_airport The new 3-letter airport IATA or 4-letter airport ICAO code of the flight entry, may be null if not to be updated.
+     * @param new_location_type The new location type of the flight entry location, one of "APT", "VOR", or "FIX", may be null if not to be updated.
+     * @param new_location The new location of the flight entry, may be null if not to be updated.
      * @param new_altitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
@@ -81,7 +86,7 @@ public class FlightAccessor implements Accessor{
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int update(int id, String new_airline, String new_airport, int new_altitude,
+    public int update(int id, String new_location_type, String new_location, int new_altitude,
                       double new_latitude, double new_longitude) {
         int result;
         int flight_id;
@@ -98,13 +103,13 @@ public class FlightAccessor implements Accessor{
             // Checks one by one if any of the parameters are null
             // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
             try {
-                if (new_airline != null) {
+                if (new_location_type != null) {
                     search = search + "location_type = ?, ";
-                    elements.add(new_airline);
+                    elements.add(new_location_type);
                 }
-                if (new_airport != null) {
+                if (new_location != null) {
                     search = search + "location = ?, ";
-                    elements.add(new_airport);
+                    elements.add(new_location);
                 }
                 if (new_altitude != -1) {
                     search = search + "altitude = ?, ";

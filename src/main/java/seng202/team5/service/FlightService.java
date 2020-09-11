@@ -23,10 +23,11 @@ public class FlightService implements Service {
     private final FlightAccessor accessor;
     private final AirlineAccessor airlineAccessor;
     private final AirportAccessor airportAccessor;
+    private final List<String> valid_location_types;
 
     /**
      * Constructor for FlightService.
-     * Creates a FlightAccessor, AirlineAccessor, and AirportAccessor.
+     * Creates a FlightAccessor, AirlineAccessor, and AirportAccessor, and sets the valid location types.
      *
      * @author Inga Tokarenko
      */
@@ -34,6 +35,7 @@ public class FlightService implements Service {
         accessor = new FlightAccessor();
         airlineAccessor = new AirlineAccessor();
         airportAccessor = new AirportAccessor();
+        valid_location_types = Arrays.asList("APT", "VOR", "FIX");
     }
 
     /**
@@ -59,10 +61,8 @@ public class FlightService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the FlightAccessor
-        List<Object> tmp = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
-        ArrayList<Object> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the FlightAccessor
+        List<Object> elements = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
 
         return accessor.save(elements);
     }
@@ -71,8 +71,8 @@ public class FlightService implements Service {
      * Checks the validity of input parameters and then passes them into the update method of the FlightAccessor.
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_airport The new 3-letter IATA or 4-letter ICAO code of the airport, may be null if not to be updated.
+     * @param new_location_type The new location type of the flight entry location, one of "APT", "VOR", or "FIX", may be null if not to be updated.
+     * @param new_location The new location of the flight entry, may be null if not to be updated.
      * @param new_altitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
@@ -80,25 +80,18 @@ public class FlightService implements Service {
      *
      * @author Billie Johnson
      */
-    public int updateFlight(int id, String new_airline, String new_airport, int new_altitude,
+    public int updateFlight(int id, String new_location_type, String new_location, int new_altitude,
                             double new_latitude, double new_longitude) {
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
-        if (new_airline != null) {
-            if (!airlineAccessor.dataExists(new_airline)) {
-                return -1;
-            }
-        }
-        // If the airport is not null, checks that an airport with the given IATA or ICAO code exists
-        // If one doesn't, returns an error code of -1
-        if (new_airport != null) {
-            if (!airportAccessor.dataExists(new_airport)) {
+        if (new_location_type != null) {
+            if (locationTypeisValid(new_location_type)) {
                 return -1;
             }
         }
 
         // Passes the parameters into the update method of the FlightAccessor
-        return accessor.update(id, new_airline, new_airport, new_altitude, new_latitude, new_longitude);
+        return accessor.update(id, new_location_type, new_location, new_altitude, new_latitude, new_longitude);
     }
 
     /**
@@ -168,6 +161,18 @@ public class FlightService implements Service {
         }
 
         return accessor.getData(airlineIataIcao, airportIataIcao);
+    }
+
+    /**
+     * Checks that the given location_type is one of "APT", "VOR", or "FIX" and returns True or False.
+     *
+     * @param location_type String to be checked if it's one of "APT", "VOR", or "FIX".
+     * @return boolean True or False.
+     *
+     * @author Billie Johnson
+     */
+    public boolean locationTypeisValid(String location_type) {
+        return valid_location_types.contains(location_type);
     }
 
     /**

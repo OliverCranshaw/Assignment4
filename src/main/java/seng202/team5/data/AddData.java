@@ -46,14 +46,14 @@ public abstract class AddData {
      * Ensures validity of parameters, passes them into the saveFlight method of FlightService.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param airport The 3-letter IATA code or 4-letter ICAO code of the airport, cannot be null.
+     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
      * @return int The unique id of the new flight entry that has been created by FlightService.
      */
-    public abstract int addFlightEntry(int flightID, String airline, String airport, String altitude, String latitude, String longitude);
+    public abstract int addFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude);
 
     /**
      * Ensures validity of parameters, passes them into the saveRoute method of RouteService.

@@ -75,11 +75,9 @@ public class RouteService implements Service {
         int source_airport_id = airportAccessor.getAirportId(source_airport);
         int dest_airport_id = airportAccessor.getAirportId(dest_airport);
 
-        // Adds the parameters into an ArrayList to pass into the save method of the RouteAccessor
-        List<Object> tmp = Arrays.asList(airline, airline_id, source_airport, source_airport_id, dest_airport,
+        // Adds the parameters into an List to pass into the save method of the RouteAccessor
+        List<Object> elements = Arrays.asList(airline, airline_id, source_airport, source_airport_id, dest_airport,
                 dest_airport_id, codeshare, stops, equipment);
-        ArrayList<Object> elements = new ArrayList<>();
-        elements.addAll(tmp);
 
         return accessor.save(elements);
     }

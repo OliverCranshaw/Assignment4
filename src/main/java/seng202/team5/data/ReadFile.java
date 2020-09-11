@@ -193,7 +193,7 @@ public class ReadFile {
         getFile(file);
 
         try {
-            // Gets the maximum flight_id currently in the database and adds one to it
+            // Gets the next available flight_id
             // This will be the flight_id of the entries read from the file
             flightID = flightService.getNextFlightID();
 
