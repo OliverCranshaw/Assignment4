@@ -10,7 +10,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-abstract class BaseDatabaseTest extends TestCase {
+public abstract class BaseDatabaseTest extends TestCase {
     private static final String dbFile = "test.db";
 
     public BaseDatabaseTest(String testName) { super(testName); }

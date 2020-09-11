@@ -50,14 +50,14 @@ public abstract class UpdateData {
      * Ensures validity of parameters, passes them into the updateFlight method of FlightService.
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be "" if not to be updated.
-     * @param new_airport The new 3-letter IATA or 4-letter ICAO code of the airport, may be "" if not to be updated.
+     * @param new_location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX". May be "" if not to be updated.
+     * @param new_location The new location of the flight entry. May be "" if not to be updated.
      * @param new_altitude The new altitude of the flight entry in feet, a string. May be "" if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a string. Negative is South and positive is North. May be "" if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a string. Negative is West and positive is East. May be "" if not to be updated.
      * @return int The unique id of the flight entry that was just updated by the FlightService.
      */
-    public abstract int updateFlightEntry(int id, String new_airline, String new_airport, int new_altitude,
+    public abstract int updateFlightEntry(int id, String new_location_type, String new_location, int new_altitude,
                                            double new_latitude, double new_longitude);
 
     /**

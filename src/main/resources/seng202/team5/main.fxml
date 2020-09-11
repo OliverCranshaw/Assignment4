@@ -291,6 +291,12 @@
                               </Label>
                               <FlowPane prefHeight="21.0" prefWidth="1232.0">
                                  <children>
+<<<<<<< src/main/resources/seng202/team5/main.fxml
+                                    <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                                    <Button alignment="CENTER_RIGHT" layoutX="405.0" layoutY="10.0" mnemonicParsing="false" onAction="#onUploadAirlineDataPressed" text="Upload Airline Data From File" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" text="Add Airline" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
+=======
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Countries:">
                                        <font>
                                           <Font size="15.0" />
@@ -324,6 +330,7 @@
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Airline" />
                                     <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="73.0" text="Download" />
+>>>>>>> src/main/resources/seng202/team5/main.fxml
                                  </children>
                                  <VBox.margin>
                                     <Insets top="5.0" />
@@ -427,6 +434,12 @@
                               </FlowPane>
                               <FlowPane prefHeight="19.0" prefWidth="1232.0">
                                  <children>
+<<<<<<< src/main/resources/seng202/team5/main.fxml
+                                    <Region maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                                    <Button alignment="CENTER_RIGHT" layoutX="408.0" layoutY="10.0" mnemonicParsing="false" onAction="#onUploadRouteDataPressed" text="Upload Route Data From File" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddRoutePressed" text="Add Route" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Data" />
+=======
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Direct Route:">
                                        <font>
                                           <Font size="15.0" />
@@ -466,6 +479,7 @@
                                           <Insets />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Download" />
+>>>>>>> src/main/resources/seng202/team5/main.fxml
                                  </children>
                                  <VBox.margin>
                                     <Insets />

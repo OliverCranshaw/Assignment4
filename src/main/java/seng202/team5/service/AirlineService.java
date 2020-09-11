@@ -58,10 +58,8 @@ public class AirlineService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the AirlineAccessor
-        List<String> tmp = Arrays.asList(name, alias, iata, icao, callsign, country, active);
-        ArrayList<String> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the AirlineAccessor
+        List<Object> elements = Arrays.asList(name, alias, iata, icao, callsign, country, active);
 
         return accessor.save(elements);
     }
@@ -182,6 +180,17 @@ public class AirlineService implements Service {
      */
     public boolean activeIsValid(String active) {
         return (active.equals("Y") || active.equals("N"));
+    }
+
+    /**
+     * Calls the getMaxID method of the AirlineAccessor to get the maximum airline_id contained in the database.
+     *
+     * @return int The maximum airline_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
     }
 }
 

@@ -1,13 +1,8 @@
 package service;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import seng202.team5.database.DBConnection;
-import seng202.team5.database.DBTableInitializer;
-import seng202.team5.service.AirlineService;
-
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seng202.team5.database.DBInitializer;
 import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {
@@ -88,7 +82,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getMaxFlightID(), airline, airport, altitude, longitude, latitude);
+        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, airport, altitude, longitude, latitude);
 
         assertEquals(1, res);
 
@@ -155,7 +149,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getMaxFlightID(), airline, "LAX", altitude, longitude, latitude);
+        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, "LAX", altitude, longitude, latitude);
 
         assertEquals(-1, res);
 
@@ -237,7 +231,6 @@ public class FlightServiceTest extends BaseDatabaseTest {
         List<Object> tmpFlightList = Arrays.asList(1, airline, airport, altitude, latitude, longitude);
         ArrayList<Object> testFlightArrayList = new ArrayList<>(tmpFlightList);
         for (int i=1; i < 7; i++) {
-
             stmtFlight.setObject(i, testFlightArrayList.get(i-1));
         }
         stmtFlight.executeUpdate();

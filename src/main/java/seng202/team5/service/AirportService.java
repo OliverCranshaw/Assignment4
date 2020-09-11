@@ -67,10 +67,8 @@ public class AirportService implements Service {
             return -1;
         }
 
-        // Adds the parameters into an ArrayList to pass into the save method of the AirportAccessor
-        List<Object> tmp = Arrays.asList(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
-        ArrayList<Object> elements = new ArrayList<>();
-        elements.addAll(tmp);
+        // Adds the parameters into an List to pass into the save method of the AirportAccessor
+        List<Object> elements = Arrays.asList(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
 
         return accessor.save(elements);
     }
@@ -199,4 +197,14 @@ public class AirportService implements Service {
         return (validDSTs.contains(dst));
     }
 
+    /**
+     * Calls the getMaxID method of the AirportAccessor to get the maximum airport_id contained in the database.
+     *
+     * @return int The maximum airport_id contained in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        return accessor.getMaxID();
+    }
 }

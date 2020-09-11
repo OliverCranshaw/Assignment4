@@ -28,18 +28,18 @@ public class FlightDataTest {
     @Test
     public void testConvertBlanksToNull() {
         Integer flightId = 545;
-        String airline = "\\N";
-        String airport = "-";
+        String location_type = "\\N";
+        String location = "-";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
 
-        FlightData test = new FlightData(flightId, airline, airport, altitude, latitude, longitude);
+        FlightData test = new FlightData(flightId, location_type, location, altitude, latitude, longitude);
 
         test.convertBlanksToNull();
 
-        assertNull(test.getAirline());
-        assertNull(test.getAirport());
+        assertNull(test.getLocationType());
+        assertNull(test.getLocation());
 
     }
 
@@ -47,7 +47,7 @@ public class FlightDataTest {
     @Test
     public void testCheckValidValues() {
         Integer flightId = 545;
-        String airline = "FJFF";
+        String airline = "FJF";
         String airport = "FFF";
         String altitude = "4343";
         String latitude = "4223.2";
@@ -64,8 +64,8 @@ public class FlightDataTest {
     @Test
     public void testCheckInvalidValues() {
         Integer flightId = 545;
-        String airline = "alfl";
-        String airport = "Fkfa";
+        String airline = "alf";
+        String airport = "FkfaF";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
