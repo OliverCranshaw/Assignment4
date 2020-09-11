@@ -53,7 +53,10 @@ public class FlightService implements Service {
      */
     public int saveFlight(int flightID, String location_type, String location, int altitude, double latitude, double longitude) {
         // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
-        if (location_type == "APT") {
+        if (!locationTypeisValid(location_type)) {
+            return -1;
+        }
+        else if (location_type == "APT") {
             if (!airportAccessor.dataExists(location)) {
                 return -1;
             }
