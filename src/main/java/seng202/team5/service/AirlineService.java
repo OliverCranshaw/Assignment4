@@ -46,7 +46,6 @@ public class AirlineService implements Service {
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
         if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
-            System.out.println("iata");
             return -1;
         }
         // Checks that the ICAO code is valid and that if the ICAO code is not null, it does not already exist in the database
@@ -56,7 +55,6 @@ public class AirlineService implements Service {
         }
         // Checks that the active is valid, if it isn't returns an error code of -1
         if (!activeIsValid(active)) {
-            System.out.println("active");
             return -1;
         }
 
