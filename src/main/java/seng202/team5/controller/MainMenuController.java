@@ -158,6 +158,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private ComboBox routeStopsComboBox;
 
+    @FXML
+    private Label errorMessage;
+
 
     private AirlineService airlineService;
     private AirportService airportService;
@@ -165,7 +168,7 @@ public class MainMenuController implements Initializable {
     private AirlineTable airlineTable;
     private AirportTable airportTable;
     private RouteTable routeTable;
-    private Label errorMessage;
+
 
     private ObservableList<AirlineModel> airlineModels;
     private ObservableList<AirportModel> airportModels;
@@ -195,15 +198,11 @@ public class MainMenuController implements Initializable {
 
 
         airlineService = new AirlineService();
-        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
-        try {
-            System.out.println("Here2: " + airlineService.getAirlines(null, null, null).getObject(1));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         airportService = new AirportService();
-        airportTable = new AirportTable(airportService.getAirports(null, null, null));
         routeService = new RouteService();
+
+        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        airportTable = new AirportTable(airportService.getAirports(null, null, null));
         routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
 
         try {
@@ -212,6 +211,10 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
         populateAirlineTable(airlineTable.getData());
+
+        System.out.println();
+        System.out.println(airlineTable.getData().get(0));
+        System.out.println();
 
         try {
             airportTable.createTable();
@@ -506,6 +509,10 @@ public class MainMenuController implements Initializable {
 
 
     private void populateAirlineTable(ArrayList<ArrayList<Object>> data) {
+
+        System.out.println("POPULATING>>>");
+        System.out.println("POP" + data.get(0));
+
         ArrayList<AirlineModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             String name = (String) datum.get(1);
@@ -555,17 +562,22 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
+
+        System.out.println();
         System.out.println("Here: " + airlineTable.getData().get(0));
-        airlineTable.FilterTable(null, null);
-        String countryText = countryAirlineField.getText();
-        String activeText = (String) airlineActiveDropdown.getValue();
-        if (activeText == null || activeText.equals("")) {
-            activeText = null;
-        } else {
-            activeText = (activeText == "Yes") ? "Y" : "N";
-        }
-        ArrayList<String> newList = convertCSStringToArrayList(countryText);
-        airlineTable.FilterTable(newList, activeText);
+        System.out.println();
+
+//        airlineTable.FilterTable(null, null);
+//        String countryText = countryAirlineField.getText();
+//        String activeText = (String) airlineActiveDropdown.getValue();
+//        if (activeText == null || activeText.equals("")) {
+//            activeText = null;
+//        } else {
+//            activeText = (activeText == "Yes") ? "Y" : "N";
+//        }
+//        ArrayList<String> newList = convertCSStringToArrayList(countryText);
+//        airlineTable.FilterTable(newList, activeText);
+
         populateAirlineTable(airlineTable.getData());
 
     }
@@ -597,6 +609,9 @@ public class MainMenuController implements Initializable {
         routeTable.FilterTable(srcAirportText, dstAirportText, directText, equipmentList);
     }
 
+    public void onAddFlightPressed(ActionEvent actionEvent) {
+    }
+
     public ArrayList<String> convertCSStringToArrayList(String string) {
         String[] list = string.split(",");
         ArrayList<String> newList = convertToArrayList(list);
@@ -621,8 +636,5 @@ public class MainMenuController implements Initializable {
         }
         return result;
     }
-
-
-
 
 }

@@ -272,7 +272,6 @@ public class AirlineAccessor implements Accessor {
                 query += " WHERE ";
                 query += String.join(" and ", queryTerms);
             }
-            System.out.println("Here: " + queryTerms);
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
@@ -280,7 +279,6 @@ public class AirlineAccessor implements Accessor {
                 stmt.setObject(index, element);
                 index++;
             }
-
 
             result = stmt.executeQuery();
         } catch (SQLException e) {

@@ -50,7 +50,12 @@ public class FilterRouteTable extends ConcreteFilterTable {
             System.out.println(currentDep);
             String currentDes = (String) current.get(5);
             int stops = (int) current.get(8);
-            String currentEquip = (String) current.get(9);
+            ArrayList<String> currentEquip = new ArrayList<>();
+
+            String[] stringEquip = ((String) current.get(9)).split(" ");
+            for (String value:stringEquip) {
+                currentEquip.add(value);
+            }
 
             if (airportDep != null) {
                 containsAirportDep(currentDep);
@@ -124,9 +129,11 @@ public class FilterRouteTable extends ConcreteFilterTable {
      *
      * @author Inga Tokarenko
      */
-    public void containsEquip(String currentEquip) {
-        if (!equip.contains(currentEquip)) {
-            remove = true;
+    public void containsEquip(ArrayList<String> currentEquip) {
+        for (Object value: currentEquip) {
+            if (!equip.contains(value)) {
+                remove = true;
+            }
         }
     }
 
