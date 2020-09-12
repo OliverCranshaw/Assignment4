@@ -3,10 +3,10 @@ Feature: Adding data
 
   # Adding Airlines
 
-  Scenario: Adding a valid airline
-    Given airline with parameters ("Airfix Aviation", "", "", "FRA", "AIRFIX", "Finland", "Y") does not exist
-    When adding an airline with parameters ("Airfix Aviation", "", "", "FRA", "AIRFIX", "Finland", "Y")
-    Then the airline is added with icao "FRA"
+#  Scenario: Adding a valid airline
+#    Given airline with parameters ("Airfix Aviation", "", "", "NEW", "AIRFIX", "Finland", "Y") does not exist
+#    When adding an airline with parameters ("Airfix Aviation", "", "", "NEW", "AIRFIX", "Finland", "Y")
+#    Then the airline is added with icao "NEW"
 
 #  Scenario: Adding an airline with an invalid name
 #    Given valid airline parameters ("", "", "FIX", "AIRFIX", "Finland", "Y") except for an invalid name ""
