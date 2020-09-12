@@ -1,12 +1,22 @@
 package seng202.team5.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Window;
+import seng202.team5.data.ConcreteAddData;
 
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AddAirportMenuController {
     public AddAirportMenuController() {}
@@ -48,61 +58,91 @@ public class AddAirportMenuController {
     private TextField tzField;
 
     @FXML
-    private ComboBox<String> typeField;
+    private Text errorMessage;
 
-    @FXML
-    private TextField sourceField;
+
 
 
     @FXML
     public void addButtonPressed() {
-        List<Object> fields = new ArrayList<>();
+
 
         try {
-            fields.add(nameField.getText());
-            fields.add(cityField.getText());
-            fields.add(countryField.getText());
 
-            fields.add(iataField.getText());
-            fields.add(icaoField.getText());
+            String dst = null;
+            ConcreteAddData concreteAddData = new ConcreteAddData();
+            boolean isDstEmpty = dstField.getSelectionModel().isEmpty();
+            if (isDstEmpty) {
+                dstField.setStyle("-fx-border-color: #ff0000;");
+            } else {
+                int outcome = concreteAddData.addAirport(nameField.getText(), cityField.getText(), countryField.getText(), iataField.getText(),
+                        icaoField.getText(), latitudeField.getText(), longitudeField.getText(), altitudeField.getText(), timezoneField.getText(),
+                        dstField.getValue().subSequence(0, 1).toString(), tzField.getText());
+                setDefaults();
 
-            fields.add(latitudeField.getText().length() == 0 ? null : Double.parseDouble(latitudeField.getText()));
-            fields.add(longitudeField.getText().length() == 0 ? null : Double.parseDouble(longitudeField.getText()));
-            fields.add(altitudeField.getText().length() == 0 ? null : Double.parseDouble(altitudeField.getText()));
+                if (outcome < 0) {
+                    if (outcome == -1) {
+                        System.out.println("Service Error");
+                        errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airport within the database");
+                        errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                        errorMessage.setFill(Color.RED);
+                        errorMessage.setVisible(true);
+                    } else if (outcome == -2) {
+                        nameField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -3) {
+                        cityField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -4) {
+                        countryField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -5) {
+                        iataField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -6) {
+                        icaoField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -7) {
+                        latitudeField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -8) {
+                        longitudeField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -9) {
+                        altitudeField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -10) {
+                        timezoneField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -11) {
+                        dstField.setStyle("-fx-border-color: #ff0000;");
+                    } else if (outcome == -12) {
+                        tzField.setStyle("-fx-border-color: #ff0000;");
+                    }
+                } else {
+                    setDefaults();
+                }
+            }
 
-            fields.add(timezoneField.getText().length() == 0 ? null : Double.parseDouble(timezoneField.getText()));
-            fields.add(dstField.getValue() == null ? null : dstField.getValue().subSequence(0, 1));
-            fields.add(tzField.getText());
-
-            fields.add(typeField.getValue() == null ? null : typeField.getValue().toLowerCase());
-            fields.add(sourceField.getText());
         } catch (NumberFormatException e) {
             System.out.println("Invalid number");
-            return;
         }
 
-
-        System.out.println("Added row:");
-        System.out.print("1");
-        for (Object field : fields) {
-            System.out.print(",");
-            if (field == null) {
-                System.out.print("NULL");
-                continue;
-            }
-            if (field instanceof String) {
-                System.out.print("\"" + field + "\"");
-                continue;
-            }
-
-            System.out.print(field);
-        }
-        System.out.println();
     }
 
+
     @FXML
-    public void cancelButtonPressed() {
-        System.out.println("Cancelled!");
+    public void onCancelPressed(ActionEvent event) {
+        Window window = ((Node)event.getSource()).getScene().getWindow();
+        window.hide();
+    }
+
+
+    public void setDefaults() {
+        nameField.setStyle("-fx-border-color: #000000;");
+        cityField.setStyle("-fx-border-color: #000000;");
+        countryField.setStyle("-fx-border-color: #000000;");
+        iataField.setStyle("-fx-border-color: #000000;");
+        icaoField.setStyle("-fx-border-color: #000000;");
+        latitudeField.setStyle("-fx-border-color: #000000;");
+        longitudeField.setStyle("-fx-border-color: #000000;");
+        altitudeField.setStyle("-fx-border-color: #000000;");
+        timezoneField.setStyle("-fx-border-color: #000000;");
+        dstField.setStyle("-fx-border-color: #000000;");
+        tzField.setStyle("-fx-border-color: #000000;");
+        errorMessage.setVisible(false);
+
     }
 
 }

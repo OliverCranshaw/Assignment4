@@ -1,0 +1,5 @@
+2,"Madang","Madang","Papua New Guinea","MAG","AYMD",-5.207083,145.7887,20,10,"U","Pacific/Port_Moresby",""
+"Mount Hagen","Mount Hagen","Papua New Guinea","HGU","AYMH",-5.826789,144.295861,5388,10,"U","Pacific/Port_Moresby"
+19,"Siglufjordur","Siglufjordur","Iceland","SIJ","BISI",66.133333,-18.916667,10,0
+"Hazelton Bus Station","Hazelton","United States","","HZLT",40.954055,-75.976102,1689,-5,"A","America/New_York"
+9462,"Lewisburg Bus Stop","Lewisburg","United States","","LWSB",40.963889,-76.888056,456,-5,"A","America/New_York"

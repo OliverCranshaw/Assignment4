@@ -1,161 +1,535 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
    <children>
-      <TabPane layoutY="50.0" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="83.0">
-         <tabs>
-            <Tab text="General">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <RadioButton layoutX="120.0" layoutY="21.0" mnemonicParsing="false" text="Flights" />
-                        <RadioButton layoutX="270.0" layoutY="21.0" mnemonicParsing="false" text="Airports" />
-                        <RadioButton layoutX="415.0" layoutY="21.0" mnemonicParsing="false" text="Routes" />
-                        <Label layoutX="40.0" layoutY="150.0" text="Results">
-                           <font>
-                              <Font name="System Bold" size="27.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="431.0" layoutY="108.0" mnemonicParsing="false" text="Search" />
-                        <Label layoutX="118.0" layoutY="67.0" text="To:" />
-                        <Label layoutX="118.0" layoutY="112.0" text="From:" />
-                        <TextField layoutX="168.0" layoutY="63.0" prefHeight="25.0" prefWidth="246.0" />
-                        <TextField layoutX="168.0" layoutY="108.0" prefHeight="25.0" prefWidth="246.0" />
-                        <Button alignment="CENTER" layoutX="562.0" layoutY="276.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="31.0" text="?" textAlignment="CENTER">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Button>
-                        <ListView layoutX="40.0" layoutY="186.0" prefHeight="135.0" prefWidth="520.0" />
-                        <Button layoutX="404.0" layoutY="160.0" mnemonicParsing="false" text="View More" />
-                        <Button layoutX="488.0" layoutY="160.0" mnemonicParsing="false" text="Download" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Table of Records">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label alignment="CENTER" layoutX="127.0" layoutY="5.0" prefHeight="37.0" prefWidth="348.0" text="Title from search options">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="41.0" layoutY="48.0" text="Results">
-                           <font>
-                              <Font name="System Bold" size="27.0" />
-                           </font>
-                        </Label>
-                        <ListView layoutX="41.0" layoutY="81.0" prefHeight="238.0" prefWidth="520.0" />
-                        <CheckBox layoutX="168.0" layoutY="59.0" mnemonicParsing="false" text="Rank by..." />
-                        <CheckBox layoutX="254.0" layoutY="59.0" mnemonicParsing="false" text="Rank by..." />
-                        <CheckBox layoutX="331.0" layoutY="59.0" mnemonicParsing="false" text="Rank by..." />
-                     </children></AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Extra Tab">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-            <Tab text="Airport Data">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label alignment="CENTER" layoutX="126.0" layoutY="5.0" prefHeight="37.0" prefWidth="348.0" text="Airport Raw Data">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="31.0" prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true">
-                           <font>
-                              <Font name="System Bold" size="19.0" />
-                           </font>
-                        </Label>
-                        <ComboBox layoutX="115.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" />
-                        <ListView layoutX="40.0" layoutY="122.0" prefHeight="160.0" prefWidth="520.0" />
-                        <Button layoutX="412.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" />
-                        <Button layoutX="125.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="267.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="478.0" layoutY="96.0" mnemonicParsing="false" text="Modify Data" />
-                        <Button layoutX="395.0" layoutY="96.0" mnemonicParsing="false" text="Add Airport" />
-                     </children></AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Airline Data">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label alignment="CENTER" layoutX="126.0" layoutY="5.0" prefHeight="37.0" prefWidth="348.0" text="Airline Raw Data">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="31.0" prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true">
-                           <font>
-                              <Font name="System Bold" size="19.0" />
-                           </font>
-                        </Label>
-                        <ComboBox layoutX="235.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="Active" visibleRowCount="2" />
-                        <ComboBox layoutX="115.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="All Countries" visibleRowCount="2" />
-                        <ListView layoutX="40.0" layoutY="122.0" prefHeight="160.0" prefWidth="520.0" />
-                        <Button layoutX="412.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" />
-                        <Button layoutX="125.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="267.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="478.0" layoutY="96.0" mnemonicParsing="false" text="Modify Data" />
-                        <Button layoutX="399.0" layoutY="96.0" mnemonicParsing="false" text="Add Airline" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Route Data">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label alignment="CENTER" layoutX="126.0" layoutY="5.0" prefHeight="37.0" prefWidth="348.0" text="Route Raw Data">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="31.0" prefHeight="65.0" prefWidth="80.0" text="Filter Options:" wrapText="true">
-                           <font>
-                              <Font name="System Bold" size="19.0" />
-                           </font>
-                        </Label>
-                        <ComboBox layoutX="115.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="Departs From" visibleRowCount="2" />
-                        <ComboBox layoutX="235.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="Arrives At" visibleRowCount="2" />
-                        <ComboBox layoutX="355.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="Direct Flight" visibleRowCount="2" />
-                        <ComboBox layoutX="475.0" layoutY="50.0" prefHeight="25.0" prefWidth="114.0" promptText="Equipment" visibleRowCount="2" />
-                        <ListView layoutX="40.0" layoutY="122.0" prefHeight="160.0" prefWidth="520.0" />
-                        <Button layoutX="412.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Download" />
-                        <Button layoutX="125.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="267.0" layoutY="285.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" />
-                        <Button layoutX="478.0" layoutY="96.0" mnemonicParsing="false" text="Modify Data" />
-                        <Button layoutX="401.0" layoutY="96.0" mnemonicParsing="false" text="Add Route" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-      <Label alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="52.0" prefWidth="600.0" text="TITLE" textAlignment="CENTER">
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="845.0" text="Flight Data Manager" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
+      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="304.0" VBox.vgrow="ALWAYS">
+         <tabs>
+            <Tab fx:id="generalTab" text="Search Engine">
+               <content>
+                  <StackPane>
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Search Data">
+                                 <font>
+                                    <Font name="System Bold" size="35.0" />
+                                 </font>
+                              </Label>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="38.0" minHeight="9.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="39.0" minHeight="9.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="4">
+                                       <children>
+                                          <RadioButton fx:id="flightsRadioButton" mnemonicParsing="false" onAction="#onFlightsRadioPressed" selected="true" text="Flights">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </RadioButton>
+                                          <RadioButton fx:id="airportsRadioButton" mnemonicParsing="false" onAction="#onAirportsRadioPressed" text="Airports">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                          <RadioButton fx:id="airlinesRadioButton" mnemonicParsing="false" onAction="#onAirlinesRadioPressed" text="Airlines">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                          <RadioButton fx:id="routesRadioButton" mnemonicParsing="false" onAction="#onRoutesRadioPressed" text="Routes">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="40.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                       </children>
+                                    </HBox>
+                                    <TextField fx:id="firstSearchEntry" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin></TextField>
+                                    <Label fx:id="firstSearchType" text="Airline:" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="180.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="secondSearchType" text="Airport:" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="180.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="secondSearchEntry" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin></TextField>
+                                    <Label fx:id="thirdSearchType" text="Country:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="7.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="fourthSearchType" text="Equipment:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="thirdSearchEntry" disable="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="80.0" right="25.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="fourthSearchEntry" disable="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="80.0" right="25.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" prefHeight="22.0" prefWidth="60.0" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font></Button>
+                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <Label fx:id="errorMessage" maxWidth="-Infinity" textFill="RED" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                       <padding>
+                                          <Insets left="25.0" />
+                                       </padding>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </GridPane>
+                              <HBox alignment="BOTTOM_LEFT">
+                                 <children>
+                                    <Label maxWidth="1.7976931348623157E308" prefWidth="298.0" text="Results" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="System Bold" size="27.0" />
+                                       </font>
+                                    </Label>
+                                    <Button mnemonicParsing="false" onAction="#onViewMorePressed" text="View More" />
+                                    <Button mnemonicParsing="false" text="Download" />
+                                 </children>
+                              </HBox>
+                              <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="135.0" prefWidth="520.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <StackPane.margin>
+                              <Insets bottom="25.0" left="25.0" right="25.0" />
+                           </StackPane.margin>
+                        </VBox>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+               </content>
+            </Tab>
+            <Tab text="Airport Data">
+               <content>
+                  <StackPane>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Raw Airport Data Viewer ">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" text="Filter Options" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="19.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="50.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <FlowPane prefHeight="22.0" prefWidth="1232.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Countries:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="airportCountryField" promptText="Countries">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin></TextField>
+                                    <Button fx:id="airlineApplyFilterButton2" mnemonicParsing="false" onAction="#onAirportApplyFilterButton" text="Apply Filter">
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirportPressed" text="Add Airport">
+                                       <FlowPane.margin>
+                                          <Insets left="664.0" />
+                                       </FlowPane.margin></Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Airport" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="72.0" text="Download" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </FlowPane>
+                              <TableView fx:id="airportTableView" prefHeight="458.0" prefWidth="1232.0">
+                                <columns>
+                                  <TableColumn fx:id="airportNameCol" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="airportCityCol" prefWidth="75.0" text="City" />
+                                    <TableColumn fx:id="airportCountryCol" prefWidth="75.0" text="Country" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </TableView>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets left="25.0" right="25.0" />
+                           </padding>
+                        </VBox>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+               </content>
+            </Tab>
+            <Tab fx:id="airlineDataTab" text="Airline Data">
+               <content>
+                  <StackPane>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Raw Airline Data Viewer ">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" text="Filter Options" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="19.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="200.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <FlowPane prefHeight="21.0" prefWidth="1232.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Countries:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="countryAirlineField" promptText="Australia">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin>
+                                    </TextField>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active Status:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </Text>
+                                    <ComboBox fx:id="airlineActiveDropdown" prefHeight="25.0" prefWidth="80.0" promptText="Active" visibleRowCount="2">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin></ComboBox>
+                                    <Button fx:id="airlineApplyFilterButton" mnemonicParsing="false" onAction="#onAirlineApplyFilterButton" text="Apply Filter">
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" text="Add Airline">
+                                       <FlowPane.margin>
+                                          <Insets left="471.0" />
+                                       </FlowPane.margin></Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Airline" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="73.0" text="Download" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </FlowPane>
+                              <TableView fx:id="rawAirlineTable" prefHeight="495.0" prefWidth="1232.0">
+                                <columns>
+                                  <TableColumn fx:id="airlineNameCol" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="airlineAliasCol" prefWidth="75.0" text="Alias" />
+                                    <TableColumn fx:id="airlineCountryCol" prefWidth="75.0" text="Country" />
+                                    <TableColumn fx:id="airlineActiveCol" prefWidth="75.0" text="Active" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </TableView>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets left="25.0" right="25.0" />
+                           </padding>
+                        </VBox>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+               </content>
+            </Tab>
+            <Tab text="Route Data">
+               <content>
+                  <StackPane>
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="348.0" text="Raw Route Data Viewer ">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" text="Filter Options" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="19.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="235.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <FlowPane prefHeight="30.0" prefWidth="1232.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Source Airport:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="routeSourceAirportField" promptText="Source Airport">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin>
+                                    </TextField>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Airport:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </Text>
+                                    <TextField fx:id="routeDestAirportField" promptText="Destination Airport">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin></TextField>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </FlowPane>
+                              <FlowPane prefHeight="19.0" prefWidth="1232.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Direct Route:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <FlowPane.margin>
+                                          <Insets left="14.0" />
+                                       </FlowPane.margin>
+                                    </Text>
+                                    <ComboBox fx:id="routeStopsComboBox" prefWidth="150.0">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin>
+                                    </ComboBox>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <FlowPane.margin>
+                                          <Insets left="75.0" />
+                                       </FlowPane.margin>
+                                    </Text>
+                                    <TextField fx:id="routeEquipmentField" promptText="Equipment">
+                                       <FlowPane.margin>
+                                          <Insets left="10.0" />
+                                       </FlowPane.margin></TextField>
+                                    <Button fx:id="airlineApplyFilterButton1" mnemonicParsing="false" onAction="#onAirlineApplyFilterButton" text="Apply Filter">
+                                       <FlowPane.margin>
+                                          <Insets left="20.0" />
+                                       </FlowPane.margin>
+                                    </Button>
+                                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" text="Add Route">
+                                       <FlowPane.margin>
+                                          <Insets left="333.0" />
+                                       </FlowPane.margin></Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Route">
+                                       <FlowPane.margin>
+                                          <Insets />
+                                       </FlowPane.margin></Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Download" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </FlowPane>
+                              <TableView fx:id="routeTableView" prefHeight="443.0" prefWidth="1232.0">
+                                <columns>
+                                  <TableColumn fx:id="routeAirlineCol" prefWidth="75.0" text="Airline" />
+                                  <TableColumn fx:id="routeSrcAirportCol" prefWidth="75.0" text="Source Airport" />
+                                    <TableColumn fx:id="routeDestAirportCol" prefWidth="75.0" text="Destination Airport" />
+                                    <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="No. Stops" />
+                                    <TableColumn fx:id="routeEquipmentCol" prefWidth="75.0" text="Equipment" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </TableView>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.halignment="CENTER" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="98.0" text="Graph" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets left="25.0" right="25.0" />
+                           </padding>
+                        </VBox>
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+               </content>
+            </Tab>
+         </tabs>
+         <padding>
+            <Insets bottom="-1.0" left="-1.0" right="-1.0" />
+         </padding>
+      </TabPane>
    </children>
-</Pane>
+</VBox>
