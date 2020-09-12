@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * AirportAccessor
@@ -37,13 +38,13 @@ public class AirportAccessor implements Accessor {
      * Requires airport_name, city, country, IATA code, ICAO code, latitude, longitude, altitude,
      * timezone, dst, and tz timezone parameters, contained in an ArrayList.
      *
-     * @param data An ArrayList containing the data to be inserted into an entry in the database.
+     * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The airport_id of the airport that was just created.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public int save(ArrayList data) {
+    public int save(List<Object> data) {
         int result;
 
         try {
@@ -52,12 +53,16 @@ public class AirportAccessor implements Accessor {
                     "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
                                                 + "longitude, altitude, timezone, dst, tz_database_timezone) "
                                                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            // Iterates through the ArrayList and adds the values to the insert statement
+            // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 12; i++) {
                 stmt.setObject(i, data.get(i-1));
             }
             // Executes the insert operation, sets the result to the airport_id of the new airport
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            keys.next();
+            result = keys.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
@@ -206,6 +211,29 @@ public class AirportAccessor implements Accessor {
     }
 
     /**
+     * Selects all airports from the database and returns them.
+     *
+     * @return ResultSet result Contains the airports in the database.
+     *
+     * @author Billie Johnson
+     */
+    public ResultSet getAllData() {
+        ResultSet result = null;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRPORT_DATA");
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airports.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      *
      *
      * @param id
@@ -243,31 +271,30 @@ public class AirportAccessor implements Accessor {
      */
     public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
-        String query = "SELECT * FROM AIRPORT_DATA";
-        ArrayList<String> elements = new ArrayList<>();
+
+        List<String> queryTerms = new ArrayList<>();
+        List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                query = query + " WHERE airport_name = ?";
+                queryTerms.add("airport_name = ?");
                 elements.add(name);
             }
 
             if (city != null) {
-                if (name != null) {
-                    query = query + " and city = ?";
-                } else {
-                    query = query + " WHERE city = ?";
-                }
+                queryTerms.add("city = ?");
                 elements.add(city);
             }
 
             if (country != null) {
-                if (name != null || city != null) {
-                    query = query + " and country = ?";
-                } else {
-                    query = query + " WHERE country = ?";
-                }
+                queryTerms.add("country = ?");
                 elements.add(country);
+            }
+
+            String query = "SELECT * FROM AIRPORT_DATA";
+            if (queryTerms.size() != 0) {
+                query += " WHERE ";
+                query += String.join(" and ", queryTerms);
             }
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
@@ -412,5 +439,31 @@ public class AirportAccessor implements Accessor {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the maximum airport_id contained in the database.
+     *
+     * @return int id The maximum airport_id in the database.
+     *
+     * @author Billie Johnson
+     */
+    public int getMaxID() {
+        int id = 0;
+
+        try {
+            // The SQL search query - finds the maximum airport_id in the database
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(airport_id) FROM AIRPORT_DATA");
+            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+            ResultSet result = stmt.executeQuery();
+            id = result.getInt(1);
+
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get maximum id.");
+            System.out.println(e.getMessage());
+        }
+
+        return id;
     }
 }

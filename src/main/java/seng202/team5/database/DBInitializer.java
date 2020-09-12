@@ -49,8 +49,4 @@ public class DBInitializer {
             System.out.println("Database already exists.");
         }
     }
-
-    public static void main(String[] args) {
-        //createNewDatabase("flightdata.db");
-    }
 }

@@ -8,16 +8,17 @@ import seng202.team5.database.DBTableInitializer;
 import seng202.team5.service.AirlineService;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import seng202.team5.database.DBInitializer;
 
 public class AirlineServiceTest extends BaseDatabaseTest {
 
     private AirlineService airlineService;
+
+    private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
 
     public AirlineServiceTest(String testName) { super(testName); }
 
@@ -29,36 +30,148 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         airlineService = new AirlineService();
     }
 
-    public void testInitialState() throws SQLException {
-        ResultSet stuff = airlineService.getAirlines(null, null, null);
-        assertFalse(stuff.next());
+    public void testGetAirlinesEmpty() throws SQLException {
+        ResultSet resultSet = airlineService.getAirlines(null, null, null);
+        assertFalse(resultSet.next());
+    }
+
+    public void testGetAirlinesSingle() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i+1, testData.get(i));
+        }
+        stmt.executeUpdate();
+
+        String name = (String)testData.get(0);
+        String country = (String)testData.get(5);
+        String callsign = (String)testData.get(4);
+
+        // Test all combinations
+        for (String testName : new String[]{null, name, "Not"+name}) {
+            boolean validName = testName == null || testName.equals(name);
+
+            for (String testCountry : new String[]{null, country, "Not"+country}) {
+                boolean validCountry = testCountry == null || testCountry.equals(country);
+
+                for (String testCallsign : new String[]{null, callsign, "Not"+callsign}) {
+                    boolean validCallsign = testCallsign == null || testCallsign.equals(callsign);
+
+                    ResultSet resultSet = airlineService.getAirlines(testName, testCountry, testCallsign);
+
+                    String combination = new StringBuilder()
+                            .append("name=")
+                            .append(testName)
+                            .append(", country=")
+                            .append(testCountry)
+                            .append(", callsign=")
+                            .append(testCallsign)
+                            .toString();
+
+                    // If filter matches the data in the database
+                    if (validName && validCountry && validCallsign) {
+                        assertTrue(combination, resultSet.next());
+                        for (int i = 0; i<testData.size(); i++) {
+                            assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
+                        }
+                    }
+                    assertFalse(combination, resultSet.next());
+                }
+            }
+        }
+
+        dbHandler.close();
+    }
+
+    public void testGetAirlineByID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        List<Integer> keys = new ArrayList<>();
+
+        for (int i = 0; i<3; i++) {
+
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+            // Iterates through the List and adds the values to the insert statement
+            stmt.setObject(1, testData.get(0) + i);
+            for (int j = 1; j<testData.size(); j++) {
+                stmt.setObject(j + 1, testData.get(j));
+            }
+
+            // Executes the insert operation, sets the result to the airport_id of the new airport
+            int changes = stmt.executeUpdate();
+            assertEquals(1, changes);
+
+            // Gets the airport ID
+            ResultSet rs = stmt.getGeneratedKeys();
+            assertTrue(rs.next());
+            int key = rs.getInt(1);
+            keys.add(key);
+        }
+
+        for (int i = 0; i<3; i++) {
+            int key = keys.get(i);
+            ResultSet resultSet = airlineService.getAirline(key);
+            assertNotNull("Key " + key + " not found", resultSet);
+
+            // Check that there is at least one result
+            assertTrue(resultSet.next());
+
+            // Check name
+            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+
+            // Check rest of the entry
+            for (int j = 1; j<testData.size(); j++) {
+                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+            }
+
+            // Check there are no more than 1 result
+            assertFalse(resultSet.next());
+        }
     }
 
     public void testAddAirline() throws SQLException {
-        String name = "AirportName";
-        String alias = "AliasName";
-        String country = "CountryName";
-        String iata = "ITS";
-        String icao = "ICAO";
-        String callsign = "CallsignStuff";
-        String active = "Y";
+        Connection dbHandler = DBConnection.getConnection();
 
-        int res = airlineService.saveAirline(name, alias, iata, icao, callsign, country, active);
+        List<String> testData2 = new ArrayList<>(testData);
+        testData2.set(0, testData.get(0) + "2");
+        testData2.set(2, "XY");
+        testData2.set(3, "XYZ");
 
-        assertTrue(res != -1);
+        for (List<String> entry : List.of(testData, testData2)) {
+            int res = airlineService.saveAirline(
+                    entry.get(0),
+                    entry.get(1),
+                    entry.get(2),
+                    entry.get(3),
+                    entry.get(4),
+                    entry.get(5),
+                    entry.get(6)
+            );
+            // Check operation did not fail
+            assertTrue(res != -1);
 
-        Statement stmt = DBConnection.getConnection().createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT * FROM AIRLINE_DATA");
-        assertTrue(resultSet.next());
+            // Query airline data with airport_id=res
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRLINE_DATA WHERE airline_id = ?");
+            stmt.setObject(1, res);
+            ResultSet resultSet = stmt.executeQuery();
 
-        assertEquals(name, resultSet.getString(2));
-        assertEquals(alias, resultSet.getString(3));
-        assertEquals(iata, resultSet.getString(4));
-        assertEquals(icao, resultSet.getString(5));
-        assertEquals(callsign, resultSet.getString(6));
-        assertEquals(country, resultSet.getString(7));
-        assertEquals(active, resultSet.getString(8));
+            // Check that there is at least one result
+            assertTrue("Failed to fetch airline_id=" + res, resultSet.next());
 
-        assertFalse(resultSet.next());
+            // Check the result contents
+            for (int i = 0; i<entry.size(); i++) {
+                assertEquals(entry.get(i), resultSet.getObject(2 + i));
+            }
+
+            // Check there are no more than 1 result
+            assertFalse(resultSet.next());
+        }
+
+        dbHandler.close();
     }
 }

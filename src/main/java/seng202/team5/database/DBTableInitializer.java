@@ -21,10 +21,6 @@ public class DBTableInitializer {
      * @param url The url of the database, intended to be passed in from DBInitializer
      */
     public static void initializeTables(String url) {
-    // public static void initializeTables(String filename) {
-
-    //     String directory = (System.getProperty("user.dir")).replace("\\", "/");
-    //     String url = "jdbc:sqlite:" + directory + "/" + filename;
 
         String airport_sql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
                 + "     airport_id INTEGER PRIMARY KEY,\n" // Auto-increments as it is an integer primary key, unique
@@ -60,7 +56,7 @@ public class DBTableInitializer {
                 + "     source_airport_id INTEGER NOT NULL,\n"
                 + "     destination_airport TEXT NOT NULL,\n" // IATA/ICAO code
                 + "     destination_airport_id INTEGER NOT NULL,\n"
-                + "     codeshare TEXT NOT NULL,\n" // "Y" if the flight is operated by a different airline, otherwise ""
+                + "     codeshare TEXT,\n" // "Y" if the flight is operated by a different airline, otherwise null
                 + "     stops INTEGER NOT NULL,\n" // Number of stops for the flight, 0 if it is direct
                 + "     equipment TEXT NOT NULL,\n" // 3-letter codes for plane types(s) commonly used for this flight, separated by spaces
                 + "     FOREIGN KEY (airline_id)\n"
@@ -80,8 +76,8 @@ public class DBTableInitializer {
         String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA (\n"
                 + "     id INTEGER PRIMARY KEY,\n" // Auto-increments as it is an integer primary key, unique
                 + "     flight_id INTEGER NOT NULL,\n" // Not unique, ties the different entries in a single flight together
-                + "     airline TEXT NOT NULL,\n" // IATA/ICAO code
-                + "     airport TEXT NOT NULL,\n" // IATA/ICAO code
+                + "     location_type TEXT NOT NULL,\n" // One of "APT", "VOR", or "FIX"
+                + "     location TEXT NOT NULL,\n" // Location of the flight entry
                 + "     altitude INTEGER NOT NULL,\n" // In feet, first and last entries of a flight must be 0
                 + "     latitude REAL NOT NULL,\n" // Negative is South, positive is North, double
                 + "     longitude REAL NOT NULL\n" // Negative is West, positive is East, double
@@ -103,8 +99,4 @@ public class DBTableInitializer {
         }
     }
 
-    // public static void main(String[] args) {
-    //     initializeTables("flightdata.db");
-    //     System.out.println("Tables created.");
-    // }
 }

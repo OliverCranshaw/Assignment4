@@ -1,10 +1,19 @@
 package data;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import cucumber.api.java.bs.A;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import seng202.team5.data.ReadFile;
+import seng202.team5.database.DBConnection;
+import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
+import seng202.team5.data.ReadFile;
+import seng202.team5.database.DBTableInitializer;
+import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.FlightService;
+import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.Connection;
@@ -18,39 +27,44 @@ import static org.junit.Assert.*;
 
 public class ReadFileTest {
 
-    private ReadFile readFile = new ReadFile();
-    private File airlineFile = new File("src/test/java/data/airlines.txt");
-    private File airportFile = new File("src/test/java/data/airports.txt");
-    private File flightFile = new File("src/test/java/data/flight.txt");
-    private File routeFile = new File("src/test/java/data/routes.txt");
+    private DBConnection dbConnection;
+    private DBInitializer dbInitializer;
+    private ReadFile readFile;
+    private ArrayList<Integer> expected;
+    private File airlineFile;
+    private File airportFile;
+    private File flightFile;
+    private File routeFile;
+    private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
+    private File airports = new File("src/test/java/data/testfiles/airports.txt");
     private static Connection con;
 
-    @BeforeClass
-    public static void setup() {
-        String url = "jdbc:sqlite:test.db";
-        DBTableInitializer tableInitializer = new DBTableInitializer();
+    @Before
+    public void setup() {
+        String filename = "test.db";
+        File dbFile = new File(filename);
 
-        try (Connection tmp = DriverManager.getConnection(url)) {
-            con = tmp;
-            if (con != null) {
-                DatabaseMetaData meta = con.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("DB created.");
-                tableInitializer.initializeTables(url);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        dbInitializer = new DBInitializer();
+
+        DBInitializer.createNewDatabase(filename);
+
+        dbConnection = new DBConnection();
+
+        DBConnection.setDatabaseFile(dbFile);
+
+        readFile = new ReadFile();
     }
 
-    @AfterClass
-    public static void teardown() {
-        File db = new File("test.db");
+    @After
+    public void teardown() {
         try {
-            if (con != null) {
-                con.close();
-                db.delete();
-            }
+            File dbFile = new File("test.db");
+            con = DBConnection.getConnection();
+            con.close();
+
+            dbFile.delete();
+
+            System.out.println("DB deleted.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -92,37 +106,164 @@ public class ReadFileTest {
         String airline_line = "1,\"Private flight\",\\N,\"-\",\"N/A\",\"\",\"\",\"Y\"";
         String airport_line = "9451,\"Port Authority\",\"New York\",\"United States\",\"\",\\N,40.756667,-73.991111,33,-5,\"A\",\"America/New_York\"";
         String route_line = "3H,\\N,YKG,5481,YVP,154,,0,DH8 DHT";
+        String blank_line = ",,,";
 
         ArrayList<String> expected_airline_entries = new ArrayList<>(Arrays.asList("1", "Private flight", "\\N", "-", "N/A", "", "", "Y"));
         ArrayList<String> expected_airport_entries = new ArrayList<>(Arrays.asList("9451", "Port Authority", "New York", "United States", "", "\\N", "40.756667", "-73.991111", "33", "-5", "A", "America/New_York"));
         ArrayList<String> expected_route_entries = new ArrayList<>(Arrays.asList("3H", "\\N", "YKG", "5481", "YVP", "154", "", "0", "DH8 DHT"));
+        ArrayList<String> expected_blank_entries = new ArrayList<>(Arrays.asList("", "", "", ""));
 
         assertEquals(expected_airline_entries, readFile.getEntries(airline_line));
         assertEquals(expected_airport_entries, readFile.getEntries(airport_line));
         assertEquals(expected_route_entries, readFile.getEntries(route_line));
+        assertEquals(expected_blank_entries, readFile.getEntries(blank_line));
     }
 
     @Test
-    public void readAirlineDataTest() {
-        int expected = 6048;
-        assertEquals(expected, readFile.readAirlineData(airlineFile));
+    public void readAirlineTest() {
+        airlineFile = new File("src/test/java/data/testfiles/normal_airline_with_id.txt");
+        assertEquals(1, readFile.readAirlineData(airlineFile));
+
+        airlineFile = new File("src/test/java/data/testfiles/normal_airline.txt");
+        assertEquals(2, readFile.readAirlineData(airlineFile));
+
+        airlineFile = new File("src/test/java/data/testfiles/abnormal_airline_with_id.txt");
+        assertEquals(3, readFile.readAirlineData(airlineFile));
     }
 
     @Test
-    public void readAirportDataTest() {
-        int expected = 8107;
-        assertEquals(expected, readFile.readAirportData(airportFile));
+    public void readAirlineFailTest() {
+        airlineFile = new File("src/test/java/data/testfiles/airline_too_few_entries.txt");
+        assertEquals(-2, readFile.readAirlineData(airlineFile));
+
+        airlineFile = new File("src/test/java/data/testfiles/airline_too_many_entries.txt");
+        assertEquals(-3, readFile.readAirlineData(airlineFile));
     }
 
     @Test
-    public void readFlightDataTest() {
-        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(1, 31));
+    public void readAirlinesTest() {
+        airlineFile = new File("src/test/java/data/testfiles/normal_airlines_multiple.txt");
+        assertEquals(5, readFile.readAirlineData(airlineFile));
+    }
+
+    @Test
+    public void readAirlinesFailTest() {
+        airlineFile = new File("src/test/java/data/testfiles/abnormal_airlines_multiple.txt");
+        assertEquals(3, readFile.readAirlineData(airlineFile));
+    }
+
+    @Test
+    public void readAirportTest() {
+        airportFile = new File("src/test/java/data/testfiles/normal_airport_with_id.txt");
+        assertEquals(1, readFile.readAirportData(airportFile));
+
+        airportFile = new File("src/test/java/data/testfiles/normal_airport.txt");
+        assertEquals(2, readFile.readAirportData(airportFile));
+
+        airportFile = new File("src/test/java/data/testfiles/abnormal_airport_with_id.txt");
+        assertEquals(3, readFile.readAirportData(airportFile));
+    }
+
+    @Test
+    public void readAirportFailTest() {
+        airportFile = new File("src/test/java/data/testfiles/airport_too_few_entries.txt");
+        assertEquals(-2, readFile.readAirportData(airportFile));
+
+        airportFile = new File("src/test/java/data/testfiles/airport_too_many_entries.txt");
+        assertEquals(-3, readFile.readAirportData(airportFile));
+    }
+
+    @Test
+    public void readAirportsTest() {
+        airportFile = new File("src/test/java/data/testfiles/normal_airports_multiple.txt");
+        assertEquals(5, readFile.readAirportData(airportFile));
+    }
+
+    @Test
+    public void readAirportsFailTest() {
+        airportFile = new File("src/test/java/data/testfiles/abnormal_airports_multiple.txt");
+        assertEquals(3, readFile.readAirportData(airportFile));
+    }
+
+    @Test
+    public void readFlightEntryTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        flightFile = new File("src/test/java/data/testfiles/normal_flight_entry.txt");
+        expected = new ArrayList<>(Arrays.asList(1, 1));
         assertEquals(expected, readFile.readFlightData(flightFile));
     }
 
     @Test
-    public void readRouteDataTest() {
-        int expected = 15045;
-        assertEquals(expected, readFile.readRouteData(routeFile));
+    public void readFlightEntryFailTest() {
+        flightFile = new File("src/test/java/data/testfiles/flight_entry_too_few_entries.txt");
+        expected = new ArrayList<>(Arrays.asList(-1, -1));
+        assertEquals(expected, readFile.readFlightData(flightFile));
+
+        flightFile = new File("src/test/java/data/testfiles/flight_entry_too_many_entries.txt");
+        assertEquals(expected, readFile.readFlightData(flightFile));
+    }
+
+    @Test
+    public void readFlightTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        flightFile = new File("src/test/java/data/testfiles/normal_flight.txt");
+        expected = new ArrayList<>(Arrays.asList(1, 5));
+        assertEquals(expected, readFile.readFlightData(flightFile));
+    }
+
+    @Test
+    public void readFlightFailTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        flightFile = new File("src/test/java/data/testfiles/abnormal_flight.txt");
+        expected = new ArrayList<>(Arrays.asList(-1, -1));
+        assertEquals(expected, readFile.readFlightData(flightFile));
+    }
+
+    @Test
+    public void readRouteTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        routeFile = new File("src/test/java/data/testfiles/normal_route_9_entries.txt");
+        assertEquals(1, readFile.readRouteData(routeFile));
+
+        routeFile = new File("src/test/java/data/testfiles/normal_route_6_entries.txt");
+        assertEquals(2, readFile.readRouteData(routeFile));
+    }
+
+    @Test
+    public void readRouteFailTest() {
+        routeFile = new File("src/test/java/data/testfiles/route_too_few_entries.txt");
+        assertEquals(-2, readFile.readRouteData(routeFile));
+
+        routeFile = new File("src/test/java/data/testfiles/route_too_many_entries_less_than_9.txt");
+        assertEquals(-3, readFile.readRouteData(routeFile));
+
+        routeFile = new File("src/test/java/data/testfiles/route_too_many_entries.txt");
+        assertEquals(-4, readFile.readRouteData(routeFile));
+    }
+
+    @Test
+    public void readRoutesTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        routeFile = new File("src/test/java/data/testfiles/normal_routes_multiple.txt");
+        assertEquals(5, readFile.readRouteData(routeFile));
+    }
+
+    @Test
+    public void readRoutesFailTest() {
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
+
+        routeFile = new File("src/test/java/data/testfiles/abnormal_routes_multiple.txt");
+        assertEquals(3, readFile.readRouteData(routeFile));
     }
 }

@@ -11,13 +11,13 @@ public class FlightDataTest {
     @Test
     public void testValidStringConstructor() {
         Integer flightId = 545;
-        String airline = "Lufthansa";
-        String airport = "aflsf";
+        String location_type = "Lufthansa";
+        String location = "aflsf";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
 
-        FlightData test = new FlightData(flightId, airline, airport, altitude, latitude, longitude);
+        FlightData test = new FlightData(flightId, location_type, location, altitude, latitude, longitude);
 
         assertEquals((Double) 4223.2, test.getLatitude());
         assertEquals((Integer) 4343, test.getAltitude());
@@ -28,18 +28,18 @@ public class FlightDataTest {
     @Test
     public void testConvertBlanksToNull() {
         Integer flightId = 545;
-        String airline = "\\N";
-        String airport = "-";
+        String location_type = "\\N";
+        String location = "-";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
 
-        FlightData test = new FlightData(flightId, airline, airport, altitude, latitude, longitude);
+        FlightData test = new FlightData(flightId, location_type, location, altitude, latitude, longitude);
 
         test.convertBlanksToNull();
 
-        assertNull(test.getAirline());
-        assertNull(test.getAirport());
+        assertNull(test.getLocationType());
+        assertNull(test.getLocation());
 
     }
 
@@ -47,13 +47,13 @@ public class FlightDataTest {
     @Test
     public void testCheckValidValues() {
         Integer flightId = 545;
-        String airline = "FJFF";
-        String airport = "FFF";
+        String location_type = "VOR";
+        String location = "FFF";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
 
-        FlightData test = new FlightData(flightId, airline, airport, altitude, latitude, longitude);
+        FlightData test = new FlightData(flightId, location_type, location, altitude, latitude, longitude);
 
         int validityValue = test.checkValues();
         assertEquals(1, validityValue);
@@ -64,16 +64,16 @@ public class FlightDataTest {
     @Test
     public void testCheckInvalidValues() {
         Integer flightId = 545;
-        String airline = "alfl";
-        String airport = "Fkfa";
+        String location_type = "fga";
+        String location = "FkfaF";
         String altitude = "4343";
         String latitude = "4223.2";
         String longitude = "434.6";
 
-        FlightData test = new FlightData(flightId, airline, airport, altitude, latitude, longitude);
+        FlightData test = new FlightData(flightId, location_type, location, altitude, latitude, longitude);
 
         int validityValue = test.checkValues();
-        assertEquals(-4, validityValue);
+        assertEquals(-3, validityValue);
 
     }
 
