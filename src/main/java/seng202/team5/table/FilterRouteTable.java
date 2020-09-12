@@ -45,7 +45,9 @@ public class FilterRouteTable extends ConcreteFilterTable {
 
         while (hasMore()) {
             current = elements.get(currentPos);
+            System.out.println(current);
             String currentDep = (String) current.get(3);
+            System.out.println(currentDep);
             String currentDes = (String) current.get(5);
             int stops = (int) current.get(8);
             String currentEquip = (String) current.get(9);

@@ -42,6 +42,7 @@ public class AirlineTable extends DataTable {
      */
     public void FilterTable(ArrayList<String> countries, String active) {
         filteredData = new ArrayList<>(originalDataArrayList);
+        System.out.println(filteredData.get(0));
         // Creating a new instance of the filterAirlineTable
         FilterAirlineTable filter = new FilterAirlineTable(filteredData);
         // Setting the filter to the given countries and active status
@@ -49,7 +50,6 @@ public class AirlineTable extends DataTable {
         filter.setActive(active);
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
-
     }
 
 

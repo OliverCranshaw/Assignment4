@@ -196,6 +196,11 @@ public class MainMenuController implements Initializable {
 
         airlineService = new AirlineService();
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        try {
+            System.out.println("Here2: " + airlineService.getAirlines(null, null, null).getObject(1));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         airportService = new AirportService();
         airportTable = new AirportTable(airportService.getAirports(null, null, null));
         routeService = new RouteService();
@@ -214,13 +219,15 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
         populateAirportTable(airportTable.getData());
-
+        /*
         try {
             routeTable.createTable();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        populateRouteTable(routeTable.getData());
+        */
+
+        //populateRouteTable(routeTable.getData());
 
     }
 
@@ -548,6 +555,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
+        System.out.println("Here: " + airlineTable.getData().get(0));
         airlineTable.FilterTable(null, null);
         String countryText = countryAirlineField.getText();
         String activeText = (String) airlineActiveDropdown.getValue();
@@ -577,17 +585,16 @@ public class MainMenuController implements Initializable {
         String srcAirportText = routeSourceAirportField.getText();
         String dstAirportText = routeDestAirportField.getText();
         String equipmentText = routeEquipmentField.getText();
+        srcAirportText = srcAirportText.trim();
+        dstAirportText = dstAirportText.trim();
         String directText = (String) routeStopsComboBox.getValue();
         if (directText == null || directText.equals("")) {
             directText = null;
         } else {
             directText = (directText.equals("direct")) ? "direct" : "not direct";
         }
-        ArrayList<String> srcAirportList = convertCSStringToArrayList(srcAirportText);
-        ArrayList<String> dstAirportList = convertCSStringToArrayList(dstAirportText);
         ArrayList<String> equipmentList = convertCSStringToArrayList(equipmentText);
-
-
+        routeTable.FilterTable(srcAirportText, dstAirportText, directText, equipmentList);
     }
 
     public ArrayList<String> convertCSStringToArrayList(String string) {
