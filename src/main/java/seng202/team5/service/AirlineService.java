@@ -62,8 +62,6 @@ public class AirlineService implements Service {
 
         // Adds the parameters into an List to pass into the save method of the AirlineAccessor
         List<Object> elements = Arrays.asList(name, alias, iata, icao, callsign, country, active);
-        System.out.println("HERE");
-        System.out.println(elements);
 
         return accessor.save(elements);
     }
