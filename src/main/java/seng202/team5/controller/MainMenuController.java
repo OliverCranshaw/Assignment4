@@ -117,9 +117,6 @@ public class MainMenuController implements Initializable {
     private TextField routeDestAirportField;
 
     @FXML
-    private TextField routeStopsField;
-
-    @FXML
     private TextField routeEquipmentField;
 
     @FXML
@@ -164,6 +161,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private ComboBox routeStopsComboBox;
 
+    @FXML
+    private Label errorMessage;
+
 
     private AirlineService airlineService;
     private AirportService airportService;
@@ -175,6 +175,7 @@ public class MainMenuController implements Initializable {
 
     private ObservableList<AirlineModel> airlineModels;
     private ObservableList<AirportModel> airportModels;
+    private ObservableList<RouteModel> routeModels;
 
 
     @Override
@@ -192,13 +193,20 @@ public class MainMenuController implements Initializable {
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
         airportCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirportCountry"));
 
-        airlineService = new AirlineService();
-        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
-        airportService = new AirportService();
-        airportTable = new AirportTable(airportService.getAirports(null, null, null));
-        routeService = new RouteService();
-        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
+        routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));
+        routeDestAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteDstAirport"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<>("RouteStops"));
+        routeEquipmentCol.setCellValueFactory(new PropertyValueFactory<>("RouteEquipment"));
 
+
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        routeService = new RouteService();
+
+        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        airportTable = new AirportTable(airportService.getAirports(null, null, null));
+        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
 
         try {
             airlineTable.createTable();
@@ -207,12 +215,25 @@ public class MainMenuController implements Initializable {
         }
         populateAirlineTable(airlineTable.getData());
 
+        System.out.println();
+        System.out.println(airlineTable.getData().get(0));
+        System.out.println();
+
         try {
             airportTable.createTable();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         populateAirportTable(airportTable.getData());
+        /*
+        try {
+            routeTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        */
+
+        //populateRouteTable(routeTable.getData());
 
     }
 
@@ -413,7 +434,7 @@ public class MainMenuController implements Initializable {
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
 
 
-            System.out.printf("Airline: %s, Airport: %s\n%n", fields.get(0), fields.get(1));
+            System.out.printf("Location Type: %s, Location: %s\n%n", fields.get(0), fields.get(1));
 
             searchInstance.setSearchData(fields);
             result = searchInstance.searchFlight();
@@ -491,6 +512,10 @@ public class MainMenuController implements Initializable {
 
 
     private void populateAirlineTable(ArrayList<ArrayList<Object>> data) {
+
+        System.out.println("POPULATING>>>");
+        System.out.println("POP" + data.get(0));
+
         ArrayList<AirlineModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             String name = (String) datum.get(1);
@@ -517,28 +542,45 @@ public class MainMenuController implements Initializable {
     }
 
 
+    private void populateRouteTable(ArrayList<ArrayList<Object>> data) {
+        ArrayList<RouteModel> list = new ArrayList<>();
+        for (ArrayList<Object> datum : data) {
+            String airline = (String) datum.get(1);
+            String srcAirport = (String) datum.get(3);
+            String dstAirport = (String) datum.get(5);
+            Integer stops = (Integer) datum.get(8);
+            ArrayList<String> equipment = (ArrayList<String>) datum.get(9);
+            StringBuffer equipmentString = new StringBuffer();
+            for (String s: equipment) {
+                equipmentString.append(s);
+                equipmentString.append(", ");
+            }
+            Integer id = (Integer) datum.get(0);
+            list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
+        }
+        routeModels = FXCollections.observableArrayList(list);
+        routeTableView.setItems(routeModels);
+    }
+
+
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
-        airlineTable.FilterTable(null, null);
-        String countryText = countryAirlineField.getText();
-        String activeText = (String) airlineActiveDropdown.getValue();
-        if (activeText == null || activeText.equals("")) {
-            activeText = null;
-        } else {
-            activeText = (activeText == "Yes") ? "Y" : "N";
-        }
-        String[] list = countryText.split(",");
-        ArrayList<String> newList = convertToArrayList(list);
-        for (int i = 0; i < newList.size(); i++) {
-            newList.set(i, newList.get(i).trim());
-            if (newList.get(i).equals("")) {
-                newList.remove(i--);
-            }
-        }
-        if (newList.isEmpty()) {
-            newList = null;
-        }
-        airlineTable.FilterTable(newList, activeText);
+
+        System.out.println();
+        System.out.println("Here: " + airlineTable.getData().get(0));
+        System.out.println();
+
+//        airlineTable.FilterTable(null, null);
+//        String countryText = countryAirlineField.getText();
+//        String activeText = (String) airlineActiveDropdown.getValue();
+//        if (activeText == null || activeText.equals("")) {
+//            activeText = null;
+//        } else {
+//            activeText = (activeText == "Yes") ? "Y" : "N";
+//        }
+//        ArrayList<String> newList = convertCSStringToArrayList(countryText);
+//        airlineTable.FilterTable(newList, activeText);
+
         populateAirlineTable(airlineTable.getData());
 
     }
@@ -547,7 +589,34 @@ public class MainMenuController implements Initializable {
     public void onAirportApplyFilterButton(ActionEvent actionEvent) {
         airportTable.FilterTable(null);
         String countryText = airportCountryField.getText();
-        String[] list = countryText.split(",");
+        ArrayList newList = convertCSStringToArrayList(countryText);
+        airportTable.FilterTable(newList);
+        populateAirportTable(airportTable.getData());
+    }
+
+    @FXML
+    public void onRouteApplyFilterButton(ActionEvent actionEvent) {
+        routeTable.FilterTable(null, null, null, null);
+        String srcAirportText = routeSourceAirportField.getText();
+        String dstAirportText = routeDestAirportField.getText();
+        String equipmentText = routeEquipmentField.getText();
+        srcAirportText = srcAirportText.trim();
+        dstAirportText = dstAirportText.trim();
+        String directText = (String) routeStopsComboBox.getValue();
+        if (directText == null || directText.equals("")) {
+            directText = null;
+        } else {
+            directText = (directText.equals("direct")) ? "direct" : "not direct";
+        }
+        ArrayList<String> equipmentList = convertCSStringToArrayList(equipmentText);
+        routeTable.FilterTable(srcAirportText, dstAirportText, directText, equipmentList);
+    }
+
+    public void onAddFlightPressed(ActionEvent actionEvent) {
+    }
+
+    public ArrayList<String> convertCSStringToArrayList(String string) {
+        String[] list = string.split(",");
         ArrayList<String> newList = convertToArrayList(list);
         for (int i = 0; i < newList.size(); i++) {
             newList.set(i, newList.get(i).trim());
@@ -558,8 +627,7 @@ public class MainMenuController implements Initializable {
         if (newList.isEmpty()) {
             newList = null;
         }
-        airportTable.FilterTable(newList);
-        populateAirportTable(airportTable.getData());
+        return newList;
     }
 
 
@@ -571,8 +639,5 @@ public class MainMenuController implements Initializable {
         }
         return result;
     }
-
-
-
 
 }

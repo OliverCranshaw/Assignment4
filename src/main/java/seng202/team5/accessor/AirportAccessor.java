@@ -261,6 +261,31 @@ public class AirportAccessor implements Accessor {
     /**
      *
      *
+     * @param code
+     * @return ResultSet result
+     *
+     * @author Inga Tokarenko
+     * @author Billie Johnson
+     */
+    public ResultSet getData(String code) {
+        ResultSet result = null;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
+            stmt.setObject(1, code);
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airport data with IATA or ICAO " + code);
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     *
      * @param name
      * @param city
      * @param country
@@ -296,6 +321,7 @@ public class AirportAccessor implements Accessor {
                 query += " WHERE ";
                 query += String.join(" and ", queryTerms);
             }
+
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
