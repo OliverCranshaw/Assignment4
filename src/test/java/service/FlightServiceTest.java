@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import seng202.team5.service.FlightService;
@@ -641,5 +642,173 @@ public class FlightServiceTest extends BaseDatabaseTest {
         assertFalse(res);
     }
 
+
+    public void testGetFlight() throws SQLException {
+
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate database with a flight
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        String flightIdStmt = "SELECT * FROM FLIGHT_DATA WHERE location_type=? AND location = ?";
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement stmt2 = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp2 = Arrays.asList("Heathrow", "London", "England", "HEA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testAirport1 = new ArrayList<>(tmp2);
+        for (int i=1; i < 12; i++) {
+            stmt2.setObject(i, testAirport1.get(i-1));
+        }
+        stmt2.executeUpdate();
+
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        PreparedStatement stmt = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmp = Arrays.asList("testName", "testAlias", "TES", "iopd", "testCallsign", "Argentina", "Y");
+        ArrayList<String> testAirline = new ArrayList<>(tmp);
+        for (int i=1; i < 8; i++) {
+            stmt.setObject(i, testAirline.get(i-1));
+        }
+        stmt.executeUpdate();
+
+
+
+        // Creating a statement that is the given flight data, and then executed, inserting it into the database
+        PreparedStatement stmtFlight = dbHandler.prepareStatement(flightStmt);
+        List<Object> tmpFlightList = Arrays.asList(1, "TES", "HEA", 10000, 321.5, 123.2);
+        ArrayList<Object> testFlightArrayList = new ArrayList<>(tmpFlightList);
+        for (int i=1; i < 7; i++) {
+            stmtFlight.setObject(i, testFlightArrayList.get(i-1));
+        }
+        stmtFlight.executeUpdate();
+
+        // Creating a statement that is given flight data and then executed, retrieving flight data from the database
+        PreparedStatement stmtFlightId = dbHandler.prepareStatement(flightIdStmt);
+        stmtFlightId.setString(1, "TES");
+        stmtFlightId.setString(2, "HEA");
+        ResultSet result = stmtFlightId.executeQuery();
+        Integer id = result.getInt(1);
+
+        // Checking that all values of the retrieved flight are the same as the original one
+        ResultSet flightRetrieved = flightService.getFlight(id);
+        for (int i=1; i < 8; i++) {
+            assertEquals(result.getObject(i), flightRetrieved.getObject(i));
+        }
+
+        // Checking that getFlight returns null for an non-existent id
+        ResultSet nonExistentFlight = flightService.getFlight(123122323);
+        assertFalse(nonExistentFlight.next());
+
+    }
+
+
+    public void testGetFlights() throws SQLException {
+
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate database with a flight
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        /*
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement airportStatement1 = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp2 = Arrays.asList("Heathrow", "London", "England", "HEA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testAirport1 = new ArrayList<>(tmp2);
+        for (int i=1; i < 12; i++) {
+            airportStatement1.setObject(i, testAirport1.get(i-1));
+        }
+        airportStatement1.executeUpdate();
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement airportStatement2 = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp3 = Arrays.asList("Sydney", "Sydney", "Australia", "SYD", "SYDN", 122, 1233.2, 54500, 45, "AUS", "TA");
+        ArrayList<Object> testAirport2 = new ArrayList<>(tmp3);
+        for (int i=1; i < 12; i++) {
+            airportStatement2.setObject(i, testAirport2.get(i-1));
+        }
+        airportStatement2.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        PreparedStatement airlineStatement1 = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmp = Arrays.asList("testName", "testAlias", "TES", "iopd", "testCallsign", "Argentina", "Y");
+        ArrayList<String> testAirline1 = new ArrayList<>(tmp);
+        for (int i=1; i < 8; i++) {
+            airlineStatement1.setObject(i, testAirline1.get(i-1));
+        }
+        airlineStatement1.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        PreparedStatement airlineStatement2 = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmp4 = Arrays.asList("Lufthansa", "LUFT", "LUF", "LUFT", "LUFTHANSA", "Germany", "Y");
+        ArrayList<String> testAirline2 = new ArrayList<>(tmp4);
+        for (int i=1; i < 8; i++) {
+            airlineStatement2.setObject(i, testAirline2.get(i-1));
+        }
+        airlineStatement2.executeUpdate();
+        */
+        // Creating a statement that is the given flight data, and then executed, inserting it into the database
+        PreparedStatement stmtFlight1 = dbHandler.prepareStatement(flightStmt);
+        List<Object> tmpFlightList = Arrays.asList(1, "TES", "HEA", 10000, 321.5, 123.2);
+        ArrayList<Object> testFlightArrayList = new ArrayList<>(tmpFlightList);
+        for (int i=1; i < 7; i++) {
+            stmtFlight1.setObject(i, testFlightArrayList.get(i-1));
+        }
+        stmtFlight1.executeUpdate();
+
+        // Creating a statement that is the given flight data, and then executed, inserting it into the database
+        PreparedStatement stmtFlight2 = dbHandler.prepareStatement(flightStmt);
+        List<Object> tmpFlightList2 = Arrays.asList(2, "LUFT", "SYD", 10000, 321.5, 123.2);
+        ArrayList<Object> testFlightArrayList2 = new ArrayList<>(tmpFlightList2);
+        for (int i=1; i < 7; i++) {
+            stmtFlight2.setObject(i, testFlightArrayList2.get(i-1));
+        }
+        stmtFlight2.executeUpdate();
+
+        // Creating a list of expected Results
+        List expectedResults = Arrays.asList(2, "LUFT", "SYD", 10000, 321.5, 123.2);
+        ArrayList<Object> expectedResultsList = new ArrayList<Object>(expectedResults);
+        // Getting the actual results
+        ResultSet result = flightService.getFlights("Lufthansa", "Sydney");
+
+        // Comparing the actual results to the expected results
+        for (int i = 2; i < 8; i++) {
+            assertEquals(expectedResultsList.get(i-2), result.getObject(i));
+        }
+
+
+        // Getting results for a airline that doesn't exist
+        ResultSet resultInvalid = flightService.getFlights("NEFNE>NFNE", "aNESN");
+        assertFalse(resultInvalid.next());
+
+
+    }
+
+
+    public void testLocationTypeValid() {
+
+    }
 
 }

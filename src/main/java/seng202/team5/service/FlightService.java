@@ -144,24 +144,22 @@ public class FlightService implements Service {
     /**
      *
      *
-     * @param airline
-     * @param airport
+     * @param location_type
+     * @param location
      * @return
      *
      * @author Inga Tokarenko
      */
-    public ResultSet getFlights(String airline, String airport) {
-        ArrayList airlineIataIcao = null;
-        ArrayList airportIataIcao = null;
-
-        if (airline != null) {
-            airlineIataIcao = airlineAccessor.getAirlineIataIcao(airline);
+    public ResultSet getFlights(String location_type, String location) {
+        ArrayList<String> locationTypeArray = new ArrayList<>();
+        ArrayList<String> locationArray = new ArrayList<>();
+        if (location_type != null) {
+            locationTypeArray.add(location_type);
         }
-        if (airport != null) {
-            airportIataIcao = airportAccessor.getAirportIataIcao(airport);
+        if (location != null) {
+            locationArray.add(location);
         }
-
-        return accessor.getData(airlineIataIcao, airportIataIcao);
+        return accessor.getData(locationTypeArray, locationArray);
     }
 
     /**

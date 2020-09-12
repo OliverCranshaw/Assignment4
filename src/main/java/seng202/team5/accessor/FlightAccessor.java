@@ -272,14 +272,14 @@ public class FlightAccessor implements Accessor{
     /**
      *
      *
-     * @param airline
-     * @param airport
+     * @param location_type
+     * @param location
      * @return ResultSet result
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public ResultSet getData(ArrayList<String> airline, ArrayList<String> airport) {
+    public ResultSet getData(ArrayList<String> location_type, ArrayList<String> location) {
         boolean check = true;
         String addString = "";
         ResultSet result = null;
@@ -287,35 +287,35 @@ public class FlightAccessor implements Accessor{
         ArrayList<String> elements = new ArrayList<>();
 
         try {
-            if (airline != null) {
+            if (location_type != null) {
 
                 query = query + " WHERE ";
 
-                for (String value:airline) {
+                for (String value:location_type) {
                     if (value != null) {
-                        addString = elements.size() == 0 ? " airline = ? " : " or airline = ? ";
+                        addString = elements.size() == 0 ? "location_type = ? " : "or location_type = ? ";
                         query = query + addString;
                         elements.add(value);
                     }
                 }
             }
-            if (airport != null) {
-                if (airline != null) {
+            if (location != null) {
+                if (location_type != null) {
                     query = query + " and ";
                 } else {
                     query = query + " WHERE ";
                 }
 
-                for (String value:airport) {
+                for (String value:location) {
                     if (value != null) {
-                        addString = check ? " airport = ? " : " or airport = ? ";
+                        addString = check ? "location = ? " : "or location = ? ";
                         query = query + addString;
                         elements.add(value);
                         check = false;
                     }
                 }
             }
-
+            System.out.println(query);
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {
