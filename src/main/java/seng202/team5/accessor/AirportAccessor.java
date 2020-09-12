@@ -297,6 +297,7 @@ public class AirportAccessor implements Accessor {
                 query += String.join(" and ", queryTerms);
             }
 
+
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {

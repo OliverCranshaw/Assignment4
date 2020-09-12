@@ -421,7 +421,7 @@ public class MainMenuController implements Initializable {
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
 
 
-            System.out.printf("Airline: %s, Airport: %s\n%n", fields.get(0), fields.get(1));
+            System.out.printf("Location Type: %s, Location: %s\n%n", fields.get(0), fields.get(1));
 
             searchInstance.setSearchData(fields);
             result = searchInstance.searchFlight();
