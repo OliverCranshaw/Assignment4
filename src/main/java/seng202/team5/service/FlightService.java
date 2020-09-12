@@ -42,8 +42,8 @@ public class FlightService implements Service {
      * Checks the validity of input parameters and then passes them into the save method of the FlightAccessor as an ArrayList.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param airport The 3-letter IATA code or 4-letter ICAO code of the airport, cannot be null.
+     * @param location_type The location type of the location of the flight entry, cannot be null.
+     * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. An integer, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a double. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a double. Negative is West, positive is East, cannot be null.
@@ -51,18 +51,19 @@ public class FlightService implements Service {
      *
      * @author Inga Tokarenko
      */
-    public int saveFlight(int flightID, String airline, String airport, int altitude, double latitude, double longitude) {
-        // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airlineAccessor.dataExists(airline)) {
+    public int saveFlight(int flightID, String location_type, String location, int altitude, double latitude, double longitude) {
+        // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
+        if (!locationTypeisValid(location_type)) {
             return -1;
         }
-        // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airportAccessor.dataExists(airport)) {
-            return -1;
+        else if (location_type == "APT") {
+            if (!airportAccessor.dataExists(location)) {
+                return -1;
+            }
         }
 
         // Adds the parameters into an List to pass into the save method of the FlightAccessor
-        List<Object> elements = Arrays.asList(flightID, airline, airport, altitude, latitude, longitude);
+        List<Object> elements = Arrays.asList(flightID, location_type, location, altitude, latitude, longitude);
 
         return accessor.save(elements);
     }

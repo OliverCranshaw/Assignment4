@@ -74,8 +74,8 @@ public class DeleteDataTest extends BaseDatabaseTest {
 
 
         FlightService flightService = new FlightService();
-        flightService.saveFlight(1, "IA", "IAT", 1, 2, 3);
-        flightService.saveFlight(1, "IA", "IAT", 4, 5, 6);
+        assert flightService.saveFlight(1, "VOR", "IAT", 1, 2, 3) != -1;
+        assert flightService.saveFlight(1, "VOR", "IAT", 4, 5, 6) != -1;
         int id = flightService.getMaxID();
 
         deleteData.deleteFlightEntry(id);

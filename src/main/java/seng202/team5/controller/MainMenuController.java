@@ -25,6 +25,7 @@ import seng202.team5.table.RouteTable;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,6 +168,7 @@ public class MainMenuController implements Initializable {
     private AirlineTable airlineTable;
     private AirportTable airportTable;
     private RouteTable routeTable;
+    private Label errorMessage;
 
     private ObservableList<AirlineModel> airlineModels;
     private ObservableList<AirportModel> airportModels;
@@ -210,9 +212,6 @@ public class MainMenuController implements Initializable {
         populateAirportTable(airportTable.getData());
 
     }
-
-
-
 
     @FXML
     public void onViewMorePressed() {
@@ -308,6 +307,8 @@ public class MainMenuController implements Initializable {
         fourthSearchEntry.setVisible(false);
         fourthSearchEntry.setDisable(true);
 
+        errorMessage.setText("");
+
     }
     @FXML
     public void onAirportsRadioPressed() {
@@ -332,6 +333,8 @@ public class MainMenuController implements Initializable {
         thirdSearchEntry.setDisable(false);
         fourthSearchEntry.setVisible(false);
         fourthSearchEntry.setDisable(true);
+
+        errorMessage.setText("");
 
 
     }
@@ -360,6 +363,8 @@ public class MainMenuController implements Initializable {
         fourthSearchEntry.setVisible(false);
         fourthSearchEntry.setDisable(true);
 
+        errorMessage.setText("");
+
     }
 
     @FXML
@@ -387,14 +392,16 @@ public class MainMenuController implements Initializable {
         fourthSearchEntry.setVisible(true);
         fourthSearchEntry.setDisable(false);
 
+        errorMessage.setText("");
+
     }
 
     @FXML
-    public void onSearchPressed() {
+    public void onSearchPressed() throws SQLException {
 
         ArrayList<Object> fields = new ArrayList<>();
         Search searchInstance = new Search();
-
+        ResultSet result;
 
         if (flightsRadioButton.isSelected()) {
 
@@ -406,7 +413,13 @@ public class MainMenuController implements Initializable {
             System.out.printf("Airline: %s, Airport: %s\n%n", fields.get(0), fields.get(1));
 
             searchInstance.setSearchData(fields);
-            searchInstance.searchFlight();
+            result = searchInstance.searchFlight();
+
+            if (result == null) {
+                errorMessage.setText("Sorry but there are no results for your search.");
+            } else {
+                errorMessage.setText("");
+            }
 
         } else if (airportsRadioButton.isSelected()) {
 
@@ -417,7 +430,13 @@ public class MainMenuController implements Initializable {
             System.out.printf("Name: %s, City: %s, Country: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
-            searchInstance.searchAirport();
+            result = searchInstance.searchAirport();
+
+            if (!result.next()) {
+                errorMessage.setText("Sorry but there are no results for your search.");
+            } else {
+                errorMessage.setText("");
+            }
 
         } else if (airlinesRadioButton.isSelected()) {
 
@@ -429,7 +448,13 @@ public class MainMenuController implements Initializable {
             System.out.printf("Name: %s, Country: %s, Callsign: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
-            searchInstance.searchAirline();
+            result = searchInstance.searchAirline();
+
+            if (!result.next()) {
+                errorMessage.setText("Sorry but there are no results for your search.");
+            } else {
+                errorMessage.setText("");
+            }
 
 
         } else if (routesRadioButton.isSelected()) {
@@ -443,11 +468,21 @@ public class MainMenuController implements Initializable {
                 System.out.printf("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n%n", fields.get(0), fields.get(1), fields.get(2), fields.get(3));
 
                 searchInstance.setSearchData(fields);
-                searchInstance.searchRoute();
+                result = searchInstance.searchRoute();
+
+                if (result == null) {
+                    errorMessage.setText("Sorry but there are no results for your search.");
+                } else if (!result.next()) {
+                    errorMessage.setText("Sorry but there are no results for your search.");
+                } else {
+                    errorMessage.setText("");
+                }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid entry for number of stops. Must be an integer.");
+                errorMessage.setText("Invalid entry for number of stops. (Must be an integer)");
             }
         }
+
+
 
     }
 

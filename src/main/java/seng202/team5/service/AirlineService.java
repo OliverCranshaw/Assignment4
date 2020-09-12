@@ -144,6 +144,18 @@ public class AirlineService implements Service {
     }
 
     /**
+     *
+     *
+     * @param code
+     * @return
+     *
+     * @author Inga Tokarenko
+     */
+    public boolean airlineExists(String code) {
+        return accessor.dataExists(code);
+    }
+
+    /**
      * Checks that a given airline IATA code is valid.
      * IATA code must either be null or of length 3 to be valid.
      *
