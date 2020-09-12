@@ -11,6 +11,7 @@ import seng202.team5.service.AirportService;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seng202.team5.database.DBInitializer;
@@ -29,6 +30,26 @@ public class AirportServiceTest extends BaseDatabaseTest {
     protected void setUp() {
         super.setUp();
         airportService = new AirportService();
+    }
+
+    public void testUpdateAirport() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i+1, testData.get(i));
+        }
+        stmt.executeUpdate();
+
+        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IA", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICA", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "Something", "Timezoney"));
+        assertEquals(-1, airportService.updateAirport(10, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        assertEquals(1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
     }
 
     public void testGetAirportsEmpty() throws SQLException {
@@ -143,7 +164,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
     }
 
-    public void testAddAirport() throws SQLException {
+    public void testSaveAirport() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
         List<Object> testData2 = new ArrayList<>(testData);
@@ -191,5 +212,73 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
 
         dbHandler.close();
+    }
+
+    public void testDeleteAirport() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i+1, testData.get(i));
+        }
+        stmt.executeUpdate();
+
+        // Performs the delete operation
+        assertTrue(airportService.deleteAirport(1));
+
+        // Checks that the airport has been deleted
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "SELECT * FROM AIRPORT_DATA");
+        ResultSet resultSet = stmt2.executeQuery();
+        assertFalse(resultSet.next());
+    }
+
+    public void testIataIsValid() {
+        assertTrue(airportService.iataIsValid(null));
+        assertTrue(airportService.iataIsValid("IAT"));
+        assertFalse(airportService.iataIsValid("IA"));
+        assertFalse(airportService.iataIsValid("IATA"));
+    }
+
+    public void testIcaoIsValid() {
+        assertTrue(airportService.icaoIsValid(null));
+        assertTrue(airportService.icaoIsValid("IACO"));
+        assertFalse(airportService.icaoIsValid("ICA"));
+        assertFalse(airportService.icaoIsValid("ICAOE"));
+    }
+
+    public void testDstIsValid() {
+        // All valid DSTs
+        for (String dst : Arrays.asList("E", "A", "S", "O", "Z", "N", "U")) {
+            assertTrue(airportService.dstIsValid(dst));
+        }
+        assertFalse(airportService.dstIsValid(null));
+
+        // Invalid DSTs
+        assertFalse(airportService.dstIsValid(""));
+        assertFalse(airportService.dstIsValid("EE"));
+    }
+
+    public void testGetMaxID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        for (int i = 0; i<3; i++) {
+            // Adds an airport
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int j = 0; j<testData.size(); j++) {
+                stmt.setObject(j+1, testData.get(j));
+            }
+            stmt.executeUpdate();
+
+            // Checks maximum ID against expected value
+            assertEquals(i + 1, airportService.getMaxID());
+        }
     }
 }
