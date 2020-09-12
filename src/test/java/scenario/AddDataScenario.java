@@ -6,7 +6,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import cucumber.api.java.After;
+import org.junit.After;
 import org.junit.Assert;
 import seng202.team5.accessor.AirlineAccessor;
 import seng202.team5.accessor.AirportAccessor;
@@ -40,11 +40,35 @@ public class AddDataScenario {
 
     @Before
     public void setup() {
+        String filename = "test.db";
+        File dbFile = new File(filename);
+
+        DBInitializer.createNewDatabase(filename);
+
+        DBConnection.setDatabaseFile(dbFile);
+
         concreteAddData = new ConcreteAddData();
         airlineService = new AirlineService();
         airportService = new AirportService();
         flightService = new FlightService();
         routeService = new RouteService();
+    }
+
+    @After
+    public void teardown() {
+        try {
+            File dbFile = new File("test.db");
+            Connection con = DBConnection.getConnection();
+            con.close();
+
+            boolean result = dbFile.delete();
+
+            if (result) {
+                System.out.println("DB deleted.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
