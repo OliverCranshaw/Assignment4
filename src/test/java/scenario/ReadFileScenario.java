@@ -5,8 +5,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import cucumber.api.java.After;
+import org.junit.After;
 import org.junit.Assert;
+import seng202.team5.data.ConcreteAddData;
 import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
@@ -40,6 +41,13 @@ public class ReadFileScenario {
 
     @Before
     public void setup() {
+        String filename = "test.db";
+        File dbFile = new File(filename);
+
+        DBInitializer.createNewDatabase(filename);
+
+        DBConnection.setDatabaseFile(dbFile);
+
         readFile = new ReadFile();
         airlineService = new AirlineService();
         airportService = new AirportService();
@@ -48,6 +56,23 @@ public class ReadFileScenario {
 
         airlines = new File("src/test/java/data/testfiles/airlines.txt");
         airports = new File("src/test/java/data/testfiles/airports.txt");
+    }
+
+    @After
+    public void teardown() {
+        try {
+            File dbFile = new File("test.db");
+            Connection con = DBConnection.getConnection();
+            con.close();
+
+            boolean result = dbFile.delete();
+
+            if (result) {
+                System.out.println("DB deleted.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
