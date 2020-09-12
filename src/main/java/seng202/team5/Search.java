@@ -5,7 +5,9 @@ import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +26,7 @@ public class Search {
 
     private static Search searchInstance;
     private ArrayList<Object> searchData;
+    private ResultSet result = null;
 
 
     private AirlineService airlineService;
@@ -75,9 +78,10 @@ public class Search {
      * for the arlineService getAirlines method which returns the ResultSet of data from
      * the database.
      *
-     *  @author Oliver Cranshaw
-     *  @author Inga Tokarenko
-     *  @return
+     * @return a ResultSet containing the data from the database that satisfies the search criteria.
+     *
+     * @author Oliver Cranshaw
+     * @author Inga Tokarenko
      */
     public ResultSet searchAirline() {
 
@@ -85,7 +89,10 @@ public class Search {
         String country = searchData.get(1) == null ? null : searchData.get(1).toString();
         String callsign = searchData.get(2) == null ? null : searchData.get(2).toString();
 
-        return airlineService.getAirlines(name, country, callsign);
+        result = airlineService.getAirlines(name, country, callsign);
+
+        return result;
+
 
     }
 
@@ -94,9 +101,10 @@ public class Search {
      * for the airportService getAirports method which returns the ResultSet of data from
      * the database.
      *
-     *  @author Oliver Cranshaw
-     *  @author Inga Tokarenko
-     * @return
+     * @return a ResultSet containing the data from the database that satisfies the search criteria.
+     *
+     * @author Oliver Cranshaw
+     * @author Inga Tokarenko
      */
     public ResultSet searchAirport() {
 
@@ -104,8 +112,9 @@ public class Search {
         String city = searchData.get(1) == null ? null : searchData.get(1).toString();
         String country = searchData.get(2) == null ? null : searchData.get(2).toString();
 
-        return airportService.getAirports(name, city, country);
+        result = airportService.getAirports(name, city, country);
 
+        return result;
     }
 
     /**
@@ -113,16 +122,20 @@ public class Search {
      * for the flightService getFlights method which returns the ResultSet of data from
      * the database.
      *
-     *  @author Oliver Cranshaw
-     *  @author Inga Tokarenko
-     * @return
+     * @return a ResultSet containing the data from the database that satisfies the search criteria.
+     *
+     * @author Oliver Cranshaw
+     * @author Inga Tokarenko
      */
     public ResultSet searchFlight() {
 
         String airline = searchData.get(0) == null ? null : searchData.get(0).toString();
         String airport = searchData.get(1) == null ? null : searchData.get(1).toString();
 
-        return flightService.getFlights(airline, airport);
+
+        result = flightService.getFlights(airline, airport);
+
+        return result;
 
     }
 
@@ -131,9 +144,10 @@ public class Search {
      * for the routeService getRoutes method which returns the ResultSet of data from
      * the database.
      *
-     *  @author Oliver Cranshaw
-     *  @author Inga Tokarenko
-     * @return
+     * @return a ResultSet containing the data from the database that satisfies the search criteria.
+     *
+     * @author Oliver Cranshaw
+     * @author Inga Tokarenko
      */
     public ResultSet searchRoute() {
 
@@ -142,8 +156,10 @@ public class Search {
         int numStops = (int) searchData.get(2);
         String equipment = searchData.get(3) == null ? null : searchData.get(3).toString();
 
-        return routeService.getRoutes(sourceAirport, destAirport, numStops, equipment);
 
+        result = routeService.getRoutes(sourceAirport, destAirport, numStops, equipment);
+        System.out.println(result);
+        return result;
     }
 
 }

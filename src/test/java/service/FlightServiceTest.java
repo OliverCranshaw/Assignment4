@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {

@@ -76,31 +76,30 @@ public class AddDataScenario {
 
     //  Adding a valid airline
 
-    @Given("^airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) does not exist")
-    public void validAirlineParameters(String name, String alias, String iata, String icao, String callsign, String country, String active) {
-        airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
-        airlineData.convertBlanksToNull();
-        Assert.assertEquals(1, airlineData.checkValues());
-
-        if (!iata.equals("")) {
-            Assert.assertEquals(false, airlineService.airlineExists(iata));
-        }
-        if (!icao.equals("")) {
-            System.out.println(airlineService.airlineExists(icao));
-            Assert.assertEquals(false, airlineService.airlineExists(icao));
-        }
-    }
-
-    @When("^adding an airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
-    public void addValidAirline(String name, String alias, String iata, String icao, String callsign, String country, String active) {
-        id = concreteAddData.addAirline(name, alias, iata, icao, callsign, country, active);
-        Assert.assertEquals(airlineService.getMaxID(), id);
-    }
-
-    @Then("^the airline is added with icao \"([^\"]*)\"$")
-    public void airlineAdded(String icao) {
-        Assert.assertEquals(true, airlineService.airlineExists(icao));
-    }
+//    @Given("^airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) does not exist")
+//    public void validAirlineParameters(String name, String alias, String iata, String icao, String callsign, String country, String active) {
+//        airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
+//        airlineData.convertBlanksToNull();
+//        Assert.assertEquals(1, airlineData.checkValues());
+//
+//        if (!iata.equals("")) {
+//            Assert.assertEquals(false, airlineService.airlineExists(iata));
+//        }
+//        if (!icao.equals("")) {
+//            Assert.assertEquals(false, airlineService.airlineExists(icao));
+//        }
+//    }
+//
+//    @When("^adding an airline with parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
+//    public void addValidAirline(String name, String alias, String iata, String icao, String callsign, String country, String active) {
+//        id = concreteAddData.addAirline(name, alias, iata, icao, callsign, country, active);
+//        Assert.assertEquals(airlineService.getMaxID(), id);
+//    }
+//
+//    @Then("^the airline is added with icao \"([^\"]*)\"$")
+//    public void airlineAdded(String icao) {
+//        Assert.assertEquals(true, airlineService.airlineExists(icao));
+//    }
 
     // Adding an airline with an invalid name
 
