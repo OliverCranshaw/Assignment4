@@ -46,6 +46,7 @@ public class AirlineService implements Service {
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
         if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
+            System.out.println("iata");
             return -1;
         }
         // Checks that the ICAO code is valid and that if the ICAO code is not null, it does not already exist in the database
@@ -55,11 +56,14 @@ public class AirlineService implements Service {
         }
         // Checks that the active is valid, if it isn't returns an error code of -1
         if (!activeIsValid(active)) {
+            System.out.println("active");
             return -1;
         }
 
         // Adds the parameters into an List to pass into the save method of the AirlineAccessor
         List<Object> elements = Arrays.asList(name, alias, iata, icao, callsign, country, active);
+        System.out.println("HERE");
+        System.out.println(elements);
 
         return accessor.save(elements);
     }
@@ -141,6 +145,18 @@ public class AirlineService implements Service {
      */
     public ResultSet getAirlines(String name, String country, String callign) {
         return accessor.getData(name, country, callign);
+    }
+
+    /**
+     *
+     *
+     * @param code
+     * @return
+     *
+     * @author Inga Tokarenko
+     */
+    public boolean airlineExists(String code) {
+        return accessor.dataExists(code);
     }
 
     /**
