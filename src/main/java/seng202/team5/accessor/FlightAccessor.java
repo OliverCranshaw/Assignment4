@@ -279,7 +279,7 @@ public class FlightAccessor implements Accessor{
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public ResultSet getData(ArrayList<String> location_type, ArrayList<String> location) {
+    public ResultSet getData(String location_type, String location) {
         boolean check = true;
         String addString = "";
         ResultSet result = null;
@@ -288,34 +288,17 @@ public class FlightAccessor implements Accessor{
 
         try {
             if (location_type != null) {
-
-                query = query + " WHERE ";
-
-                for (String value:location_type) {
-                    if (value != null) {
-                        addString = elements.size() == 0 ? "location_type = ? " : "or location_type = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                    }
-                }
+                query = query + " WHERE location_type = ? ";
+                elements.add(location_type);
             }
             if (location != null) {
                 if (location_type != null) {
-                    query = query + " and ";
+                    query = query + " and location = ?";
                 } else {
-                    query = query + " WHERE ";
+                    query = query + " WHERE location = ?";
                 }
-
-                for (String value:location) {
-                    if (value != null) {
-                        addString = check ? "location = ? " : "or location = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                        check = false;
-                    }
-                }
+                elements.add(location);
             }
-            System.out.println(query);
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {

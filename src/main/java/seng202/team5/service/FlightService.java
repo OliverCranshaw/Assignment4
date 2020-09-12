@@ -151,15 +151,7 @@ public class FlightService implements Service {
      * @author Inga Tokarenko
      */
     public ResultSet getFlights(String location_type, String location) {
-        ArrayList<String> locationTypeArray = new ArrayList<>();
-        ArrayList<String> locationArray = new ArrayList<>();
-        if (location_type != null) {
-            locationTypeArray.add(location_type);
-        }
-        if (location != null) {
-            locationArray.add(location);
-        }
-        return accessor.getData(locationTypeArray, locationArray);
+        return accessor.getData(location_type, location);
     }
 
     /**
