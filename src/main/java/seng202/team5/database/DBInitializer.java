@@ -49,5 +49,4 @@ public class DBInitializer {
             System.out.println("Database already exists.");
         }
     }
-
 }

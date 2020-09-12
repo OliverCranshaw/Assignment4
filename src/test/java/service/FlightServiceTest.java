@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {
@@ -36,7 +35,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
     public void testAddValidFlight() throws SQLException {
 
         int flight_id = 5;
-        String airline = "FFA";
+        String airline = "VOR";
         String airport = "FSL";
         int altitude = 42;
         double latitude = 4341.1;
