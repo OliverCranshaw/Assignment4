@@ -52,6 +52,7 @@ public class FlightTable extends DataTable {
         }
         // Setting the filteredData to the result
         filteredData = result;
+        System.out.println(filteredData);
     }
 
 

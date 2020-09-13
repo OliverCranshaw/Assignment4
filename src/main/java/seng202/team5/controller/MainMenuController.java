@@ -17,11 +17,14 @@ import seng202.team5.App;
 import seng202.team5.Search;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
+import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 import seng202.team5.table.AirlineTable;
 import seng202.team5.table.AirportTable;
+import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
+import javax.print.attribute.standard.Destination;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
@@ -161,18 +164,36 @@ public class MainMenuController implements Initializable {
     @FXML
     private Label errorMessage;
 
+    @FXML
+    private TableColumn flightIdCol;
+
+    @FXML
+    private TableColumn flightSrcLocationCol;
+
+    @FXML
+    private TableColumn flightSrcAirportCol;
+
+    @FXML
+    private TableColumn flightDstLocationCol;
+
+    @FXML
+    private TableColumn flightDstAirportCol;
+
 
     private AirlineService airlineService;
     private AirportService airportService;
     private RouteService routeService;
+    private FlightService flightService;
     private AirlineTable airlineTable;
     private AirportTable airportTable;
     private RouteTable routeTable;
+    private FlightTable flightTable;
 
 
     private ObservableList<AirlineModel> airlineModels;
     private ObservableList<AirportModel> airportModels;
     private ObservableList<RouteModel> routeModels;
+    private ObservableList<FlightModel> flightModels;
 
 
     @Override
@@ -197,13 +218,21 @@ public class MainMenuController implements Initializable {
         routeEquipmentCol.setCellValueFactory(new PropertyValueFactory<>("RouteEquipment"));
 
 
+        flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
+        flightSrcLocationCol.setCellValueFactory(new PropertyValueFactory<>("SourceLocation"));
+        flightSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("SourceAirport"));
+        flightDstLocationCol.setCellValueFactory(new PropertyValueFactory<>("DestinationLocation"));;
+        flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
+
         airlineService = new AirlineService();
         airportService = new AirportService();
         routeService = new RouteService();
+        flightService = new FlightService();
 
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
         airportTable = new AirportTable(airportService.getAirports(null, null, null));
         routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
+        flightTable = new FlightTable(flightService.getFlights(null, null));
 
         try {
             airlineTable.createTable();
@@ -229,8 +258,14 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
 
-
         populateRouteTable(routeTable.getData());
+
+
+        try {
+            flightTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
 
@@ -612,6 +647,28 @@ public class MainMenuController implements Initializable {
 
     public void onAddFlightPressed(ActionEvent actionEvent) {
     }
+
+    public void updateAirportTable() throws SQLException {
+        airportTable = new AirportTable(airportService.getAirports(null, null, null));
+        airportTable.createTable();
+        populateAirportTable(airportTable.getData());
+    }
+
+
+    public void updateAirlineTable() throws SQLException {
+        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        airlineTable.createTable();
+        populateAirlineTable(airlineTable.getData());
+    }
+
+    public void updateRouteTable() throws SQLException {
+        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
+        routeTable.createTable();
+        populateRouteTable(routeTable.getData());
+    }
+
+
+
 
     public ArrayList<String> convertCSStringToArrayList(String string) {
         String[] list = string.split(",");
