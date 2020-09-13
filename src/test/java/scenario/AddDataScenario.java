@@ -35,24 +35,30 @@ public class AddDataScenario {
     private AirportData airportData;
     private FlightData flightData;
     private RouteData routeData;
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
-    private FlightService flightService = new FlightService();
-    private RouteService routeService = new RouteService();
-    private ConcreteAddData concreteAddData = new ConcreteAddData();
+    private AirlineService airlineService;
+    private AirportService airportService;
+    private FlightService flightService;
+    private RouteService routeService;
+    private ConcreteAddData concreteAddData;
 
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
 
         DBInitializer.createNewDatabase(filename);
 
         DBConnection.setDatabaseFile(dbFile);
+
+        concreteAddData = new ConcreteAddData();
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
     }
 
-    @AfterClass
-    public static void teardown() {
+    @After
+    public void teardown() {
         try {
             File dbFile = new File("test.db");
             Connection con = DBConnection.getConnection();

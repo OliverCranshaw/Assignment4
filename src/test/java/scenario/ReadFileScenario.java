@@ -26,9 +26,9 @@ import java.util.Arrays;
 
 public class ReadFileScenario {
 
-    private ReadFile readFile = new ReadFile();
+    private ReadFile readFile;
     private ArrayList<Integer> expected_ids;
-    private ArrayList<Integer> ids;
+    private Object ids;
     private int id;
     private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
     private File airports = new File("src/test/java/data/testfiles/airports.txt");
@@ -36,22 +36,28 @@ public class ReadFileScenario {
     private File airportFile;
     private File flightFile;
     private File routeFile;
-    AirlineService airlineService = new AirlineService();
-    AirportService airportService = new AirportService();
-    FlightService flightService = new FlightService();
-    RouteService routeService = new RouteService();
+    AirlineService airlineService;
+    AirportService airportService;
+    FlightService flightService;
+    RouteService routeService;
 
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
 
         DBInitializer.createNewDatabase(filename);
 
         DBConnection.setDatabaseFile(dbFile);
+
+        readFile = new ReadFile();
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
     }
 
-    @AfterClass
+    @After
     public static void teardown() {
         try {
             File dbFile = new File("test.db");
@@ -80,7 +86,7 @@ public class ReadFileScenario {
 
     @When("reading valid airline data from a file")
     public void readValidAirline() {
-        id = readFile.readAirlineData(airlineFile);
+        id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
     @Then("^an airline is added with id 1$")
@@ -97,7 +103,7 @@ public class ReadFileScenario {
 
     @When("reading airline data with less than 7 entries from a file")
     public void readAirlineFileTooFewEntries() {
-        id = readFile.readAirlineData(airlineFile);
+        id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
     @Then("the airline data is rejected with an error code -2")
@@ -114,7 +120,7 @@ public class ReadFileScenario {
 
     @When("reading airline data with more than 8 entries from a file")
     public void readAirlineFileTooManyEntries() {
-        id = readFile.readAirlineData(airlineFile);
+        id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
     @Then("the airline data is rejected with an error code -3")
@@ -131,7 +137,7 @@ public class ReadFileScenario {
 
     @When("reading multiple instances of airline data from a file")
     public void readAirlines() {
-        id = readFile.readAirlineData(airlineFile);
+        id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
     @Then("each valid airline is added to the database with an incrementing id")
@@ -151,7 +157,7 @@ public class ReadFileScenario {
 
     @When("reading valid airport data from a file")
     public void readValidAirport() {
-        id = readFile.readAirportData(airportFile);
+        id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
     @Then("an airport is added with id 1")
@@ -168,7 +174,7 @@ public class ReadFileScenario {
 
     @When("reading airport data with less than 11 entries from a file")
     public void readAirportFileTooFewEntries() {
-        id = readFile.readAirportData(airportFile);
+        id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
     @Then("the airport data is rejected with an error code -2")
@@ -185,7 +191,7 @@ public class ReadFileScenario {
 
     @When("reading airport data with more than 12 entries from a file")
     public void readAirportFileTooManyEntries() {
-        id = readFile.readAirportData(airportFile);
+        id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
     @Then("the airport data is rejected with an error code -3")
@@ -202,7 +208,7 @@ public class ReadFileScenario {
 
     @When("reading multiple instances of airport data from a file")
     public void readAirports() {
-        id = readFile.readAirportData(airportFile);
+        id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
     @Then("each valid airport is added to the database with an incrementing id")
@@ -222,7 +228,7 @@ public class ReadFileScenario {
 
     @When("reading valid flight data from a file")
     public void readValidFlightEntry() {
-        ids = readFile.readFlightData(flightFile);
+        ids = readFile.readFlightData(flightFile).get(0);
     }
 
     @Then("a flight entry is added with id 1 and flight id 1")
@@ -243,7 +249,7 @@ public class ReadFileScenario {
 
     @When("reading multiple instances of valid flight data from a file")
     public void readValidFlight() {
-        ids = readFile.readFlightData(flightFile);
+        ids = readFile.readFlightData(flightFile).get(0);
     }
 
     @Then("the flight entries are all added with flight id 1 and an incrementing unique id")
@@ -261,7 +267,7 @@ public class ReadFileScenario {
 
     @When("reading flight data with the wrong number of entries from a file")
     public void readFlightEntryFileWrongNumberOfEntries() {
-        ids = readFile.readFlightData(flightFile);
+        ids = readFile.readFlightData(flightFile).get(0);
     }
 
     @Then("the flight data is rejected, and two error codes of -1 are returned")
@@ -279,7 +285,7 @@ public class ReadFileScenario {
 
     @When("reading multiple instances of flight data with some being invalid from a file")
     public void readInvalidFlightFile() {
-        ids = readFile.readFlightData(flightFile);
+        ids = readFile.readFlightData(flightFile).get(0);
     }
 
     @Then("an invalid flight entry is reached all previous ones are deleted, and two error codes of -1 are returned")
@@ -301,7 +307,7 @@ public class ReadFileScenario {
 
     @When("reading valid route data from a file")
     public void readValidRouteFile() {
-        id = readFile.readRouteData(routeFile);
+        id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
     @Then("a route is added with id 1")
@@ -318,7 +324,7 @@ public class ReadFileScenario {
 
     @When("reading route data with less than 6 entries from a file")
     public void readRouteFileTooFewEntries() {
-        id = readFile.readRouteData(routeFile);
+        id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
     @Then("the route data is rejected, and an error code of -2 is returned")
@@ -335,7 +341,7 @@ public class ReadFileScenario {
 
     @When("reading route data with more than 6 but less than 9 entries from a file")
     public void readRouteFileWrongNumberOfEntries() {
-        id = readFile.readRouteData(routeFile);
+        id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
     @Then("the route data is rejected, and an error code of -3 is returned")
@@ -352,7 +358,7 @@ public class ReadFileScenario {
 
     @When("reading route data with more than 9 entries from a file")
     public void readRouteFileTooManyEntries() {
-        id = readFile.readRouteData(routeFile);
+        id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
     @Then("the route data is rejected, and an error code of -4 is returned")
@@ -369,7 +375,7 @@ public class ReadFileScenario {
 
     @When("reading multiple instances of route data from a file")
     public void readRoutes() {
-        id = readFile.readRouteData(routeFile);
+        id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
     @Then("each valid route is added to the database with an incrementing id")
