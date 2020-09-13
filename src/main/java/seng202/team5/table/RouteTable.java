@@ -86,4 +86,5 @@ public class RouteTable extends DataTable {
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
     }
+
 }

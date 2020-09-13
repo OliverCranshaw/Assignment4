@@ -196,6 +196,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<FlightModel> flightModels;
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -216,6 +217,9 @@ public class MainMenuController implements Initializable {
         routeDestAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteDstAirport"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<>("RouteStops"));
         routeEquipmentCol.setCellValueFactory(new PropertyValueFactory<>("RouteEquipment"));
+
+        routeStopsComboBox.getItems().removeAll(airlineActiveDropdown.getItems());
+        routeStopsComboBox.getItems().addAll("", "direct", "not direct");
 
 
         flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
@@ -628,13 +632,11 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    public void onRouteApplyFilterButton(ActionEvent actionEvent) {
+    public void onRouteApplyFilterButton(ActionEvent actionEvent) throws SQLException {
         routeTable.FilterTable(null, null, null, null);
-        String srcAirportText = routeSourceAirportField.getText();
-        String dstAirportText = routeDestAirportField.getText();
+        String srcAirportText = (routeSourceAirportField.getText().length() == 0) ? null : routeSourceAirportField.getText().trim();
+        String dstAirportText = (routeDestAirportField.getText().length() == 0) ? null : routeDestAirportField.getText().trim();
         String equipmentText = routeEquipmentField.getText();
-        srcAirportText = srcAirportText.trim();
-        dstAirportText = dstAirportText.trim();
         String directText = (String) routeStopsComboBox.getValue();
         if (directText == null || directText.equals("")) {
             directText = null;
@@ -642,7 +644,34 @@ public class MainMenuController implements Initializable {
             directText = (directText.equals("direct")) ? "direct" : "not direct";
         }
         ArrayList<String> equipmentList = convertCSStringToArrayList(equipmentText);
-        routeTable.FilterTable(srcAirportText, dstAirportText, directText, equipmentList);
+        String srcIata;
+        String dstIata;
+        System.out.println("Src: " + srcAirportText);
+        System.out.println("DST: " + dstAirportText);
+        if (srcAirportText == null) {
+            srcIata = null;
+        } else {
+            ResultSet srcAirport = airportService.getAirports(srcAirportText, null, null);
+            if (srcAirport.next()) {
+                srcIata = srcAirport.getString(5);
+            } else {
+                srcIata = "_!$";
+            }
+        }
+        if (dstAirportText == null) {
+            dstIata = null;
+        } else {
+            ResultSet dstAirport = airportService.getAirports(dstAirportText, null, null);
+            if (dstAirport.next()) {
+                dstIata = dstAirport.getString(5);
+            } else {
+                dstIata = "_N@";
+            }
+        }
+        System.out.println("-----------" + srcIata + "------------");
+        System.out.println("-----------" + dstIata + "------------");
+        routeTable.FilterTable(srcIata, dstIata, directText, equipmentList);
+        populateRouteTable(routeTable.getData());
     }
 
     public void onAddFlightPressed(ActionEvent actionEvent) {
