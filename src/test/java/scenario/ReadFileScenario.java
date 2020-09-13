@@ -6,7 +6,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import seng202.team5.data.ConcreteAddData;
 import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;
@@ -24,42 +26,33 @@ import java.util.Arrays;
 
 public class ReadFileScenario {
 
-    private ReadFile readFile;
+    private ReadFile readFile = new ReadFile();
     private ArrayList<Integer> expected_ids;
     private ArrayList<Integer> ids;
     private int id;
-    private File airlines;
-    private File airports;
+    private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
+    private File airports = new File("src/test/java/data/testfiles/airports.txt");
     private File airlineFile;
     private File airportFile;
     private File flightFile;
     private File routeFile;
-    AirlineService airlineService;
-    AirportService airportService;
-    FlightService flightService;
-    RouteService routeService;
+    AirlineService airlineService = new AirlineService();
+    AirportService airportService = new AirportService();
+    FlightService flightService = new FlightService();
+    RouteService routeService = new RouteService();
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
 
         DBInitializer.createNewDatabase(filename);
 
         DBConnection.setDatabaseFile(dbFile);
-
-        readFile = new ReadFile();
-        airlineService = new AirlineService();
-        airportService = new AirportService();
-        flightService = new FlightService();
-        routeService = new RouteService();
-
-        airlines = new File("src/test/java/data/testfiles/airlines.txt");
-        airports = new File("src/test/java/data/testfiles/airports.txt");
     }
 
-    @After
-    public void teardown() {
+    @AfterClass
+    public static void teardown() {
         try {
             File dbFile = new File("test.db");
             Connection con = DBConnection.getConnection();
