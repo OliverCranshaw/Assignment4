@@ -222,17 +222,18 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
         populateAirportTable(airportTable.getData());
-        /*
+
         try {
             routeTable.createTable();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        */
 
-        //populateRouteTable(routeTable.getData());
+
+        populateRouteTable(routeTable.getData());
 
     }
+
 
     @FXML
     public void onViewMorePressed() {
@@ -567,16 +568,16 @@ public class MainMenuController implements Initializable {
         System.out.println("Here: " + airlineTable.getData().get(0));
         System.out.println();
 
-//        airlineTable.FilterTable(null, null);
-//        String countryText = countryAirlineField.getText();
-//        String activeText = (String) airlineActiveDropdown.getValue();
-//        if (activeText == null || activeText.equals("")) {
-//            activeText = null;
-//        } else {
-//            activeText = (activeText == "Yes") ? "Y" : "N";
-//        }
-//        ArrayList<String> newList = convertCSStringToArrayList(countryText);
-//        airlineTable.FilterTable(newList, activeText);
+        airlineTable.FilterTable(null, null);
+        String countryText = countryAirlineField.getText();
+        String activeText = (String) airlineActiveDropdown.getValue();
+        if (activeText == null || activeText.equals("")) {
+            activeText = null;
+        } else {
+            activeText = (activeText == "Yes") ? "Y" : "N";
+        }
+        ArrayList<String> newList = convertCSStringToArrayList(countryText);
+        airlineTable.FilterTable(newList, activeText);
 
         populateAirlineTable(airlineTable.getData());
 

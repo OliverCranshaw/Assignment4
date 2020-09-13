@@ -58,6 +58,7 @@ public class RouteTable extends DataTable {
         }
         // Sets the filtered data to the new Arraylist of arraylists
         filteredData = list;
+        originalDataArrayList = list;
     }
 
 
