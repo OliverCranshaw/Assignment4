@@ -17,7 +17,7 @@ public class UploadAirportsMenuController {
         ReadFile readFile = new ReadFile();
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt", "*.csv"));
 
         File file = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 
