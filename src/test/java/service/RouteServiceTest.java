@@ -675,5 +675,402 @@ public class RouteServiceTest extends BaseDatabaseTest {
     }
 
 
+    public void testGetRoute() throws SQLException {
+        // Setting up variables for a test Route
+        String airline = "ITA";
+        String sourceAirport = "ATA";
+        String destinationAirport = "AUS";
+        String codeShare = "Y";
+        int stops = 6;
+        String equipment = "AJF";
+
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the route data required to run the routeUpdate on
+        String routeQuery = "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, " +
+                "destination_airport, destination_airport_id, codeshare, stops, equipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeDataQuery = "SELECT * FROM ROUTE_DATA WHERE route_id = ?";
+
+        // SQLite query used to retrieve airline_id in order to be passed into a piece of route data
+        String airlineIdQuery = "SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? and airline_name = ? and alias = ?";
+
+        // SQLite query used to retrieve airport_id in order to be passed into a piece of route data
+        String airportIdQuery = "SELECT airport_id FROM AIRPORT_DATA WHERE airport_name = ? and city = ?";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeIdQuery = "SELECT route_id FROM ROUTE_DATA WHERE airline = ? and " +
+                "source_airport = ? and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?";
+
+
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the source airport
+        PreparedStatement stmtSrcAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpSrcAirport = Arrays.asList("Heathrow", "London", "England", "ATA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testSrcAirport = new ArrayList<>(tmpSrcAirport);
+        for (int i=1; i < 12; i++) {
+            stmtSrcAirport.setObject(i, testSrcAirport.get(i-1));
+        }
+        stmtSrcAirport.executeUpdate();
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the destination airport
+        PreparedStatement stmtDstAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpDstAirport = Arrays.asList("ChCh", "Christchurch", "New Zealand", "AUS", "NZNZ", 70, 231, 6000, 42, "JFP", "TZF");
+        ArrayList<Object> testDstAirport = new ArrayList<>(tmpDstAirport);
+        for (int i=1; i < 12; i++) {
+            stmtDstAirport.setObject(i, testDstAirport.get(i-1));
+        }
+        stmtDstAirport.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        // This will be airline for the route data
+        PreparedStatement stmtAirline = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmpAirline = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
+        ArrayList<String> testAirline = new ArrayList<>(tmpAirline);
+        for (int i=1; i < 8; i++) {
+            stmtAirline.setObject(i, testAirline.get(i-1));
+        }
+        stmtAirline.executeUpdate();
+
+        // Creating a statement that will retrieve the airlineId from the database
+        PreparedStatement stmtAirlineID = dbHandler.prepareStatement(airlineIdQuery);
+        List<String> tmpAirlineID = Arrays.asList("ITA", "testName", "testAlias");
+        ArrayList<String> airlineIdList = new ArrayList<>(tmpAirlineID);
+        for (int i=1; i < 4; i++) {
+            stmtAirlineID.setObject(i, airlineIdList.get(i-1));
+        }
+        ResultSet result = stmtAirlineID.executeQuery();
+        int testAirlineId = result.getInt(1);
+
+        // Creating a statement that will retrieve the dstAirportId from the database
+        PreparedStatement stmtDstAirportId = dbHandler.prepareStatement(airportIdQuery);
+        List<String> tmpDstAirportId = Arrays.asList("ChCh", "Christchurch");
+        ArrayList<String> dstAirportIdList = new ArrayList<>(tmpDstAirportId);
+        for (int i=1; i < 3; i++) {
+            stmtDstAirportId.setObject(i, dstAirportIdList.get(i-1));
+        }
+        ResultSet resultDstAirport = stmtDstAirportId.executeQuery();
+        int dstAirportId = resultDstAirport.getInt(1);
+
+        // Creating a statement that is then given routeData, and then executed, inserting it into the database
+        // This is the route that will be deleted using the routeService's deleteRoute() method
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(routeQuery);
+        List<Object> tmpRoute = Arrays.asList(airline, testAirlineId, sourceAirport, testSrcAirport, destinationAirport, dstAirportId, codeShare, stops, equipment);
+        ArrayList<Object> testRouteList = new ArrayList<>(tmpRoute);
+        for (int i=1; i < 10; i++) {
+            stmtRoute.setObject(i, testRouteList.get(i-1));
+        }
+        stmtRoute.executeUpdate();
+
+        PreparedStatement stmtRouteId = dbHandler.prepareStatement(routeIdQuery);
+        List<Object> tmpRouteIdList = Arrays.asList(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        ArrayList<Object> testRouteIdList = new ArrayList<>(tmpRouteIdList);
+        for (int i=1; i < 7; i++) {
+            stmtRouteId.setObject(i, testRouteIdList.get(i-1));
+        }
+        ResultSet routeIdSet = stmtRouteId.executeQuery();
+        int actualId = routeIdSet.getInt(1);
+
+        // Retrieving the route from the database
+        ResultSet routeRetrieved = routeService.getRoute(testAirlineId);
+
+        // Preparing a statement to retrieving to retrieve the expected route from the database
+        PreparedStatement stmtExpectedRoute = dbHandler.prepareStatement(routeDataQuery);
+        stmtExpectedRoute.setObject(1, testAirlineId);
+        ResultSet routeExpected = stmtExpectedRoute.executeQuery();
+
+        // Checking equality between actual and expected
+        for (int i = 1; i < 11; i++) {
+            assertEquals(routeRetrieved.getObject(i), routeExpected.getObject((i)));
+        }
+
+        // Checking the getRoute returns an empty resultSet when an id not in use given
+        assertFalse(routeService.getRoute(53423412).next());
+
+
+    }
+
+
+
+    public void testGetRoutes() throws SQLException {
+        // Setting up variables for a test Route
+        String airline = "ITA";
+        String sourceAirport = "ATA";
+        String destinationAirport = "AUS";
+        String codeShare = "Y";
+        int stops = 6;
+        String equipment = "AJF";
+
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the route data required to run the routeUpdate on
+        String routeQuery = "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, " +
+                "destination_airport, destination_airport_id, codeshare, stops, equipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeDataQuery = "SELECT source_airport, destination_airport, stops, equipment FROM ROUTE_DATA WHERE route_id = ?";
+
+        // SQLite query used to retrieve all the route data from the database for a certain id
+        String routeAllDataQuery = "SELECT * FROM ROUTE_DATA WHERE route_id = ?";
+
+        // SQLite query used to retrieve airline_id in order to be passed into a piece of route data
+        String airlineIdQuery = "SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? and airline_name = ? and alias = ?";
+
+        // SQLite query used to retrieve airport_id in order to be passed into a piece of route data
+        String airportIdQuery = "SELECT airport_id FROM AIRPORT_DATA WHERE airport_name = ? and city = ?";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeIdQuery = "SELECT route_id FROM ROUTE_DATA WHERE airline = ? and " +
+                "source_airport = ? and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?";
+
+
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the source airport
+        PreparedStatement stmtSrcAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpSrcAirport = Arrays.asList("Heathrow", "London", "England", "ATA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testSrcAirport = new ArrayList<>(tmpSrcAirport);
+        for (int i=1; i < 12; i++) {
+            stmtSrcAirport.setObject(i, testSrcAirport.get(i-1));
+        }
+        stmtSrcAirport.executeUpdate();
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the destination airport
+        PreparedStatement stmtDstAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpDstAirport = Arrays.asList("ChCh", "Christchurch", "New Zealand", "AUS", "NZNZ", 70, 231, 6000, 42, "JFP", "TZF");
+        ArrayList<Object> testDstAirport = new ArrayList<>(tmpDstAirport);
+        for (int i=1; i < 12; i++) {
+            stmtDstAirport.setObject(i, testDstAirport.get(i-1));
+        }
+        stmtDstAirport.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        // This will be airline for the route data
+        PreparedStatement stmtAirline = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmpAirline = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
+        ArrayList<String> testAirline = new ArrayList<>(tmpAirline);
+        for (int i=1; i < 8; i++) {
+            stmtAirline.setObject(i, testAirline.get(i-1));
+        }
+        stmtAirline.executeUpdate();
+
+        // Creating a statement that will retrieve the airlineId from the database
+        PreparedStatement stmtAirlineID = dbHandler.prepareStatement(airlineIdQuery);
+        List<String> tmpAirlineID = Arrays.asList("ITA", "testName", "testAlias");
+        ArrayList<String> airlineIdList = new ArrayList<>(tmpAirlineID);
+        for (int i=1; i < 4; i++) {
+            stmtAirlineID.setObject(i, airlineIdList.get(i-1));
+        }
+        ResultSet result = stmtAirlineID.executeQuery();
+        int testAirlineId = result.getInt(1);
+
+        // Creating a statement that will retrieve the dstAirportId from the database
+        PreparedStatement stmtDstAirportId = dbHandler.prepareStatement(airportIdQuery);
+        List<String> tmpDstAirportId = Arrays.asList("ChCh", "Christchurch");
+        ArrayList<String> dstAirportIdList = new ArrayList<>(tmpDstAirportId);
+        for (int i=1; i < 3; i++) {
+            stmtDstAirportId.setObject(i, dstAirportIdList.get(i-1));
+        }
+        ResultSet resultDstAirport = stmtDstAirportId.executeQuery();
+        int dstAirportId = resultDstAirport.getInt(1);
+
+        // Creating a statement that is then given routeData, and then executed, inserting it into the database
+        // This is the route that will be deleted using the routeService's deleteRoute() method
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(routeQuery);
+        List<Object> tmpRoute = Arrays.asList(airline, testAirlineId, sourceAirport, testSrcAirport, destinationAirport, dstAirportId, codeShare, stops, equipment);
+        ArrayList<Object> testRouteList = new ArrayList<>(tmpRoute);
+        for (int i=1; i < 10; i++) {
+            stmtRoute.setObject(i, testRouteList.get(i-1));
+        }
+        stmtRoute.executeUpdate();
+
+        // Creating a statement that will retrieve the routeID of the route we just inserted into the database
+        PreparedStatement stmtRouteId = dbHandler.prepareStatement(routeIdQuery);
+        List<Object> tmpRouteIdList = Arrays.asList(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        ArrayList<Object> testRouteIdList = new ArrayList<>(tmpRouteIdList);
+        for (int i=1; i < 7; i++) {
+            stmtRouteId.setObject(i, testRouteIdList.get(i-1));
+        }
+        ResultSet routeIdSet = stmtRouteId.executeQuery();
+        int actualId = routeIdSet.getInt(1);
+
+        // Retrieving the routes that match the actual result
+        ResultSet actualResult = routeService.getRoutes("Heathrow", "ChCh", stops, equipment);
+
+        // Getting the expected result from the database
+        PreparedStatement expectedResultStmt = dbHandler.prepareStatement(routeAllDataQuery);
+        expectedResultStmt.setObject(1, actualId);
+        ResultSet expectedResult = expectedResultStmt.executeQuery();
+
+        // Comparing the actual and expected results
+        for (int i = 1; i < 11; i++) {
+            assertEquals(expectedResult.getObject(i), actualResult.getObject(i));
+        }
+
+        // Checking the getRoutes method can deal with invalid airports
+        ResultSet invalidRoutes = routeService.getRoutes("lesnfslk", "elfsknef", 434, "ENS");
+        assertFalse(invalidRoutes.next());
+
+    }
+
+
+    public void testCodeShareIsValid() {
+        // Testing if codeShareIsValid behaves as expected
+        assertTrue(routeService.codeshareIsValid(null));
+        assertTrue(routeService.codeshareIsValid("Y"));
+        assertFalse(routeService.codeshareIsValid("N"));
+    }
+
+
+    public void testEquipmentIsValid() {
+        // Testing if equipmentIsValid behaves as expected
+        assertTrue(routeService.equipmentIsValid("NFE"));
+        assertTrue(routeService.equipmentIsValid("NFE ENF"));
+        assertTrue(routeService.equipmentIsValid("NFE NES LAP"));
+        assertFalse(routeService.equipmentIsValid(""));
+        assertFalse(routeService.equipmentIsValid(null));
+        assertFalse(routeService.equipmentIsValid("FSFE"));
+        assertFalse(routeService.equipmentIsValid("JEN ELNS"));
+
+    }
+
+    public void testGetMaxId() throws SQLException {
+        // Checking max id is as expected
+        assertEquals(0, routeService.getMaxID());
+
+        // Setting up variables for a test Route
+        String airline = "ITA";
+        String sourceAirport = "ATA";
+        String destinationAirport = "AUS";
+        String codeShare = "Y";
+        int stops = 6;
+        String equipment = "AJF";
+
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airLineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the route data required to run the routeUpdate on
+        String routeQuery = "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, " +
+                "destination_airport, destination_airport_id, codeshare, stops, equipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeDataQuery = "SELECT source_airport, destination_airport, stops, equipment FROM ROUTE_DATA WHERE route_id = ?";
+
+        // SQLite query used to retrieve all the route data from the database for a certain id
+        String routeAllDataQuery = "SELECT * FROM ROUTE_DATA WHERE route_id = ?";
+
+        // SQLite query used to retrieve airline_id in order to be passed into a piece of route data
+        String airlineIdQuery = "SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? and airline_name = ? and alias = ?";
+
+        // SQLite query used to retrieve airport_id in order to be passed into a piece of route data
+        String airportIdQuery = "SELECT airport_id FROM AIRPORT_DATA WHERE airport_name = ? and city = ?";
+
+        // SQLite query used to retrieve the route data from the database
+        String routeIdQuery = "SELECT route_id FROM ROUTE_DATA WHERE airline = ? and " +
+                "source_airport = ? and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?";
+
+
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the source airport
+        PreparedStatement stmtSrcAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpSrcAirport = Arrays.asList("Heathrow", "London", "England", "ATA", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testSrcAirport = new ArrayList<>(tmpSrcAirport);
+        for (int i=1; i < 12; i++) {
+            stmtSrcAirport.setObject(i, testSrcAirport.get(i-1));
+        }
+        stmtSrcAirport.executeUpdate();
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        // This will be used as the destination airport
+        PreparedStatement stmtDstAirport = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmpDstAirport = Arrays.asList("ChCh", "Christchurch", "New Zealand", "AUS", "NZNZ", 70, 231, 6000, 42, "JFP", "TZF");
+        ArrayList<Object> testDstAirport = new ArrayList<>(tmpDstAirport);
+        for (int i=1; i < 12; i++) {
+            stmtDstAirport.setObject(i, testDstAirport.get(i-1));
+        }
+        stmtDstAirport.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        // This will be airline for the route data
+        PreparedStatement stmtAirline = dbHandler.prepareStatement(airLineQuery);
+        List<String> tmpAirline = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
+        ArrayList<String> testAirline = new ArrayList<>(tmpAirline);
+        for (int i=1; i < 8; i++) {
+            stmtAirline.setObject(i, testAirline.get(i-1));
+        }
+        stmtAirline.executeUpdate();
+
+        // Creating a statement that will retrieve the airlineId from the database
+        PreparedStatement stmtAirlineID = dbHandler.prepareStatement(airlineIdQuery);
+        List<String> tmpAirlineID = Arrays.asList("ITA", "testName", "testAlias");
+        ArrayList<String> airlineIdList = new ArrayList<>(tmpAirlineID);
+        for (int i=1; i < 4; i++) {
+            stmtAirlineID.setObject(i, airlineIdList.get(i-1));
+        }
+        ResultSet result = stmtAirlineID.executeQuery();
+        int testAirlineId = result.getInt(1);
+
+        // Creating a statement that will retrieve the dstAirportId from the database
+        PreparedStatement stmtDstAirportId = dbHandler.prepareStatement(airportIdQuery);
+        List<String> tmpDstAirportId = Arrays.asList("ChCh", "Christchurch");
+        ArrayList<String> dstAirportIdList = new ArrayList<>(tmpDstAirportId);
+        for (int i=1; i < 3; i++) {
+            stmtDstAirportId.setObject(i, dstAirportIdList.get(i-1));
+        }
+        ResultSet resultDstAirport = stmtDstAirportId.executeQuery();
+        int dstAirportId = resultDstAirport.getInt(1);
+
+        // Creating a statement that is then given routeData, and then executed, inserting it into the database
+        // This is the route that will be deleted using the routeService's deleteRoute() method
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(routeQuery);
+        List<Object> tmpRoute = Arrays.asList(airline, testAirlineId, sourceAirport, testSrcAirport, destinationAirport, dstAirportId, codeShare, stops, equipment);
+        ArrayList<Object> testRouteList = new ArrayList<>(tmpRoute);
+        for (int i=1; i < 10; i++) {
+            stmtRoute.setObject(i, testRouteList.get(i-1));
+        }
+        stmtRoute.executeUpdate();
+
+        // Checking max id as expected
+        assertEquals(1, routeService.getMaxID());
+
+    }
+
 
 }

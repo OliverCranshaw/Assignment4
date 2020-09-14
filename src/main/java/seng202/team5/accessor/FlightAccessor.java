@@ -280,8 +280,6 @@ public class FlightAccessor implements Accessor{
      * @author Billie Johnson
      */
     public ResultSet getData(String location_type, String location) {
-        boolean check = true;
-        String addString = "";
         ResultSet result = null;
         String query = "SELECT * FROM FLIGHT_DATA";
         ArrayList<String> elements = new ArrayList<>();

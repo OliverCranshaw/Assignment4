@@ -88,6 +88,9 @@ public class MainMenuController implements Initializable {
     private TextField fourthSearchEntry;
 
     @FXML
+    private Label errorMessage;
+
+    @FXML
     public TableView rawAirlineTable;
 
     @FXML
@@ -162,8 +165,6 @@ public class MainMenuController implements Initializable {
     @FXML
     private ComboBox routeStopsComboBox;
 
-    @FXML
-    private Label errorMessage;
 
     @FXML
     private TableColumn flightIdCol;
