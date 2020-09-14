@@ -696,10 +696,10 @@ public class FlightServiceTest extends BaseDatabaseTest {
         List<String> valid_location_types = Arrays.asList("APT", "VOR", "FIX");
         List<String> invalid_location_types = Arrays.asList("NES", "LEN", "ANE");
         for (String loc : valid_location_types) {
-            assertTrue(flightService.locationTypeisValid(loc));
+            assertTrue(flightService.locationTypeIsValid(loc));
         }
         for (String loc : invalid_location_types) {
-            assertFalse(flightService.locationTypeisValid(loc));
+            assertFalse(flightService.locationTypeIsValid(loc));
         }
     }
 

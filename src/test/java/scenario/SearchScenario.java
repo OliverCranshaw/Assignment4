@@ -510,9 +510,9 @@ public class SearchScenario {
 
     //Scenario: Search Route by source airport when no record in database has this source airport.
     @Given("^the route source airport \"([^\"]*)\" is not in the database$")
-    public void theRouteSourceAirportIsNotInTheDatabase(String sourceAirport) {
+    public void theRouteSourceAirportIsNotInTheDatabase(String sourceAirport) throws SQLException {
         ResultSet result = routeService.getRoutes(sourceAirport, null, -1, null);
-        Assert.assertNull(result);
+        Assert.assertFalse(result.next());
     }
 
     @When("^user searches for the route source airport \"([^\"]*)\" which isn't present in the database$")
@@ -527,9 +527,9 @@ public class SearchScenario {
 
     //Scenario: Search Route by destination airport when no record in database has this destination airport.
     @Given("^the route destination airport \"([^\"]*)\" is not in the database$")
-    public void theRouteDestinationAirportIsNotInTheDatabase(String destinationAirport) {
+    public void theRouteDestinationAirportIsNotInTheDatabase(String destinationAirport) throws SQLException {
         ResultSet result = routeService.getRoutes(null, destinationAirport, -1, null);
-        Assert.assertNull(result);
+        Assert.assertFalse(result.next());
     }
 
     @When("^user searches for the route destination airport \"([^\"]*)\" which isn't present in the database$")
