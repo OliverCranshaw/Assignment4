@@ -43,12 +43,30 @@ public class FlightTable extends DataTable {
         // Preparing an ArrayList to hold the result
         ArrayList<ArrayList<Object>> result = new ArrayList<>();
         // Iterating through the list of all flight entries, adding it to the result when it is the first for each flight
+        // Also adding the id, location type and location of each flight destination
+        Integer index = 0;
+        Integer currFlightId = null;
         for (ArrayList<Object> flight : list) {
             int flightID = (int) flight.get(1);
-            if (!foundIDs.contains(flightID)) {
+            if (!foundIDs.contains(flightID) && currFlightId != null) {
+                result.get(result.size() - 1).add(list.get(index-1).get(0));
+                result.get(result.size() - 1).add(list.get(index-1).get(2));
+                result.get(result.size() - 1).add(list.get(index-1).get(3));
                 foundIDs.add(flightID);
                 result.add(flight);
+                currFlightId = (Integer) flight.get(1);
+            } else if (!foundIDs.contains(flightID)) {
+                foundIDs.add(flightID);
+                result.add(flight);
+                currFlightId = (Integer) flight.get(1);
             }
+            index++;
+        }
+        // Adding the extra data for the last result
+        if (result.size() != 0) {
+            result.get(result.size() - 1).add(list.get(list.size() - 1).get(0));
+            result.get(result.size() - 1).add(list.get(list.size() - 1).get(2));
+            result.get(result.size() - 1).add(list.get(list.size() - 1).get(3));
         }
         // Setting the filteredData to the result
         filteredData = result;
