@@ -179,6 +179,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn flightDstAirportCol;
 
+    @FXML
+    private TableView flightTableView;
+
 
     private AirlineService airlineService;
     private AirportService airportService;
@@ -245,9 +248,6 @@ public class MainMenuController implements Initializable {
         }
         populateAirlineTable(airlineTable.getData());
 
-        System.out.println();
-        System.out.println(airlineTable.getData().get(0));
-        System.out.println();
 
         try {
             airportTable.createTable();
@@ -270,7 +270,11 @@ public class MainMenuController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+        try {
+            populateFlightTable(flightTable.getData());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 
@@ -550,16 +554,14 @@ public class MainMenuController implements Initializable {
 
     private void populateAirlineTable(ArrayList<ArrayList<Object>> data) {
 
-        System.out.println("POPULATING>>>");
-        System.out.println("POP" + data.get(0));
-
         ArrayList<AirlineModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
+            Integer id = (Integer) datum.get(0);
             String name = (String) datum.get(1);
             String alias = (String) datum.get(2);
             String country = (String) datum.get(6);
             String active = (String) datum.get(7);
-            list.add(new AirlineModel(name, alias, country, active));
+            list.add(new AirlineModel(name, alias, country, active, id));
         }
         airlineModels = FXCollections.observableArrayList(list);
         rawAirlineTable.setItems(airlineModels);
@@ -569,10 +571,11 @@ public class MainMenuController implements Initializable {
     private void populateAirportTable(ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
+            Integer id = (Integer) datum.get(0);
             String name = (String) datum.get(1);
             String city = (String) datum.get(2);
             String country = (String) datum.get(3);
-            list.add(new AirportModel(name, city, country));
+            list.add(new AirportModel(name, city, country, id));
         }
         airportModels = FXCollections.observableArrayList(list);
         airportTableView.setItems(airportModels);
@@ -600,12 +603,31 @@ public class MainMenuController implements Initializable {
     }
 
 
+    private void populateFlightTable(ArrayList<ArrayList<Object>> data) throws SQLException {
+        ArrayList<FlightModel> list = new ArrayList<>();
+        for (ArrayList<Object> datum : data) {
+            ArrayList<Integer> idRange = new ArrayList<>();
+            idRange.add((Integer) datum.get(0));
+            idRange.add((Integer) datum.get(7));
+            Integer flightId = (Integer) datum.get(1);
+            String srcLocation = (String) datum.get(2);
+            String srcAirportIata = (String) datum.get(3);
+            String dstLocation = (String) datum.get(8);
+            String dstAirportIata = (String) datum.get(9);
+            ResultSet srcAirportSet = airportService.getAirport(srcAirportIata);
+            String srcAirport = (srcAirportSet.next()) ? srcAirportSet.getString(2) : srcAirportIata;
+            ResultSet dstAirportSet = airportService.getAirport(dstAirportIata);
+            String dstAirport = (dstAirportSet.next()) ? dstAirportSet.getString(2) : dstAirportIata;
+            list.add(new FlightModel(flightId, srcLocation, srcAirport, dstLocation, dstAirport, idRange));
+        }
+        flightModels = FXCollections.observableArrayList(list);
+        flightTableView.setItems(flightModels);
+
+    }
+
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
 
-        System.out.println();
-        System.out.println("Here: " + airlineTable.getData().get(0));
-        System.out.println();
 
         airlineTable.FilterTable(null, null);
         String countryText = countryAirlineField.getText();
@@ -646,8 +668,6 @@ public class MainMenuController implements Initializable {
         ArrayList<String> equipmentList = convertCSStringToArrayList(equipmentText);
         String srcIata;
         String dstIata;
-        System.out.println("Src: " + srcAirportText);
-        System.out.println("DST: " + dstAirportText);
         if (srcAirportText == null) {
             srcIata = null;
         } else {
@@ -668,8 +688,6 @@ public class MainMenuController implements Initializable {
                 dstIata = "_N@";
             }
         }
-        System.out.println("-----------" + srcIata + "------------");
-        System.out.println("-----------" + dstIata + "------------");
         routeTable.FilterTable(srcIata, dstIata, directText, equipmentList);
         populateRouteTable(routeTable.getData());
     }

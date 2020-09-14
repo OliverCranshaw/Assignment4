@@ -49,9 +49,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
             String currentDes = (String) current.get(5);
             int stops = (int) current.get(8);
             ArrayList<String> currentEquip = (ArrayList<String>) current.get(9);
-            System.out.println("CurrentEquip: " + current.get(9));
-            System.out.println("Equip: " + equip);
-            System.out.println("Depart: " + airportDep + ". Destination: " + airportDes + ". Stops: " + direct);
 
             if (airportDep != null) {
                 containsAirportDep(currentDep);
