@@ -129,9 +129,8 @@ public class Search {
      */
     public ResultSet searchFlight() {
 
-        String location = searchData.get(0) == null ? null : searchData.get(0).toString();
-        String location_type = searchData.get(1) == null ? null : searchData.get(1).toString();
-
+        String location_type = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String location = searchData.get(1) == null ? null : searchData.get(1).toString();
 
         result = flightService.getFlights(location_type, location);
 
