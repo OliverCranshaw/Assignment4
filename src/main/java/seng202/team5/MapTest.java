@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
+
+import java.util.List;
 
 /**
  * Temporary application for testing the MapView widget
@@ -24,10 +27,9 @@ public class MapTest extends Application {
 
                 int marker0 = mapView.addMarker(0, 0, "Test thingy");
                 int marker1 = mapView.addMarker(10, 0, "Test thingy2");
-                int marker2 = mapView.addMarker(5, 0, "Removed");
-                System.out.println("Markers are: " + marker0 + ", " + marker1 + ", " + marker2);
-                mapView.removeMarker(marker2);
 
+                int path0 = mapView.addPath(List.of(new Coord(0, 0), new Coord(20, 20), new Coord(-10, 100)));
+                int path1 = mapView.addPath(List.of(new Coord(-10, -10), new Coord(-10, 5)));
             }
         });
 

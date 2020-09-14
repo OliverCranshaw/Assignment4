@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import jdk.jshell.spi.ExecutionControl;
 import seng202.team5.App;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -124,22 +126,58 @@ public class MapView extends VBox {
         callFunction("removeMarker", markerID);
     }
 
+    /**
+     * Creates a line on the map representing a path through the given points
+     *
+     * @param points The list of points for the new path
+     * @return The create path ID
+     */
+    public int addPath(List<Coord> points) {
+        if (points.size() < 2) {
+            throw new RuntimeException("Too few points to define a path");
+        }
+        return (int) callFunction("addPath", points);
+    }
+
+    /**
+     * Removes a path on the map with the given path ID
+     *
+     * @param pathID The path ID to remove
+     */
+    public void removePath(int pathID) {
+        callFunction("removePath", pathID);
+    }
+
     private Object callFunction(String functionName, Object... arguments) {
         return callFunction(functionName, List.of(arguments));
+    }
+
+    private String convertToJSRepresentation(Object object) throws RuntimeException {
+        if (object instanceof Coord) {
+            Coord coord = (Coord)object;
+            return String.format("{lat:%f,lng:%f}", coord.latitude, coord.longitude);
+        } if (object instanceof String) {
+            // Removes special characters
+            String cleaned = ((String) object).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");
+            return "\"" + cleaned + "\"";
+        } else if (object instanceof Number) {
+            return object.toString();
+        } else if (object instanceof Collection) {
+            List<String> components = new ArrayList<>();
+            for (Object child : (Collection<?>)object) {
+                components.add(convertToJSRepresentation(child));
+            }
+            return "[" + String.join(",", components) + "]";
+        } else {
+            throw new RuntimeException("Unsupported object type: " + object.getClass());
+        }
     }
 
     private Object callFunction(String functionName, List<Object> arguments) {
         List<String> stringified = new ArrayList<>();
         for (Object argument : arguments) {
-            if (argument == null) {
-                stringified.add("null");
-            } else if (argument instanceof String) {
-                // TODO: Handle case where string has special characters such as quote marks or backslashes
-                stringified.add("\"" + argument + "\"");
-            } else {
-                stringified.add(argument.toString());
-            }
+            stringified.add(convertToJSRepresentation(argument));
         }
-        return webView.getEngine().executeScript(functionName + "(" + String.join(", ", stringified) + ");");
+        return webView.getEngine().executeScript(functionName + "(" + String.join(",", stringified) + ");");
     }
 }

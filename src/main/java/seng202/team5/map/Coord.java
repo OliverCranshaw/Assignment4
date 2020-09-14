@@ -22,7 +22,7 @@ public final class Coord {
      * @param latitude The latitude for this coord
      * @param longitude The longitude for this coord
      */
-    Coord(double latitude, double longitude) {
+    public Coord(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
