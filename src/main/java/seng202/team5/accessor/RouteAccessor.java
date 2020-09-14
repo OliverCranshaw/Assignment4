@@ -301,8 +301,8 @@ public class RouteAccessor implements Accessor {
                 }
                 elements.add(equipment);
             }
-
             PreparedStatement stmt = dbHandler.prepareStatement(query);
+
             int index = 1;
             for (Object element: elements) {
                 stmt.setObject(index, element);

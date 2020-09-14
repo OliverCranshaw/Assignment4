@@ -196,9 +196,15 @@ public class RouteService implements Service {
 
         if (source_airport != null) {
             airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
+            if (airportSourceIataIcao.isEmpty()) {
+                airportSourceIataIcao = null;
+            }
         }
         if (dest_airport != null) {
             airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
+            if (airportDestIataIcao.isEmpty()) {
+                airportDestIataIcao = null;
+            }
         }
         return accessor.getData(airportSourceIataIcao, airportDestIataIcao, stops, equipment);
     }
@@ -226,7 +232,8 @@ public class RouteService implements Service {
      * @author Billie Johnson
      */
     public boolean equipmentIsValid(String equipment) {
-        return (equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*"));
+        return equipment != null && equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*");
+
     }
 
     /**
