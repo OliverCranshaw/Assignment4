@@ -55,7 +55,7 @@ public class DataExporter {
             // Loops through all the airlines in the ResultSet
             while (airlines.next()) {
                 // Gets the data from each column of the row
-                int airlineID = airlines.getInt("id");
+                int airlineID = airlines.getInt("airline_id");
                 String name = airlines.getString("airline_name");
                 String alias = airlines.getString("alias");
                 String iata = airlines.getString("iata");
@@ -118,7 +118,7 @@ public class DataExporter {
             // Loops through all the airports in the ResultSet
             while (airports.next()) {
                 // Gets the data from each column of the row
-                int airportID = airports.getInt("id");
+                int airportID = airports.getInt("airport_id");
                 String name = airports.getString("airport_name");
                 String city = airports.getString("city");
                 String country = airports.getString("country");
