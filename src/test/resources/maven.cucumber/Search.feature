@@ -71,25 +71,25 @@ Feature: Testing Search
 
     #FLIGHTS
 
-  Scenario: Search Flight by airline with matching data in database
-    Given the flight airline "AirNZ" is in the database
-    When user searches for the flight airline "AirNZ"
-    Then the results from the search will include all flights with the flight airline "AirNZ"
+  Scenario: Search Flight by location type with matching data in database
+    Given the flight location type "FIX" is in the database
+    When user searches for the flight location type "FIX"
+    Then the results from the search will include all flights with the flight location type "FIX"
 
-  Scenario: Search Flight by airport with matching data in database
-    Given the flight airport "Christchurch Airport" is in the database
-    When user searches for the flight airport "Christchurch Airport"
-    Then the results from the search will include all flights with the flight airport "Christchurch Airport"
+  Scenario: Search Flight by location with matching data in database
+    Given the flight location "NZCH" is in the database
+    When user searches for the flight location "NZCH"
+    Then the results from the search will include all flights with the flight location "NZCH"
 
-  Scenario: Search Flight by airline with no matching data in database
-    Given the flight airline "Non Existing" is not in the database
-    When user searches for the flight airline "Non Existing" which isn't present in the database
-    Then the result from the search will be null
+  Scenario: Search Flight by location type with no matching data in database
+    Given the flight location type "VOR" is not in the database
+    When user searches for the flight location type "VOR" which isn't present in the database
+    Then the result from the search will be empty
 
-  Scenario: Search Flight by airport with no matching data in database
-    Given the flight airport "Non Existing" is not in the database
-    When user searches for the flight airport "Non Existing" which isn't present in the database
-    Then the result from the search will be null
+  Scenario: Search Flight by location with no matching data in database
+    Given the flight location "Non Existing" is not in the database
+    When user searches for the flight location "Non Existing" which isn't present in the database
+    Then the result from the search will be empty
 
 
   #ROUTES

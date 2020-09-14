@@ -1,16 +1,21 @@
 package scenario;
 
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import seng202.team5.Search;
+import seng202.team5.database.DBConnection;
+import seng202.team5.database.DBInitializer;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 
+import java.io.File;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +33,14 @@ public class SearchScenario {
 
     @Before
     public void setUp() {
+
+        String filename = "test.db";
+        File dbFile = new File(filename);
+
+        DBInitializer.createNewDatabase(filename);
+
+        DBConnection.setDatabaseFile(dbFile);
+
         airlineService = new AirlineService();
         airportService = new AirportService();
         flightService = new FlightService();
@@ -41,9 +54,27 @@ public class SearchScenario {
                 0, 0, 0, "E", "Pacific/Auckland");
         airportService.saveAirport("Auckland Airport", "Auckland", "New Zealand", "DBS", "DBSA", 0,
                 0, 0, 0, "E", "Pacific/Auckland");
-        flightService.saveFlight(1, "AB", "ABC", 0, 0, 0);
+        flightService.saveFlight(1, "FIX", "NZCH", 0, 0, 0);
         routeService.saveRoute("AB", "ABC", "DBS", "Y", 2, "GPS");
     }
+
+    @After
+    public void teardown() {
+        try {
+            File dbFile = new File("test.db");
+            Connection con = DBConnection.getConnection();
+            con.close();
+
+            boolean result = dbFile.delete();
+
+            if (result) {
+                System.out.println("DB deleted.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     //Scenario: Search Airline by name
 
     @Given("^the airline name \"([^\"]*)\" is in the database$")
@@ -194,55 +225,51 @@ public class SearchScenario {
         }
     }
 
-    //Scenario: Search Flight by airline
+    //Scenario: Search Flight by location type
 
-    @Given("^the flight airline \"([^\"]*)\" is in the database$")
-    public void theFlightAirlineIsInTheDatabase(String flightAirline) throws SQLException {
-        ResultSet result = flightService.getFlights(flightAirline, null);
+    @Given("^the flight location type \"([^\"]*)\" is in the database$")
+    public void theFlightLocationTypeIsInTheDatabase(String flightLocationType) throws SQLException {
+        ResultSet result = flightService.getFlights(flightLocationType, null);
         Assert.assertTrue(result.next());
     }
 
-    @When("^user searches for the flight airline \"([^\"]*)\"$")
-    public void userSearchesForTheFlightAirline(String flightAirline) throws SQLException {
-        data.add(flightAirline);
+    @When("^user searches for the flight location type \"([^\"]*)\"$")
+    public void userSearchesForTheFlightLocationType(String flightLocationType) throws SQLException {
+        data.add(flightLocationType);
         data.add(null);
         search.setSearchData(data);
         searchResult = search.searchFlight();
         Assert.assertTrue(searchResult.next());
     }
 
-    @Then("^the results from the search will include all flights with the flight airline \"([^\"]*)\"$")
-    public void theResultsFromTheSearchWillIncludeAllAirportsWithTheFlightAirline(String flightAirline) throws SQLException {
+    @Then("^the results from the search will include all flights with the flight location type \"([^\"]*)\"$")
+    public void theResultsFromTheSearchWillIncludeAllAirportsWithTheFlightLocationType(String flightLocationType) throws SQLException {
         while (searchResult.next()) {
-            ResultSet data = airlineService.getAirlines(flightAirline, null, null);
-            String airlineIataIciao = data.getString(3) == null ? data.getString(4) : data.getString(3);
-            Assert.assertEquals(airlineIataIciao, searchResult.getString(3));
+            Assert.assertEquals(flightLocationType, searchResult.getString(3));
         }
     }
 
-    //Scenario: Search Flight by airport
+    //Scenario: Search Flight by location
 
-    @Given("^the flight airport \"([^\"]*)\" is in the database$")
-    public void theFlightAirportIsInTheDatabase(String flightAirport) throws SQLException {
-        ResultSet result = flightService.getFlights(null, flightAirport);
+    @Given("^the flight location \"([^\"]*)\" is in the database$")
+    public void theFlightLocationIsInTheDatabase(String flightLocation) throws SQLException {
+        ResultSet result = flightService.getFlights(null, flightLocation);
         Assert.assertTrue(result.next());
     }
 
-    @When("^user searches for the flight airport \"([^\"]*)\"$")
-    public void userSearchesForTheFlightAirport(String flightAirport) throws SQLException {
+    @When("^user searches for the flight location \"([^\"]*)\"$")
+    public void userSearchesForTheFlightLocation(String flightLocation) throws SQLException {
         data.add(null);
-        data.add(flightAirport);
+        data.add(flightLocation);
         search.setSearchData(data);
         searchResult = search.searchFlight();
         Assert.assertTrue(searchResult.next());
     }
 
-    @Then("^the results from the search will include all flights with the flight airport \"([^\"]*)\"$")
-    public void theResultsFromTheSearchWillIncludeAllAirportsWithTheFlightAirport(String flightAirport) throws SQLException {
+    @Then("^the results from the search will include all flights with the flight location \"([^\"]*)\"$")
+    public void theResultsFromTheSearchWillIncludeAllAirportsWithTheFlightLocation(String flightLocation) throws SQLException {
         while (searchResult.next()) {
-            ResultSet data = airportService.getAirports(flightAirport, null, null);
-            String airportIataIciao = data.getString(5) == null ? data.getString(6) : data.getString(5);
-            Assert.assertEquals(airportIataIciao, searchResult.getString(4));
+            Assert.assertEquals(flightLocation, searchResult.getString(4));
         }
     }
 
@@ -451,32 +478,32 @@ public class SearchScenario {
         searchResult = search.searchAirport();
     }
 
-    //Scenario: Search Flight by airline when no record in database has this airline.
-    @Given("^the flight airline \"([^\"]*)\" is not in the database$")
-    public void theFlightAirlineIsNotInTheDatabase(String flightAirline) {
-        ResultSet result = flightService.getFlights(flightAirline, null);
-        Assert.assertNull(result);
+    //Scenario: Search Flight by location type when no record in database has this airline.
+    @Given("^the flight location type \"([^\"]*)\" is not in the database$")
+    public void theFlightLocationTypeIsNotInTheDatabase(String flightLocationType) throws SQLException {
+        ResultSet result = flightService.getFlights(flightLocationType, null);
+        Assert.assertFalse(result.next());
     }
 
-    @When("^user searches for the flight airline \"([^\"]*)\" which isn't present in the database$")
-    public void userSearchesForTheFlightAirlineWhichIsnTPresentInTheDatabase(String flightAirline) {
-        data.add(flightAirline);
+    @When("^user searches for the flight location type \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheFlightLocationTypeWhichIsnTPresentInTheDatabase(String flightLocationType) {
+        data.add(flightLocationType);
         data.add(null);
         search.setSearchData(data);
         searchResult = search.searchFlight();
     }
 
-    //Scenario: Search Flight by airport when no record in database has this airport.
-    @Given("^the flight airport \"([^\"]*)\" is not in the database$")
-    public void theFlightAirportIsNotInTheDatabase(String flightAirport) {
-        ResultSet result = flightService.getFlights(null, flightAirport);
-        Assert.assertNull(result);
+    //Scenario: Search Flight by location when no record in database has this airport.
+    @Given("^the flight location \"([^\"]*)\" is not in the database$")
+    public void theFlightLocationIsNotInTheDatabase(String flightLocation) throws SQLException {
+        ResultSet result = flightService.getFlights(null, flightLocation);
+        Assert.assertFalse(result.next());
     }
 
-    @When("^user searches for the flight airport \"([^\"]*)\" which isn't present in the database$")
-    public void userSearchesForTheFlightAirportWhichIsnTPresentInTheDatabase(String flightAirport) {
+    @When("^user searches for the flight location \"([^\"]*)\" which isn't present in the database$")
+    public void userSearchesForTheFlightLocationWhichIsnTPresentInTheDatabase(String flightLocation) {
         data.add(null);
-        data.add(flightAirport);
+        data.add(flightLocation);
         search.setSearchData(data);
         searchResult = search.searchFlight();
     }

@@ -161,8 +161,6 @@ public class MainMenuController implements Initializable {
     @FXML
     private ComboBox routeStopsComboBox;
 
-    @FXML
-    private Label errorMessage;
 
 
     private AirlineService airlineService;
