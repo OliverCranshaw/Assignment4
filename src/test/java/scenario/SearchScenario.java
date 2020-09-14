@@ -516,7 +516,7 @@ public class SearchScenario {
     }
 
     @When("^user searches for the route source airport \"([^\"]*)\" which isn't present in the database$")
-    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) {
+    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) throws SQLException {
         data.add(sourceAirport);
         data.add(null);
         data.add(-1);
