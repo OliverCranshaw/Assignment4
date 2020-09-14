@@ -303,6 +303,8 @@ public class ReadFileScenario {
     @Given("^a file \"([^\"]*)\" with valid route data$")
     public void validRouteFile(String filename) {
         routeFile = new File(filename);
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
     }
 
     @When("reading valid route data from a file")
@@ -371,6 +373,8 @@ public class ReadFileScenario {
     @Given("^a file \"([^\"]*)\" with multiple routes$")
     public void multipleRoutesFile(String filename) {
         routeFile = new File(filename);
+        readFile.readAirlineData(airlines);
+        readFile.readAirportData(airports);
     }
 
     @When("reading multiple instances of route data from a file")
