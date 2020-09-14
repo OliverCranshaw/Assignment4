@@ -711,4 +711,15 @@ public class AddDataScenario {
         Assert.assertEquals(-7, id);
     }
 
+    @And("^the necessary airport exists$")
+    public void theNecessaryAirportExists() {
+        airportService.saveAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", 100.0231, -34.1271, 0, 2, "N", "Auckland/New Zealand");
+    }
+
+    @And("^the airline and airports exist$")
+    public void theAirlineAndAirportsExist() {
+        airportService.saveAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", 100.0231, -34.1271, 0, 2, "N", "Auckland/New Zealand");
+        airportService.saveAirport("Tolmachevo", "Novosibirsk", "Russia", "HGU", "UNNT", 55.012622, 82.650656, 365, 7, "N", "Asia/Omsk");
+        airlineService.saveAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");
+    }
 }
