@@ -49,8 +49,6 @@ public class DataExporter {
         try {
             // Creates the FileWriter with the filename "airlines.csv"
             fileWriter = new BufferedWriter(new FileWriter("airlines.csv"));
-            // Writes the column names to the file
-            fileWriter.write("airlineID,airline_name,alias,IATA,ICAO,callsign,country,active");
 
             // Loops through all the airlines in the ResultSet
             while (airlines.next()) {
@@ -85,8 +83,8 @@ public class DataExporter {
                 line = String.format("%d,\"%s\",\"%s\",%s,%s,\"%s\",\"%s\",%s", airlineID, name, alias, iata, icao, callsign, country, active);
 
                 // Creates a new line in the file, and then writes the formatted line into it
-                fileWriter.newLine();
                 fileWriter.write(line);
+                fileWriter.newLine();
             }
 
             // Closes the FileWriter when everything is done
@@ -112,8 +110,6 @@ public class DataExporter {
         try {
             // Creates the FileWriter with the filename "airports.csv"
             fileWriter = new BufferedWriter(new FileWriter("airports.csv"));
-            // Writes the column names to the file
-            fileWriter.write("airportID,airport_name,city,country,IATA,ICAO,latitude,longitude,altitude,timezone,dst,tz_timezone");
 
             // Loops through all the airports in the ResultSet
             while (airports.next()) {
@@ -143,8 +139,8 @@ public class DataExporter {
                 line = String.format("%d,\"%s\",\"%s\",\"%s\",%s,%s,%f,%f,%d,%f,%s,\"%s\"", airportID, name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
 
                 // Creates a new line in the file, and then writes the formatted line into it
-                fileWriter.newLine();
                 fileWriter.write(line);
+                fileWriter.newLine();
             }
 
             // Closes the FileWriter when everything is done
@@ -178,8 +174,6 @@ public class DataExporter {
 
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
             fileWriter = new BufferedWriter(new FileWriter("flight" + "-" + source + "-" + dest + ".csv"));
-            // Writes the column names to the file
-            fileWriter.write("ID,flightID,location_type,location,altitude,latitude,longitude");
 
             // Loops through all the flight entries in the ResultSet
             while (flight.next()) {
@@ -195,8 +189,8 @@ public class DataExporter {
                 line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, location_type, location, altitude, latitude, longitude);
 
                 // Creates a new line in the file, and then writes the formatted line into it
-                fileWriter.newLine();
                 fileWriter.write(line);
+                fileWriter.newLine();
             }
 
             // Closes the FileWriter when everything is done
@@ -222,8 +216,6 @@ public class DataExporter {
         try {
             // Creates the FileWriter with the filename "flights.csv"
             fileWriter = new BufferedWriter(new FileWriter("flights.csv"));
-            // Writes the column names to the file
-            fileWriter.write("ID,flightID,location_type,location,altitude,latitude,longitude");
 
             // Loops through all the flight entries in the ResultSet
             while (flights.next()) {
@@ -240,8 +232,8 @@ public class DataExporter {
                 line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, location_type, location, altitude, latitude, longitude);
 
                 // Creates a new line in the file, and then writes the formatted line into it
-                fileWriter.newLine();
                 fileWriter.write(line);
+                fileWriter.newLine();
             }
 
             // Closes the FileWriter when everything is done
@@ -267,8 +259,6 @@ public class DataExporter {
         try {
             // Creates the FileWriter with the filename "routes.csv"
             fileWriter = new BufferedWriter(new FileWriter("routes.csv"));
-            // Writes the column names to the file
-            fileWriter.write("routeID,airline_code,airlineID,source_airport_code,source_airportID,destination_airport_code,destination_airportID,codeshare,stops,equipment");
 
             // Loops through all the routes in the ResultSet
             while (routes.next()) {
@@ -293,8 +283,8 @@ public class DataExporter {
                 line = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s", routeID, airline, airlineID, source_airport, source_airportID, dest_airport, dest_airportID, codeshare, stops, equipment);
 
                 // Creates a new line in the file, and then writes the formatted line into it
-                fileWriter.newLine();
                 fileWriter.write(line);
+                fileWriter.newLine();
             }
 
             // Closes the FileWriter when everything is done
