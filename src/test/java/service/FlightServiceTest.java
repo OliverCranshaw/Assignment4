@@ -693,7 +693,32 @@ public class FlightServiceTest extends BaseDatabaseTest {
 
 
     public void testLocationTypeValid() {
+        List<String> valid_location_types = Arrays.asList("APT", "VOR", "FIX");
+        List<String> invalid_location_types = Arrays.asList("NES", "LEN", "ANE");
+        for (String loc : valid_location_types) {
+            assertTrue(flightService.locationTypeisValid(loc));
+        }
+        for (String loc : invalid_location_types) {
+            assertFalse(flightService.locationTypeisValid(loc));
+        }
+    }
 
+    public void testGetMaxId() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(flight_id) FROM FLIGHT_DATA");
+        // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+        ResultSet result = stmt.executeQuery();
+        int id = result.getInt(1);
+        assertEquals(id, flightService.getMaxID());
+    }
+
+    public void testGetNextFlightID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(flight_id) FROM FLIGHT_DATA");
+        // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
+        ResultSet result = stmt.executeQuery();
+        int id = result.getInt(1) + 1;
+        assertEquals(id, flightService.getNextFlightID());
     }
 
 }
