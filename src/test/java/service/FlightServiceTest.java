@@ -196,7 +196,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         int id = result.getInt(1);
 
 
-        int res = flightService.updateFlight(id, "LFT", airport, altitude, latitude, longitude);
+        int res = flightService.updateFlight(id, "FIX", airport, altitude, latitude, longitude);
 
         assertEquals(1, res);
 
@@ -206,7 +206,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         ResultSet results = stmtFlightUpdated.executeQuery();
 
         // Creating ArrayList of expected Parameters
-        List<Object> tmpExpectedParameters = Arrays.asList(1, 1, "LFT", airport, altitude, latitude, longitude);
+        List<Object> tmpExpectedParameters = Arrays.asList(1, 1, "FIX", airport, altitude, latitude, longitude);
         ArrayList<Object> expectedParameters = new ArrayList<>(tmpExpectedParameters);
 
         for (int i=1; i < 8; i++) {
@@ -257,10 +257,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         int id = result.getInt(1);
 
 
-
-
-        int res = flightService.updateFlight(id, "FIX", airport, altitude, latitude, longitude);
-
+        int res = flightService.updateFlight(id, "APT", airport, altitude, latitude, longitude);
 
         assertEquals(-1, res);
 
