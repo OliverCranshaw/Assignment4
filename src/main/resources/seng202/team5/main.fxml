@@ -225,7 +225,8 @@
                                           <Insets left="664.0" />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Airport" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="72.0" text="Download" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="72.0" onAction="#onDownloadAirportDataPressed" text="Download" />
+                                    <Button alignment="CENTER_RIGHT" layoutX="997.0" layoutY="10.0" mnemonicParsing="false" onAction="#onUploadAirportDataPressed" text="Upload Airports From File" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="5.0" />
@@ -331,7 +332,8 @@
                                           <Insets left="471.0" />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Airline" />
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="73.0" text="Download" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="73.0" onAction="#onDownloadAirlineDataPressed" text="Download" />
+                                    <Button alignment="CENTER_RIGHT" layoutX="1004.0" layoutY="10.0" mnemonicParsing="false" onAction="#onUploadAirlineDataPressed" text="Upload Airlines From File" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="5.0" />
@@ -473,7 +475,8 @@
                                        <FlowPane.margin>
                                           <Insets />
                                        </FlowPane.margin></Button>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Download" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" onAction="#onDownloadRouteDataPressed" text="Download" />
+                                    <Button alignment="CENTER" layoutX="1011.0" layoutY="10.0" mnemonicParsing="false" onAction="#onUploadRouteDataPressed" text="Upload Routes From File" />
                                  </children>
                                  <VBox.margin>
                                     <Insets />

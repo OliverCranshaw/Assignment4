@@ -15,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
 import seng202.team5.Search;
+import seng202.team5.data.DataExporter;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
@@ -183,6 +184,7 @@ public class MainMenuController implements Initializable {
     private TableView flightTableView;
 
 
+    private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
     private RouteService routeService;
@@ -230,6 +232,8 @@ public class MainMenuController implements Initializable {
         flightSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("SourceAirport"));
         flightDstLocationCol.setCellValueFactory(new PropertyValueFactory<>("DestinationLocation"));;
         flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
+
+        dataExporter = new DataExporter();
 
         airlineService = new AirlineService();
         airportService = new AirportService();
@@ -306,6 +310,11 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
+    public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
+        dataExporter.exportAirports();
+    }
+
+    @FXML
     public void onAddAirlinePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(App.class.getResource("add_airline.fxml"));
@@ -328,6 +337,11 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
+    public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
+        dataExporter.exportAirlines();
+    }
+
+    @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(App.class.getResource("add_route.fxml"));
@@ -347,6 +361,11 @@ public class MainMenuController implements Initializable {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+    }
+
+    @FXML
+    public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
+        dataExporter.exportRoutes();
     }
 
     @FXML
