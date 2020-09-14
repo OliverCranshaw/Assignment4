@@ -129,11 +129,11 @@ public class Search {
      */
     public ResultSet searchFlight() {
 
-        String airline = searchData.get(0) == null ? null : searchData.get(0).toString();
-        String airport = searchData.get(1) == null ? null : searchData.get(1).toString();
+        String location = searchData.get(0) == null ? null : searchData.get(0).toString();
+        String location_type = searchData.get(1) == null ? null : searchData.get(1).toString();
 
 
-        result = flightService.getFlights(airline, airport);
+        result = flightService.getFlights(location_type, location);
 
         return result;
 

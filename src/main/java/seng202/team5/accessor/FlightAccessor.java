@@ -272,14 +272,14 @@ public class FlightAccessor implements Accessor{
     /**
      *
      *
-     * @param airline
-     * @param airport
+     * @param location_type
+     * @param location
      * @return ResultSet result
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
      */
-    public ResultSet getData(ArrayList<String> airline, ArrayList<String> airport) {
+    public ResultSet getData(String location_type, String location) {
         boolean check = true;
         String addString = "";
         ResultSet result = null;
@@ -287,35 +287,18 @@ public class FlightAccessor implements Accessor{
         ArrayList<String> elements = new ArrayList<>();
 
         try {
-            if (airline != null) {
-
-                query = query + " WHERE ";
-
-                for (String value:airline) {
-                    if (value != null) {
-                        addString = elements.size() == 0 ? " airline = ? " : " or airline = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                    }
-                }
+            if (location_type != null) {
+                query = query + " WHERE location_type = ? ";
+                elements.add(location_type);
             }
-            if (airport != null) {
-                if (airline != null) {
-                    query = query + " and ";
+            if (location != null) {
+                if (location_type != null) {
+                    query = query + " and location = ?";
                 } else {
-                    query = query + " WHERE ";
+                    query = query + " WHERE location = ?";
                 }
-
-                for (String value:airport) {
-                    if (value != null) {
-                        addString = check ? " airport = ? " : " or airport = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                        check = false;
-                    }
-                }
+                elements.add(location);
             }
-
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {

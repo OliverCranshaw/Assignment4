@@ -147,6 +147,18 @@ public class AirportService implements Service {
     /**
      *
      *
+     * @param id
+     * @return
+     *
+     * @author Inga Tokarenko
+     */
+    public ResultSet getAirport(String code) {
+        return accessor.getData(code);
+    }
+
+    /**
+     *
+     *
      * @param name
      * @param city
      * @param country
