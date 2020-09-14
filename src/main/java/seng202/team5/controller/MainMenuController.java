@@ -182,6 +182,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableView flightTableView;
 
+    @FXML
+    private TableView searchTableView;
+
 
     private AirlineService airlineService;
     private AirportService airportService;
@@ -275,6 +278,8 @@ public class MainMenuController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        setSearchTableFlights();
     }
 
 
@@ -374,6 +379,10 @@ public class MainMenuController implements Initializable {
 
         errorMessage.setText("");
 
+        setSearchTableFlights();
+
+
+
     }
     @FXML
     public void onAirportsRadioPressed() {
@@ -401,6 +410,7 @@ public class MainMenuController implements Initializable {
 
         errorMessage.setText("");
 
+        setSearchTableAirports();
 
     }
 
@@ -430,6 +440,8 @@ public class MainMenuController implements Initializable {
 
         errorMessage.setText("");
 
+        setSearchTableAirlines();
+
     }
 
     @FXML
@@ -458,6 +470,8 @@ public class MainMenuController implements Initializable {
         fourthSearchEntry.setDisable(false);
 
         errorMessage.setText("");
+
+        setSearchTableRoutes();
 
     }
 
@@ -714,6 +728,72 @@ public class MainMenuController implements Initializable {
         populateRouteTable(routeTable.getData());
     }
 
+
+
+
+    public void setSearchTableFlights() {
+        searchTableView.getColumns().clear();
+        TableColumn<FlightModel, String> flightIdCol = new TableColumn<FlightModel, String>("Flight Id");
+        TableColumn<FlightModel, String> flightSrcLocationCol = new TableColumn<FlightModel, String>("Source Location");
+        TableColumn<FlightModel, String> flightSrcAirportCol = new TableColumn<FlightModel, String>("Source Airport");
+        TableColumn<FlightModel, String> flightDstLocationCol = new TableColumn<FlightModel, String>("Destination Location");
+        TableColumn<FlightModel, String> flightDstAirportCol = new TableColumn<FlightModel, String>("Destination Airport");
+
+        flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
+        flightSrcLocationCol.setCellValueFactory(new PropertyValueFactory<>("SourceLocation"));
+        flightSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("SourceAirport"));
+        flightDstLocationCol.setCellValueFactory(new PropertyValueFactory<>("DestinationLocation"));;
+        flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
+
+        searchTableView.getColumns().addAll(flightIdCol, flightSrcLocationCol, flightSrcAirportCol, flightDstLocationCol, flightDstAirportCol);
+    }
+
+
+    public void setSearchTableAirports() {
+        searchTableView.getColumns().clear();
+        TableColumn<AirportModel, String> airportNameCol = new TableColumn<>("Name");
+        TableColumn<AirportModel, String> airportCityCol = new TableColumn<>("City");
+        TableColumn<AirportModel, String> airportCountryCol = new TableColumn<>("Country");
+
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirportCountry"));
+
+        searchTableView.getColumns().addAll(airportNameCol, airportCityCol, airportCountryCol);
+    }
+
+    public void setSearchTableAirlines() {
+        searchTableView.getColumns().clear();
+        TableColumn<AirlineModel, String> airlineNameCol = new TableColumn<>("Name");
+        TableColumn<AirlineModel, String> airlineAliasCol = new TableColumn<>("Alias");
+        TableColumn<AirlineModel, String> airlineCountryCol = new TableColumn<>("Country");
+        TableColumn<AirlineModel, String> airlineActiveCol = new TableColumn<>("Active");
+
+        airlineNameCol.setCellValueFactory(new PropertyValueFactory<>("AirlineName"));
+        airlineAliasCol.setCellValueFactory(new PropertyValueFactory<>("AirlineAlias"));
+        airlineCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirlineCountry"));
+        airlineActiveCol.setCellValueFactory(new PropertyValueFactory<>("AirlineActive"));
+
+        searchTableView.getColumns().addAll(airlineNameCol, airlineAliasCol, airlineCountryCol, airlineActiveCol);
+    }
+
+    public void setSearchTableRoutes() {
+        searchTableView.getColumns().clear();
+        TableColumn<RouteModel, String> routeAirlineCol = new TableColumn<>("Airline");
+        TableColumn<RouteModel, String> routeSrcAirportCol = new TableColumn<>("Source Airport");
+        TableColumn<RouteModel, String> routeDestAirportCol = new TableColumn<>("Destination Airport");
+        TableColumn<RouteModel, String> routeStopsCol = new TableColumn<>("No. Stops");
+        TableColumn<RouteModel, String> routeEquipmentCol = new TableColumn<>("Equipment");
+
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
+        routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));
+        routeDestAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteDstAirport"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<>("RouteStops"));
+        routeEquipmentCol.setCellValueFactory(new PropertyValueFactory<>("RouteEquipment"));
+
+        searchTableView.getColumns().addAll(routeAirlineCol, routeSrcAirportCol, routeDestAirportCol, routeStopsCol, routeEquipmentCol);
+
+    }
 
 
 
