@@ -80,7 +80,7 @@ public class DataExporter {
                 }
 
                 // Creates a formatted line with the values
-                line = String.format("%d,\"%s\",\"%s\",%s,%s,\"%s\",\"%s\",%s", airlineID, name, alias, iata, icao, callsign, country, active);
+                line = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"", airlineID, name, alias, iata, icao, callsign, country, active);
 
                 // Creates a new line in the file, and then writes the formatted line into it
                 fileWriter.write(line);
@@ -136,7 +136,7 @@ public class DataExporter {
                 }
 
                 // Creates a formatted line with the values
-                line = String.format("%d,\"%s\",\"%s\",\"%s\",%s,%s,%f,%f,%d,%f,%s,\"%s\"", airportID, name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
+                line = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%f,%f,%d,%.1f,\"%s\",\"%s\"", airportID, name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
 
                 // Creates a new line in the file, and then writes the formatted line into it
                 fileWriter.write(line);
@@ -166,14 +166,17 @@ public class DataExporter {
 
         try {
             // Gets the first and last locations in the ResultSet to use as the source and destination in the filename
-            flight.first();
             String source = flight.getString("location");
-            flight.last();
-            String dest = flight.getString("location");
-            flight.first();
+            String dest = "";
+            while (flight.next()) {
+                dest = flight.getString("location");
+            }
 
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
             fileWriter = new BufferedWriter(new FileWriter("flight" + "-" + source + "-" + dest + ".csv"));
+
+            // Gets ResultSet again to revert to the start, as SQLite only supports TYPE_FORWARD_ONLY cursors
+            flight = flightAccessor.getData(flightID);
 
             // Loops through all the flight entries in the ResultSet
             while (flight.next()) {
