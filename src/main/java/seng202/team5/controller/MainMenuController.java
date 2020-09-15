@@ -26,14 +26,13 @@ import seng202.team5.table.RouteTable;
 
 import javax.print.attribute.standard.Destination;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 public class MainMenuController implements Initializable {
 
@@ -249,7 +248,7 @@ public class MainMenuController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        populateAirlineTable(airlineTable.getData());
+        populateAirlineTable(rawAirlineTable, airlineTable.getData());
 
 
         try {
@@ -257,7 +256,7 @@ public class MainMenuController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        populateAirportTable(airportTable.getData());
+        populateAirportTable(airportTableView, airportTable.getData());
 
         try {
             routeTable.createTable();
@@ -265,7 +264,7 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
 
-        populateRouteTable(routeTable.getData());
+        populateRouteTable(routeTableView, routeTable.getData());
 
 
         try {
@@ -274,7 +273,7 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
         try {
-            populateFlightTable(flightTable.getData());
+            populateFlightTable(flightTableView, flightTable.getData());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -482,6 +481,7 @@ public class MainMenuController implements Initializable {
         Search searchInstance = new Search();
         ResultSet result;
 
+
         if (flightsRadioButton.isSelected()) {
 
 
@@ -500,6 +500,11 @@ public class MainMenuController implements Initializable {
                 errorMessage.setText("");
             }
 
+            result = searchInstance.searchAirline();
+            FlightTable flightSearchTable = new FlightTable(result);
+            flightSearchTable.createTable();
+            populateAirlineTable(searchTableView, flightSearchTable.getData());
+
         } else if (airportsRadioButton.isSelected()) {
 
             fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
@@ -510,12 +515,23 @@ public class MainMenuController implements Initializable {
 
             searchInstance.setSearchData(fields);
             result = searchInstance.searchAirport();
-
             if (!result.next()) {
                 errorMessage.setText("Sorry but there are no results for your search.");
+
             } else {
                 errorMessage.setText("");
+
             }
+
+            result = searchInstance.searchAirport();
+            AirportTable airportSearchTable = new AirportTable(result);
+            airportSearchTable.createTable();
+            populateAirportTable(searchTableView, airportSearchTable.getData());
+
+
+
+
+
 
         } else if (airlinesRadioButton.isSelected()) {
 
@@ -534,6 +550,11 @@ public class MainMenuController implements Initializable {
             } else {
                 errorMessage.setText("");
             }
+
+            result = searchInstance.searchAirline();
+            AirlineTable airlineSearchTable = new AirlineTable(result);
+            airlineSearchTable.createTable();
+            populateAirlineTable(searchTableView, airlineSearchTable.getData());
 
 
         } else if (routesRadioButton.isSelected()) {
@@ -556,6 +577,12 @@ public class MainMenuController implements Initializable {
                 } else {
                     errorMessage.setText("");
                 }
+
+                result = searchInstance.searchRoute();
+                RouteTable routeSearchTable = new RouteTable(result);
+                routeSearchTable.createTable();
+                populateAirlineTable(searchTableView, routeSearchTable.getData());
+
             } catch (NumberFormatException e) {
                 errorMessage.setText("Invalid entry for number of stops. (Must be an integer)");
             }
@@ -566,7 +593,7 @@ public class MainMenuController implements Initializable {
     }
 
 
-    private void populateAirlineTable(ArrayList<ArrayList<Object>> data) {
+    private void populateAirlineTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
 
         ArrayList<AirlineModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
@@ -578,11 +605,11 @@ public class MainMenuController implements Initializable {
             list.add(new AirlineModel(name, alias, country, active, id));
         }
         airlineModels = FXCollections.observableArrayList(list);
-        rawAirlineTable.setItems(airlineModels);
+        tableView.setItems(airlineModels);
     }
 
 
-    private void populateAirportTable(ArrayList<ArrayList<Object>> data) {
+    private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             Integer id = (Integer) datum.get(0);
@@ -592,11 +619,11 @@ public class MainMenuController implements Initializable {
             list.add(new AirportModel(name, city, country, id));
         }
         airportModels = FXCollections.observableArrayList(list);
-        airportTableView.setItems(airportModels);
+        tableView.setItems(airportModels);
     }
 
 
-    private void populateRouteTable(ArrayList<ArrayList<Object>> data) {
+    private void populateRouteTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             String airline = (String) datum.get(1);
@@ -613,11 +640,11 @@ public class MainMenuController implements Initializable {
             list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
         }
         routeModels = FXCollections.observableArrayList(list);
-        routeTableView.setItems(routeModels);
+        tableView.setItems(routeModels);
     }
 
 
-    private void populateFlightTable(ArrayList<ArrayList<Object>> data) throws SQLException {
+    private void populateFlightTable(TableView tableView, ArrayList<ArrayList<Object>> data) throws SQLException {
         ArrayList<FlightModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             ArrayList<Integer> idRange = new ArrayList<>();
@@ -635,7 +662,7 @@ public class MainMenuController implements Initializable {
             list.add(new FlightModel(flightId, srcLocation, srcAirport, dstLocation, dstAirport, idRange));
         }
         flightModels = FXCollections.observableArrayList(list);
-        flightTableView.setItems(flightModels);
+        tableView.setItems(flightModels);
 
     }
 
@@ -654,7 +681,7 @@ public class MainMenuController implements Initializable {
         ArrayList<String> newList = convertCSStringToArrayList(countryText);
         airlineTable.FilterTable(newList, activeText);
 
-        populateAirlineTable(airlineTable.getData());
+        populateAirlineTable(rawAirlineTable, airlineTable.getData());
 
     }
 
@@ -664,7 +691,7 @@ public class MainMenuController implements Initializable {
         String countryText = airportCountryField.getText();
         ArrayList newList = convertCSStringToArrayList(countryText);
         airportTable.FilterTable(newList);
-        populateAirportTable(airportTable.getData());
+        populateAirportTable(airportTableView, airportTable.getData());
     }
 
     @FXML
@@ -703,7 +730,7 @@ public class MainMenuController implements Initializable {
             }
         }
         routeTable.FilterTable(srcIata, dstIata, directText, equipmentList);
-        populateRouteTable(routeTable.getData());
+        populateRouteTable(routeTableView, routeTable.getData());
     }
 
     public void onAddFlightPressed(ActionEvent actionEvent) {
@@ -712,26 +739,27 @@ public class MainMenuController implements Initializable {
     public void updateAirportTable() throws SQLException {
         airportTable = new AirportTable(airportService.getAirports(null, null, null));
         airportTable.createTable();
-        populateAirportTable(airportTable.getData());
+        populateAirportTable(airportTableView, airportTable.getData());
     }
 
 
     public void updateAirlineTable() throws SQLException {
         airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
         airlineTable.createTable();
-        populateAirlineTable(airlineTable.getData());
+        populateAirlineTable(rawAirlineTable, airlineTable.getData());
     }
 
     public void updateRouteTable() throws SQLException {
         routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
         routeTable.createTable();
-        populateRouteTable(routeTable.getData());
+        populateRouteTable(routeTableView, routeTable.getData());
     }
 
 
 
 
     public void setSearchTableFlights() {
+        searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<FlightModel, String> flightIdCol = new TableColumn<FlightModel, String>("Flight Id");
         TableColumn<FlightModel, String> flightSrcLocationCol = new TableColumn<FlightModel, String>("Source Location");
@@ -750,6 +778,7 @@ public class MainMenuController implements Initializable {
 
 
     public void setSearchTableAirports() {
+        searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<AirportModel, String> airportNameCol = new TableColumn<>("Name");
         TableColumn<AirportModel, String> airportCityCol = new TableColumn<>("City");
@@ -763,6 +792,7 @@ public class MainMenuController implements Initializable {
     }
 
     public void setSearchTableAirlines() {
+        searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<AirlineModel, String> airlineNameCol = new TableColumn<>("Name");
         TableColumn<AirlineModel, String> airlineAliasCol = new TableColumn<>("Alias");
@@ -778,6 +808,7 @@ public class MainMenuController implements Initializable {
     }
 
     public void setSearchTableRoutes() {
+        searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<RouteModel, String> routeAirlineCol = new TableColumn<>("Airline");
         TableColumn<RouteModel, String> routeSrcAirportCol = new TableColumn<>("Source Airport");
