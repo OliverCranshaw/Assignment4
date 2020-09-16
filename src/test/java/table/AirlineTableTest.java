@@ -94,13 +94,16 @@ public class AirlineTableTest extends TestCase {
         countryList.add("country3");
         testTable.FilterTable(countryList, "Y");
 
+        // Creating the expectedResult ArrayList
         ArrayList<ArrayList<Object>> expectedResult = new ArrayList<>();
         List expList = Arrays.asList("airline1", "AIR1", "A1", "AR1", "AIRLINE1", "country1", "Y");
         expectedResult.add(new ArrayList<Object>(expList));
 
+        // Creating the actual result ArrayList
         ArrayList<ArrayList<Object>> actualResult = testTable.getData();
         assertEquals(1, actualResult.size());
 
+        // Running the assertions
         for (int j = 0; j < expectedResult.size(); j++) {
             assertEquals(expectedResult.get(0).get(j), actualResult.get(0).get(j+1));
         }
@@ -113,14 +116,12 @@ public class AirlineTableTest extends TestCase {
         expectedResult2.add(new ArrayList<>(expList2));
         expectedResult2.add(new ArrayList<>(expList3));
 
-
+        // Testing the FilterTable works for null
         testTable.FilterTable(null, null);
-
         assertEquals(3, testTable.getData().size());
 
-
+        // Running another Filter to check if partial null works
         testTable.FilterTable(null, "Y");
-
         ArrayList<ArrayList<Object>> actualResult2 = testTable.getData();
         assertEquals(2, actualResult2.size());
 

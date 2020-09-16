@@ -46,25 +46,25 @@ public class DataTableTest extends TestCase {
         Connection dbHandler = DBConnection.getConnection();
 
         // Creating a query to populate the database with test data
-        String query = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         // Creating a query to retrieve all data from the database
-        String retrieveQuery = "SELECT * FROM FLIGHT_DATA";
+        String retrieveQuery = "SELECT * FROM AIRLINE_DATA";
 
 
         // Creating the statements to populate the database
         PreparedStatement testData1 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList(0, "FEKs", "ENSFL", 6, 323.6, 87.5));
+        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList("airline1", "AIR1", "A1", "AR1", "AIRLINE1", "country1", "Y"));
 
         PreparedStatement testData2 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList2 = new ArrayList<>(Arrays.asList(1, "ljk", "khj", 65654, 322.1, 123.0));
+        ArrayList<Object> testDataList2 = new ArrayList<>(Arrays.asList("airline2", "AIR2", "A2", "AR2", "AIRLINE2", "country2", "Y"));
 
         PreparedStatement testData3 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList(2, "gd", "rdg", 54, 2315.34, 657.3));
+        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList("airline3", "AIR3", "A3", "AR3", "AIRLINE3", "country3", "N"));
 
         // Filling in the blanks for the database populating statements
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < 8; i++) {
             testData1.setObject(i, testDataList1.get(i-1));
             testData2.setObject(i, testDataList2.get(i-1));
             testData3.setObject(i, testDataList3.get(i-1));
