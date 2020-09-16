@@ -500,10 +500,10 @@ public class MainMenuController implements Initializable {
                 errorMessage.setText("");
             }
 
-            result = searchInstance.searchAirline();
+            result = searchInstance.searchFlight();
             FlightTable flightSearchTable = new FlightTable(result);
             flightSearchTable.createTable();
-            populateAirlineTable(searchTableView, flightSearchTable.getData());
+            populateFlightTable(searchTableView, flightSearchTable.getData());
 
         } else if (airportsRadioButton.isSelected()) {
 
@@ -581,7 +581,7 @@ public class MainMenuController implements Initializable {
                 result = searchInstance.searchRoute();
                 RouteTable routeSearchTable = new RouteTable(result);
                 routeSearchTable.createTable();
-                populateAirlineTable(searchTableView, routeSearchTable.getData());
+                populateRouteTable(searchTableView, routeSearchTable.getData());
 
             } catch (NumberFormatException e) {
                 errorMessage.setText("Invalid entry for number of stops. (Must be an integer)");
