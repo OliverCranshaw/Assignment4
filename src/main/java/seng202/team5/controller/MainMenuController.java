@@ -186,6 +186,83 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableView searchTableView;
 
+    @FXML
+    private Label airportIdLabel;
+
+    @FXML
+    private Label airportNameLabel;
+
+    @FXML
+    private Label airportCityLabel;
+
+    @FXML
+    private Label airportCountryLabel;
+
+    @FXML
+    private Label airportIATALabel;
+
+    @FXML
+    private Label airportICAOLabel;
+
+    @FXML
+    private Label airportLatitudeLabel;
+
+    @FXML
+    private Label airportLongitudeLabel;
+
+    @FXML
+    private Label airportAltitudeLabel;
+
+    @FXML
+    private Label airportTimezoneLabel;
+
+    @FXML
+    private Label airportDstLabel;
+
+    @FXML
+    private Label airportTzLabel;
+
+    @FXML
+    private Label airportTypeLabel;
+
+    @FXML
+    private Label airportId;
+
+    @FXML
+    private Label airportName;
+
+    @FXML
+    private Label airportCity;
+
+    @FXML
+    private Label airportCountry;
+
+    @FXML
+    private Label airportIATA;
+
+    @FXML
+    private Label airportICAO;
+
+    @FXML
+    private Label airportLatitude;
+
+    @FXML
+    private Label airportLongitude;
+
+    @FXML
+    private Label airportAltitude;
+
+    @FXML
+    private Label airportTimezone;
+
+    @FXML
+    private Label airportDst;
+
+    @FXML
+    private Label airportTz;
+
+    @FXML
+    private Label airportType;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
@@ -236,6 +313,37 @@ public class MainMenuController implements Initializable {
         flightDstLocationCol.setCellValueFactory(new PropertyValueFactory<>("DestinationLocation"));;
         flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
 
+        airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                AirportModel selected = (AirportModel) newSelection;
+                System.out.println(selected.getId());
+            }
+        });
+
+        rawAirlineTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                AirlineModel selected = (AirlineModel) newSelection;
+                System.out.println(selected.getId());
+            }
+        });
+
+        flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                FlightModel selected = (FlightModel) newSelection;
+                System.out.println(selected.getIdRange());
+            }
+        });
+
+        routeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                RouteModel selected = (RouteModel) newSelection;
+                System.out.println(selected.getRouteId());
+            }
+        });
+
+        setAirportSingleRecord(null);
+
+
         dataExporter = new DataExporter();
 
         airlineService = new AirlineService();
@@ -284,6 +392,10 @@ public class MainMenuController implements Initializable {
         }
 
         setSearchTableFlights();
+    }
+
+    private void setAirportSingleRecord(AirportModel airportModel) {
+
     }
 
 

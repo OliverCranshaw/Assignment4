@@ -54,4 +54,12 @@ public class AirlineModel {
     public void setAirlineCountry(String airlineCountry) {
         this.airlineCountry.set(airlineCountry);
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
