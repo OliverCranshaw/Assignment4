@@ -6,9 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -24,14 +22,9 @@ import seng202.team5.table.AirportTable;
 import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
-import javax.print.attribute.standard.Destination;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class MainMenuController implements Initializable {
@@ -281,6 +274,13 @@ public class MainMenuController implements Initializable {
         setSearchTableFlights();
     }
 
+    @FXML
+    public void onHelp(ActionEvent event) {
+        System.out.println("Help requested: " + event);
+
+        Scene scene = mainTabs.getScene();
+        HelpHandler.startHelp(scene);
+    }
 
     @FXML
     public void onViewMorePressed() {
@@ -852,5 +852,4 @@ public class MainMenuController implements Initializable {
         }
         return result;
     }
-
 }
