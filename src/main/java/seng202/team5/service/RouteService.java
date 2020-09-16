@@ -197,15 +197,18 @@ public class RouteService implements Service {
         if (source_airport != null) {
             airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
             if (airportSourceIataIcao.isEmpty()) {
-                airportSourceIataIcao = null;
+                airportSourceIataIcao = new ArrayList();
+                airportSourceIataIcao.add("N/A");
             }
         }
         if (dest_airport != null) {
             airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
             if (airportDestIataIcao.isEmpty()) {
-                airportDestIataIcao = null;
+                airportDestIataIcao = new ArrayList();
+                airportDestIataIcao.add("N/A");
             }
         }
+
         return accessor.getData(airportSourceIataIcao, airportDestIataIcao, stops, equipment);
     }
 

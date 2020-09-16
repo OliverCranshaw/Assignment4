@@ -171,6 +171,16 @@ public class AirportService implements Service {
     }
 
     /**
+     * Checks if an airport exists with the given IATA/ICAO code.
+     *
+     * @param code An airport IATA/ICAO code.
+     * @return boolean True if the airport exists, false otherwise.
+     */
+    public boolean airportExists(String code) {
+        return accessor.dataExists(code);
+    }
+
+    /**
      * Checks that a given airport IATA code is valid.
      * IATA code must either be null or of length 3 to be valid.
      *
