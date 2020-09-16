@@ -314,10 +314,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportAirports();
-    }
+//    @FXML
+//    public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
+//        dataExporter.exportAirports();
+//    }
 
     @FXML
     public void onAddAirlinePressed(ActionEvent event) throws IOException {
@@ -341,10 +341,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportAirlines();
-    }
+//    @FXML
+//    public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
+//        dataExporter.exportAirlines();
+//    }
 
     @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
@@ -368,10 +368,10 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportRoutes();
-    }
+//    @FXML
+//    public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
+//        dataExporter.exportRoutes();
+//    }
 
     @FXML
     public void onFlightsRadioPressed() {

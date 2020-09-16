@@ -280,6 +280,7 @@ public class AirlineAccessor implements Accessor {
                 index++;
             }
 
+
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airline data");
