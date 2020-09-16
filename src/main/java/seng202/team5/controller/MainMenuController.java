@@ -187,82 +187,124 @@ public class MainMenuController implements Initializable {
     private TableView searchTableView;
 
     @FXML
-    private Label airportIdLabel;
+    private Label lblAirportID;
 
     @FXML
-    private Label airportNameLabel;
+    private Label airportID;
 
     @FXML
-    private Label airportCityLabel;
-
-    @FXML
-    private Label airportCountryLabel;
-
-    @FXML
-    private Label airportIATALabel;
-
-    @FXML
-    private Label airportICAOLabel;
-
-    @FXML
-    private Label airportLatitudeLabel;
-
-    @FXML
-    private Label airportLongitudeLabel;
-
-    @FXML
-    private Label airportAltitudeLabel;
-
-    @FXML
-    private Label airportTimezoneLabel;
-
-    @FXML
-    private Label airportDstLabel;
-
-    @FXML
-    private Label airportTzLabel;
-
-    @FXML
-    private Label airportTypeLabel;
-
-    @FXML
-    private Label airportId;
+    private Label lblAirportName;
 
     @FXML
     private Label airportName;
 
     @FXML
+    private Label lblAirportCity;
+
+    @FXML
     private Label airportCity;
+
+    @FXML
+    private Label lblAirportCountry;
 
     @FXML
     private Label airportCountry;
 
     @FXML
+    private Label lblAirportIATA;
+
+    @FXML
     private Label airportIATA;
+
+    @FXML
+    private Label lblAirportICAO;
 
     @FXML
     private Label airportICAO;
 
     @FXML
+    private Label lblAirportLatitude;
+
+    @FXML
     private Label airportLatitude;
+
+    @FXML
+    private Label lblAirportLongitude;
 
     @FXML
     private Label airportLongitude;
 
     @FXML
+    private Label lblAirportAltitude;
+
+    @FXML
     private Label airportAltitude;
+
+    @FXML
+    private Label lblAirportTimezone;
 
     @FXML
     private Label airportTimezone;
 
     @FXML
-    private Label airportDst;
+    private Label lblAirportDST;
 
     @FXML
-    private Label airportTz;
+    private Label airportDST;
 
     @FXML
-    private Label airportType;
+    private Label lblAirportTZ;
+
+    @FXML
+    private Label airportTZ;
+
+    @FXML
+    private Label lblAirlineID;
+
+    @FXML
+    private Label airlineID;
+
+    @FXML
+    private Label lblAirlineName;
+
+    @FXML
+    private Label airlineName;
+
+    @FXML
+    private Label lblAirlineAlias;
+
+    @FXML
+    private Label airlineAlias;
+
+    @FXML
+    private Label lblAirlineIATA;
+
+    @FXML
+    private Label airlineIATA;
+
+    @FXML
+    private Label lblAirlineICAO;
+
+    @FXML
+    private Label airlineICAO;
+
+    @FXML
+    private Label lblAirlineCallsign;
+
+    @FXML
+    private Label airlineCallsign;
+
+    @FXML
+    private Label lblAirlineCountry;
+
+    @FXML
+    private Label airlineCountry;
+
+    @FXML
+    private Label lblAirlineActive;
+
+    @FXML
+    private Label airlineActive;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
