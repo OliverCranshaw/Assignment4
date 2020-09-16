@@ -166,6 +166,11 @@
                                     <Button mnemonicParsing="false" text="Download" />
                                  </children>
                               </HBox>
+                              <TableView fx:id="searchTableView" prefHeight="375.0" prefWidth="1232.0">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
                            </children>
                            <StackPane.margin>
                               <Insets bottom="25.0" left="25.0" right="25.0" />

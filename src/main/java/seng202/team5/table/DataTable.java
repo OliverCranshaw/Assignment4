@@ -40,7 +40,6 @@ public abstract class DataTable {
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
 
-        System.out.print(orgData);
         if (orgData != null) {
             ResultSetMetaData md = orgData.getMetaData();
             // Gets the number of columns (ie the number of variables)

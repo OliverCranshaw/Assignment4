@@ -4,6 +4,7 @@ import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
+import seng202.team5.table.FlightTable;
 
 import javax.xml.transform.Result;
 import java.sql.ResultSet;

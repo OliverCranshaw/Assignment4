@@ -42,7 +42,6 @@ public class FilterAirlineTable extends ConcreteFilterTable {
 
         while (hasMore()) {
             current = elements.get(currentPos);
-            System.out.println("Airline: " + current);
             String country = (String) current.get(6);
             String currentActive = (String) current.get(7);
 
