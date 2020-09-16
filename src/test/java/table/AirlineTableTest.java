@@ -130,8 +130,6 @@ public class AirlineTableTest extends TestCase {
             assertEquals(expectedResult2.get(1).get(k), actualResult2.get(1).get(k+1));
         }
 
-
-
     }
 
 
