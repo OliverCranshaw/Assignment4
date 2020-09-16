@@ -373,10 +373,10 @@ public class MainMenuController implements Initializable {
     private TableColumn flightID;
 
     @FXML
-    private TableColumn flightLocation;
+    private TableColumn flightLocationType;
 
     @FXML
-    private TableColumn flightLocationType;
+    private TableColumn flightLocation;
 
     @FXML
     private TableColumn flightAltitude;

@@ -681,8 +681,8 @@
                                                   <columns>
                                                     <TableColumn fx:id="flightDbID" prefWidth="36.0" text="ID" />
                                                     <TableColumn fx:id="flightID" prefWidth="58.0" text="Flight ID" />
-                                                      <TableColumn fx:id="flightLocation" prefWidth="102.0" text="Location" />
-                                                      <TableColumn fx:id="flightLocationType" prefWidth="104.0" text="Location Type" />
+                                                      <TableColumn fx:id="flightLocationType" prefWidth="102.0" text="Location Type" />
+                                                      <TableColumn fx:id="flightLocation" prefWidth="104.0" text="Location" />
                                                       <TableColumn fx:id="flightAltitude" prefWidth="78.0" text="Altitude" />
                                                       <TableColumn fx:id="flightLatitude" prefWidth="84.0" text="Latitude" />
                                                       <TableColumn fx:id="flightLongitude" prefWidth="87.0" text="Longitude" />
