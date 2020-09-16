@@ -316,7 +316,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
-        //dataExporter.exportAirports();
+        dataExporter.exportAirports();
     }
 
     @FXML
@@ -343,7 +343,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
-        //dataExporter.exportAirlines();
+        dataExporter.exportAirlines();
     }
 
     @FXML
@@ -370,7 +370,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
-        //dataExporter.exportRoutes();
+        dataExporter.exportRoutes();
     }
 
     @FXML
