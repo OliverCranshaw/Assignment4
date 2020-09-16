@@ -306,6 +306,87 @@ public class MainMenuController implements Initializable {
     @FXML
     private Label airlineActive;
 
+    @FXML
+    private Label lblRouteID;
+
+    @FXML
+    private Label routeID;
+
+    @FXML
+    private Label lblRouteAirline;
+
+    @FXML
+    private Label routeAirline;
+
+    @FXML
+    private Label lblRouteAirlineID;
+
+    @FXML
+    private Label routeAirlineID;
+
+    @FXML
+    private Label lblRouteDepAirport;
+
+    @FXML
+    private Label routeDepAirport;
+
+    @FXML
+    private Label lblRouteDepAirportID;
+
+    @FXML
+    private Label routeDepAirportID;
+
+    @FXML
+    private Label lblRouteDesAirport;
+
+    @FXML
+    private Label routeDesAirport;
+
+    @FXML
+    private Label lblRouteDesAirportID;
+
+    @FXML
+    private Label routeDesAirportID;
+
+    @FXML
+    private Label lblRouteCodeshare;
+
+    @FXML
+    private Label routeCodeshare;
+
+    @FXML
+    private Label lblRouteStops;
+
+    @FXML
+    private Label routeStops;
+
+    @FXML
+    private Label lblRouteEquip;
+
+    @FXML
+    private Label routeEquip;
+
+    @FXML
+    private TableColumn flightDbID;
+
+    @FXML
+    private TableColumn flightID;
+
+    @FXML
+    private TableColumn flightLocation;
+
+    @FXML
+    private TableColumn flightLocationType;
+
+    @FXML
+    private TableColumn flightAltitude;
+
+    @FXML
+    private TableColumn flightLatitude;
+
+    @FXML
+    private TableColumn flightLongitude;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
