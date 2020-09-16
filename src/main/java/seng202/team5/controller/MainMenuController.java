@@ -316,7 +316,13 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportAirports();
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("download.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Download Airports");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
     }
 
     @FXML
@@ -343,7 +349,13 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportAirlines();
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("download.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Download Airports");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
     }
 
     @FXML
@@ -370,7 +382,13 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
-        dataExporter.exportRoutes();
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("download.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Download Airports");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
     }
 
     @FXML
