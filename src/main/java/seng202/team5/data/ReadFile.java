@@ -152,6 +152,7 @@ public class ReadFile {
                 }
                 lineNum++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
@@ -261,6 +262,7 @@ public class ReadFile {
                 }
                 lineNum++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
@@ -350,9 +352,9 @@ public class ReadFile {
                     id = -1;
                     break;
                 }
-
                 lineNum++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");
@@ -447,9 +449,9 @@ public class ReadFile {
                             break;
                     }
                 }
-
                 lineNum++;
             }
+            bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to read file.");

@@ -440,6 +440,8 @@ public class AddDataScenario {
 
     @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
     public void validFlightEntryParameters(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
+        concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
+
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         flight_id = flightID;
@@ -520,6 +522,8 @@ public class AddDataScenario {
 
     @Given("^valid flight entry parameters \\((\\d+), \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\) except for an invalid altitude \"([^\"]*)\"$")
     public void flightEntryInvalidAltitude(int flightID, String location_type, String location, String latitude, String longitude, String altitude) {
+        concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
+
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-5, flightData.checkValues());
@@ -580,7 +584,9 @@ public class AddDataScenario {
 
     @Given("^valid route parameters \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
     public void validRouteParameters(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment) {
+        concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
         concreteAddData.addAirport("Mount Hagen", "Mount Hagen", "Papua New Guinea", "HGU", "AYMH", "-5.826789", "144.295861", "5388", "10", "U", "Pacific/Port_Moresby");
+        concreteAddData.addAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");
 
         routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
@@ -711,15 +717,4 @@ public class AddDataScenario {
         Assert.assertEquals(-7, id);
     }
 
-    @And("^the necessary airport exists$")
-    public void theNecessaryAirportExists() {
-        airportService.saveAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", 100.0231, -34.1271, 0, 2, "N", "Auckland/New Zealand");
-    }
-
-    @And("^the airline and airports exist$")
-    public void theAirlineAndAirportsExist() {
-        airportService.saveAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", 100.0231, -34.1271, 0, 2, "N", "Auckland/New Zealand");
-        airportService.saveAirport("Tolmachevo", "Novosibirsk", "Russia", "HGU", "UNNT", 55.012622, 82.650656, 365, 7, "N", "Asia/Omsk");
-        airlineService.saveAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");
-    }
 }

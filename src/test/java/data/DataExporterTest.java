@@ -76,9 +76,9 @@ public class DataExporterTest {
         File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
 
-        dataExporter.exportAirlines();
+        dataExporter.exportAirlines("src/test/java/data/", "airlines.csv");
 
-        airlineFile = new File("airlines.csv");
+        airlineFile = new File("src/test/java/data/airlines.csv");
 
         assertTrue(airlineFile.exists());
 
@@ -98,8 +98,11 @@ public class DataExporterTest {
 
                     assertEquals(expectedLine, line);
                 }
+                bufferedReader.close();
 
-                airlineFile.delete();
+                if (airlineFile.delete()) {
+                    System.out.println("File deleted.");
+                }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
@@ -111,9 +114,9 @@ public class DataExporterTest {
         File airportFile = new File("src/test/java/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        dataExporter.exportAirports();
+        dataExporter.exportAirports("src/test/java/data/", "airports.csv");
 
-        airportFile = new File("airports.csv");
+        airportFile = new File("src/test/java/data/airports.csv");
 
         assertTrue(airportFile.exists());
 
@@ -135,8 +138,11 @@ public class DataExporterTest {
 
                     assertEquals(expectedLine, line);
                 }
+                bufferedReader.close();
 
-                airportFile.delete();
+                if (airportFile.delete()) {
+                    System.out.println("File deleted.");
+                }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
@@ -155,9 +161,9 @@ public class DataExporterTest {
         flightFile = new File("src/test/java/data/testfiles/normal_flight_entry.txt");
         readFile.readFlightData(flightFile);
 
-        dataExporter.exportFlight(1);
+        dataExporter.exportFlight(1, "src/test/java/data/", "flight-NZCH-WSSS.csv");
 
-        flightFile = new File("flight-NZCH-WSSS.csv");
+        flightFile = new File("src/test/java/data/flight-NZCH-WSSS.csv");
 
         assertTrue(flightFile.exists());
 
@@ -176,8 +182,11 @@ public class DataExporterTest {
 
                     assertEquals(expectedLine, line);
                 }
+                bufferedReader.close();
 
-                flightFile.delete();
+                if (flightFile.delete()) {
+                    System.out.println("File deleted.");
+                }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
@@ -196,9 +205,9 @@ public class DataExporterTest {
         flightFile = new File("src/test/java/data/testfiles/normal_flight_entry.txt");
         readFile.readFlightData(flightFile);
 
-        dataExporter.exportFlights();
+        dataExporter.exportFlights("src/test/java/data/", "flights.csv");
 
-        flightFile = new File("flights.csv");
+        flightFile = new File("src/test/java/data/flights.csv");
 
         assertTrue(flightFile.exists());
 
@@ -217,8 +226,11 @@ public class DataExporterTest {
 
                     assertEquals(expectedLine, line);
                 }
+                bufferedReader.close();
 
-                flightFile.delete();
+                if (flightFile.delete()) {
+                    System.out.println("File deleted.");
+                }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
@@ -235,9 +247,9 @@ public class DataExporterTest {
         File routeFile = new File("src/test/java/data/testfiles/normal_routes_multiple.txt");
         readFile.readRouteData(routeFile);
 
-        dataExporter.exportRoutes();
+        dataExporter.exportRoutes("src/test/java/data/", "routes.csv");
 
-        routeFile = new File("routes.csv");
+        routeFile = new File("src/test/java/data/routes.csv");
 
         assertTrue(routeFile.exists());
 
@@ -258,8 +270,11 @@ public class DataExporterTest {
 
                     assertEquals(expectedLine, line);
                 }
+                bufferedReader.close();
 
-                routeFile.delete();
+                if (routeFile.delete()) {
+                    System.out.println("File deleted.");
+                }
             }
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());

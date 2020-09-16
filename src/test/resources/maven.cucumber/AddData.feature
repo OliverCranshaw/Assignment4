@@ -96,41 +96,37 @@ Feature: Adding data
 
   Scenario: Adding a valid flight entry
     Given valid flight entry parameters (1, "APT", "NZCH", "0", "-43.4866", "172.534")
-    And the necessary airport exists
     When adding a flight entry with parameters (1, "APT", "NZCH", "0", "-43.4866", "172.534")
     Then the flight entry is added with flight id 1 and unique id 1
 
   Scenario: Adding a flight entry with an invalid flightID
-    Given valid flight entry parameters ("APT", "NZCH", "0", "-43.4866", "172.534") except for an invalid flight id -1
-    When adding a flight entry with parameters ("APT", "NZCH", "0", "-43.4866", "172.534") and invalid flight id -1
+    Given valid flight entry parameters ("VOR", "NZ", "0", "-43.4866", "172.534") except for an invalid flight id -1
+    When adding a flight entry with parameters ("VOR", "NZ", "0", "-43.4866", "172.534") and invalid flight id -1
     Then the flight parameters are rejected, and an error code -2 is returned
 
   Scenario: Adding a flight entry with an invalid location type
-    Given valid flight entry parameters (1, "NZCH", "0", "-43.4866", "172.534") except for an invalid location type "HAT"
-    When adding a flight entry with parameters (1, "NZCH", "0", "-43.4866", "172.534") and invalid location type "HAT"
+    Given valid flight entry parameters (1, "NZ", "0", "-43.4866", "172.534") except for an invalid location type "HAT"
+    When adding a flight entry with parameters (1, "NZ", "0", "-43.4866", "172.534") and invalid location type "HAT"
     Then the flight parameters are rejected, and an error code -3 is returned
 
   Scenario: Adding a flight entry with an invalid location
-    Given valid flight entry parameters (1, "APT", "0", "-43.4866", "172.534") except for an invalid location "CH"
-    When adding a flight entry with parameters (1, "APT", "0", "-43.4866", "172.534") and invalid location "CH"
+    Given valid flight entry parameters (1, "VOR", "0", "-43.4866", "172.534") except for an invalid location ""
+    When adding a flight entry with parameters (1, "VOR", "0", "-43.4866", "172.534") and invalid location ""
     Then the flight parameters are rejected, and an error code -4 is returned
 
   Scenario: Adding a flight entry with an invalid altitude
     Given valid flight entry parameters (1, "APT", "CHC", "-43.4866", "172.534") except for an invalid altitude ""
-    And the necessary airport exists
     When adding a flight entry with parameters (1, "APT", "CHC", "-43.4866", "172.534") and invalid altitude ""
     Then the flight parameters are rejected, and an error code -5 is returned
 
   Scenario: Adding a flight entry with an invalid latitude
-    Given valid flight entry parameters (1, "APT", "CHC", "0", "172.534") except for an invalid latitude ""
-    And the necessary airport exists
-    When adding a flight entry with parameters (1, "APT", "CHC", "0", "172.534") and invalid latitude ""
+    Given valid flight entry parameters (1, "VOR", "CH", "0", "172.534") except for an invalid latitude ""
+    When adding a flight entry with parameters (1, "VOR", "CH", "0", "172.534") and invalid latitude ""
     Then the flight parameters are rejected, and an error code -6 is returned
 
   Scenario: Adding a flight entry with an invalid longitude
-    Given valid flight entry parameters (1, "APT", "NZCH", "0", "-43.4866") except for an invalid longitude ""
-    And the necessary airport exists
-    When adding a flight entry with parameters (1, "APT", "NZCH", "0", "-43.4866") and invalid longitude ""
+    Given valid flight entry parameters (1, "FIX", "NZ", "0", "-43.4866") except for an invalid longitude ""
+    When adding a flight entry with parameters (1, "FIX", "NZ", "0", "-43.4866") and invalid longitude ""
     Then the flight parameters are rejected, and an error code -7 is returned
 
 
@@ -138,7 +134,6 @@ Feature: Adding data
 
   Scenario: Adding a valid route
     Given valid route parameters ("FIX", "NZCH", "HGU", "", "0", "CR2")
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "NZCH", "HGU", "", "0", "CR2")
     Then the route is added with id 1
 
@@ -149,30 +144,25 @@ Feature: Adding data
 
   Scenario: Adding a route with an invalid source airport code
     Given valid route parameters ("FIX", "HGU", "", "0", "CR2") except for an invalid source airport code ""
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "HGU", "", "0", "CR2") and invalid source airport code ""
     Then the route parameters are rejected, and an error code -3 is returned
 
   Scenario: Adding a route with an invalid destination airport code
     Given valid route parameters ("FIX", "NZCH", "", "0", "CR2") except for an invalid destination airport code "HG"
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "NZCH", "", "0", "CR2") and invalid destination airport code "HG"
     Then the route parameters are rejected, and an error code -4 is returned
 
   Scenario: Adding a route with an invalid codeshare
     Given valid route parameters ("FIX", "NZCH", "HGU", "0", "CR2") except for an invalid codeshare "N"
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "NZCH", "HGU", "0", "CR2") and invalid codeshare "N"
     Then the route parameters are rejected, and an error code -5 is returned
 
   Scenario: Adding a route with invalid stops
     Given valid route parameters ("FIX", "NZCH", "HGU", "", "CR2") except for invalid stops ""
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "NZCH", "HGU", "", "CR2") and invalid stops ""
     Then the route parameters are rejected, and an error code -6 is returned
 
   Scenario: Adding a route with invalid equipment
     Given valid route parameters ("FIX", "NZCH", "HGU", "", "0") except for invalid equipment ""
-    And the airline and airports exist
     When adding a route with parameters ("FIX", "NZCH", "HGU", "", "0") and invalid equipment ""
     Then the route parameters are rejected, and an error code -7 is returned

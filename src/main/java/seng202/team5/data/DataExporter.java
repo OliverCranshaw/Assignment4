@@ -6,6 +6,7 @@ import seng202.team5.accessor.FlightAccessor;
 import seng202.team5.accessor.RouteAccessor;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -42,13 +43,13 @@ public class DataExporter {
     /**
      * Exports all the airlines contained in the database to a csv file called airlines.csv.
      */
-    public void exportAirlines() {
+    public void exportAirlines(String directory, String filename) {
         // Retrieves all the airlines from the database
         ResultSet airlines = airlineAccessor.getAllData();
 
         try {
             // Creates the FileWriter with the filename "airlines.csv"
-            fileWriter = new BufferedWriter(new FileWriter("airlines.csv"));
+            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
             // Loops through all the airlines in the ResultSet
             while (airlines.next()) {
@@ -103,13 +104,13 @@ public class DataExporter {
     /**
      * Exports all the airports contained in the database to a csv file called airports.csv.
      */
-    public void exportAirports() {
+    public void exportAirports(String directory, String filename) {
         // Retrieves all the airports from the database
         ResultSet airports = airportAccessor.getAllData();
 
         try {
             // Creates the FileWriter with the filename "airports.csv"
-            fileWriter = new BufferedWriter(new FileWriter("airports.csv"));
+            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
             // Loops through all the airports in the ResultSet
             while (airports.next()) {
@@ -160,20 +161,13 @@ public class DataExporter {
      * Exports all the entries of a particular flight in the database to a csv file called flight-[source]-[destination].csv.
      * @param flightID int The flightID of a given flight that you want to export.
      */
-    public void exportFlight(int flightID) {
+    public void exportFlight(int flightID, String directory, String filename) {
         // Retrieves all the flight entries with a given flightID from the database
         ResultSet flight = flightAccessor.getData(flightID);
 
         try {
-            // Gets the first and last locations in the ResultSet to use as the source and destination in the filename
-            String source = flight.getString("location");
-            String dest = "";
-            while (flight.next()) {
-                dest = flight.getString("location");
-            }
-
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
-            fileWriter = new BufferedWriter(new FileWriter("flight" + "-" + source + "-" + dest + ".csv"));
+            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
             // Gets ResultSet again to revert to the start, as SQLite only supports TYPE_FORWARD_ONLY cursors
             flight = flightAccessor.getData(flightID);
@@ -212,13 +206,13 @@ public class DataExporter {
     /**
      * Exports all the flight entries contained in the database to a csv file called flights.csv.
      */
-    public void exportFlights() {
+    public void exportFlights(String directory, String filename) {
         // Retrieves all the flight entries from the database
         ResultSet flights = flightAccessor.getAllData();
 
         try {
             // Creates the FileWriter with the filename "flights.csv"
-            fileWriter = new BufferedWriter(new FileWriter("flights.csv"));
+            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
             // Loops through all the flight entries in the ResultSet
             while (flights.next()) {
@@ -255,13 +249,13 @@ public class DataExporter {
     /**
      * Exports all the routes contained in the database to a csv file called routes.csv.
      */
-    public void exportRoutes() {
+    public void exportRoutes(String directory, String filename) {
         // Retrieves all the routes from the database
         ResultSet routes = routeAccessor.getAllData();
 
         try {
             // Creates the FileWriter with the filename "routes.csv"
-            fileWriter = new BufferedWriter(new FileWriter("routes.csv"));
+            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
             // Loops through all the routes in the ResultSet
             while (routes.next()) {
