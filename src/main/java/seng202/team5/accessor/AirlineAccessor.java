@@ -50,7 +50,7 @@ public class AirlineAccessor implements Accessor {
             // The SQL insert statement
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
-                                                + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
@@ -280,7 +280,6 @@ public class AirlineAccessor implements Accessor {
                 index++;
             }
 
-
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airline data");
@@ -375,7 +374,7 @@ public class AirlineAccessor implements Accessor {
                     "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_id = ?");
             // Adds the given airline_id into the search query
             stmt.setObject(1, id);
-            
+
             Object data = stmt.executeQuery().getObject(1);
             result = (int) data == 0 ? false : true;
         } catch (Exception e) {
@@ -405,7 +404,7 @@ public class AirlineAccessor implements Accessor {
             // Adds the given code into the search query
             stmt.setObject(1, code);
             stmt.setObject(2, code);
-            
+
             Object data = stmt.executeQuery().getObject(1);
             result = (int) data == 0 ? false : true;
         } catch (Exception e) {

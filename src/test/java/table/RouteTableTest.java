@@ -52,13 +52,13 @@ public class RouteTableTest extends TestCase {
 
         // Creating the statements to populate the database
         PreparedStatement testData1 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList("airline1", 1, "srcAirport1", 1, "dstAirport1", 1, "Y", 6, "equip1"));
+        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList("airline1", 1, "srcAirport1", 1, "dstAirport1", 1, "Y", 6, "GPS"));
 
         PreparedStatement testData2 = dbHandler.prepareStatement(query);
         ArrayList<Object> testDataList2 = new ArrayList<>(Arrays.asList("airline2", 2, "srcAirport2", 2, "dstAirport2", 2, "Y", 7, "equip2"));
 
         PreparedStatement testData3 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList("airline3", 3, "srcAirport3", 3, "dstAirport3", 3, "Y", 8, "equip3"));
+        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList("airline3", 3, "srcAirport3", 3, "dstAirport3", 3, "Y", 8, "GPS"));
 
         // Filling in the blanks for the database populating statements
         for (int i = 1; i < 10; i++) {
@@ -85,6 +85,6 @@ public class RouteTableTest extends TestCase {
         RouteTable testTable = new RouteTable(result);
         testTable.createTable();
 
-    }
 
+    }
 }
