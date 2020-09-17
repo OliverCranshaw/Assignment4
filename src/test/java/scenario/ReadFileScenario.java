@@ -102,9 +102,9 @@ public class ReadFileScenario {
         id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
-    @Then("the airline data is rejected with an error code -2")
-    public void rejectedAirlineTooFewEntries() {
-        Assert.assertEquals(-2, id);
+    @Then("the airline data is rejected with an error code {int}")
+    public void rejectedAirlineTooFewEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading invalid airline data with too many entries
@@ -119,9 +119,9 @@ public class ReadFileScenario {
         id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
-    @Then("the airline data is rejected with an error code -3")
-    public void rejectedAirlineTooManyEntries() {
-        Assert.assertEquals(-3, id);
+    @Then("the airline data is rejected with an error code {int}")
+    public void rejectedAirlineTooManyEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading multiple airlines from a file
@@ -173,9 +173,9 @@ public class ReadFileScenario {
         id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
-    @Then("the airport data is rejected with an error code -2")
-    public void rejectedAirportTooFewEntries() {
-        Assert.assertEquals(-2, id);
+    @Then("the airport data is rejected with an error code {int}")
+    public void rejectedAirportTooFewEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading invalid airport data with too many entries
@@ -190,9 +190,9 @@ public class ReadFileScenario {
         id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
-    @Then("the airport data is rejected with an error code -3")
-    public void rejectedAirportTooManyEntries() {
-        Assert.assertEquals(-3, id);
+    @Then("the airport data is rejected with an error code {int}")
+    public void rejectedAirportTooManyEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading multiple airports from a file
@@ -266,9 +266,9 @@ public class ReadFileScenario {
         ids = readFile.readFlightData(flightFile).get(0);
     }
 
-    @Then("the flight data is rejected, and two error codes of -1 are returned")
-    public void rejectedFlightEntryTooFewEntries() {
-        expected_ids = new ArrayList<>(Arrays.asList(-1, -1));
+    @Then("the flight data is rejected, and two error codes of {int} are returned")
+    public void rejectedFlightEntryTooFewEntries(int error) {
+        expected_ids = new ArrayList<>(Arrays.asList(error, error));
         Assert.assertEquals(expected_ids, ids);
     }
 
@@ -284,9 +284,9 @@ public class ReadFileScenario {
         ids = readFile.readFlightData(flightFile).get(0);
     }
 
-    @Then("an invalid flight entry is reached all previous ones are deleted, and two error codes of -1 are returned")
-    public void rejectedFlight() {
-        expected_ids = new ArrayList<>(Arrays.asList(-1, -1));
+    @Then("an invalid flight entry is reached all previous ones are deleted, and two error codes of {int} are returned")
+    public void rejectedFlight(int error) {
+        expected_ids = new ArrayList<>(Arrays.asList(error, error));
 
         Assert.assertEquals(expected_ids, ids);
     }
@@ -325,9 +325,9 @@ public class ReadFileScenario {
         id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
-    @Then("the route data is rejected, and an error code of -2 is returned")
-    public void rejectedRouteTooFewEntries() {
-        Assert.assertEquals(-2, id);
+    @Then("the route data is rejected, and an error code of {int} is returned")
+    public void rejectedRouteTooFewEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading invalid route data with more than 6 entries but less than 9 entries
@@ -342,9 +342,9 @@ public class ReadFileScenario {
         id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
-    @Then("the route data is rejected, and an error code of -3 is returned")
-    public void rejectedRouteWrongNumberOfEntries() {
-        Assert.assertEquals(-3, id);
+    @Then("the route data is rejected, and an error code of {int} is returned")
+    public void rejectedRouteWrongNumberOfEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading invalid route data with more than 9 entries
@@ -359,9 +359,9 @@ public class ReadFileScenario {
         id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
-    @Then("the route data is rejected, and an error code of -4 is returned")
-    public void rejectedRouteTooManyEntries() {
-        Assert.assertEquals(-4, id);
+    @Then("the route data is rejected, and an error code of {int} is returned")
+    public void rejectedRouteTooManyEntries(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Reading multiple routes from a file

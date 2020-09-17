@@ -467,9 +467,9 @@ public class AddDataScenario {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
 
-    @Then("the flight parameters are rejected, and an error code -2 is returned")
-    public void flightEntryRejectedInvalidFlightID() {
-        Assert.assertEquals(-2, id);
+    @Then("the flight parameters are rejected, and an error code {int} is returned")
+    public void flightEntryRejectedInvalidFlightID(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a flight entry with an invalid location type
@@ -487,8 +487,8 @@ public class AddDataScenario {
     }
 
     @Then("the flight parameters are rejected, and an error code {int} is returned")
-    public void flightEntryRejectedInvalidLocationType(int code) {
-        Assert.assertEquals(code, id);
+    public void flightEntryRejectedInvalidLocationType(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a flight entry with an invalid location
@@ -507,8 +507,8 @@ public class AddDataScenario {
     }
 
     @Then("the flight parameters are rejected, and an error code {int} is returned")
-    public void flightEntryRejectedInvalidLocation(int code) {
-        Assert.assertEquals(code, id);
+    public void flightEntryRejectedInvalidLocation(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a flight entry with an invalid altitude
@@ -527,9 +527,9 @@ public class AddDataScenario {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
 
-    @Then("the flight parameters are rejected, and an error code -5 is returned")
-    public void flightEntryRejectedInvalidAltitude() {
-        Assert.assertEquals(-5, id);
+    @Then("the flight parameters are rejected, and an error code {int} is returned")
+    public void flightEntryRejectedInvalidAltitude(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a flight entry with an invalid latitude
@@ -546,9 +546,9 @@ public class AddDataScenario {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
 
-    @Then("the flight parameters are rejected, and an error code -6 is returned")
-    public void flightEntryRejectedInvalidLatitude() {
-        Assert.assertEquals(-6, id);
+    @Then("the flight parameters are rejected, and an error code {int} is returned")
+    public void flightEntryRejectedInvalidLatitude(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a flight entry with an invalid longitude
@@ -565,9 +565,9 @@ public class AddDataScenario {
         id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
     }
 
-    @Then("the flight parameters are rejected, and an error code -7 is returned")
-    public void flightEntryRejectedInvalidLongitude() {
-        Assert.assertEquals(-7, id);
+    @Then("the flight parameters are rejected, and an error code {int} is returned")
+    public void flightEntryRejectedInvalidLongitude(int error) {
+        Assert.assertEquals(error, id);
     }
 
 
@@ -610,9 +610,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -2 is returned")
-    public void routeRejectedInvalidAirline() {
-        Assert.assertEquals(-2, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidAirline(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a route with an invalid source airport code
@@ -629,9 +629,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -3 is returned")
-    public void routeRejectedInvalidSourceAirport() {
-        Assert.assertEquals(-3, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidSourceAirport(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a route with an invalid destination airport code
@@ -648,9 +648,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -4 is returned")
-    public void routeRejectedInvalidDestinationAirport() {
-        Assert.assertEquals(-4, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidDestinationAirport(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a route with an invalid codeshare
@@ -667,9 +667,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -5 is returned")
-    public void routeRejectedInvalidCodeshare() {
-        Assert.assertEquals(-5, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidCodeshare(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a route with invalid stops
@@ -686,9 +686,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -6 is returned")
-    public void routeRejectedInvalidStops() {
-        Assert.assertEquals(-6, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidStops(int error) {
+        Assert.assertEquals(error, id);
     }
 
     // Adding a route with invalid equipment
@@ -705,9 +705,9 @@ public class AddDataScenario {
         id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
     }
 
-    @Then("the route parameters are rejected, and an error code -7 is returned")
-    public void routeRejectedInvalidEquipment() {
-        Assert.assertEquals(-7, id);
+    @Then("the route parameters are rejected, and an error code {int} is returned")
+    public void routeRejectedInvalidEquipment(int error) {
+        Assert.assertEquals(error, id);
     }
 
 }
