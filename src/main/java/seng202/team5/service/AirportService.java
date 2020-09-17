@@ -133,10 +133,10 @@ public class AirportService implements Service {
     }
 
     /**
+     * Retrieves the airport with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of an airport.
      *
      * @author Inga Tokarenko
      */
@@ -145,10 +145,10 @@ public class AirportService implements Service {
     }
 
     /**
+     * Retrieves the aiport with specified IATA/ICAO.
      *
-     *
-     * @param id
-     * @return
+     * @param code
+     * @return ResultSet of an airport.
      *
      * @author Inga Tokarenko
      */
@@ -157,12 +157,12 @@ public class AirportService implements Service {
     }
 
     /**
+     * Retrieves all airports with the given parameters.
      *
-     *
-     * @param name
-     * @param city
-     * @param country
-     * @return
+     * @param name string containing the airport name.
+     * @param city string containing a city.
+     * @param country string containing a country.
+     * @return ResultSet of airports.
      *
      * @author Inga Tokarenko
      */
