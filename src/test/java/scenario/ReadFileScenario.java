@@ -102,11 +102,6 @@ public class ReadFileScenario {
         id = (int)readFile.readAirlineData(airlineFile).get(0);
     }
 
-    @Then("the airline data is rejected with an error code {int}")
-    public void rejectedAirlineTooFewEntries(int error) {
-        Assert.assertEquals(error, id);
-    }
-
     // Reading invalid airline data with too many entries
 
     @Given("a file {string} with airline data with too many entries, i.e. more than 8 entries")
@@ -120,7 +115,7 @@ public class ReadFileScenario {
     }
 
     @Then("the airline data is rejected with an error code {int}")
-    public void rejectedAirlineTooManyEntries(int error) {
+    public void rejectedAirline(int error) {
         Assert.assertEquals(error, id);
     }
 
@@ -173,11 +168,6 @@ public class ReadFileScenario {
         id = (int)readFile.readAirportData(airportFile).get(0);
     }
 
-    @Then("the airport data is rejected with an error code {int}")
-    public void rejectedAirportTooFewEntries(int error) {
-        Assert.assertEquals(error, id);
-    }
-
     // Reading invalid airport data with too many entries
 
     @Given("a file {string} with airport data with too many entries, i.e. more than 12 entries")
@@ -191,7 +181,7 @@ public class ReadFileScenario {
     }
 
     @Then("the airport data is rejected with an error code {int}")
-    public void rejectedAirportTooManyEntries(int error) {
+    public void rejectedAirport(int error) {
         Assert.assertEquals(error, id);
     }
 
@@ -325,11 +315,6 @@ public class ReadFileScenario {
         id = (int)readFile.readRouteData(routeFile).get(0);
     }
 
-    @Then("the route data is rejected, and an error code of {int} is returned")
-    public void rejectedRouteTooFewEntries(int error) {
-        Assert.assertEquals(error, id);
-    }
-
     // Reading invalid route data with more than 6 entries but less than 9 entries
 
     @Given("a file {string} with route data with the wrong number of entries, i.e. more than 6 entries but has less than 9 entries")
@@ -340,11 +325,6 @@ public class ReadFileScenario {
     @When("reading route data with more than 6 but less than 9 entries from a file")
     public void readRouteFileWrongNumberOfEntries() {
         id = (int)readFile.readRouteData(routeFile).get(0);
-    }
-
-    @Then("the route data is rejected, and an error code of {int} is returned")
-    public void rejectedRouteWrongNumberOfEntries(int error) {
-        Assert.assertEquals(error, id);
     }
 
     // Reading invalid route data with more than 9 entries
@@ -360,7 +340,7 @@ public class ReadFileScenario {
     }
 
     @Then("the route data is rejected, and an error code of {int} is returned")
-    public void rejectedRouteTooManyEntries(int error) {
+    public void rejectedRoute(int error) {
         Assert.assertEquals(error, id);
     }
 
