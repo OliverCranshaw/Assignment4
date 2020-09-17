@@ -1,29 +1,20 @@
 package data;
 
-import cucumber.api.java.bs.A;
-import org.junit.Before;
+
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
-import seng202.team5.database.DBTableInitializer;
-import seng202.team5.data.ReadFile;
-import seng202.team5.database.DBTableInitializer;
-import seng202.team5.service.AirlineService;
-import seng202.team5.service.AirportService;
-import seng202.team5.service.FlightService;
-import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ReadFileTest {
 

@@ -1,18 +1,11 @@
 package scenario;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.Before;
-import cucumber.api.java.bs.A;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import seng202.team5.accessor.AirlineAccessor;
-import seng202.team5.accessor.AirportAccessor;
+import org.junit.Before;
 import seng202.team5.data.*;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
