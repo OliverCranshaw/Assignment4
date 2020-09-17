@@ -571,15 +571,16 @@ public class MainMenuController implements Initializable {
         } else {
             flightEntries = FXCollections.observableArrayList();
             ArrayList<Integer> idRange = flightModel.getIdRange();
-            for (Integer i : idRange) {
-                ResultSet flightData = flightService.getFlight(i);
-                Integer id = flightData.getInt(0);
-                Integer flightId = flightData.getInt(1);
-                String locationType = flightData.getString(2);
-                String location = flightData.getString(3);
-                Integer altitude = flightData.getInt(4);
-                Double latitude = flightData.getDouble(5);
-                Double longitude = flightData.getDouble(6);
+            Integer flightID = flightModel.getFlightId();
+            ResultSet flightData = flightService.getFlight(flightID);
+            while (flightData.next()) {
+                Integer id = flightData.getInt(1);
+                Integer flightId = flightData.getInt(2);
+                String locationType = flightData.getString(3);
+                String location = flightData.getString(4);
+                Integer altitude = flightData.getInt(5);
+                Double latitude = flightData.getDouble(6);
+                Double longitude = flightData.getDouble(7);
                 FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
                 flightEntries.add(newEntry);
             }
@@ -746,6 +747,18 @@ public class MainMenuController implements Initializable {
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
+
+    @FXML
+    public void onUploadFlightsDataPressed(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(App.class.getResource("upload_flight.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Upload Flights");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.show();
+    }
+
 
     @FXML
     public void onFlightsRadioPressed() {
@@ -1043,7 +1056,9 @@ public class MainMenuController implements Initializable {
         for (ArrayList<Object> datum : data) {
             ArrayList<Integer> idRange = new ArrayList<>();
             idRange.add((Integer) datum.get(0));
-            idRange.add((Integer) datum.get(7));
+            if (datum.get(0) != datum.get(7)) {
+                idRange.add((Integer) datum.get(7));
+            }
             Integer flightId = (Integer) datum.get(1);
             String srcLocation = (String) datum.get(2);
             String srcAirportIata = (String) datum.get(3);

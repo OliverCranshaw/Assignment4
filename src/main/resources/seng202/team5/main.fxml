@@ -640,9 +640,10 @@
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddFlightPressed" text="Add Flight">
                                        <FlowPane.margin>
-                                          <Insets left="434.0" />
+                                          <Insets left="289.0" />
                                        </FlowPane.margin>
                                     </Button>
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onUploadFlightsDataPressed" text="Upload Flights From File" />
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Flight">
                                        <FlowPane.margin>
                                           <Insets />
