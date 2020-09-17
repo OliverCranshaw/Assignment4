@@ -128,7 +128,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
         List<Object> newData = List.of("IT", 1, "IA2", 2, "IA1", 1, "Y", 100, "ABC");
 
-        assertEquals(-1, routeAccessor.update(
+        assertEquals(0, routeAccessor.update(
                 10,
                 (String) newData.get(0),
                 (int) newData.get(1),
@@ -331,10 +331,6 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest)), -1, null).next());
         assertFalse(routeAccessor.getData(null, null, stops + 1, null).next());
         assertFalse(routeAccessor.getData(null, null, -1, "Not" + equipment).next());
-
-        // Test no airports
-        assertFalse(routeAccessor.getData(new ArrayList<>(), null, -1, null).next());
-        assertFalse(routeAccessor.getData(null, new ArrayList<>(), -1, null).next());
 
         // Test valid double conditions
         assertTrue(routeAccessor.getData(new ArrayList<>(List.of(src)), new ArrayList<>(List.of(dest)), -1, null).next());

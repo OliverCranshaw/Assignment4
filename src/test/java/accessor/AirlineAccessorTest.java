@@ -86,7 +86,7 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         int key = keys.getInt(1);
 
 
-        assertEquals(-1, airlineAccessor.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        assertEquals(0, airlineAccessor.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
 
         List<String> newData = List.of("Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y");
 
@@ -128,6 +128,9 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         assertTrue(rs.next());
         int id = rs.getInt(1);
         rs.close();
+
+        // Ensure delete fails it doesn't exist
+        assertFalse(airlineAccessor.delete(-1));
 
         // Performs the delete
         assertTrue(airlineAccessor.delete(id));

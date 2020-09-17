@@ -89,7 +89,7 @@ public class FlightAccessorTest extends BaseDatabaseTest {
 
         List<Object> newData = List.of(1, "ITB", "Location2", 2, 3.0, 4.0);
 
-        assertEquals(-1, flightAccessor.update(
+        assertEquals(0, flightAccessor.update(
                 10,
                 (String)newData.get(1),
                 (String)newData.get(2),

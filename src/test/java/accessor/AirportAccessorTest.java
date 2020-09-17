@@ -94,7 +94,7 @@ public class AirportAccessorTest extends BaseDatabaseTest {
 
         List<Object> newData = List.of("Namey", "Cityy", "Countryy", "Iat", "Icao", 1.0, 2.0, 3, 4.0f, "A", "B");
 
-        assertEquals(-1, airportAccessor.update(
+        assertEquals(0, airportAccessor.update(
                 10,
                 (String)newData.get(0),
                 (String)newData.get(1),

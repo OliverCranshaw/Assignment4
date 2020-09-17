@@ -83,7 +83,7 @@ public class AirlineAccessor implements Accessor {
      * @param new_callsign The new callsign of the airline, may be null if not to be updated.
      * @param new_country The new country of the airline, may be null if not to be updated.
      * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
-     * @return int result The airline_id of the airline that was just updated.
+     * @return int result The number of rows edited or -1 for error.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
@@ -148,7 +148,7 @@ public class AirlineAccessor implements Accessor {
                     stmt.setObject(index, element);
                     index++;
                 }
-                // Executes the update and sets result to the airline_id of the airline just updated
+                // Executes the update and sets result to the number of rows that were modified
                 result = stmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -178,7 +178,7 @@ public class AirlineAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRLINE_DATA WHERE airline_id = ?");
             stmt.setInt(1, id); // Adds the airline_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airline data with id " + id);
