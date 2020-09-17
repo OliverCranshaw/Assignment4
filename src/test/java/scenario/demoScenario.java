@@ -1,10 +1,10 @@
 package scenario;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.junit.Before;
 
 public class demoScenario {
 
@@ -15,18 +15,18 @@ public class demoScenario {
         finalString = "";
     }
 
-    @Given("^empty word \"([^\"]*)\"$")
+    @Given("empty word {string}")
     public void emptyString(String newString) {
         Assert.assertEquals("", newString);
     }
 
-    @When("^adding \"([^\"]*)\" and \"([^\"]*)\"$")
+    @When("adding {string} and {string}")
     public void addString(String one, String two) {
         finalString = one + two;
         Assert.assertEquals(one+two, finalString );
     }
 
-    @Then("^the empty string becomes \"([^\"]*)\"$")
+    @Then("the empty string becomes {string}")
     public void checkString(String checkString) {
         Assert.assertEquals(finalString, checkString);
     }
