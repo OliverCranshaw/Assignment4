@@ -62,17 +62,14 @@ public class HelpHandler implements EventHandler<MouseEvent> {
             }
             node = node.getParent();
         }
-        if (helpText == null) {
-            endHelp();
-            return;
-        }
-
-        System.out.println("Help text is: " + helpText);
 
         try {
-            Bounds bounds = node.getBoundsInLocal();
-
-            showHelpDialog(helpText, node.localToScreen(bounds.getCenterX(), bounds.getHeight()));
+            if (helpText == null) {
+                showHelpDialog("No help available at this location", new Point2D(mouseEvent.getScreenX(), mouseEvent.getScreenY()));
+            } else {
+                Bounds bounds = node.getBoundsInLocal();
+                showHelpDialog(helpText, node.localToScreen(bounds.getCenterX(), bounds.getHeight()));
+            }
         } catch (IOException ignored) {
         }
 
