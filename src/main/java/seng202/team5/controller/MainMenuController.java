@@ -1,6 +1,7 @@
 package seng202.team5.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
+import java.net.PortUnreachableException;
 import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
@@ -387,6 +389,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn flightLongitude;
 
+    @FXML
+    private TableView flightSingleRecordTableView;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -402,69 +407,110 @@ public class MainMenuController implements Initializable {
     private ObservableList<AirportModel> airportModels;
     private ObservableList<RouteModel> routeModels;
     private ObservableList<FlightModel> flightModels;
+    private ObservableList<FlightEntry> flightEntries;
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Setting the cell value factories for the airline table
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<>("AirlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<>("AirlineAlias"));
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirlineCountry"));
         airlineActiveCol.setCellValueFactory(new PropertyValueFactory<>("AirlineActive"));
-
+        // Setting the airline dropdown menu items
         airlineActiveDropdown.getItems().removeAll(airlineActiveDropdown.getItems());
         airlineActiveDropdown.getItems().addAll("", "Yes", "No");
 
+        // Setting the cell value factories for the airport table
         airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
         airportCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirportCountry"));
 
+        // Setting the cell value factories for the route table
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
         routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));
         routeDestAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteDstAirport"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<>("RouteStops"));
         routeEquipmentCol.setCellValueFactory(new PropertyValueFactory<>("RouteEquipment"));
-
+        // Setting the route dropdown menu items
         routeStopsComboBox.getItems().removeAll(airlineActiveDropdown.getItems());
         routeStopsComboBox.getItems().addAll("", "direct", "not direct");
 
-
+        // Setting the cell value factories for the flight table
         flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
         flightSrcLocationCol.setCellValueFactory(new PropertyValueFactory<>("SourceLocation"));
         flightSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("SourceAirport"));
         flightDstLocationCol.setCellValueFactory(new PropertyValueFactory<>("DestinationLocation"));;
         flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
 
+
+        // Setting the cell value factories for the flight entry table
+        flightDbID.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        flightID.setCellValueFactory(new PropertyValueFactory<>("FlightID"));
+        flightLocationType.setCellValueFactory(new PropertyValueFactory<>("LocationType"));
+        flightLocation.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        flightAltitude.setCellValueFactory(new PropertyValueFactory<>("Altitude"));
+        flightLatitude.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
+        flightLongitude.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
+
+        // Adding Listeners to all four tables so that the selected Items can be displayed in the single record viewer
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirportModel selected = (AirportModel) newSelection;
                 System.out.println(selected.getId());
+                try {
+                    setAirportSingleRecord(selected);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
-
         rawAirlineTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirlineModel selected = (AirlineModel) newSelection;
                 System.out.println(selected.getId());
+                try {
+                    setAirlineSingleRecord(selected);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
-
         flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 FlightModel selected = (FlightModel) newSelection;
                 System.out.println(selected.getIdRange());
+                try {
+                    setFlightSingleRecord(selected);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
-
         routeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 RouteModel selected = (RouteModel) newSelection;
                 System.out.println(selected.getRouteId());
+                try {
+                    setRouteSingleRecord(selected);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
 
-        setAirportSingleRecord(null);
+        try {
+            setAirportSingleRecord(null);
+            setAirlineSingleRecord(null);
+            setRouteSingleRecord(null);
+            setFlightSingleRecord(null);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
 
 
         dataExporter = new DataExporter();
@@ -515,10 +561,85 @@ public class MainMenuController implements Initializable {
         }
 
         setSearchTableFlights();
+
+
     }
 
-    private void setAirportSingleRecord(AirportModel airportModel) {
+    private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
+        if (flightModel == null) {
+            flightSingleRecordTableView.getItems().removeAll();
+        } else {
+            flightEntries = FXCollections.observableArrayList();
+            ArrayList<Integer> idRange = flightModel.getIdRange();
+            for (Integer i : idRange) {
+                ResultSet flightData = flightService.getFlight(i);
+                Integer id = flightData.getInt(0);
+                Integer flightId = flightData.getInt(1);
+                String locationType = flightData.getString(2);
+                String location = flightData.getString(3);
+                Integer altitude = flightData.getInt(4);
+                Double latitude = flightData.getDouble(5);
+                Double longitude = flightData.getDouble(6);
+                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                flightEntries.add(newEntry);
+            }
+            flightSingleRecordTableView.setItems(flightEntries);
+        }
+    }
 
+    private void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
+        List elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
+                routeCodeshare, routeStops, routeEquip, lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
+                lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip);
+        ArrayList<Label> elementsVisible = new ArrayList<>(elements);
+        if (routeModel == null) {
+            setLabelsInvis(elementsVisible);
+        } else {
+            ResultSet routeData = routeService.getRoute(routeModel.getRouteId());
+            setLabels(routeData, elementsVisible);
+        }
+    }
+
+    private void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
+        List elements = Arrays.asList(airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
+                lblAirlineID, lblAirlineName, lblAirlineAlias, lblAirlineIATA, lblAirlineICAO, lblAirlineCallsign, lblAirlineCountry, lblAirlineActive);
+        ArrayList<Label> elementsVisible = new ArrayList<>(elements);
+        if (airlineModel == null) {
+            setLabelsInvis(elementsVisible);
+        } else {
+            ResultSet airlineData = airlineService.getAirline(airlineModel.getId());
+            setLabels(airlineData, elementsVisible);
+        }
+    }
+
+    private void setAirportSingleRecord(AirportModel airportModel) throws SQLException {
+        List elements = Arrays.asList(airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
+                airportAltitude, airportTimezone, airportDST, airportTZ, lblAirportID, lblAirportName, lblAirportCity, lblAirportCountry,
+                lblAirportIATA, lblAirportICAO, lblAirportLatitude, lblAirportLongitude, lblAirportAltitude, lblAirportTimezone, lblAirportDST, lblAirportTZ);
+        ArrayList<Label> elementsVisible = new ArrayList<>(elements);
+        if (airportModel == null) {
+            setLabelsInvis(elementsVisible);
+        } else {
+            ResultSet airportData = airportService.getAirport(airportModel.getId());
+            setLabels(airportData, elementsVisible);
+        }
+    }
+
+    private void setLabelsInvis(ArrayList<Label> elementsVisible) {
+        for (Label lbl : elementsVisible) {
+            if (lbl != null) {
+                lbl.setVisible(false);
+            }
+        }
+    }
+
+    private void setLabels(ResultSet elementData, ArrayList<Label> elementsVisible) throws SQLException {
+        for (Label lbl : elementsVisible) {
+            lbl.setVisible(true);
+        }
+        for (int i = 0; i < elementsVisible.size() / 2; i++) {
+            elementsVisible.get(i).setText(elementData.getString(i+1));
+        }
     }
 
 
@@ -1115,7 +1236,6 @@ public class MainMenuController implements Initializable {
         }
         return newList;
     }
-
 
 
     public ArrayList<String> convertToArrayList(String[] list) {

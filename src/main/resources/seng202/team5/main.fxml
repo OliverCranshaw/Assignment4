@@ -298,10 +298,10 @@
                                                 <Label fx:id="airportIATA" layoutX="78.0" layoutY="82.0" text="value" />
                                                 <Label fx:id="airportICAO" layoutX="78.0" layoutY="99.0" text="value" />
                                                 <Label fx:id="airportLatitude" layoutX="377.0" layoutY="6.0" text="value" />
-                                                <Label fx:id="aiportTZ" layoutX="377.0" layoutY="91.0" text="value" />
+                                                <Label fx:id="airportTZ" layoutX="377.0" layoutY="91.0" text="value" />
                                                 <Label fx:id="airportDST" layoutX="377.0" layoutY="74.0" text="value" />
-                                                <Label fx:id="aiportTimezone" layoutX="377.0" layoutY="57.0" text="value" />
-                                                <Label fx:id="aiportAltitude" layoutX="377.0" layoutY="40.0" text="value" />
+                                                <Label fx:id="airportTimezone" layoutX="377.0" layoutY="57.0" text="value" />
+                                                <Label fx:id="airportAltitude" layoutX="377.0" layoutY="40.0" text="value" />
                                                 <Label fx:id="airportLongitude" layoutX="377.0" layoutY="23.0" text="value" />
                                              </children>
                                           </AnchorPane>
@@ -677,7 +677,7 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TableView prefHeight="269.0" prefWidth="550.0">
+                                                <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="550.0">
                                                   <columns>
                                                     <TableColumn fx:id="flightDbID" prefWidth="36.0" text="ID" />
                                                     <TableColumn fx:id="flightID" prefWidth="58.0" text="Flight ID" />
