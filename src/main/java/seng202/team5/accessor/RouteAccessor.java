@@ -191,29 +191,6 @@ public class RouteAccessor implements Accessor {
     }
 
     /**
-     * Selects all routes from the database and returns them.
-     *
-     * @return ResultSet result Contains the routes in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM ROUTE_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve routes.");
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
      *
      *
      * @param id

@@ -122,7 +122,7 @@ public class RouteData implements Data {
         } else if (this.stops == null || this.stops < 0) {
             // Ensures the stops is not null
             return -6;
-        } else if (this.equipment == null) {
+        } else if (equipment == null || !equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*")) {
             // Ensures the equipment is not null
             return -7;
         } else {

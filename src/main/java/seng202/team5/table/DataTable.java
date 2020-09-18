@@ -18,8 +18,8 @@ public abstract class DataTable {
     // Storing the original data table (usually all data for a certain table),
     // as well as the filtered data (the data intended to be diplayed).
     protected final ResultSet orgData;
-    protected static ArrayList<ArrayList<Object>> originalDataArrayList;
-    protected static ArrayList<ArrayList<Object>> filteredData;
+    protected ArrayList<ArrayList<Object>> originalDataArrayList;
+    protected ArrayList<ArrayList<Object>> filteredData;
 
 
     /**
@@ -40,7 +40,6 @@ public abstract class DataTable {
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
 
-        System.out.print(orgData);
         if (orgData != null) {
             ResultSetMetaData md = orgData.getMetaData();
             // Gets the number of columns (ie the number of variables)

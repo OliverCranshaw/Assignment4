@@ -12,13 +12,15 @@ public class AirlineModel {
     private SimpleStringProperty airlineAlias;
     private SimpleStringProperty airlineCountry;
     private SimpleStringProperty airlineActive;
+    private Integer id;
 
 
-    public AirlineModel(String name, String alias, String country, String active) {
+    public AirlineModel(String name, String alias, String country, String active, Integer id) {
         this.airlineName = new SimpleStringProperty(name);
         this.airlineAlias = new SimpleStringProperty(alias);
         this.airlineCountry = new SimpleStringProperty(country);
         this.airlineActive = new SimpleStringProperty(active);
+        this.id = id;
     }
 
     public String getAirlineName() {
@@ -51,5 +53,13 @@ public class AirlineModel {
 
     public void setAirlineCountry(String airlineCountry) {
         this.airlineCountry.set(airlineCountry);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
