@@ -110,4 +110,22 @@ public class FilterAirlineTable extends ConcreteFilterTable {
     public void setActive(String newActive) {
         active = newActive;
     }
+
+    /**
+     * Gets remove and returns it.
+     *
+     * @return boolean either true or false.
+     */
+    public boolean getRemove() {
+        return remove;
+    }
+
+    /**
+     * Gets elements and returns it.
+     *
+     * @return ArrayList<ArrayList<Object>> of the elements.
+     */
+    public ArrayList<ArrayList<Object>> getElements() {
+        return elements;
+    }
 }

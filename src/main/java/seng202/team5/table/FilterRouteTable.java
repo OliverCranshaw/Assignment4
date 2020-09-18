@@ -176,6 +176,23 @@ public class FilterRouteTable extends ConcreteFilterTable {
      *
      * @author Inga Tokarenko
      */
-    public void setEquip(ArrayList<String> newEquip) { equip = newEquip;
+    public void setEquip(ArrayList<String> newEquip) { equip = newEquip; }
+
+    /**
+     * Gets remove and returns it.
+     *
+     * @return boolean either true or false
+     */
+    public boolean getRemove() {
+        return remove;
+    }
+
+    /**
+     * Gets elements and returns it.
+     *
+     * @return ArrayList<ArrayList<Object>> of the elements.
+     */
+    public ArrayList<ArrayList<Object>> getElements() {
+        return elements;
     }
 }

@@ -495,7 +495,7 @@
                                           <Font size="15.0" />
                                        </font>
                                        <FlowPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </FlowPane.margin>
                                     </Text>
                                     <TextField fx:id="routeDestAirportField" promptText="Destination Airport">
@@ -504,7 +504,7 @@
                                        </FlowPane.margin></TextField>
                                     <Button fx:id="airlineApplyFilterButton1" mnemonicParsing="false" onAction="#onRouteApplyFilterButton" text="Apply Filter">
                                        <FlowPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </FlowPane.margin>
                                     </Button>
                                  </children>
@@ -532,7 +532,7 @@
                                           <Font size="15.0" />
                                        </font>
                                        <FlowPane.margin>
-                                          <Insets left="75.0" />
+                                          <Insets left="65.0" />
                                        </FlowPane.margin>
                                     </Text>
                                     <TextField fx:id="routeEquipmentField" promptText="Equipment">
@@ -541,11 +541,11 @@
                                        </FlowPane.margin></TextField>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onDownloadRouteDataPressed" prefHeight="25.0" prefWidth="72.0" text="Download">
                                        <FlowPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" text="Add Route">
                                        <FlowPane.margin>
-                                          <Insets left="263.0" />
+                                          <Insets left="283.0" />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Modify Route">
                                        <FlowPane.margin>

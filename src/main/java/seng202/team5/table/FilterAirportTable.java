@@ -67,4 +67,13 @@ public class FilterAirportTable extends ConcreteFilterTable {
     public void setCountries(ArrayList<String> newCountries) {
         countries = newCountries;
     }
+
+    /**
+     * Gets elements and returns it.
+     *
+     * @return ArrayList<ArrayList<Object>> of the elements.
+     */
+    public ArrayList<ArrayList<Object>> getElements() {
+        return elements;
+    }
 }

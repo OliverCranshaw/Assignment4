@@ -1,8 +1,8 @@
 package seng202.team5.service;
 
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 
 import java.sql.*;
@@ -15,22 +15,21 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
     private RouteService routeService;
 
-    public RouteServiceTest(String testName) { super(testName); }
-
-    public static Test suite() { return new TestSuite(RouteServiceTest.class); }
-
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         super.setUp();
         routeService = new RouteService();
     }
 
+
+    @Test
     public void testInitialState() throws SQLException {
         ResultSet stuff = routeService.getRoutes(null, null, 0, null); // delete later comment for a push
-        assertFalse(stuff.next());
+        Assert.assertFalse(stuff.next());
     }
 
 
+    @Test
     public void testAddValidRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -94,7 +93,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
         // Ensuring the routeService returns no errors
-        assertEquals(1, res);
+        Assert.assertEquals(1, res);
 
 
         // Creating a statement that will retrieve that route data from the database, and the executing it
@@ -109,9 +108,9 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int index = 0;
         for (int i = 1; i <= 10; i++) {
             if (i != 1 && i != 3 && i != 5 && i != 7 && i != 9) {
-                assertEquals(result.getString(i), parameters.get(index++));
+                Assert.assertEquals(result.getString(i), parameters.get(index++));
             } else if (i == 9) {
-                assertEquals(result.getInt(i), parameters.get(index++));
+                Assert.assertEquals(result.getInt(i), parameters.get(index++));
             }
         }
 
@@ -120,8 +119,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
     }
 
 
-
-
+    @Test
     public void testAddInvalidRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -183,7 +181,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Running the saveRoute() of the routeService. This is the method being tested.
         int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
-        assertEquals(-1, res);
+        Assert.assertEquals(-1, res);
 
 
         // Creating a statement that will retrieve that route data from the database, and the executing it
@@ -192,7 +190,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
             stmtRoute.setObject(i, parameters.get(i-1));
         }
         ResultSet result = stmtRoute.executeQuery();
-        assertTrue(result.isClosed());
+        Assert.assertTrue(result.isClosed());
 
 
         // Closing connection with the database
@@ -200,6 +198,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
     }
 
 
+    @Test
     public void testUpdateRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -358,24 +357,23 @@ public class RouteServiceTest extends BaseDatabaseTest {
         ResultSet resultRouteFinal = stmtRouteFinal.executeQuery(routeFinalQuery);
 
         // Checking all of the route data is the same, bar the destination airport information
-        assertEquals(testRouteId, resultRouteFinal.getInt(1));
-        assertEquals(airline, resultRouteFinal.getString(2));
-        assertEquals(testAirlineId, resultRouteFinal.getInt(3));
-        assertEquals(sourceAirport, resultRouteFinal.getString(4));
-        assertEquals(srcAirportId, resultRouteFinal.getInt(5));
-        assertEquals("JPN", resultRouteFinal.getString(6));
-        assertEquals(altAirportId, resultRouteFinal.getInt(7));
-        assertEquals(codeShare, resultRouteFinal.getString(8));
-        assertEquals(stops, resultRouteFinal.getInt(9));
-        assertEquals(equipment, resultRouteFinal.getString(10));
+        Assert.assertEquals(testRouteId, resultRouteFinal.getInt(1));
+        Assert.assertEquals(airline, resultRouteFinal.getString(2));
+        Assert.assertEquals(testAirlineId, resultRouteFinal.getInt(3));
+        Assert.assertEquals(sourceAirport, resultRouteFinal.getString(4));
+        Assert.assertEquals(srcAirportId, resultRouteFinal.getInt(5));
+        Assert.assertEquals("JPN", resultRouteFinal.getString(6));
+        Assert.assertEquals(altAirportId, resultRouteFinal.getInt(7));
+        Assert.assertEquals(codeShare, resultRouteFinal.getString(8));
+        Assert.assertEquals(stops, resultRouteFinal.getInt(9));
+        Assert.assertEquals(equipment, resultRouteFinal.getString(10));
 
         // Closing database connection
         dbHandler.close();
-
     }
 
 
-
+    @Test
     public void testInvalidUpdate() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -510,13 +508,13 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int res3 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
 
-        assertEquals(-1, res);
-        assertEquals(-1, res2);
-        assertEquals(0, res3);
-
+        Assert.assertEquals(-1, res);
+        Assert.assertEquals(-1, res2);
+        Assert.assertEquals(0, res3);
     }
 
 
+    @Test
     public void testDeleteRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -654,11 +652,11 @@ public class RouteServiceTest extends BaseDatabaseTest {
         stmtRouteCount.setInt(1, testRouteId);
         ResultSet routeCountResult = stmtRouteCount.executeQuery();
         int count = routeCountResult.getInt(1);
-        assertEquals(0, count);
-
+        Assert.assertEquals(0, count);
     }
 
 
+    @Test
     public void testInvalidDeleteRoute() throws SQLException {
 
         // Initializing a connection with the database
@@ -667,11 +665,11 @@ public class RouteServiceTest extends BaseDatabaseTest {
         // Attempting to delete a route that doesnt exist
         boolean res = routeService.deleteRoute(4);
 
-        assertFalse(res);
-
+        Assert.assertFalse(res);
     }
 
 
+    @Test
     public void testGetRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -792,17 +790,15 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Checking equality between actual and expected
         for (int i = 1; i < 11; i++) {
-            assertEquals(routeRetrieved.getObject(i), routeExpected.getObject((i)));
+            Assert.assertEquals(routeRetrieved.getObject(i), routeExpected.getObject((i)));
         }
 
         // Checking the getRoute returns an empty resultSet when an id not in use given
-        assertFalse(routeService.getRoute(53423412).next());
-
-
+        Assert.assertFalse(routeService.getRoute(53423412).next());
     }
 
 
-
+    @Test
     public void testGetRoutes() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -927,39 +923,41 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Comparing the actual and expected results
         for (int i = 1; i < 11; i++) {
-            assertEquals(expectedResult.getObject(i), actualResult.getObject(i));
+            Assert.assertEquals(expectedResult.getObject(i), actualResult.getObject(i));
         }
 
         // Checking the getRoutes method can deal with invalid airports
         ResultSet invalidRoutes = routeService.getRoutes("lesnfslk", "elfsknef", 434, "ENS");
-        assertFalse(invalidRoutes.next());
-
+        Assert.assertFalse(invalidRoutes.next());
     }
 
 
+    @Test
     public void testCodeShareIsValid() {
         // Testing if codeShareIsValid behaves as expected
-        assertTrue(routeService.codeshareIsValid(null));
-        assertTrue(routeService.codeshareIsValid("Y"));
-        assertFalse(routeService.codeshareIsValid("N"));
+        Assert.assertTrue(routeService.codeshareIsValid(null));
+        Assert.assertTrue(routeService.codeshareIsValid("Y"));
+        Assert.assertFalse(routeService.codeshareIsValid("N"));
     }
 
 
+    @Test
     public void testEquipmentIsValid() {
         // Testing if equipmentIsValid behaves as expected
-        assertTrue(routeService.equipmentIsValid("NFE"));
-        assertTrue(routeService.equipmentIsValid("NFE ENF"));
-        assertTrue(routeService.equipmentIsValid("NFE NES LAP"));
-        assertFalse(routeService.equipmentIsValid(""));
-        assertFalse(routeService.equipmentIsValid(null));
-        assertFalse(routeService.equipmentIsValid("FSFE"));
-        assertFalse(routeService.equipmentIsValid("JEN ELNS"));
-
+        Assert.assertTrue(routeService.equipmentIsValid("NFE"));
+        Assert.assertTrue(routeService.equipmentIsValid("NFE ENF"));
+        Assert.assertTrue(routeService.equipmentIsValid("NFE NES LAP"));
+        Assert.assertFalse(routeService.equipmentIsValid(""));
+        Assert.assertFalse(routeService.equipmentIsValid(null));
+        Assert.assertFalse(routeService.equipmentIsValid("FSFE"));
+        Assert.assertFalse(routeService.equipmentIsValid("JEN ELNS"));
     }
 
+
+    @Test
     public void testGetMaxId() throws SQLException {
         // Checking max id is as expected
-        assertEquals(0, routeService.getMaxID());
+        Assert.assertEquals(0, routeService.getMaxID());
 
         // Setting up variables for a test Route
         String airline = "ITA";
@@ -1065,9 +1063,6 @@ public class RouteServiceTest extends BaseDatabaseTest {
         stmtRoute.executeUpdate();
 
         // Checking max id as expected
-        assertEquals(1, routeService.getMaxID());
-
+        Assert.assertEquals(1, routeService.getMaxID());
     }
-
-
 }

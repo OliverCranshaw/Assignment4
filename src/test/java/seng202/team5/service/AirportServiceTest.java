@@ -1,7 +1,8 @@
 package seng202.team5.service;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 
 import java.sql.*;
@@ -14,21 +15,21 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
     private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
 
-    public AirportServiceTest(String testName) { super(testName); }
-
-    public static Test suite() { return new TestSuite(AirportServiceTest.class); }
-
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         super.setUp();
         airportService = new AirportService();
     }
 
+
+    @Test
     public void testGetAirportsEmpty() throws SQLException {
         ResultSet resultSet = airportService.getAirports(null, null, null);
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testGetAirportsSingle() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -67,16 +68,16 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
                     // If filter matches the data in the database
                     if (validName && validCity && validCountry) {
-                        assertTrue(combination, resultSet.next());
+                        Assert.assertTrue(combination, resultSet.next());
                         for (int i = 0; i<testData.size(); i++) {
                             Object cell = testData.get(i);
                             if (cell instanceof Float) {
                                 cell = (double)((Float)cell);
                             }
-                            assertEquals(combination, cell, resultSet.getObject(2 + i));
+                            Assert.assertEquals(combination, cell, resultSet.getObject(2 + i));
                         }
                     }
-                    assertFalse(combination, resultSet.next());
+                    Assert.assertFalse(combination, resultSet.next());
                 }
             }
         }
@@ -84,6 +85,8 @@ public class AirportServiceTest extends BaseDatabaseTest {
         dbHandler.close();
     }
 
+
+    @Test
     public void testGetAirportByID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
@@ -102,11 +105,11 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airport ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
         }
@@ -114,13 +117,13 @@ public class AirportServiceTest extends BaseDatabaseTest {
         for (int i = 0; i<3; i++) {
             int key = keys.get(i);
             ResultSet resultSet = airportService.getAirport(key);
-            assertNotNull("Key " + key + " not found", resultSet);
+            Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
 
             // Check name
-            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+            Assert.assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
 
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
@@ -128,14 +131,16 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 if (cell instanceof Float) {
                     cell = (double)((Float)cell);
                 }
-                assertEquals(cell, resultSet.getObject(2 + j));
+                Assert.assertEquals(cell, resultSet.getObject(2 + j));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
     }
 
+
+    @Test
     public void testAddAirport() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -159,7 +164,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                     (String)entry.get(10)
             );
             // Check operation did not fail
-            assertTrue(res != -1);
+            Assert.assertTrue(res != -1);
 
             // Query airline data with airport_id=res
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -168,7 +173,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
             ResultSet resultSet = stmt.executeQuery();
 
             // Check that there is at least one result
-            assertTrue("Failed to fetch airport_id=" + res, resultSet.next());
+            Assert.assertTrue("Failed to fetch airport_id=" + res, resultSet.next());
 
             // Check the result contents
             for (int i = 0; i<entry.size(); i++) {
@@ -176,11 +181,11 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 if (cell instanceof Float) {
                     cell = (double)((Float)cell);
                 }
-                assertEquals(cell, resultSet.getObject(2 + i));
+                Assert.assertEquals(cell, resultSet.getObject(2 + i));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
 
         dbHandler.close();
