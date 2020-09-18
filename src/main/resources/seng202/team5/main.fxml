@@ -648,7 +648,7 @@
                                           <Insets />
                                        </FlowPane.margin>
                                     </Button>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onUploadFlightsDataPressed" text="Upload Flights From File" />
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onUploadFlightsDataPressed" text="Upload Flight From File" />
                                  </children>
                                  <VBox.margin>
                                     <Insets />

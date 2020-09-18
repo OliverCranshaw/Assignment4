@@ -28,7 +28,7 @@ public class DownloadMenuController {
     public void onAirlineSelectFolderPressed(ActionEvent event) {
         file = selectFolder(event);
 
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && file.get(0) != null) {
             dataExporter.exportAirlines(file.get(0), file.get(1));
         }
     }
@@ -37,7 +37,7 @@ public class DownloadMenuController {
     public void onAirportSelectFolderPressed(ActionEvent event) {
         file = selectFolder(event);
 
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && file.get(0) != null) {
             dataExporter.exportAirports(file.get(0), file.get(1));
         }
     }
@@ -53,7 +53,7 @@ public class DownloadMenuController {
     public void onAllFlightsSelectFolderPressed(ActionEvent event) {
         file = selectFolder(event);
 
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && file.get(0) != null) {
             dataExporter.exportFlights(file.get(0), file.get(1));
         }
     }
@@ -62,7 +62,7 @@ public class DownloadMenuController {
     public void onRouteSelectFolderPressed(ActionEvent event) {
         file = selectFolder(event);
 
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && file.get(0) != null) {
             dataExporter.exportRoutes(file.get(0), file.get(1));
         }
     }
@@ -77,6 +77,7 @@ public class DownloadMenuController {
 
         if (filename.length() < 1) {
             invalidText.setVisible(true);
+            invalidText.setText("Invalid file name, cannot be blank.");
         } else {
             filename = filename.replaceAll("[\"\\\\/*?|<>{}!$#&@:]", "");
             filename += ".csv";
@@ -85,7 +86,14 @@ public class DownloadMenuController {
 
             File directory = directoryChooser.showDialog(((Node) event.getSource()).getScene().getWindow());
 
-            String dir = directory.getAbsolutePath();
+            String dir = null;
+
+            if (directory != null) {
+                dir = directory.getAbsolutePath();
+            } else {
+                invalidText.setText("Unable to select directory.");
+                invalidText.setVisible(true);
+            }
 
             return new ArrayList<>(Arrays.asList(dir, filename));
         }
