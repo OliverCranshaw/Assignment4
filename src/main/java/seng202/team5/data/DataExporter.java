@@ -45,7 +45,7 @@ public class DataExporter {
      */
     public void exportAirlines(String directory, String filename) {
         // Retrieves all the airlines from the database
-        ResultSet airlines = airlineAccessor.getAllData();
+        ResultSet airlines = airlineAccessor.getData(null, null, null);
 
         try {
             // Creates the FileWriter with the filename "airlines.csv"
@@ -106,7 +106,7 @@ public class DataExporter {
      */
     public void exportAirports(String directory, String filename) {
         // Retrieves all the airports from the database
-        ResultSet airports = airportAccessor.getAllData();
+        ResultSet airports = airportAccessor.getData(null, null, null);
 
         try {
             // Creates the FileWriter with the filename "airports.csv"
@@ -169,9 +169,6 @@ public class DataExporter {
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
             fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
-            // Gets ResultSet again to revert to the start, as SQLite only supports TYPE_FORWARD_ONLY cursors
-            flight = flightAccessor.getData(flightID);
-
             // Loops through all the flight entries in the ResultSet
             while (flight.next()) {
                 // Gets the data from each column of the row
@@ -208,7 +205,7 @@ public class DataExporter {
      */
     public void exportFlights(String directory, String filename) {
         // Retrieves all the flight entries from the database
-        ResultSet flights = flightAccessor.getAllData();
+        ResultSet flights = flightAccessor.getData(null, null);
 
         try {
             // Creates the FileWriter with the filename "flights.csv"
@@ -251,7 +248,7 @@ public class DataExporter {
      */
     public void exportRoutes(String directory, String filename) {
         // Retrieves all the routes from the database
-        ResultSet routes = routeAccessor.getAllData();
+        ResultSet routes = routeAccessor.getData(null, null, -1, null);
 
         try {
             // Creates the FileWriter with the filename "routes.csv"
