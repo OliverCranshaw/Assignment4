@@ -1,4 +1,4 @@
-package seng202.team5.service;
+package service;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -9,7 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {
 
@@ -254,10 +257,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         int id = result.getInt(1);
 
 
-
-
-        int res = flightService.updateFlight(id, "LFT", airport, altitude, latitude, longitude);
-
+        int res = flightService.updateFlight(id, "APT", airport, altitude, latitude, longitude);
 
         assertEquals(-1, res);
 
