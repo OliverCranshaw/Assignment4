@@ -169,9 +169,6 @@ public class DataExporter {
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
             fileWriter = new BufferedWriter(new FileWriter(directory + filename));
 
-            // Gets ResultSet again to revert to the start, as SQLite only supports TYPE_FORWARD_ONLY cursors
-            flight = flightAccessor.getData(flightID);
-
             // Loops through all the flight entries in the ResultSet
             while (flight.next()) {
                 // Gets the data from each column of the row
