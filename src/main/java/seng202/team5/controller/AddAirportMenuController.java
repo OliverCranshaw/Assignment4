@@ -32,13 +32,11 @@ public class AddAirportMenuController {
     @FXML
     private TextField countryField;
 
-
     @FXML
     private TextField iataField;
 
     @FXML
     private TextField icaoField;
-
 
     @FXML
     private TextField latitudeField;
@@ -48,7 +46,6 @@ public class AddAirportMenuController {
 
     @FXML
     private TextField altitudeField;
-
 
     @FXML
     private TextField timezoneField;
@@ -61,8 +58,6 @@ public class AddAirportMenuController {
 
     @FXML
     private Text errorMessage;
-
-
 
 
     @FXML
