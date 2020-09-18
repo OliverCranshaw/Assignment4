@@ -168,10 +168,10 @@ public class RouteService implements Service {
     }
 
     /**
+     * Retrieves the route with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of a route.
      *
      * @author Inga Tokarenko 
      */
@@ -180,13 +180,13 @@ public class RouteService implements Service {
     }
 
     /**
+     * Retrieves all routes with the given parameters.
      *
-     *
-     * @param source_airport
-     * @param dest_airport
-     * @param stops
-     * @param equipment
-     * @return
+     * @param source_airport string containing aiport IATA/ICAO.
+     * @param dest_airport string containing aiport IATA/ICAO.
+     * @param stops int containing number of stops.
+     * @param equipment string containing type of equipment.
+     * @return ResultSet of routes.
      *
      * @author Inga Tokarenko
      */
