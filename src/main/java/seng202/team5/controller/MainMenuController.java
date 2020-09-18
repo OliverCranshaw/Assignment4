@@ -452,7 +452,6 @@ public class MainMenuController implements Initializable {
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirportModel selected = (AirportModel) newSelection;
-                System.out.println(selected.getId());
                 try {
                     setAirportSingleRecord(selected);
                 } catch (SQLException throwables) {
@@ -463,7 +462,6 @@ public class MainMenuController implements Initializable {
         rawAirlineTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirlineModel selected = (AirlineModel) newSelection;
-                System.out.println(selected.getId());
                 try {
                     setAirlineSingleRecord(selected);
                 } catch (SQLException throwables) {
@@ -474,7 +472,6 @@ public class MainMenuController implements Initializable {
         flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 FlightModel selected = (FlightModel) newSelection;
-                System.out.println(selected.getIdRange());
                 try {
                     setFlightSingleRecord(selected);
                 } catch (SQLException throwables) {
@@ -485,7 +482,6 @@ public class MainMenuController implements Initializable {
         routeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 RouteModel selected = (RouteModel) newSelection;
-                System.out.println(selected.getRouteId());
                 try {
                     setRouteSingleRecord(selected);
                 } catch (SQLException throwables) {
@@ -563,7 +559,6 @@ public class MainMenuController implements Initializable {
             flightSingleRecordTableView.getItems().removeAll();
         } else {
             flightEntries = FXCollections.observableArrayList();
-            ArrayList<Integer> idRange = flightModel.getIdRange();
             Integer flightID = flightModel.getFlightId();
             ResultSet flightData = flightService.getFlight(flightID);
             while (flightData.next()) {
@@ -1180,6 +1175,12 @@ public class MainMenuController implements Initializable {
         populateRouteTable(routeTableView, routeTable.getData());
     }
 
+    public void updateFlightTable() throws SQLException {
+        flightTable = new FlightTable(flightService.getFlights(null, null));
+        flightTable.createTable();
+        populateFlightTable(flightTableView, flightTable.getData());
+    }
+
 
 
 
@@ -1252,6 +1253,25 @@ public class MainMenuController implements Initializable {
     }
 
 
+    @FXML
+    public void onAirportRefreshButton(ActionEvent event) throws SQLException {
+        updateAirportTable();
+    }
+
+    @FXML
+    public void onAirlineRefreshButton(ActionEvent event) throws  SQLException {
+        updateAirlineTable();
+    }
+
+    @FXML
+    public void onRouteRefreshButton(ActionEvent event) throws  SQLException {
+        updateRouteTable();
+    }
+
+    @FXML
+    public void onFlightRefreshButton(ActionEvent event) throws  SQLException {
+        updateFlightTable();
+    }
 
     public ArrayList<String> convertCSStringToArrayList(String string) {
         String[] list = string.split(",");

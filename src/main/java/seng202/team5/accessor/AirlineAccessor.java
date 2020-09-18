@@ -389,7 +389,6 @@ public class AirlineAccessor implements Accessor {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e.getMessage());
         }
-
         return result;
     }
 
