@@ -122,7 +122,7 @@ public class FlightData implements Data {
         } else if (this.location_type == null || !Arrays.asList("APT", "VOR", "FIX").contains(this.location_type)) {
             // Ensures location_type cannot be null and is one of "APT", "VOR", or "FIX"
             return -3;
-        } else if (this.location == null || (this.location_type == "APT" && !airportAccessor.dataExists(this.location))) {
+        } else if (this.location == null || (this.location_type.equals("APT") && !airportAccessor.dataExists(this.location))) {
             // Ensures that the airport exists if the location type is APT, or otherwise just isn't null
             return -4;
         } else if (this.altitude == null) {

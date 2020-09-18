@@ -82,23 +82,29 @@ public class FlightTable extends DataTable {
      */
     public ArrayList<ArrayList<Object>> createUnreducedTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
-        ResultSetMetaData md = orgData.getMetaData();
-        // Gets the number of columns (ie the number of variables)
-        int columns = md.getColumnCount();
-        // Initializing an arraylist of arraylists to store the extracted data in
-        ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
-        // Iterates through the result set
-        while(orgData.next()) {
-            // An arraylist of each instance of the data type
-            ArrayList<Object> row = new ArrayList<>(columns);
-            // Iterates through the data, storing it in the arraylist
-            for (int i=1; i<=columns; ++i) {
-                row.add(orgData.getObject(i));
+        if (orgData != null) {
+            ResultSetMetaData md = orgData.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            // Iterates through the result set
+            while(orgData.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    row.add(orgData.getObject(i));
+                }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
             }
-            // Adds the extracted data to the overall arraylist of data
-            list.add(row);
+            return list;
+        } else {
+            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            return list;
         }
-        return list;
+
     }
 
 }

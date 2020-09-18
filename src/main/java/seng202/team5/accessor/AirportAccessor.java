@@ -89,7 +89,7 @@ public class AirportAccessor implements Accessor {
      * @param new_timezone The new timezone of the airport, hours offset from UTC. A float, may be null if not to be updated.
      * @param new_dst The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be null if not to be updated.
      * @param new_tz The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
-     * @return int result The airport_id of the airport that was just updated.
+     * @return int result The number of rows modified or -1 for error
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
@@ -200,33 +200,10 @@ public class AirportAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRPORT_DATA WHERE airport_id = ?");
             stmt.setInt(1, id); // Adds the airport_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != -1;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airport data with id " + id);
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     * Selects all airports from the database and returns them.
-     *
-     * @return ResultSet result Contains the airports in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRPORT_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airports.");
             System.out.println(e.getMessage());
         }
 
