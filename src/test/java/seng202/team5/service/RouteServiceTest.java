@@ -125,9 +125,9 @@ public class RouteServiceTest extends BaseDatabaseTest {
     public void testAddInvalidRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
-        String sourceAirport = "ATA";
+        String sourceAirport = "AAA";
         String destinationAirport = "AUS";
-        String codeShare = "P";
+        String codeShare = "Y";
         int stops = 6;
         String equipment = "AJF";
 
@@ -504,15 +504,12 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Running the updateRoute method, using a destination airport that isn't in the database
         int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
-        // Running the updateRoute method, using a codeShare that is invalid
-        int res2 = routeService.updateRoute(testRouteId, airline, sourceAirport, destinationAirport, "E", stops, equipment);
         // Running the updateRoute method, using a routeId that doesn't exist
-        int res3 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res2 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
 
         assertEquals(-1, res);
-        assertEquals(-1, res2);
-        assertEquals(0, res3);
+        assertEquals(0, res2);
 
     }
 
@@ -933,27 +930,6 @@ public class RouteServiceTest extends BaseDatabaseTest {
         // Checking the getRoutes method can deal with invalid airports
         ResultSet invalidRoutes = routeService.getRoutes("lesnfslk", "elfsknef", 434, "ENS");
         assertFalse(invalidRoutes.next());
-
-    }
-
-
-    public void testCodeShareIsValid() {
-        // Testing if codeShareIsValid behaves as expected
-        assertTrue(routeService.codeshareIsValid(null));
-        assertTrue(routeService.codeshareIsValid("Y"));
-        assertFalse(routeService.codeshareIsValid("N"));
-    }
-
-
-    public void testEquipmentIsValid() {
-        // Testing if equipmentIsValid behaves as expected
-        assertTrue(routeService.equipmentIsValid("NFE"));
-        assertTrue(routeService.equipmentIsValid("NFE ENF"));
-        assertTrue(routeService.equipmentIsValid("NFE NES LAP"));
-        assertFalse(routeService.equipmentIsValid(""));
-        assertFalse(routeService.equipmentIsValid(null));
-        assertFalse(routeService.equipmentIsValid("FSFE"));
-        assertFalse(routeService.equipmentIsValid("JEN ELNS"));
 
     }
 

@@ -62,14 +62,6 @@ public class RouteService implements Service {
         if (!airportAccessor.dataExists(dest_airport)) {
             return -1;
         }
-        // Checks that the codeshare is valid, if it isn't returns an error code of -1
-        if (!codeshareIsValid(codeshare)) {
-            return -1;
-        }
-        // Checks that the equipment is valid, if it isn't returns an error code of -1
-        if (!equipmentIsValid(equipment)) {
-            return -1;
-        }
 
         int airline_id = airlineAccessor.getAirlineId(airline);
         int source_airport_id = airportAccessor.getAirportId(source_airport);
@@ -130,18 +122,6 @@ public class RouteService implements Service {
                 return -1;
             } else {
                 new_dest_airport_id = airportAccessor.getAirportId(new_dest_airport);
-            }
-        }
-        // If the codeshare is not null, checks that it is valid, if it isn't, returns an error code of -1
-        if (new_codeshare != null) {
-            if (!codeshareIsValid(new_codeshare)) {
-                return -1;
-            }
-        }
-        // If the equipment is not null, checks that it is valid, if it isn't, returns an error code of -1
-        if (new_equipment != null) {
-            if (!equipmentIsValid(new_equipment)) {
-                return -1;
             }
         }
 
@@ -210,33 +190,6 @@ public class RouteService implements Service {
         }
 
         return accessor.getData(airportSourceIataIcao, airportDestIataIcao, stops, equipment);
-    }
-
-    /**
-     * Checks that a given codeshare is valid.
-     * Codeshare must be either "Y" or null to be valid.
-     *
-     * @param codeshare
-     * @return boolean True if the codeshare is valid, False otherwise.
-     *
-     * @author Billie Johnson
-     */
-    public boolean codeshareIsValid(String codeshare) {
-        return (codeshare == null || codeshare.equals("Y"));
-    }
-
-    /**
-     * Checks that given equipment is valid.
-     * Uses regex to check that it's a series of one or more 3-letter codes separated by spaces.
-     *
-     * @param equipment
-     * @return boolean True if the equipment is valid, False otherwise.
-     *
-     * @author Billie Johnson
-     */
-    public boolean equipmentIsValid(String equipment) {
-        return equipment != null && equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*");
-
     }
 
     /**

@@ -1,6 +1,5 @@
 package seng202.team5.data;
 
-import seng202.team5.accessor.AirportAccessor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,13 +16,12 @@ import java.util.List;
 public class FlightData implements Data {
 
     // Variables of FlightData
-    private Integer flightId;
+    private final Integer flightId;
     private String location_type;
     private String location;
     private Integer altitude;
     private Double latitude;
     private Double longitude;
-    private AirportAccessor airportAccessor;
 
 
     // Getters for all variables of FlightData
@@ -60,7 +58,6 @@ public class FlightData implements Data {
         this.latitude = latitude;
         this.longitude = longitude;
 
-        airportAccessor = new AirportAccessor();
     }
 
 
@@ -79,8 +76,6 @@ public class FlightData implements Data {
         this.location_type = location_type;
         this.location = location;
         this.flightId = flightId;
-
-        airportAccessor = new AirportAccessor();
 
         // Parsing altitude to integer
         try {
@@ -122,7 +117,7 @@ public class FlightData implements Data {
         } else if (this.location_type == null || !Arrays.asList("APT", "VOR", "FIX").contains(this.location_type)) {
             // Ensures location_type cannot be null and is one of "APT", "VOR", or "FIX"
             return -3;
-        } else if (this.location == null || (this.location_type.equals("APT") && !airportAccessor.dataExists(this.location))) {
+        } else if (this.location == null || !(this.location.matches("^[A-Z]+$"))) {
             // Ensures that the airport exists if the location type is APT, or otherwise just isn't null
             return -4;
         } else if (this.altitude == null) {

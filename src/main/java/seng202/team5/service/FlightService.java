@@ -1,12 +1,10 @@
 package seng202.team5.service;
 
-import seng202.team5.accessor.AirlineAccessor;
 import seng202.team5.accessor.AirportAccessor;
 import seng202.team5.accessor.FlightAccessor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,9 +20,7 @@ import java.util.List;
 public class FlightService implements Service {
 
     private final FlightAccessor accessor;
-    private final AirlineAccessor airlineAccessor;
     private final AirportAccessor airportAccessor;
-    private final List<String> valid_location_types;
 
     /**
      * Constructor for FlightService.
@@ -34,9 +30,7 @@ public class FlightService implements Service {
      */
     public FlightService() {
         accessor = new FlightAccessor();
-        airlineAccessor = new AirlineAccessor();
         airportAccessor = new AirportAccessor();
-        valid_location_types = Arrays.asList("APT", "VOR", "FIX");
     }
 
     /**
@@ -54,16 +48,10 @@ public class FlightService implements Service {
      */
     public int saveFlight(int flightID, String location_type, String location, int altitude, double latitude, double longitude) {
         // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
-        if (!locationTypeIsValid(location_type)) {
-            return -1;
-        }
-        else if (location_type.equals("APT")) {
+        if (location_type.equals("APT")) {
             if (!airportAccessor.dataExists(location)) {
                 return -1;
             }
-        }
-        else if (location != null && location.length() < 1) {
-            return -1;
         }
 
         // Adds the parameters into an List to pass into the save method of the FlightAccessor
@@ -91,14 +79,13 @@ public class FlightService implements Service {
         // If one doesn't, returns an error code of -1
         try {
             ResultSet flightEntry = getFlight(id);
+            // Gets the location_type and location that the flight entry already has
             String location_type = flightEntry.getString("location_type");
             String location = flightEntry.getString("location");
 
+            // If the new location type is not null and is APT, checks that the location, whether new or already existing, is in the airport database
             if (new_location_type != null) {
-                if (!locationTypeIsValid(new_location_type)) {
-                    return -1;
-                }
-                else if (new_location_type.equals("APT"))  {
+                if (new_location_type.equals("APT"))  {
                     if (new_location != null && !airportAccessor.dataExists(new_location)) {
                         return -1;
                     }
@@ -106,17 +93,9 @@ public class FlightService implements Service {
                         return -1;
                     }
                 }
-                else {
-                    if (new_location != null && new_location.length() < 1) {
-                        return -1;
-                    }
-                }
-            }
+            } // If the new location type is null, but the new location is not null, checks if the existing location type is APT, and if it is checks that the new location exists in the database
             else if (new_location != null) {
                 if (location_type.equals("APT") && !airportAccessor.dataExists(new_location)) {
-                    return -1;
-                }
-                else if (new_location != null && new_location.length() < 1) {
                     return -1;
                 }
             }
@@ -186,22 +165,6 @@ public class FlightService implements Service {
     public ResultSet getFlights(String location_type, String location) {
         return accessor.getData(location_type, location);
     }
-
-    /**
-     * Checks that the given location_type is one of "APT", "VOR", or "FIX" and returns True or False.
-     *
-     * @param location_type String to be checked if it's one of "APT", "VOR", or "FIX".
-     * @return boolean True or False.
-     *
-     * @author Billie Johnson
-     */
-    public boolean locationTypeIsValid(String location_type) {
-        return valid_location_types.contains(location_type);
-    }
-
-//    public boolean locationIsValid(String location) {
-//        return (location.matches("^[A-Z]+$"));
-//    }
 
     /**
      * Calls the getMaxFlightID method of the FlightAccessor to get the maximum flight_id contained in the database, and then adds one to it.

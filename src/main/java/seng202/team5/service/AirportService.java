@@ -3,7 +3,6 @@ package seng202.team5.service;
 import seng202.team5.accessor.AirportAccessor;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import java.util.List;
 public class AirportService implements Service {
 
     private final AirportAccessor accessor;
-    private final List<String> validDSTs;
 
     /**
      * Constructor for AirportService.
@@ -29,7 +27,6 @@ public class AirportService implements Service {
      */
     public AirportService() {
         accessor = new AirportAccessor();
-        validDSTs = Arrays.asList("E", "A", "S", "O", "Z", "N", "U");
     }
 
     /**
@@ -54,16 +51,12 @@ public class AirportService implements Service {
                            double longitude, int altitude, float timezone, String dst, String tz) {
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
-        if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
+        if (!iataIsValid(iata)) {
             return -1;
         }
         // Checks that the ICAO code is valid and that if the ICAO code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
-        if (!icaoIsValid(icao) || (accessor.dataExists(icao) && iata != null)) {
-            return -1;
-        }
-        // Checks that the dst is valid, if it isn't returns an error code of -1
-        if (!dstIsValid(dst)) {
+        if (!icaoIsValid(icao)) {
             return -1;
         }
 
@@ -102,12 +95,6 @@ public class AirportService implements Service {
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
         if (!icaoIsValid(new_icao)) {
             return -1;
-        }
-        // If the dst is not null, checks that it is valid, if it isn't returns an error code of -1
-        if (new_dst != null) {
-            if (!dstIsValid(new_dst)) {
-                return -1;
-            }
         }
 
         // Passes the parameters into the update method of the AirportAccessor
@@ -182,7 +169,7 @@ public class AirportService implements Service {
 
     /**
      * Checks that a given airport IATA code is valid.
-     * IATA code must either be null or of length 3 to be valid.
+     * IATA code must either be null or not exist in the database to be valid.
      *
      * @param iata An airport IATA code.
      * @return boolean True if the IATA code is valid, False otherwise.
@@ -190,12 +177,12 @@ public class AirportService implements Service {
      * @author Billie Johnson
      */
     public boolean iataIsValid(String iata) {
-        return (iata == null || iata.length() == 3);
+        return (iata == null || !airportExists(iata));
     }
 
     /**
      * Checks that a given airport ICAO code is valid.
-     * ICAO code must either be null or of length 4 to be valid.
+     * ICAO code must either be null or not exist in the database to be valid.
      *
      * @param icao An airport ICAO code.
      * @return boolean True if the ICAO code is valid, False otherwise.
@@ -203,20 +190,7 @@ public class AirportService implements Service {
      * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 4);
-    }
-
-    /**
-     * Checks that a given dst is valid.
-     * dst must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown) to be valid.
-     *
-     * @param dst An airport dst, daylight savings time.
-     * @return boolean True if the dst is valid, False otherwise.
-     *
-     * @author Billie Johnson
-     */
-    public boolean dstIsValid(String dst) {
-        return (validDSTs.contains(dst));
+        return (icao == null || !airportExists(icao));
     }
 
     /**

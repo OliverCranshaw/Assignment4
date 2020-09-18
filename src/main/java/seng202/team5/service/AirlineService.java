@@ -3,7 +3,6 @@ package seng202.team5.service;
 import seng202.team5.accessor.AirlineAccessor;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,16 +44,12 @@ public class AirlineService implements Service {
     public int saveAirline(String name, String alias, String iata, String icao, String callsign, String country, String active) {
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
-        if (!iataIsValid(iata) || (accessor.dataExists(iata) && iata != null)) {
+        if (!iataIsValid(iata)) {
             return -1;
         }
         // Checks that the ICAO code is valid and that if the ICAO code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
-        if (!icaoIsValid(icao) || (accessor.dataExists(icao) && icao != null)) {
-            return -1;
-        }
-        // Checks that the active is valid, if it isn't returns an error code of -1
-        if (!activeIsValid(active)) {
+        if (!icaoIsValid(icao)) {
             return -1;
         }
 
@@ -88,12 +83,6 @@ public class AirlineService implements Service {
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
         if (!icaoIsValid(new_icao)) {
             return -1;
-        }
-        // If the active is not null, checks that it is valid, if it isn't returns an error code of -1
-        if (new_active != null) {
-            if (!activeIsValid(new_active)) {
-                return -1;
-            }
         }
 
         // Passes the parameters into the update method of the AirlineAccessor
@@ -157,7 +146,7 @@ public class AirlineService implements Service {
 
     /**
      * Checks that a given airline IATA code is valid.
-     * IATA code must either be null or of length 3 to be valid.
+     * IATA code must either be null or not exist in the database to be valid.
      *
      * @param iata An airline IATA code.
      * @return boolean True if the IATA code is valid, False otherwise.
@@ -165,12 +154,12 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
-        return (iata == null || iata.length() == 2);
+        return (iata == null || !airlineExists(iata));
     }
 
     /**
      * Checks that a given airline ICAO code is valid.
-     * ICAO code must either be null or of length 3 to be valid.
+     * ICAO code must either be null or not exist in the database to be valid.
      *
      * @param icao An airline ICAO code.
      * @return boolean True if the ICAO code is valid, False otherwise.
@@ -178,20 +167,7 @@ public class AirlineService implements Service {
      * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || icao.length() == 3);
-    }
-
-    /**
-     * Checks that a given airline active is valid.
-     * Active must either be "Y" or "N" to be valid.
-     *
-     * @param active An airline active.
-     * @return boolean True if the active is valid, False otherwise.
-     *
-     * @author Billie Johnson
-     */
-    public boolean activeIsValid(String active) {
-        return (active.equals("Y") || active.equals("N"));
+        return (icao == null || !airlineExists(icao));
     }
 
     /**
