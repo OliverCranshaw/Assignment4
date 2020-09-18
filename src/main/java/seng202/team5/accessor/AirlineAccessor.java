@@ -50,7 +50,7 @@ public class AirlineAccessor implements Accessor {
             // The SQL insert statement
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
-                                                + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             // Iterates through the List and adds the values to the insert statement
             for (int i=1; i < 8; i++) {
                 stmt.setObject(i, data.get(i-1));
@@ -83,7 +83,7 @@ public class AirlineAccessor implements Accessor {
      * @param new_callsign The new callsign of the airline, may be null if not to be updated.
      * @param new_country The new country of the airline, may be null if not to be updated.
      * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
-     * @return int result The airline_id of the airline that was just updated.
+     * @return int result The number of rows edited or -1 for error.
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
@@ -148,7 +148,7 @@ public class AirlineAccessor implements Accessor {
                     stmt.setObject(index, element);
                     index++;
                 }
-                // Executes the update and sets result to the airline_id of the airline just updated
+                // Executes the update and sets result to the number of rows that were modified
                 result = stmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -178,33 +178,10 @@ public class AirlineAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRLINE_DATA WHERE airline_id = ?");
             stmt.setInt(1, id); // Adds the airline_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airline data with id " + id);
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     * Selects all airlines from the database and returns them.
-     *
-     * @return ResultSet result Contains the airlines in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRLINE_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airlines.");
             System.out.println(e.getMessage());
         }
 
@@ -217,7 +194,7 @@ public class AirlineAccessor implements Accessor {
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko 
+     * @author Inga Tokarenko
      * @author Billie Johnson
      */
     public ResultSet getData(int id) {
@@ -374,7 +351,7 @@ public class AirlineAccessor implements Accessor {
                     "SELECT COUNT(airline_id) FROM AIRLINE_DATA WHERE airline_id = ?");
             // Adds the given airline_id into the search query
             stmt.setObject(1, id);
-            
+
             Object data = stmt.executeQuery().getObject(1);
             result = (int) data == 0 ? false : true;
         } catch (Exception e) {
@@ -404,7 +381,7 @@ public class AirlineAccessor implements Accessor {
             // Adds the given code into the search query
             stmt.setObject(1, code);
             stmt.setObject(2, code);
-            
+
             Object data = stmt.executeQuery().getObject(1);
             result = (int) data == 0 ? false : true;
         } catch (Exception e) {

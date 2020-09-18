@@ -42,7 +42,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
         ArrayList<Object> current;
         currentPos = 0;
         remove = false;
-
+        System.out.println("----------------------------------");
         while (hasMore()) {
             current = elements.get(currentPos);
             String currentDep = (String) current.get(3);
@@ -95,7 +95,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void containsAirportDes(String currentDes) {
-        System.out.println(currentDes);
         if (!currentDes.equals(airportDes)) {
             remove = true;
         }
@@ -110,11 +109,11 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void isDirect(int stops) {
-        if (direct == "direct") {
+        if (direct.equals("direct")) {
             if (stops > 0) {
                 remove = true;
             }
-        } else if (direct == "not direct") {
+        } else if (direct.equals("not direct")) {
             if (stops <= 0) {
                 remove = true;
             }
