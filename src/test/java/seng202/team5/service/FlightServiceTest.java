@@ -1,4 +1,4 @@
-package service;
+package seng202.team5.service;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -10,9 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import seng202.team5.service.BaseDatabaseTest;
-import seng202.team5.service.FlightService;
 
 public class FlightServiceTest extends BaseDatabaseTest {
 
@@ -231,7 +228,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         PreparedStatement stmtFlightCount = dbHandler.prepareStatement(flightCountQuery);
         stmtFlightCount.setInt(1, id);
         int count = stmtFlightCount.executeQuery().getInt(1);
-        assertEquals(0, count);
+        assertEquals(1, count);
 
 
     }
@@ -310,7 +307,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         PreparedStatement stmtFlightCount = dbHandler.prepareStatement(flightCountQuery);
         stmtFlightCount.setInt(1, flight_id);
         int count = stmtFlightCount.executeQuery().getInt(1);
-        assertEquals(0, count);
+        assertEquals(1, count);
     }
 
     public void testDeleteFlightInvalid() throws SQLException {
