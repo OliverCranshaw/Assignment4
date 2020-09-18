@@ -11,12 +11,14 @@ public class AirportModel {
     private SimpleStringProperty airportName;
     private SimpleStringProperty airportCity;
     private SimpleStringProperty airportCountry;
+    private Integer id;
 
 
-    public AirportModel(String name, String city, String country) {
+    public AirportModel(String name, String city, String country, Integer id) {
         this.airportName = new SimpleStringProperty(name);
         this.airportCity = new SimpleStringProperty(city);
         this.airportCountry = new SimpleStringProperty(country);
+        this.id = id;
     }
 
     public String getAirportCity() {
@@ -43,6 +45,10 @@ public class AirportModel {
     public void setAirportCountry(String airportCountry) {
         this.airportCountry.set(airportCountry);
     }
+
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
 
 }

@@ -31,6 +31,7 @@ import seng202.team5.service.AirportService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class AddRouteMenuController {
@@ -40,13 +41,13 @@ public class AddRouteMenuController {
     public AddRouteMenuController() {}
 
     @FXML
-    private ComboBox<String> airlineField;
+    private TextField addRouteAirlineText;
 
     @FXML
-    private ComboBox<String> sourceField;
+    private TextField addRouteSrcAirportText;
 
     @FXML
-    private ComboBox<String> destinationField;
+    private TextField addRouteDstAirportText;
 
     @FXML
     private CheckBox codeshareField;
@@ -62,48 +63,84 @@ public class AddRouteMenuController {
 
     @FXML
     public void initialize() {
-        updateAirlines();
-        updateAirports();
+
     }
 
     @FXML
-    public void onAddPressed() {
+    public void onAddPressed(ActionEvent event) {
 
         ConcreteAddData concreteAddData = new ConcreteAddData();
         String codeShare = codeshareField.isSelected() ? "Y" : null;
 
-        String airlineName = airlineField.getValue();
-        String sourceName = sourceField.getValue();
-        String destName = destinationField.getValue();
+        String airlineName = addRouteAirlineText.getText();
+        String sourceName = addRouteSrcAirportText.getText();
+        String destName = addRouteDstAirportText.getText();
 
-        String airlineIATA;
-        String sourceIATA;
-        String destIATA;
-
+        String airlineCode = null;
+        String sourceCode = null;
+        String destCode = null;
+        setDefaults();
         try {
             {
                 ResultSet resultSet = airlineService.getAirlines(airlineName, null, null);
-                resultSet.next();
-                airlineIATA = new AirlineData(resultSet).getIata();
+                AirlineData airline = new AirlineData(resultSet);
+                System.out.println(airline.getIata());
+                if (airline.getName() == null) {
+                    System.out.println("Please ensure the given airline is in the database");
+                } else if(airline.getIata() == null && airline.getIcao() == null) {
+                    System.out.println("Please ensure the selected Airline has an associated IATA or ICAO value");
+                } else {
+                    airlineCode = (airline.getIata() == null) ? airline.getIcao() : airline.getIata();
+                }
             }
             {
                 ResultSet resultSet = airportService.getAirports(sourceName, null, null);
-                resultSet.next();
-                sourceIATA = new AirportData(resultSet).getIata();
+                AirportData srcAirport = new AirportData(resultSet);
+                if (srcAirport.getAirportName() == null) {
+                    System.out.println("Please ensure the given source airport is in the database");
+                } else if (srcAirport.getIata() == null && srcAirport.getIcao() == null) {
+                    System.out.println("Please ensure the selected source airport has an associated IATA or ICAO value");
+                } else {
+                    sourceCode = (srcAirport.getIata() == null) ? srcAirport.getIcao() : srcAirport.getIata();
+                }
             }
             {
                 ResultSet resultSet = airportService.getAirports(destName, null, null);
-                resultSet.next();
-                destIATA = new AirportData(resultSet).getIata();
+                AirportData dstAirport = new AirportData(resultSet);
+                if (dstAirport.getAirportName() == null) {
+                    System.out.println("Please ensure the given destination airport is in the database");
+                } else if (dstAirport.getIata() == null && dstAirport.getIcao() == null) {
+                    System.out.println("Please ensure the selected destination airport has an associated IATA or ICAO value");
+                } else {
+                    destCode = (dstAirport.getIata() == null) ? dstAirport.getIcao() : dstAirport.getIata();
+                }
             }
         } catch (SQLException e) {
+            errorMessage.setText("Failed to find corresponding Airport/Airline with the given names");
+            errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            errorMessage.setFill(Color.RED);
+            errorMessage.setVisible(true);
             System.out.println("Failed to find corresponding Airport/Airline with the given names");
             return;
         }
 
-        //System.out.println(String.join(",", airlineIATA, sourceIATA, destIATA));
 
-        int outcome = concreteAddData.addRoute(airlineIATA, sourceIATA, destIATA, codeShare, stopsField.getText(), equipmentField.getText());
+        String equipmentString = equipmentField.getText();
+        String[] equipmentStringSplit = equipmentString.split(",");
+
+        ArrayList<String> equipmentList = new ArrayList<>();
+        for (String component : equipmentStringSplit) {
+            equipmentList.add(component.trim());
+        }
+
+        String equipSpaceSeparated = "";
+        for (String component : equipmentList) {
+            equipSpaceSeparated += component;
+            equipSpaceSeparated += " ";
+        }
+        equipSpaceSeparated = (String) equipSpaceSeparated.subSequence(0, equipSpaceSeparated.length() - 1);
+
+        int outcome = concreteAddData.addRoute(airlineCode, sourceCode, destCode, codeShare, stopsField.getText(), equipSpaceSeparated);
         setDefaults();
         if (outcome < 0) {
             if (outcome == -1) {
@@ -113,11 +150,11 @@ public class AddRouteMenuController {
                 errorMessage.setFill(Color.RED);
                 errorMessage.setVisible(true);
             } else if (outcome == -2) {
-                airlineField.setStyle("-fx-border-color: #ff0000;");
+                addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
             } else if (outcome == -3) {
-                sourceField.setStyle("-fx-border-color: #ff0000;");
+                addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
             } else if (outcome == -4) {
-                destinationField.setStyle("-fx-border-color: #ff0000;");
+                addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
             } else if (outcome == -5) {
                 codeshareField.setStyle("-fx-border-color: #ff0000;");
             } else if (outcome == -6) {
@@ -127,52 +164,21 @@ public class AddRouteMenuController {
             }
         } else {
             setDefaults();
+            Window window = ((Node)event.getSource()).getScene().getWindow();
+            window.hide();
         }
     }
 
 
     public void setDefaults() {
-        airlineField.setStyle("-fx-border-color: #000000;");
-        sourceField.setStyle("-fx-border-color: #000000;");
-        destinationField.setStyle("-fx-border-color: #000000;");
+        addRouteAirlineText.setStyle("-fx-border-color: #000000;");
+        addRouteSrcAirportText.setStyle("-fx-border-color: #000000;");
+        addRouteDstAirportText.setStyle("-fx-border-color: #000000;");
         codeshareField.setStyle("-fx-border-color: #000000;");
         stopsField.setStyle("-fx-border-color: #000000;");
         equipmentField.setStyle("-fx-border-color: #000000;");
+        errorMessage.setVisible(false);
     }
-
-    public void updateAirports() {
-        ResultSet resultSet = airportService.getAirports(null, null, null);
-        List<String> airportNames = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                AirportData data = new AirportData(resultSet);
-                airportNames.add(data.getAirportName());
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch all airports:");
-            System.out.println(e);
-        }
-
-        sourceField.setItems(FXCollections.observableList(airportNames));
-        destinationField.setItems(FXCollections.observableList(airportNames));
-    }
-
-    public void updateAirlines() {
-        ResultSet resultSet = airlineService.getAirlines(null, null, null);
-        List<String> airlineNames = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                AirlineData data = new AirlineData(resultSet);
-                airlineNames.add(data.getName());
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch all airlines:");
-            System.out.println(e);
-        }
-
-        airlineField.setItems(FXCollections.observableList(airlineNames));
-    }
-
 
     @FXML
     public void onCancelPressed(ActionEvent event) {

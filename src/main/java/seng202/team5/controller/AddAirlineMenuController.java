@@ -1,5 +1,6 @@
 package seng202.team5.controller;
 
+import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,7 +14,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Window;
 import seng202.team5.data.ConcreteAddData;
+import seng202.team5.controller.MainMenuController;
+import seng202.team5.service.AirlineService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +49,7 @@ public class AddAirlineMenuController {
     private Text errorMessage;
 
     @FXML
-    public void onAddPressed() {
+    public void onAddPressed() throws SQLException {
         try {
             ConcreteAddData concreteAddData = new ConcreteAddData();
             String active = activeField.isSelected() ? "Y" : "N";
@@ -73,6 +77,7 @@ public class AddAirlineMenuController {
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid number");
+
         }
     }
 

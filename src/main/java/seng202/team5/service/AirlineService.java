@@ -118,10 +118,10 @@ public class AirlineService implements Service {
     }
 
     /**
+     * Retrieves the airline with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of an airline.
      *
      * @author Inga Tokarenko
      */
@@ -130,12 +130,12 @@ public class AirlineService implements Service {
     }
 
     /**
+     * Retrieves all airlines with the given parameters.
      *
-     *
-     * @param name
-     * @param country
-     * @param callign
-     * @return
+     * @param name string of the of an airline.
+     * @param country string value of a country.
+     * @param callign string value of a callsign.
+     * @return ResultSet of airlines.
      *
      * @author Inga Tokarenko
      */
@@ -144,10 +144,10 @@ public class AirlineService implements Service {
     }
 
     /**
+     * Checks if the airline with the provided IATA/ICAO exists.
      *
-     *
-     * @param code
-     * @return
+     * @param code IATA or ICAO of an airline.
+     * @return boolean true or false.
      *
      * @author Inga Tokarenko
      */

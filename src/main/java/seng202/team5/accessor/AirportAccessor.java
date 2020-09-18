@@ -211,29 +211,6 @@ public class AirportAccessor implements Accessor {
     }
 
     /**
-     * Selects all airports from the database and returns them.
-     *
-     * @return ResultSet result Contains the airports in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRPORT_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airports.");
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
      *
      *
      * @param id
@@ -252,6 +229,31 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airport data with id " + id);
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     *
+     * @param code
+     * @return ResultSet result
+     *
+     * @author Inga Tokarenko
+     * @author Billie Johnson
+     */
+    public ResultSet getData(String code) {
+        ResultSet result = null;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
+            stmt.setObject(1, code);
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airport data with IATA or ICAO " + code);
             System.out.println(e.getMessage());
         }
 

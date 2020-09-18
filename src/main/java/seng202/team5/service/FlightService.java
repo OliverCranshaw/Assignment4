@@ -163,10 +163,10 @@ public class FlightService implements Service {
     }
 
     /**
+     * Retrieves the flight with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of a flight.
      *
      * @author Inga Tokarenko
      */
@@ -175,11 +175,11 @@ public class FlightService implements Service {
     }
 
     /**
+     * Retrieves all flights with the given parameters.
      *
-     *
-     * @param location_type
-     * @param location
-     * @return
+     * @param location_type string containing location type.
+     * @param location string containing location.
+     * @return ResultSet of flights.
      *
      * @author Inga Tokarenko
      */
