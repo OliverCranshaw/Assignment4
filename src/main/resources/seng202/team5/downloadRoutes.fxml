@@ -29,13 +29,13 @@
             <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="182.20003356933594" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="selectFolderButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#onSelectFolderPressed" text="Select Folder" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+            <Button fx:id="selectFolderButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#onRouteSelectFolderPressed" text="Select Folder" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
             <TextField fx:id="nameField" prefHeight="26.0" prefWidth="144.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
          <children>
-            <Label fx:id="downloadLabel" alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="82.0" prefWidth="331.0" text="Download Data" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="downloadLabel" alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="82.0" prefWidth="331.0" text="Download Routes" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="30.0" />
                </font>
@@ -45,7 +45,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="invalidLabel" alignment="TOP_CENTER" layoutX="71.0" layoutY="224.0" prefHeight="22.0" prefWidth="478.0" text="Invalid file name" visible="false" textAlignment="CENTER" textFill="RED" wrapText="true">
+            <Label fx:id="invalidLabel" alignment="TOP_CENTER" layoutX="71.0" layoutY="224.0" prefHeight="22.0" prefWidth="478.0" text="Invalid file name, cannot be blank." textAlignment="CENTER" textFill="RED" visible="false" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
