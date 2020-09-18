@@ -2,10 +2,8 @@ package seng202.team5.accessor;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import seng202.team5.accessor.AirlineAccessor;
-import seng202.team5.accessor.RouteAccessor;
 import seng202.team5.database.DBConnection;
-import service.BaseDatabaseTest;
+import seng202.team5.service.BaseDatabaseTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -207,35 +205,6 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         assertFalse(resultSet.next());
 
         dbHandler.close();
-    }
-
-    public void testGetAllData() throws SQLException {
-        Connection dbHandler = DBConnection.getConnection();
-
-        for (int i = 0; i < 2; i++) {
-            // Adds a route
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, "
-                            + "destination_airport, destination_airport_id, codeshare, stops, equipment) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-            // Iterates through the List and adds the values to the insert statement
-            for (int j = 0; j < testData.size(); j++) {
-                stmt.setObject(j + 1, testData.get(j));
-            }
-
-            assertEquals(1, stmt.executeUpdate());
-        }
-
-        ResultSet resultSet = routeAccessor.getAllData();
-        for (int i = 0; i < 2; i++) {
-            assertTrue(resultSet.next());
-            // Check the result contents
-            for (int j = 0; j < testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
-            }
-        }
-        assertFalse(resultSet.next());
     }
 
     public void testGetDataByID() throws SQLException {

@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
-import seng202.team5.service.AirportService;
 
 import java.io.File;
 import java.sql.Connection;

@@ -2,9 +2,8 @@ package seng202.team5.accessor;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import seng202.team5.accessor.FlightAccessor;
 import seng202.team5.database.DBConnection;
-import service.BaseDatabaseTest;
+import seng202.team5.service.BaseDatabaseTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -176,32 +175,6 @@ public class FlightAccessorTest extends BaseDatabaseTest {
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM FLIGHT_DATA");
         ResultSet resultSet = stmt2.executeQuery();
-        assertFalse(resultSet.next());
-    }
-
-    public void testGetAllData() throws SQLException {
-        Connection dbHandler = DBConnection.getConnection();
-
-        for (int i = 0; i<2; i++) {
-            // Adds an flight
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
-                            + "VALUES (?, ?, ?, ?, ?, ?)");
-            for (int j = 0; j<testData.size(); j++) {
-                stmt.setObject(j+1, testData.get(j));
-            }
-
-            assertEquals(1, stmt.executeUpdate());
-        }
-
-        ResultSet resultSet = flightAccessor.getAllData();
-        for (int i = 0; i<2; i++) {
-            assertTrue(resultSet.next());
-            // Check the result contents
-            for (int j = 0; j<testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
-            }
-        }
         assertFalse(resultSet.next());
     }
 

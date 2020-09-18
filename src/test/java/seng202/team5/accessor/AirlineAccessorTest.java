@@ -158,7 +158,7 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             assertEquals(1, stmt.executeUpdate());
         }
 
-        ResultSet resultSet = airlineAccessor.getAllData();
+        ResultSet resultSet = airlineAccessor.getData(null, null, null);
         for (int i = 0; i<2; i++) {
             assertTrue(resultSet.next());
             // Check the result contents

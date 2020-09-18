@@ -7,8 +7,6 @@ import seng202.team5.accessor.AirlineAccessor;
 import seng202.team5.accessor.AirportAccessor;
 import seng202.team5.accessor.FlightAccessor;
 import seng202.team5.accessor.RouteAccessor;
-import seng202.team5.data.DataExporter;
-import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 
@@ -33,7 +31,7 @@ public class DataExporterTest {
     private AirportAccessor airportAccessor;
     private FlightAccessor flightAccessor;
     private RouteAccessor routeAccessor;
-    ResultSet resultSet;
+    private ResultSet resultSet;
     private String line;
     private String expectedLine;
 
@@ -86,7 +84,7 @@ public class DataExporterTest {
             if (airlineFile.exists()) {
                 fileReader = new FileReader(airlineFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = airlineAccessor.getAllData();
+                resultSet = airlineAccessor.getData(null, null, null);
 
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
@@ -124,7 +122,7 @@ public class DataExporterTest {
             if (airportFile.exists()) {
                 fileReader = new FileReader(airportFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = airportAccessor.getAllData();
+                resultSet = airportAccessor.getData(null, null, null);
 
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%f,%f,%d,%.1f,\"%s\",\"%s\"",
@@ -171,7 +169,7 @@ public class DataExporterTest {
             if (flightFile.exists()) {
                 fileReader = new FileReader(flightFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = flightAccessor.getAllData();
+                resultSet = flightAccessor.getData(1);
 
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
@@ -215,7 +213,7 @@ public class DataExporterTest {
             if (flightFile.exists()) {
                 fileReader = new FileReader(flightFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = flightAccessor.getAllData();
+                resultSet = flightAccessor.getData(null, null);
 
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
@@ -257,7 +255,7 @@ public class DataExporterTest {
             if (routeFile.exists()) {
                 fileReader = new FileReader(routeFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = routeAccessor.getAllData();
+                resultSet = routeAccessor.getData(null, null, -1, null);
 
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s",

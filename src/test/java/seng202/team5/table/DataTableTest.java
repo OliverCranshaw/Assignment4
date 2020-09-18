@@ -1,12 +1,9 @@
 package seng202.team5.table;
 
 import junit.framework.TestCase;
-import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
-import seng202.team5.table.AirlineTable;
-import seng202.team5.table.DataTable;
 
 import java.io.File;
 import java.sql.Connection;

@@ -1,7 +1,6 @@
 package seng202.team5.table;
 
 import org.junit.Test;
-import seng202.team5.table.FlightComparator;
 
 import java.util.ArrayList;
 

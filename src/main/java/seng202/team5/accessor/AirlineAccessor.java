@@ -189,35 +189,12 @@ public class AirlineAccessor implements Accessor {
     }
 
     /**
-     * Selects all airlines from the database and returns them.
-     *
-     * @return ResultSet result Contains the airlines in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRLINE_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airlines.");
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
      *
      *
      * @param id
      * @return ResultSet result
      *
-     * @author Inga Tokarenko 
+     * @author Inga Tokarenko
      * @author Billie Johnson
      */
     public ResultSet getData(int id) {

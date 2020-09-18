@@ -4,7 +4,6 @@ package seng202.team5.data;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 

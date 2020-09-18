@@ -2,9 +2,8 @@ package seng202.team5.accessor;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import seng202.team5.accessor.AirportAccessor;
 import seng202.team5.database.DBConnection;
-import service.BaseDatabaseTest;
+import seng202.team5.service.BaseDatabaseTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -170,37 +169,6 @@ public class AirportAccessorTest extends BaseDatabaseTest {
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM AIRPORT_DATA");
         ResultSet resultSet = stmt2.executeQuery();
-        assertFalse(resultSet.next());
-    }
-
-    public void testGetAllData() throws SQLException {
-        Connection dbHandler = DBConnection.getConnection();
-
-        for (int i = 0; i<2; i++) {
-            // Adds an airport
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
-                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (int j = 0; j<testData.size(); j++) {
-                stmt.setObject(j+1, testData.get(j));
-            }
-
-            assertEquals(1, stmt.executeUpdate());
-        }
-
-        ResultSet resultSet = airportAccessor.getAllData();
-        for (int i = 0; i<2; i++) {
-            assertTrue(resultSet.next());
-            // Check the result contents
-            for (int j = 0; j<testData.size(); j++) {
-                Object cell = testData.get(j);
-                if (cell instanceof Float) {
-                    cell = (double)((Float)cell);
-                }
-                assertEquals(cell, resultSet.getObject(2 + j));
-            }
-        }
         assertFalse(resultSet.next());
     }
 
