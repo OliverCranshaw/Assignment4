@@ -1,7 +1,6 @@
 package seng202.team5.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
-import seng202.team5.Search;
+import seng202.team5.table.Search;
 import seng202.team5.data.DataExporter;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
@@ -26,15 +25,9 @@ import seng202.team5.table.AirportTable;
 import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
-import javax.print.attribute.standard.Destination;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.PortUnreachableException;
 import java.net.URL;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class MainMenuController implements Initializable {
