@@ -43,13 +43,13 @@ public class DataExporter {
     /**
      * Exports all the airlines contained in the database to a csv file called airlines.csv.
      */
-    public void exportAirlines(String directory, String filename) {
+    public void exportAirlines(File file) {
         // Retrieves all the airlines from the database
         ResultSet airlines = airlineAccessor.getData(null, null, null);
 
         try {
             // Creates the FileWriter with the filename "airlines.csv"
-            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
+            fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the airlines in the ResultSet
             while (airlines.next()) {
@@ -104,13 +104,13 @@ public class DataExporter {
     /**
      * Exports all the airports contained in the database to a csv file called airports.csv.
      */
-    public void exportAirports(String directory, String filename) {
+    public void exportAirports(File file) {
         // Retrieves all the airports from the database
         ResultSet airports = airportAccessor.getData(null, null, null);
 
         try {
             // Creates the FileWriter with the filename "airports.csv"
-            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
+            fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the airports in the ResultSet
             while (airports.next()) {
@@ -161,13 +161,13 @@ public class DataExporter {
      * Exports all the entries of a particular flight in the database to a csv file called flight-[source]-[destination].csv.
      * @param flightID int The flightID of a given flight that you want to export.
      */
-    public void exportFlight(int flightID, String directory, String filename) {
+    public void exportFlight(int flightID, File file) {
         // Retrieves all the flight entries with a given flightID from the database
         ResultSet flight = flightAccessor.getData(flightID);
 
         try {
             // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
-            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
+            fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
             while (flight.next()) {
@@ -203,13 +203,13 @@ public class DataExporter {
     /**
      * Exports all the flight entries contained in the database to a csv file called flights.csv.
      */
-    public void exportFlights(String directory, String filename) {
+    public void exportFlights(File file) {
         // Retrieves all the flight entries from the database
         ResultSet flights = flightAccessor.getData(null, null);
 
         try {
             // Creates the FileWriter with the filename "flights.csv"
-            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
+            fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
             while (flights.next()) {
@@ -246,13 +246,13 @@ public class DataExporter {
     /**
      * Exports all the routes contained in the database to a csv file called routes.csv.
      */
-    public void exportRoutes(String directory, String filename) {
+    public void exportRoutes(File file) {
         // Retrieves all the routes from the database
         ResultSet routes = routeAccessor.getData(null, null, -1, null);
 
         try {
             // Creates the FileWriter with the filename "routes.csv"
-            fileWriter = new BufferedWriter(new FileWriter(directory + filename));
+            fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the routes in the ResultSet
             while (routes.next()) {

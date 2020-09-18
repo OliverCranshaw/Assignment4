@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
@@ -25,6 +26,7 @@ import seng202.team5.table.AirportTable;
 import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -636,6 +638,21 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    @FXML
+    public File selectFolder(ActionEvent event) {
+        dataExporter = new DataExporter();
+
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        extensionFilter = new FileChooser.ExtensionFilter("CSV (Comma-Separated Values) (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+
+        File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
+
+        return file;
+    }
 
     @FXML
     public void onViewMorePressed() {
@@ -666,13 +683,11 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("downloadAirports.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Download Airports");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.show();
+        File file = selectFolder(event);
+
+        if (file != null) {
+            dataExporter.exportAirports(file);
+        }
     }
 
     @FXML
@@ -699,16 +714,11 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("downloadAirlines.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Download Airlines");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.show();
-    }
+        File file = selectFolder(event);
 
-    public void onAddFlightPressed(ActionEvent actionEvent) {
+        if (file != null) {
+            dataExporter.exportAirlines(file);
+        }
     }
 
     @FXML
@@ -723,14 +733,12 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    public void onDownloadFlightDataPressed(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("downloadFlights.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Download Flights");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.show();
+    public void onDownloadFlightsPressed(ActionEvent event) throws IOException {
+        File file = selectFolder(event);
+
+        if (file != null) {
+            dataExporter.exportFlights(file);
+        }
     }
 
     @FXML
@@ -757,26 +765,12 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("downloadRoutes.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Download Routes");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.show();
-    }
+        File file = selectFolder(event);
 
-    @FXML
-    public void onUploadFlightsDataPressed(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_flight.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Upload Flights");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.show();
+        if (file != null) {
+            dataExporter.exportRoutes(file);
+        }
     }
-
 
     @FXML
     public void onFlightsRadioPressed() {

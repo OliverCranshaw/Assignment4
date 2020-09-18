@@ -22,7 +22,11 @@ public class UploadRoutesMenuController {
         ReadFile readFile = new ReadFile();
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt", "*.csv"));
+
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        extensionFilter = new FileChooser.ExtensionFilter("CSV (Comma-Separated Values) (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().add(extensionFilter);
 
         File file = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 

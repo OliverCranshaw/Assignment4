@@ -26,8 +26,8 @@ public class ReadFileScenario {
     private ArrayList<Integer> expected_ids;
     private Object ids;
     private int id;
-    private final File airlines = new File("src/test/java/data/testfiles/airlines.txt");
-    private final File airports = new File("src/test/java/data/testfiles/airports.txt");
+    private final File airlines = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
+    private final File airports = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
     private File airlineFile;
     private File airportFile;
     private File flightFile;
