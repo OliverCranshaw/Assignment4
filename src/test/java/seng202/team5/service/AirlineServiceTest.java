@@ -23,14 +23,33 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testGetAirlinesEmpty() throws SQLException {
-        ResultSet resultSet = airlineService.getData(null, null, null);
-        Assert.assertFalse(resultSet.next());
+    public void testUpdateAirline() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Adds an airline
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+        }
+
+        Assert.assertEquals(1, stmt.executeUpdate());
+
+        Assert.assertEquals(0, airlineService.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
     }
 
-
     @Test
-    public void testGetAirlinesSingle() throws SQLException {
+    public void testGetAirlines() throws SQLException {
+        {
+            // Test empty database
+            ResultSet resultSet = airlineService.getData(null, null, null);
+            Assert.assertFalse(resultSet.next());
+        }
+
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
                 "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
@@ -102,7 +121,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             int changes = stmt.executeUpdate();
             Assert.assertEquals(1, changes);
 
-            // Gets the airport ID
+            // Gets the airline ID
             ResultSet rs = stmt.getGeneratedKeys();
             Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
@@ -132,7 +151,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testAddAirline() throws SQLException {
+    public void testSaveAirline() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
         List<String> testData2 = new ArrayList<>(testData);
@@ -172,5 +191,93 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         }
 
         dbHandler.close();
+    }
+
+
+    @Test
+    public void testDeleteAirline() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+        }
+
+        Assert.assertEquals(1, stmt.executeUpdate());
+
+        // Gets the airline ID
+        ResultSet rs = stmt.getGeneratedKeys();
+        Assert.assertTrue(rs.next());
+        int id = rs.getInt(1);
+        rs.close();
+
+        // Performs the delete
+        Assert.assertTrue(airlineService.delete(id));
+
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "SELECT * FROM AIRLINE_DATA");
+        ResultSet resultSet = stmt2.executeQuery();
+
+        // Check that we don't find anything
+        Assert.assertFalse(resultSet.next());
+
+        dbHandler.close();
+    }
+
+
+    @Test
+    public void testAirlineExists() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+        }
+
+        Assert.assertEquals(1, stmt.executeUpdate());
+
+        Assert.assertTrue(airlineService.airlineExists(testData.get(2)));
+        Assert.assertTrue(airlineService.airlineExists(testData.get(3)));
+        Assert.assertFalse(airlineService.airlineExists("Not"+testData.get(2)));
+    }
+
+
+    @Test
+    public void testIataIsValid() {
+        Assert.assertTrue(airlineService.iataIsValid(null));
+        Assert.assertTrue(airlineService.iataIsValid("ab"));
+    }
+
+
+    @Test
+    public void testIcaoIsValid() {
+        Assert.assertTrue(airlineService.icaoIsValid(null));
+        Assert.assertTrue(airlineService.icaoIsValid("abc"));
+    }
+
+
+    @Test
+    public void testGetMaxID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        for (int i = 0; i<3; i++) {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+            // Iterates through the List and adds the values to the insert statement
+            for (int j = 0; j<testData.size(); j++) {
+                stmt.setObject(j + 1, testData.get(j));
+            }
+            Assert.assertEquals(1, stmt.executeUpdate());
+
+            // Checks maximum ID against expected value
+            Assert.assertEquals(i + 1, airlineService.getMaxID());
+        }
     }
 }

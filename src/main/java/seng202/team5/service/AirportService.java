@@ -87,7 +87,6 @@ public class AirportService implements Service {
         if (!icaoIsValid(new_icao)) {
             return -1;
         }
-
         // Passes the parameters into the update method of the AirportAccessor
         return accessor.update(id, new_name, new_city, new_country, new_iata, new_icao, new_latitude,
                                     new_longitude, new_altitude, new_timezone, new_dst, new_tz);

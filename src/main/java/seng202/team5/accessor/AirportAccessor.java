@@ -185,7 +185,7 @@ public class AirportAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM AIRPORT_DATA WHERE airport_id = ?");
             stmt.setInt(1, id); // Adds the airport_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.executeUpdate() != -1;
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airport data with id " + id);

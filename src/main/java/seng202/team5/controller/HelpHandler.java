@@ -68,7 +68,7 @@ public class HelpHandler implements EventHandler<MouseEvent> {
                 showHelpDialog("No help available at this location", new Point2D(mouseEvent.getScreenX(), mouseEvent.getScreenY()));
             } else {
                 Bounds bounds = node.getBoundsInLocal();
-                showHelpDialog(helpText, node.localToScreen(bounds.getCenterX(), bounds.getHeight()));
+                showHelpDialog(helpText, node.localToScreen(bounds.getWidth() / 2, bounds.getHeight()));
             }
         } catch (IOException ignored) {
         }

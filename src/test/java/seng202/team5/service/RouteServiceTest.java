@@ -501,9 +501,9 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the updateRoute method, using a destination airport that isn't in the database
-        int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
+        int res = routeService.update(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
         // Running the updateRoute method, using a routeId that doesn't exist
-        int res2 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res2 = routeService.update(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
 
         Assert.assertEquals(-1, res);
@@ -649,6 +649,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         stmtRouteCount.setInt(1, testRouteId);
         ResultSet routeCountResult = stmtRouteCount.executeQuery();
         int count = routeCountResult.getInt(1);
+
         Assert.assertEquals(0, count);
     }
 
