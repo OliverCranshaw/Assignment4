@@ -37,11 +37,10 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
         stmt.executeUpdate();
 
-        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IA", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICA", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "Something", "Timezoney"));
-        Assert.assertEquals(-1, airportService.update(10, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(0, airportService.update(10, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
     }
 
 
@@ -244,8 +243,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
     public void testIataIsValid() {
         Assert.assertTrue(airportService.iataIsValid(null));
         Assert.assertTrue(airportService.iataIsValid("IAT"));
-        Assert.assertFalse(airportService.iataIsValid("IA"));
-        Assert.assertFalse(airportService.iataIsValid("IATA"));
     }
 
 
@@ -253,8 +250,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
     public void testIcaoIsValid() {
         Assert.assertTrue(airportService.icaoIsValid(null));
         Assert.assertTrue(airportService.icaoIsValid("IACO"));
-        Assert.assertFalse(airportService.icaoIsValid("ICA"));
-        Assert.assertFalse(airportService.icaoIsValid("ICAOE"));
     }
 
 
