@@ -603,7 +603,6 @@ public class MainMenuController implements Initializable {
     private TableView searchFlightSingleRecordTableView;
 
 
-
     @FXML
     private Label airportInvalidFormatLbl;
 
@@ -1783,18 +1782,21 @@ public class MainMenuController implements Initializable {
     }
 
     public void onModifyAirlineBtnPressed(ActionEvent actionEvent) {
+        setAirlineUpdateColour(null);
         setAirlineElementsEditable(true);
         airlineSaveBtn.setVisible(true);
         airlineCancelBtn.setVisible(true);
     }
 
     public void onModifyRouteBtnPressed(ActionEvent actionEvent) {
+        setRouteUpdateColour(null);
         setRouteElementsEditable(true);
         routeSaveBtn.setVisible(true);
         routeCancelBtn.setVisible(true);
     }
 
     public void onModifyAirportBtnPressed(ActionEvent actionEvent) {
+        setAirportUpdateColour(null);
         airportInvalidFormatLbl.setVisible(false);
         setAirportElementsEditable(true);
         airportSaveBtn.setVisible(true);
@@ -1807,14 +1809,14 @@ public class MainMenuController implements Initializable {
     }
 
     public void setAirportElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
+        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elementsEditable = new ArrayList<TextField>(elements);
         setElementsEditable(elementsEditable, bool);
     }
 
     public void setAirlineElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
+        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineCallsign, airlineCountry,
                 airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         setElementsEditable(elementsVisible, bool);
@@ -1930,7 +1932,7 @@ public class MainMenuController implements Initializable {
 
     public void setAirportUpdateColour(Integer index) {
         airportInvalidFormatLbl.setVisible(false);
-        List<TextField> element = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
+        List<TextField> element = Arrays.asList(airportName, airportCity, airportCountry, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elements = new ArrayList<TextField>(element);
         if (index == null) {
@@ -1944,7 +1946,7 @@ public class MainMenuController implements Initializable {
 
 
     public void setAirlineUpdateColour(Integer index) {
-        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
+        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineCallsign, airlineCountry,
                 airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         if (index == null) {
