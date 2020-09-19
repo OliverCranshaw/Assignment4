@@ -8,8 +8,6 @@ import static org.junit.Assert.assertEquals;
 
 public class FlightComparatorTest {
 
-
-
     @Test
     public void testComparator() {
         // Creating lists to be sorted
@@ -67,6 +65,4 @@ public class FlightComparatorTest {
         // Checking equality
         assertEquals(expectedResult, mainList);
     }
-
-
 }

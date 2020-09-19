@@ -6,15 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 /**
  * RouteTable
  *
  * A class that extends DataTable and is used to store route data to be used for display
  * in the GUI, as well as providing methods that use the filtering tables to filter for a desired
  * subset of data
- *
- * @author Jack Ryan
  */
 public class RouteTable extends DataTable {
 
@@ -26,7 +23,6 @@ public class RouteTable extends DataTable {
     public RouteTable(ResultSet newOrgData) {
         super(newOrgData);
     }
-
 
 
     @Override
@@ -67,8 +63,6 @@ public class RouteTable extends DataTable {
 
     }
 
-
-
     /**
      * filterTable(ArrayList)
      *
@@ -92,5 +86,4 @@ public class RouteTable extends DataTable {
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
     }
-
 }

@@ -6,7 +6,6 @@ import seng202.team5.accessor.FlightAccessor;
 import seng202.team5.accessor.RouteAccessor;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -17,8 +16,6 @@ import java.sql.SQLException;
  *
  * Contains the functions exportAirlines, exportAirports, exportFlight, exportFlights, and exportRoutes
  * for exporting data from the database to csv files.
- *
- * @author Billie Johnson
  */
 public class DataExporter {
 
@@ -42,6 +39,9 @@ public class DataExporter {
 
     /**
      * Exports all the airlines contained in the database to a csv file called airlines.csv.
+     *
+     * @param directory String directory that the data will be exported to.
+     * @param filename String filename that the data will be exported into.
      */
     public void exportAirlines(String directory, String filename) {
         // Retrieves all the airlines from the database
@@ -103,6 +103,9 @@ public class DataExporter {
 
     /**
      * Exports all the airports contained in the database to a csv file called airports.csv.
+     *
+     * @param directory String directory that the data will be exported to.
+     * @param filename String filename that the data will be exported into.
      */
     public void exportAirports(String directory, String filename) {
         // Retrieves all the airports from the database
@@ -159,7 +162,10 @@ public class DataExporter {
 
     /**
      * Exports all the entries of a particular flight in the database to a csv file called flight-[source]-[destination].csv.
+     *
      * @param flightID int The flightID of a given flight that you want to export.
+     * @param directory String directory that the data will be exported to.
+     * @param filename String filename that the data will be exported into.
      */
     public void exportFlight(int flightID, String directory, String filename) {
         // Retrieves all the flight entries with a given flightID from the database
@@ -202,6 +208,9 @@ public class DataExporter {
 
     /**
      * Exports all the flight entries contained in the database to a csv file called flights.csv.
+     *
+     * @param directory String directory that the data will be exported to.
+     * @param filename String filename that the data will be exported into.
      */
     public void exportFlights(String directory, String filename) {
         // Retrieves all the flight entries from the database
@@ -245,6 +254,9 @@ public class DataExporter {
 
     /**
      * Exports all the routes contained in the database to a csv file called routes.csv.
+     *
+     * @param directory String directory that the data will be exported to.
+     * @param filename String filename that the data will be exported into.
      */
     public void exportRoutes(String directory, String filename) {
         // Retrieves all the routes from the database

@@ -11,8 +11,6 @@ import java.util.List;
  *
  * A class used to represent Flight data for use in the modify data factory patterns.
  * Overrides checkValues() and convertBlanksToNull() from Data interface.
- *
- * @author Jack Ryan
  */
 public class FlightData implements Data {
 

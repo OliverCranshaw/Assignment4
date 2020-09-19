@@ -9,12 +9,22 @@ import java.sql.SQLException;
 
 import static java.lang.String.format;
 
+/**
+ * DBConnection
+ *
+ * Creates and establishes connection with the database.
+ */
 public class DBConnection {
 
     private static String url = "jdbc:sqlite:%s";
     private static File dbFile =  new File("flightdata.db");
     private static Connection conn;
 
+    /**
+     * Sets the file of the database.
+     *
+     * @param file File file that was chosen to contain the database.
+     */
     public static void setDatabaseFile(File file) {
         dbFile = file;
     }

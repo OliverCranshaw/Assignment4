@@ -1,6 +1,9 @@
 package seng202.team5.table;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
@@ -13,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AirlineTableTest extends TestCase {
+public class AirlineTableTest {
 
     private static final String dbFile = "test.db";
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
@@ -27,8 +30,8 @@ public class AirlineTableTest extends TestCase {
 
     }
 
-    @Override
-    protected void tearDown() throws SQLException {
+    @After
+    public void tearDown() throws SQLException {
         System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
@@ -37,6 +40,7 @@ public class AirlineTableTest extends TestCase {
     }
 
 
+    @Test
     public void testFilterTable() throws SQLException {
 
         // Getting a connection to the test database
@@ -98,11 +102,11 @@ public class AirlineTableTest extends TestCase {
 
         // Creating the actual result ArrayList
         ArrayList<ArrayList<Object>> actualResult = testTable.getData();
-        assertEquals(1, actualResult.size());
+        Assert.assertEquals(1, actualResult.size());
 
         // Running the assertions
         for (int j = 0; j < expectedResult.size(); j++) {
-            assertEquals(expectedResult.get(0).get(j), actualResult.get(0).get(j+1));
+            Assert.assertEquals(expectedResult.get(0).get(j), actualResult.get(0).get(j+1));
         }
 
         ArrayList<String> countryList2 = new ArrayList<>();
@@ -115,19 +119,16 @@ public class AirlineTableTest extends TestCase {
 
         // Testing the FilterTable works for null
         testTable.FilterTable(null, null);
-        assertEquals(3, testTable.getData().size());
+        Assert.assertEquals(3, testTable.getData().size());
 
         // Running another Filter to check if partial null works
         testTable.FilterTable(null, "Y");
         ArrayList<ArrayList<Object>> actualResult2 = testTable.getData();
-        assertEquals(2, actualResult2.size());
+        Assert.assertEquals(2, actualResult2.size());
 
         for (int k = 0; k < expectedResult2.get(0).size(); k++) {
-            assertEquals(expectedResult2.get(0).get(k), actualResult2.get(0).get(k+1));
-            assertEquals(expectedResult2.get(1).get(k), actualResult2.get(1).get(k+1));
+            Assert.assertEquals(expectedResult2.get(0).get(k), actualResult2.get(0).get(k+1));
+            Assert.assertEquals(expectedResult2.get(1).get(k), actualResult2.get(1).get(k+1));
         }
-
     }
-
-
 }

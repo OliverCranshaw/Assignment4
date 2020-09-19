@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 
 public class FlightDataTest {
 
-
-
     @Test
     public void testValidStringConstructor() {
         Integer flightId = 545;
@@ -20,7 +18,6 @@ public class FlightDataTest {
 
         assertEquals((Double) 4223.2, test.getLatitude());
         assertEquals((Integer) 4343, test.getAltitude());
-
     }
 
 
@@ -39,7 +36,6 @@ public class FlightDataTest {
 
         assertNull(test.getLocationType());
         assertNull(test.getLocation());
-
     }
 
 
@@ -56,7 +52,6 @@ public class FlightDataTest {
 
         int validityValue = test.checkValues();
         assertEquals(1, validityValue);
-
     }
 
 
@@ -73,7 +68,5 @@ public class FlightDataTest {
 
         int validityValue = test.checkValues();
         assertEquals(-3, validityValue);
-
     }
-
 }

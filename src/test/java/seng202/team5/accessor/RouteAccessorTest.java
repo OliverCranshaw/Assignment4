@@ -1,7 +1,8 @@
 package seng202.team5.accessor;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.service.BaseDatabaseTest;
 
@@ -17,16 +18,8 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
     private final List<Object> testData = List.of("IT", 1, "IA1", 1, "IA2", 2, "N", 100, "ABC");
 
-    public RouteAccessorTest(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        return new TestSuite(RouteAccessorTest.class);
-    }
-
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         super.setUp();
         routeAccessor = new RouteAccessor();
 
@@ -70,6 +63,8 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         }
     }
 
+
+    @Test
     public void testSave() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -83,7 +78,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
             int key = routeAccessor.save(data);
 
             // Check operation did not fail
-            assertTrue(key != -1);
+            Assert.assertTrue(key != -1);
 
             // Query route data with route_id=key
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -92,18 +87,20 @@ public class RouteAccessorTest extends BaseDatabaseTest {
             ResultSet resultSet = stmt.executeQuery();
 
             // Check that there is at least one result
-            assertTrue("Failed to fetch route_id=" + key, resultSet.next());
+            Assert.assertTrue("Failed to fetch route_id=" + key, resultSet.next());
 
             // Check the result contents
             for (int i = 0; i < data.size(); i++) {
-                assertEquals(data.get(i), resultSet.getObject(2 + i));
+                Assert.assertEquals(data.get(i), resultSet.getObject(2 + i));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
     }
 
+
+    @Test
     public void testUpdate() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -118,7 +115,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
         ResultSet keys = stmt.getGeneratedKeys();
         keys.next();
         int key = keys.getInt(1);
@@ -126,7 +123,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
         List<Object> newData = List.of("IT", 1, "IA2", 2, "IA1", 1, "Y", 100, "ABC");
 
-        assertEquals(0, routeAccessor.update(
+        Assert.assertEquals(0, routeAccessor.update(
                 10,
                 (String) newData.get(0),
                 (int) newData.get(1),
@@ -140,7 +137,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         ));
 
 
-        assertEquals(1, routeAccessor.update(
+        Assert.assertEquals(1, routeAccessor.update(
                 1,
                 (String) newData.get(0),
                 (int) newData.get(1),
@@ -160,17 +157,19 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         stmt2.setObject(1, key);
         ResultSet resultSet = stmt2.executeQuery();
         // Check that there is at least one result
-        assertTrue("Failed to fetch route_id=" + 1, resultSet.next());
+        Assert.assertTrue("Failed to fetch route_id=" + 1, resultSet.next());
 
         // Check the result contents
         for (int i = 0; i < newData.size(); i++) {
-            assertEquals(newData.get(i), resultSet.getObject(2 + i));
+            Assert.assertEquals(newData.get(i), resultSet.getObject(2 + i));
         }
 
         // Check there are no more than 1 result
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testDelete() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -183,30 +182,32 @@ public class RouteAccessorTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         // Gets the airline ID
         ResultSet rs = stmt.getGeneratedKeys();
-        assertTrue(rs.next());
+        Assert.assertTrue(rs.next());
         int id = rs.getInt(1);
         rs.close();
 
         // Test that a failed delete fails
-        assertFalse(routeAccessor.delete(100));
+        Assert.assertFalse(routeAccessor.delete(100));
 
         // Performs the delete
-        assertTrue(routeAccessor.delete(id));
+        Assert.assertTrue(routeAccessor.delete(id));
 
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM ROUTE_DATA");
         ResultSet resultSet = stmt2.executeQuery();
 
         // Check that we don't find anything
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
 
         dbHandler.close();
     }
 
+
+    @Test
     public void testGetDataByID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
@@ -229,11 +230,11 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airline ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
         }
@@ -241,27 +242,29 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         for (int i = 0; i < 3; i++) {
             int key = keys.get(i);
             ResultSet resultSet = routeAccessor.getData(key);
-            assertNotNull("Key " + key + " not found", resultSet);
+            Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
 
             // Check entry
             for (int j = 0; j < testData.size(); j++) {
                 if (j == 7) {
-                    assertEquals((int) testData.get(j) + i, resultSet.getObject(2 + j));
+                    Assert.assertEquals((int) testData.get(j) + i, resultSet.getObject(2 + j));
                 } else {
-                    assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                    Assert.assertEquals(testData.get(j), resultSet.getObject(2 + j));
                 }
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
 
-        assertFalse(routeAccessor.getData(10000).next());
+        Assert.assertFalse(routeAccessor.getData(10000).next());
     }
 
+
+    @Test
     public void testGetData() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -281,52 +284,54 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         // Test result data is valid
         {
             ResultSet resultSet = routeAccessor.getData(null, null, -1, null);
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
 
             // Check the result contents
             for (int j = 0; j < testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                Assert.assertEquals(testData.get(j), resultSet.getObject(2 + j));
             }
         }
 
         // Simple valid single search test
-        assertTrue(routeAccessor.getData(new ArrayList<>(List.of(src)), null, -1, null).next());
-        assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), -1, null).next());
-        assertTrue(routeAccessor.getData(null, null, stops, null).next());
-        assertTrue(routeAccessor.getData(null, null, -1, equipment).next());
+        Assert.assertTrue(routeAccessor.getData(new ArrayList<>(List.of(src)), null, -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, null, stops, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, null, -1, equipment).next());
 
         // Simple invalid single search test
-        assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src)), null, -1, null).next());
-        assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest)), -1, null).next());
-        assertFalse(routeAccessor.getData(null, null, stops + 1, null).next());
-        assertFalse(routeAccessor.getData(null, null, -1, "Not" + equipment).next());
+        Assert.assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src)), null, -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest)), -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, null, stops + 1, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, null, -1, "Not" + equipment).next());
 
         // Test valid double conditions
-        assertTrue(routeAccessor.getData(new ArrayList<>(List.of(src)), new ArrayList<>(List.of(dest)), -1, null).next());
-        assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), -1, null).next());
-        assertTrue(routeAccessor.getData(null, null, stops, equipment).next());
+        Assert.assertTrue(routeAccessor.getData(new ArrayList<>(List.of(src)), new ArrayList<>(List.of(dest)), -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, null, stops, equipment).next());
 
         // Test invalid double conditions
-        assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src)), new ArrayList<>(List.of(dest)), -1, null).next());
-        assertFalse(routeAccessor.getData(new ArrayList<>(List.of(src)), new ArrayList<>(List.of("Not" + dest)), -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src)), new ArrayList<>(List.of(dest)), -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(new ArrayList<>(List.of(src)), new ArrayList<>(List.of("Not" + dest)), -1, null).next());
 
-        assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest)), stops, null).next());
-        assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), stops + 1, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest)), stops, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of(dest)), stops + 1, null).next());
 
-        assertFalse(routeAccessor.getData(null, null, stops + 1, equipment).next());
-        assertFalse(routeAccessor.getData(null, null, stops, "Not" + equipment).next());
+        Assert.assertFalse(routeAccessor.getData(null, null, stops + 1, equipment).next());
+        Assert.assertFalse(routeAccessor.getData(null, null, stops, "Not" + equipment).next());
 
         // Test double airports
-        assertTrue(routeAccessor.getData(new ArrayList<>(List.of("Not" + src, src)), null, -1, null).next());
-        assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest, dest)), -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(new ArrayList<>(List.of("Not" + src, src)), null, -1, null).next());
+        Assert.assertTrue(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest, dest)), -1, null).next());
 
-        assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest, "Not2" + dest)), -1, null).next());
-        assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src, "Not2" + src)), null, -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(null, new ArrayList<>(List.of("Not" + dest, "Not2" + dest)), -1, null).next());
+        Assert.assertFalse(routeAccessor.getData(new ArrayList<>(List.of("Not" + src, "Not2" + src)), null, -1, null).next());
 
         // Test "(a or b) and c" vs "a or (b and c)"
-        assertFalse(routeAccessor.getData(new ArrayList<>(List.of(src, "Not" + src)), null, stops + 1, null).next());
+        Assert.assertFalse(routeAccessor.getData(new ArrayList<>(List.of(src, "Not" + src)), null, stops + 1, null).next());
     }
 
+
+    @Test
     public void testDataExists() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -339,16 +344,18 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Executes the insert operation
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         ResultSet rs = stmt.getGeneratedKeys();
-        assertTrue(rs.next());
+        Assert.assertTrue(rs.next());
         int key = rs.getInt(1);
 
-        assertTrue(routeAccessor.dataExists(key));
-        assertFalse(routeAccessor.dataExists(key + 1));
+        Assert.assertTrue(routeAccessor.dataExists(key));
+        Assert.assertFalse(routeAccessor.dataExists(key + 1));
     }
 
+
+    @Test
     public void testGetMaxID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -366,15 +373,15 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the route_id of the new route
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the route ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             maxKey = Math.max(maxKey, key);
 
-            assertEquals(maxKey, routeAccessor.getMaxID());
+            Assert.assertEquals(maxKey, routeAccessor.getMaxID());
         }
     }
 }

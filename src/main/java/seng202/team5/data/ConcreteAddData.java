@@ -10,9 +10,6 @@ import seng202.team5.service.RouteService;
  *
  * Overrides the abstract methods of the AddData class.
  * Contains the addAirline, addAirport, addFlightEntry, and addRoute methods.
- *
- * @author Billie Johnson
- * @author Jack Ryan
  */
 public class ConcreteAddData extends AddData {
 
@@ -47,9 +44,6 @@ public class ConcreteAddData extends AddData {
      * @param country The country of the airline.
      * @param active "Y" if the airline is or has until recently been operational, "N" if it is defunct, cannot be null.
      * @return int The airline_id of the new airline that has been created by AirlineService.
-     *
-     * @author Billie Johnson
-     * @author Jack Ryan
      */
     @Override
     public int addAirline(String name, String alias, String iata, String icao,
@@ -63,7 +57,7 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveAirline method of AirlineService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int result = airlineService.saveAirline(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
+            int result = airlineService.save(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
                     airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
             if (result != -1) {
@@ -99,9 +93,6 @@ public class ConcreteAddData extends AddData {
      * @param dst The daylight savings time of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown), cannot be null.
      * @param tz Timezone in "tz" (Olson) format, i.e. Country/Region. Cannot be null.
      * @return int The airport_id of the new airport that has been created by AirportService.
-     *
-     * @author Billie Johnson
-     * @author Jack Ryan
      */
     @Override
     public int addAirport(String name, String city, String country, String iata, String icao, String latitude,
@@ -115,7 +106,7 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveAirport method of AirportService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int result = airportService.saveAirport(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
+            int result = airportService.save(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
                     airportData.getIata(), airportData.getIcao(), airportData.getLatitude(), airportData.getLongitude(),
                     airportData.getAltitude(), airportData.getTimezone(), airportData.getDst(), airportData.getTzDatabaseTimezone());
 
@@ -147,9 +138,6 @@ public class ConcreteAddData extends AddData {
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
      * @return int The unique id of the new flight entry that has been created by FlightService.
-     *
-     * @author Billie Johnson
-     * @author Jack Ryan
      */
     @Override
     public int addFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
@@ -162,7 +150,7 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveFlight method of FlightService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int result = flightService.saveFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(),
+            int result = flightService.save(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(),
                                             flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
 
             if (result != -1) {
@@ -193,9 +181,6 @@ public class ConcreteAddData extends AddData {
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int The route_id of the new route that has been created by RouteService.
-     *
-     * @author Billie Johnson
-     * @author Jack Ryan
      */
     @Override
     public int addRoute(String airline, String source_airport, String dest_airport,
@@ -209,7 +194,7 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveRoute method of RouteService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int result = routeService.saveRoute(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
+            int result = routeService.save(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
                                             routeData.getCodeShare(), routeData.getStops(), routeData.getEquipment());
 
             if (result != -1) {

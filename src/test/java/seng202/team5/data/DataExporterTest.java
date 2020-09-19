@@ -69,6 +69,7 @@ public class DataExporterTest {
         }
     }
 
+
     @Test
     public void exportAirlinesTest() {
         File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
@@ -106,6 +107,7 @@ public class DataExporterTest {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Test
     public void exportAirportsTest() {
@@ -146,6 +148,7 @@ public class DataExporterTest {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Test
     public void exportFlightTest() {
@@ -191,6 +194,7 @@ public class DataExporterTest {
         }
     }
 
+
     @Test
     public void exportFlightsTest() {
         File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
@@ -234,6 +238,7 @@ public class DataExporterTest {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Test
     public void exportRoutesTest() {

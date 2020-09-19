@@ -7,8 +7,6 @@ import java.util.ArrayList;
  *
  * Contains the functions filterTable, checks for if the data in the row, and setters.
  * Extends the ConcreteFilterTable abstract class.
- *
- * @author Inga Tokarenko
  */
 public class FilterAirportTable extends ConcreteFilterTable {
 
@@ -19,8 +17,6 @@ public class FilterAirportTable extends ConcreteFilterTable {
      * Sets the elements.
      *
      * @param data The ArrayList that is passed through with information from the table.
-     *
-     * @author Inga Tokarenko
      */
     public FilterAirportTable(ArrayList<ArrayList<Object>> data) {
         super(data);
@@ -30,8 +26,6 @@ public class FilterAirportTable extends ConcreteFilterTable {
      * Overrides the the parent class.
      * Goes through each element and checks weather it matches any criteria that was set at the beginning.
      * If an element does not match the criteria it is removed from the elements array and the currentPos is reset back to zero.
-     *
-     * @author Inga Tokarenko
      */
     @Override
     public void filterTable() {
@@ -61,10 +55,17 @@ public class FilterAirportTable extends ConcreteFilterTable {
      * Sets the countries to newCountries.
      *
      * @param newCountries array of countries.
-     *
-     * @author Inga Tokarenko
      */
     public void setCountries(ArrayList<String> newCountries) {
         countries = newCountries;
+    }
+
+    /**
+     * Gets elements and returns it.
+     *
+     * @return ArrayList<ArrayList<Object>> of the elements.
+     */
+    public ArrayList<ArrayList<Object>> getElements() {
+        return elements;
     }
 }

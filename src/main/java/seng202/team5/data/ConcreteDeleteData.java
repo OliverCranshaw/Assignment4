@@ -11,8 +11,6 @@ import seng202.team5.service.RouteService;
  *
  * Overrides the deleteAirline(), deleteAirport(), deleteFlightEntry(), deleteFlight(), deleteRoute() methods
  * of the DeleteData abstract class.
- *
- * @author Jack Ryan
  */
 public class ConcreteDeleteData extends DeleteData{
     // Initializes the necessary service classes
@@ -30,7 +28,7 @@ public class ConcreteDeleteData extends DeleteData{
     @Override
     public Boolean deleteAirline(int id) {
         // Call to the deleteAirline method of the airlineService
-        return airlineService.deleteAirline(id);
+        return airlineService.delete(id);
     }
 
 
@@ -43,7 +41,7 @@ public class ConcreteDeleteData extends DeleteData{
     @Override
     public Boolean deleteAirport(int id) {
         // Call to the deleteAirport method of the airportService
-        return airportService.deleteAirport(id);
+        return airportService.delete(id);
     }
 
 
@@ -69,7 +67,7 @@ public class ConcreteDeleteData extends DeleteData{
     @Override
     public Boolean deleteFlight(int flight_id) {
         // Call to the deleteFlight method of the flightService
-        return flightService.deleteFlight(flight_id);
+        return flightService.delete(flight_id);
     }
 
 
@@ -82,7 +80,6 @@ public class ConcreteDeleteData extends DeleteData{
     @Override
     public Boolean deleteRoute(int id) {
         // Call to the deleteRoute method of the routeService
-        return routeService.deleteRoute(id);
+        return routeService.delete(id);
     }
-
 }

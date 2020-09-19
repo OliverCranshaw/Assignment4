@@ -1,6 +1,9 @@
 package seng202.team5.table;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
@@ -11,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AirportTableTest extends TestCase {
+public class AirportTableTest {
 
     private static final String dbFile = "test.db";
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
@@ -25,8 +28,8 @@ public class AirportTableTest extends TestCase {
 
     }
 
-    @Override
-    protected void tearDown() throws SQLException {
+    @After
+    public void tearDown() throws SQLException {
         System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
@@ -35,6 +38,7 @@ public class AirportTableTest extends TestCase {
     }
 
 
+    @Test
     public void testFilterTable() throws SQLException {
 
         // Getting a connection to the test database
@@ -97,20 +101,16 @@ public class AirportTableTest extends TestCase {
 
         // Creating the actual result ArrayList
         ArrayList<ArrayList<Object>> actualResult = testTable.getData();
-        assertEquals(2, actualResult.size());
+        Assert.assertEquals(2, actualResult.size());
 
         // Running the assertions
         for (int i = 0; i < expectedResult.size(); i++) {
-            assertEquals(expectedResult.get(0).get(i), actualResult.get(0).get(i+1));
-            assertEquals(expectedResult.get(1).get(i), actualResult.get(1).get(i+1));
+            Assert.assertEquals(expectedResult.get(0).get(i), actualResult.get(0).get(i+1));
+            Assert.assertEquals(expectedResult.get(1).get(i), actualResult.get(1).get(i+1));
         }
 
         // Testing the FilterTable works for null
         testTable.FilterTable(null);
-        assertEquals(3, testTable.getData().size());
-
+        Assert.assertEquals(3, testTable.getData().size());
     }
-
-
-
 }

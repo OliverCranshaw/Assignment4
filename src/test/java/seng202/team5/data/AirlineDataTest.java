@@ -1,12 +1,9 @@
 package seng202.team5.data;
 
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AirlineDataTest {
-
-
 
     @Test
     public void testConvertBlanksToNull() {
@@ -39,6 +36,7 @@ public class AirlineDataTest {
         assertEquals(1, validityValue);
     }
 
+
     @Test
     public void testCheckValuesInvalid() {
         String testName = "airnz";
@@ -52,8 +50,4 @@ public class AirlineDataTest {
         int validityValue = test.checkValues();
         assertEquals(-4, validityValue);
     }
-
-
-
-
 }
