@@ -8,9 +8,13 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
@@ -80,17 +84,23 @@ public class HelpHandler implements EventHandler<MouseEvent> {
         helpStage = new Stage(StageStyle.UNDECORATED);
         VBox root = new VBox();
         root.setPadding(new Insets(8));
+        root.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        root.maxHeight(Double.POSITIVE_INFINITY);
 
-        root.getChildren().add(new Label(helpText));
+        Text label = new Text(helpText);
+        label.setWrappingWidth(300);
+        label.minWidth(300.0);
+        label.setTextAlignment(TextAlignment.CENTER);
+        root.getChildren().add(label);
+
+        VBox.setVgrow(label, Priority.ALWAYS);
 
         helpStage.setScene(new Scene(root));
-        helpStage.setWidth(300);
+        helpStage.setWidth(316);
 
-
-        helpStage.setX(centre.getX() - 150);
+        helpStage.setX(centre.getX() - 158);
         helpStage.setY(centre.getY() + 2);
-
-
 
         helpStage.addEventFilter(MouseEvent.MOUSE_PRESSED, newEvent -> {
             helpStage.close();
