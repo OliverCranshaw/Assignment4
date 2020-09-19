@@ -304,7 +304,7 @@ public class ReadFile {
                 if (id < 0) {
                     switch(id) {
                         case -1:
-                            error = "Line " + lineNum + ": Error adding flight entry.";
+                            error = "Line " + lineNum + ": Error adding flight entry, may be duplicate flight entry.";
                             errors.add(error);
                             break;
                         case -2:
@@ -404,7 +404,7 @@ public class ReadFile {
 
                     switch(id) {
                         case -1:
-                            error = "Line " + lineNum + ": Error adding route, airline or airports may not exist in database.";
+                            error = "Line " + lineNum + ": Error adding route, airline or airports may not exist in database or the route may be a duplicate.";
                             errors.add(error);
                             break;
                         case -2:

@@ -43,6 +43,10 @@ public class RouteService implements Service {
      * @return int result The route_id of the route that was just created by the RouteAccessor.
      */
     public int save(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+        // Checks that there is no completely identical route existing in the database
+        if (accessor.dataExists(airline, source_airport, dest_airport, codeshare, stops, equipment)) {
+            return -1;
+        }
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airlineAccessor.dataExists(airline)) {
             return -1;
