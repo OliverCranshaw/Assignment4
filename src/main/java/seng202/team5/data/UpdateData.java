@@ -1,5 +1,7 @@
 package seng202.team5.data;
 
+import java.sql.SQLException;
+
 /**
  * UpdateData
  *
@@ -21,7 +23,7 @@ public abstract class UpdateData {
      * @return int The airline_id of the airline that was just updated by the AirlineService.
      */
     public abstract int updateAirline(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                                       String new_callsign, String new_country, String new_active);
+                                       String new_callsign, String new_country, String new_active) throws SQLException;
 
     /**
      * Ensures validity of parameters, passes them into the updateAirport method of AirportService.
@@ -42,7 +44,7 @@ public abstract class UpdateData {
      */
     public abstract int updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
                                        String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
-                                       Float new_timezone, String new_dst, String new_tz);
+                                       Float new_timezone, String new_dst, String new_tz) throws SQLException;
 
     /**
      * Ensures validity of parameters, passes them into the updateFlight method of FlightService.
@@ -71,5 +73,5 @@ public abstract class UpdateData {
      * @return int The route_id of the route that was just updated by the RouteService.
      */
     public abstract int updateRoute(int id, String new_airline, String new_source_airport, String new_dest_airport,
-                                     String new_codeshare, int new_stops, String new_equipment);
+                                     String new_codeshare, int new_stops, String new_equipment) throws SQLException;
 }

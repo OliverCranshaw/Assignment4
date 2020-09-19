@@ -389,6 +389,7 @@
                                                 <TextField fx:id="airportTZ" layoutX="368.0" layoutY="136.0" />
                                                 <Button fx:id="airportSaveBtn" layoutX="492.0" layoutY="208.0" mnemonicParsing="false" onAction="#onAirportSaveBtnPressed" text="Save" />
                                                 <Button fx:id="airportCancelBtn" layoutX="12.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportCancelBtnPressed" text="Cancel Modify" />
+                                                <Label fx:id="airportInvalidFormatLbl" layoutX="96.0" layoutY="182.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
