@@ -158,7 +158,7 @@ public class AirportService implements Service {
      * @return boolean True if the IATA code is valid, False otherwise.
      */
     public boolean iataIsValid(String iata) {
-        return (iata == null || !airportExists(iata));
+        return (iata == null || !dataExists(iata));
     }
 
     /**
@@ -169,7 +169,7 @@ public class AirportService implements Service {
      * @return boolean True if the ICAO code is valid, False otherwise.
      */
     public boolean icaoIsValid(String icao) {
-        return (icao == null || !airportExists(icao));
+        return (icao == null || !dataExists(icao));
     }
 
     /**
