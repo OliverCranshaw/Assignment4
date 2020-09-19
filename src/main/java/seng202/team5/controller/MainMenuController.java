@@ -6,9 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -714,6 +712,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    @FXML
+    public void onHelp(ActionEvent event) {
+        System.out.println("Help requested: " + event);
+
+        Scene scene = mainTabs.getScene();
+        HelpHandler.startHelp(scene);
+    }
 
     @FXML
     public void onViewMorePressed() {
@@ -1373,7 +1378,6 @@ public class MainMenuController implements Initializable {
         return newList;
     }
 
-
     public ArrayList<String> convertToArrayList(String[] list) {
         ArrayList<String> result = new ArrayList<>();
         for (String component : list) {
@@ -1381,7 +1385,6 @@ public class MainMenuController implements Initializable {
         }
         return result;
     }
-
 
     public void onModifyAirlineBtnPressed(ActionEvent actionEvent) {
         setAirlineElementsEditable(true);
