@@ -36,13 +36,13 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
-        assertEquals(-1, airlineService.updateAirline(1, "Namey", "Aliasy", "I", "Ica", "Callsigny", "Countryy", "Y"));
-        assertEquals(-1, airlineService.updateAirline(1, "Namey", "Aliasy", "Ia", "Ic", "Callsigny", "Countryy", "Y"));
-        assertEquals(-1, airlineService.updateAirline(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Nah"));
-        assertEquals(-1, airlineService.updateAirline(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
-        assertEquals(1, airlineService.updateAirline(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "I", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ic", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Nah"));
+        Assert.assertEquals(-1, airlineService.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
     }
 
     
@@ -198,6 +198,8 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         dbHandler.close();
     }
 
+
+    @Test
     public void testDeleteAirline() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -209,27 +211,29 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         // Gets the airline ID
         ResultSet rs = stmt.getGeneratedKeys();
-        assertTrue(rs.next());
+        Assert.assertTrue(rs.next());
         int id = rs.getInt(1);
         rs.close();
 
         // Performs the delete
-        assertTrue(airlineService.deleteAirline(id));
+        Assert.assertTrue(airlineService.delete(id));
 
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM AIRLINE_DATA");
         ResultSet resultSet = stmt2.executeQuery();
 
         // Check that we don't find anything
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
 
         dbHandler.close();
     }
 
+
+    @Test
     public void testAirlineExists() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -241,34 +245,33 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
-        assertTrue(airlineService.airlineExists(testData.get(2)));
-        assertTrue(airlineService.airlineExists(testData.get(3)));
-        assertFalse(airlineService.airlineExists("Not"+testData.get(2)));
+        Assert.assertTrue(airlineService.airlineExists(testData.get(2)));
+        Assert.assertTrue(airlineService.airlineExists(testData.get(3)));
+        Assert.assertFalse(airlineService.airlineExists("Not"+testData.get(2)));
     }
 
+
+    @Test
     public void testIataIsValid() {
-        assertTrue(airlineService.iataIsValid(null));
-        assertTrue(airlineService.iataIsValid("ab"));
-        assertFalse(airlineService.iataIsValid("a"));
-        assertFalse(airlineService.iataIsValid("abc"));
+        Assert.assertTrue(airlineService.iataIsValid(null));
+        Assert.assertTrue(airlineService.iataIsValid("ab"));
+        Assert.assertFalse(airlineService.iataIsValid("a"));
+        Assert.assertFalse(airlineService.iataIsValid("abc"));
     }
 
+
+    @Test
     public void testIcaoIsValid() {
-        assertTrue(airlineService.icaoIsValid(null));
-        assertTrue(airlineService.icaoIsValid("abc"));
-        assertFalse(airlineService.icaoIsValid("ab"));
-        assertFalse(airlineService.icaoIsValid("abcd"));
+        Assert.assertTrue(airlineService.icaoIsValid(null));
+        Assert.assertTrue(airlineService.icaoIsValid("abc"));
+        Assert.assertFalse(airlineService.icaoIsValid("ab"));
+        Assert.assertFalse(airlineService.icaoIsValid("abcd"));
     }
 
-    public void testActiveIsValid() {
-        assertTrue(airlineService.activeIsValid("Y"));
-        assertTrue(airlineService.activeIsValid("N"));
-        assertFalse(airlineService.activeIsValid(""));
-        assertFalse(airlineService.activeIsValid("YN"));
-    }
 
+    @Test
     public void testGetMaxID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         for (int i = 0; i<3; i++) {
@@ -280,10 +283,10 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             for (int j = 0; j<testData.size(); j++) {
                 stmt.setObject(j + 1, testData.get(j));
             }
-            assertEquals(1, stmt.executeUpdate());
+            Assert.assertEquals(1, stmt.executeUpdate());
 
             // Checks maximum ID against expected value
-            assertEquals(i + 1, airlineService.getMaxID());
+            Assert.assertEquals(i + 1, airlineService.getMaxID());
         }
     }
 }

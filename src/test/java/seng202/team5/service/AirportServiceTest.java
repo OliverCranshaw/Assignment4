@@ -37,11 +37,11 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
         stmt.executeUpdate();
 
-        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IA", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICA", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        assertEquals(-1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "Something", "Timezoney"));
-        assertEquals(-1, airportService.updateAirport(10, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
-        assertEquals(1, airportService.updateAirport(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IA", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICA", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "Something", "Timezoney"));
+        Assert.assertEquals(-1, airportService.update(10, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
+        Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Timezoney"));
     }
 
 
@@ -214,6 +214,8 @@ public class AirportServiceTest extends BaseDatabaseTest {
         dbHandler.close();
     }
 
+
+    @Test
     public void testDeleteAirport() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -228,41 +230,35 @@ public class AirportServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Performs the delete operation
-        assertTrue(airportService.deleteAirport(1));
+        Assert.assertTrue(airportService.delete(1));
 
         // Checks that the airport has been deleted
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM AIRPORT_DATA");
         ResultSet resultSet = stmt2.executeQuery();
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testIataIsValid() {
-        assertTrue(airportService.iataIsValid(null));
-        assertTrue(airportService.iataIsValid("IAT"));
-        assertFalse(airportService.iataIsValid("IA"));
-        assertFalse(airportService.iataIsValid("IATA"));
+        Assert.assertTrue(airportService.iataIsValid(null));
+        Assert.assertTrue(airportService.iataIsValid("IAT"));
+        Assert.assertFalse(airportService.iataIsValid("IA"));
+        Assert.assertFalse(airportService.iataIsValid("IATA"));
     }
 
+
+    @Test
     public void testIcaoIsValid() {
-        assertTrue(airportService.icaoIsValid(null));
-        assertTrue(airportService.icaoIsValid("IACO"));
-        assertFalse(airportService.icaoIsValid("ICA"));
-        assertFalse(airportService.icaoIsValid("ICAOE"));
+        Assert.assertTrue(airportService.icaoIsValid(null));
+        Assert.assertTrue(airportService.icaoIsValid("IACO"));
+        Assert.assertFalse(airportService.icaoIsValid("ICA"));
+        Assert.assertFalse(airportService.icaoIsValid("ICAOE"));
     }
 
-    public void testDstIsValid() {
-        // All valid DSTs
-        for (String dst : Arrays.asList("E", "A", "S", "O", "Z", "N", "U")) {
-            assertTrue(airportService.dstIsValid(dst));
-        }
-        assertFalse(airportService.dstIsValid(null));
 
-        // Invalid DSTs
-        assertFalse(airportService.dstIsValid(""));
-        assertFalse(airportService.dstIsValid("EE"));
-    }
-
+    @Test
     public void testGetMaxID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -278,7 +274,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
             stmt.executeUpdate();
 
             // Checks maximum ID against expected value
-            assertEquals(i + 1, airportService.getMaxID());
+            Assert.assertEquals(i + 1, airportService.getMaxID());
         }
     }
 }
