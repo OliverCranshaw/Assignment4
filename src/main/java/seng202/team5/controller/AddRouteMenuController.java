@@ -1,21 +1,9 @@
 package seng202.team5.controller;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.ReadOnlyListWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,7 +19,6 @@ import seng202.team5.service.AirportService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class AddRouteMenuController {
@@ -82,7 +69,7 @@ public class AddRouteMenuController {
         setDefaults();
         try {
             {
-                ResultSet resultSet = airlineService.getAirlines(airlineName, null, null);
+                ResultSet resultSet = airlineService.getData(airlineName, null, null);
                 AirlineData airline = new AirlineData(resultSet);
                 System.out.println(airline.getIata());
                 if (airline.getName() == null) {
@@ -94,7 +81,7 @@ public class AddRouteMenuController {
                 }
             }
             {
-                ResultSet resultSet = airportService.getAirports(sourceName, null, null);
+                ResultSet resultSet = airportService.getData(sourceName, null, null);
                 AirportData srcAirport = new AirportData(resultSet);
                 if (srcAirport.getAirportName() == null) {
                     System.out.println("Please ensure the given source airport is in the database");
@@ -105,7 +92,7 @@ public class AddRouteMenuController {
                 }
             }
             {
-                ResultSet resultSet = airportService.getAirports(destName, null, null);
+                ResultSet resultSet = airportService.getData(destName, null, null);
                 AirportData dstAirport = new AirportData(resultSet);
                 if (dstAirport.getAirportName() == null) {
                     System.out.println("Please ensure the given destination airport is in the database");

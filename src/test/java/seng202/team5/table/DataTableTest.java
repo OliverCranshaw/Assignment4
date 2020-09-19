@@ -1,6 +1,10 @@
 package seng202.team5.table;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
@@ -17,8 +21,8 @@ public class DataTableTest extends TestCase {
 
     private static final String dbFile = "test.db";
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
@@ -27,8 +31,8 @@ public class DataTableTest extends TestCase {
 
     }
 
-    @Override
-    protected void tearDown() throws SQLException {
+    @After
+    public void tearDown() throws SQLException {
         System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
@@ -37,6 +41,7 @@ public class DataTableTest extends TestCase {
     }
 
 
+    @Test
     public void testCreateTable() throws SQLException {
 
         // Getting a connection to the test database
@@ -91,10 +96,8 @@ public class DataTableTest extends TestCase {
         // Checking the results are as expected
         for (int i = 0; i < expectedResult.size(); i++) {
             for (int j = 0; j < expectedResult.get(i).size(); j++) {
-                assertEquals(expectedResult.get(i).get(j), actualResult.get(i).get(j+1));
+                Assert.assertEquals(expectedResult.get(i).get(j), actualResult.get(i).get(j+1));
             }
         }
-
     }
-
 }

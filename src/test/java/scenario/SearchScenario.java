@@ -1,4 +1,4 @@
-package seng202.team5.scenario;
+package scenario;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -49,13 +49,13 @@ public class SearchScenario {
         search = new Search();
         data = new ArrayList<>();
 
-        airlineService.saveAirline("AirNZ", null, "AB", "ABC", "NZ123", "New Zealand", "Y");
-        airportService.saveAirport("Christchurch Airport", "Christchurch", "New Zealand", "ABC", "ABCD", 0,
+        airlineService.save("AirNZ", null, "AB", "ABC", "NZ123", "New Zealand", "Y");
+        airportService.save("Christchurch Airport", "Christchurch", "New Zealand", "ABC", "ABCD", 0,
                 0, 0, 0, "E", "Pacific/Auckland");
-        airportService.saveAirport("Auckland Airport", "Auckland", "New Zealand", "DBS", "DBSA", 0,
+        airportService.save("Auckland Airport", "Auckland", "New Zealand", "DBS", "DBSA", 0,
                 0, 0, 0, "E", "Pacific/Auckland");
-        flightService.saveFlight(1, "FIX", "NZCH", 0, 0, 0);
-        routeService.saveRoute("AB", "ABC", "DBS", "Y", 2, "GPS");
+        flightService.save(1, "FIX", "NZCH", 0, 0, 0);
+        routeService.save("AB", "ABC", "DBS", "Y", 2, "GPS");
     }
 
     @After
@@ -79,7 +79,7 @@ public class SearchScenario {
 
     @Given("the airline name {string} is in the database")
     public void theAirlineNameIsInTheDatabase(String airlineName) throws SQLException {
-        ResultSet result = airlineService.getAirlines(airlineName, null, null);
+        ResultSet result = airlineService.getData(airlineName, null, null);
         Assert.assertTrue(result.next());
     }
 
@@ -104,7 +104,7 @@ public class SearchScenario {
 
     @Given("the airline callsign {string} is in the database")
     public void theAirlineCallsignIsInTheDatabase(String airlineCallsign) throws SQLException {
-        ResultSet result = airlineService.getAirlines(null, null, airlineCallsign);
+        ResultSet result = airlineService.getData(null, null, airlineCallsign);
         Assert.assertTrue(result.next());
     }
 
@@ -129,7 +129,7 @@ public class SearchScenario {
 
     @Given("the airline country {string} is in the database")
     public void theAirlineCountryIsInTheDatabase(String airlineCountry) throws SQLException {
-        ResultSet result = airlineService.getAirlines(null, airlineCountry, null);
+        ResultSet result = airlineService.getData(null, airlineCountry, null);
         Assert.assertTrue(result.next());
     }
 
@@ -154,7 +154,7 @@ public class SearchScenario {
 
     @Given("the airport name {string} is in the database")
     public void theAirportNameIsInTheDatabase(String airportName) throws SQLException {
-        ResultSet result = airportService.getAirports(airportName, null, null);
+        ResultSet result = airportService.getData(airportName, null, null);
         Assert.assertTrue(result.next());
     }
 
@@ -179,7 +179,7 @@ public class SearchScenario {
 
     @Given("the airport city {string} is in the database")
     public void theAirportCityIsInTheDatabase(String airportCity) throws SQLException {
-        ResultSet result = airportService.getAirports(null, airportCity, null);
+        ResultSet result = airportService.getData(null, airportCity, null);
         Assert.assertTrue(result.next());
     }
 
@@ -204,7 +204,7 @@ public class SearchScenario {
 
     @Given("the airport country {string} is in the database")
     public void theAirportCountryIsInTheDatabase(String airportCountry) throws SQLException {
-        ResultSet result = airportService.getAirports(null, null, airportCountry);
+        ResultSet result = airportService.getData(null, null, airportCountry);
         Assert.assertTrue(result.next());
     }
 
@@ -229,7 +229,7 @@ public class SearchScenario {
 
     @Given("the flight location type {string} is in the database")
     public void theFlightLocationTypeIsInTheDatabase(String flightLocationType) throws SQLException {
-        ResultSet result = flightService.getFlights(flightLocationType, null);
+        ResultSet result = flightService.getData(flightLocationType, null);
         Assert.assertTrue(result.next());
     }
 
@@ -253,7 +253,7 @@ public class SearchScenario {
 
     @Given("the flight location {string} is in the database")
     public void theFlightLocationIsInTheDatabase(String flightLocation) throws SQLException {
-        ResultSet result = flightService.getFlights(null, flightLocation);
+        ResultSet result = flightService.getData(null, flightLocation);
         Assert.assertTrue(result.next());
     }
 
@@ -277,7 +277,7 @@ public class SearchScenario {
 
     @Given("the route source airport {string} is in the database")
     public void theRouteSourceAirportIsInTheDatabase(String sourceAirport) throws SQLException {
-        ResultSet result = routeService.getRoutes(sourceAirport, null, -1, null);
+        ResultSet result = routeService.getData(sourceAirport, null, -1, null);
         Assert.assertTrue(result.next());
     }
 
@@ -295,7 +295,7 @@ public class SearchScenario {
     @Then("the results from the search will include all routes with the route source airport {string}")
     public void theResultsFromTheSearchWillIncludeAllRoutesWithTheRouteSourceAirport(String sourceAirport) throws SQLException {
         while (searchResult.next()) {
-            ResultSet data = airportService.getAirports(sourceAirport, null, null);
+            ResultSet data = airportService.getData(sourceAirport, null, null);
             String airportIataIciao = data.getString(5) == null ? data.getString(6) : data.getString(5);
             Assert.assertEquals(airportIataIciao, searchResult.getString(4));
         }
@@ -305,7 +305,7 @@ public class SearchScenario {
 
     @Given("the route destination airport {string} is in the database")
     public void theRouteDestinationAirportIsInTheDatabase(String destinationAirport) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, destinationAirport, -1, null);
+        ResultSet result = routeService.getData(null, destinationAirport, -1, null);
         Assert.assertTrue(result.next());
     }
 
@@ -323,7 +323,7 @@ public class SearchScenario {
     @Then("the results from the search will include all routes with the route destination airport {string}")
     public void theResultsFromTheSearchWillIncludeAllRoutesWithTheRouteDestinationAirport(String destinationAirport) throws SQLException {
         while (searchResult.next()) {
-            ResultSet data = airportService.getAirports(destinationAirport, null, null);
+            ResultSet data = airportService.getData(destinationAirport, null, null);
             String airportIataIciao = data.getString(5) == null ? data.getString(6) : data.getString(5);
             Assert.assertEquals(airportIataIciao, searchResult.getString(6));
         }
@@ -333,7 +333,7 @@ public class SearchScenario {
 
     @Given("the route number stops {int} is in the database")
     public void theRouteNumberStopsIsInTheDatabase(int numberStops) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, null, numberStops, null);
+        ResultSet result = routeService.getData(null, null, numberStops, null);
         Assert.assertTrue(result.next());
     }
 
@@ -359,7 +359,7 @@ public class SearchScenario {
 
     @Given("the route equipment {string} is in the database")
     public void theRouteEquipmentIsInTheDatabase(String equipment) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, null, -1, equipment);
+        ResultSet result = routeService.getData(null, null, -1, equipment);
         Assert.assertTrue(result.next());
     }
 
@@ -384,7 +384,7 @@ public class SearchScenario {
     //Scenario: Search Airline by name when no record in database has this name.
     @Given("the airline name {string} is not in the database")
     public void theAirlineNameIsNotInTheDatabase(String airlineName) throws SQLException {
-        ResultSet result = airlineService.getAirlines(airlineName, null, null);
+        ResultSet result = airlineService.getData(airlineName, null, null);
         Assert.assertFalse(result.next());
     }
 
@@ -400,7 +400,7 @@ public class SearchScenario {
     //Scenario: Search Airline by callsign when no record in database has this callsign.
     @Given("the airline callsign {string} is not in the database")
     public void theAirlineCallsignIsNotInTheDatabase(String airlineCallsign) throws SQLException {
-        ResultSet result = airlineService.getAirlines(null, null, airlineCallsign);
+        ResultSet result = airlineService.getData(null, null, airlineCallsign);
         Assert.assertFalse(result.next());
 
     }
@@ -417,7 +417,7 @@ public class SearchScenario {
     //Scenario: Search Airline by country when no record in database has this country.
     @Given("the airline country {string} is not in the database")
     public void theAirlineCountryIsNotInTheDatabase(String airlineCountry) throws SQLException {
-        ResultSet result = airlineService.getAirlines(null, airlineCountry, null);
+        ResultSet result = airlineService.getData(null, airlineCountry, null);
         Assert.assertFalse(result.next());
     }
 
@@ -433,7 +433,7 @@ public class SearchScenario {
     //Scenario: Search Airport by name when no record in database has this name.
     @Given("the airport name {string} is not in the database")
     public void theAirportNameIsNotInTheDatabase(String airportName) throws SQLException {
-        ResultSet result = airportService.getAirports(airportName, null, null);
+        ResultSet result = airportService.getData(airportName, null, null);
         Assert.assertFalse(result.next());
     }
 
@@ -449,7 +449,7 @@ public class SearchScenario {
     //Scenario: Search Airport by city when no record in database has this city.
     @Given("the airport city {string} is not in the database")
     public void theAirportCityIsNotInTheDatabase(String airportCity) throws SQLException {
-        ResultSet result = airportService.getAirports(null, airportCity, null);
+        ResultSet result = airportService.getData(null, airportCity, null);
         Assert.assertFalse(result.next());
     }
 
@@ -465,7 +465,7 @@ public class SearchScenario {
     //Scenario: Search Airport by country when no record in database has this country.
     @Given("the airport country {string} is not in the database")
     public void theAirportCountryIsNotInTheDatabase(String airportCountry) throws SQLException {
-        ResultSet result = airportService.getAirports(null, null, airportCountry);
+        ResultSet result = airportService.getData(null, null, airportCountry);
         Assert.assertFalse(result.next());
     }
 
@@ -481,7 +481,7 @@ public class SearchScenario {
     //Scenario: Search Flight by location type when no record in database has this airline.
     @Given("the flight location type {string} is not in the database")
     public void theFlightLocationTypeIsNotInTheDatabase(String flightLocationType) throws SQLException {
-        ResultSet result = flightService.getFlights(flightLocationType, null);
+        ResultSet result = flightService.getData(flightLocationType, null);
         Assert.assertFalse(result.next());
     }
 
@@ -496,7 +496,7 @@ public class SearchScenario {
     //Scenario: Search Flight by location when no record in database has this airport.
     @Given("the flight location {string} is not in the database")
     public void theFlightLocationIsNotInTheDatabase(String flightLocation) throws SQLException {
-        ResultSet result = flightService.getFlights(null, flightLocation);
+        ResultSet result = flightService.getData(null, flightLocation);
         Assert.assertFalse(result.next());
     }
 
@@ -511,7 +511,7 @@ public class SearchScenario {
     //Scenario: Search Route by source airport when no record in database has this source airport.
     @Given("the route source airport {string} is not in the database")
     public void theRouteSourceAirportIsNotInTheDatabase(String sourceAirport) throws SQLException {
-        ResultSet result = routeService.getRoutes(sourceAirport, null, -1, null);
+        ResultSet result = routeService.getData(sourceAirport, null, -1, null);
         Assert.assertFalse(result.next());
     }
 
@@ -528,7 +528,7 @@ public class SearchScenario {
     //Scenario: Search Route by destination airport when no record in database has this destination airport.
     @Given("the route destination airport {string} is not in the database")
     public void theRouteDestinationAirportIsNotInTheDatabase(String destinationAirport) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, destinationAirport, -1, null);
+        ResultSet result = routeService.getData(null, destinationAirport, -1, null);
         Assert.assertFalse(result.next());
     }
 
@@ -545,7 +545,7 @@ public class SearchScenario {
     //Scenario: Search Route by number of stops when no record in database has this number of stops.
     @Given("the route number stops {int} is not in the database")
     public void theRouteNumberStopsIsNotInTheDatabase(int numberStops) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, null, numberStops, null);
+        ResultSet result = routeService.getData(null, null, numberStops, null);
         Assert.assertFalse(result.next());
     }
 
@@ -562,7 +562,7 @@ public class SearchScenario {
     //Scenario: Search Route by equipment when no record in database has this equipment.
     @Given("the route equipment {string} is not in the database")
     public void theRouteEquipmentIsNotInTheDatabase(String equipment) throws SQLException {
-        ResultSet result = routeService.getRoutes(null, null, -1, equipment);
+        ResultSet result = routeService.getData(null, null, -1, equipment);
         Assert.assertFalse(result.next());
     }
 

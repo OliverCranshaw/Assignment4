@@ -16,11 +16,10 @@ public class AddDataTest {
 
     private ConcreteAddData concreteAddData;
     private ReadFile readFile;
-    private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
-    private File airports = new File("src/test/java/data/testfiles/airports.txt");
+    private File airlines = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
+    private File airports = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
     private int id;
     private static Connection con;
-
 
     @Before
     public void setup() {
@@ -52,6 +51,7 @@ public class AddDataTest {
         }
     }
 
+
     @Test
     public void addAirlineTest() {
         // String name, String alias, String iata, String icao, String callsign, String country, String active
@@ -64,6 +64,7 @@ public class AddDataTest {
         id = concreteAddData.addAirline("Airfix Aviation", "", "", "", "", "", "N");
         assertEquals(3, id);
     }
+
 
     @Test
     public void addAirlineFailTest() {
@@ -86,6 +87,7 @@ public class AddDataTest {
         assertEquals(-2, id);
     }
 
+
     @Test
     public void addAirportTest() {
         // String name, String city, String country, String iata, String icao, String latitude,
@@ -106,6 +108,7 @@ public class AddDataTest {
                 "61.503333", "769", "6","E", "Asia/Yekaterinburg");
         assertEquals(4, id);
     }
+
 
     @Test
     public void addAirportFailTest() {
@@ -161,6 +164,7 @@ public class AddDataTest {
         assertEquals(-2, id);
     }
 
+
     @Test
     public void addFlightEntryTest() {
         readFile.readAirportData(airports);
@@ -175,6 +179,7 @@ public class AddDataTest {
         id = concreteAddData.addFlightEntry(1, "VOR", "CH", "0", "43.4866", "-172.534");
         assertEquals(3, id);
     }
+
 
     @Test
     public void addFlightEntryFailTest() {
@@ -206,6 +211,7 @@ public class AddDataTest {
         assertEquals(-2, id);
     }
 
+
     @Test
     public void addRouteTest() {
         readFile.readAirlineData(airlines);
@@ -221,6 +227,7 @@ public class AddDataTest {
         id = concreteAddData.addRoute("APT", "WSSS", "NZCH", "Y", "0", "CR2 TN3 KT4");
         assertEquals(3, id);
     }
+
 
     @Test
     public void addRouteFailTest() {

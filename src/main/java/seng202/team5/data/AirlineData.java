@@ -1,7 +1,5 @@
 package seng202.team5.data;
 
-import seng202.team5.service.AirlineService;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -106,10 +104,10 @@ public class AirlineData implements Data {
         if (this.name == null) {
             // Ensures the name of the Airline is not null
             return -2;
-        } else if (this.iata != null && this.iata.length() != 2) {
+        } else if (this.iata != null && !(this.iata.matches("^[A-Z0-9]{2}$"))) {
             // Checks the iata is of the correct size (2)
             return -3;
-        } else if (this.icao != null && this.icao.length() != 3) {
+        } else if (this.icao != null && !(this.icao.matches("^[A-Z0-9]{3}$"))) {
             // Checks the icao is of the correct size (3)
             return -4;
         } else if (this.active == null || !(this.active.equals("Y") || this.active.equals("N"))) {

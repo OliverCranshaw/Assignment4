@@ -9,8 +9,6 @@ import java.util.Comparator;
  * A class that implements the Comparator<ArrayList<Object>>
  * Is used to compare flight entries so that they can be sorted according to flightID,
  * unless flightID is the same, the sorted by ID
- *
- * @author Jack Ryan
  */
 public class FlightComparator implements Comparator<ArrayList<Object>> {
 

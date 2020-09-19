@@ -4,8 +4,6 @@ package seng202.team5.data;
  * DeleteData
  *
  * Contains abstract methods for deleting airlines, airports, flight entries, flights, and routes.
- *
- * @author Billie Johnson
  */
 public abstract class DeleteData {
 
@@ -48,5 +46,4 @@ public abstract class DeleteData {
      * @return boolean True if the delete operation is successful, False otherwise.
      */
     public abstract Boolean deleteRoute(int id);
-
 }
