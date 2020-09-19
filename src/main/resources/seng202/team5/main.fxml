@@ -65,6 +65,7 @@
                                              </font>
                                           </RadioButton>
                                           <RadioButton fx:id="airportsRadioButton" mnemonicParsing="false" onAction="#onAirportsRadioPressed" text="Airports" textFill="WHITE">
+                                             <properties helpText="Airport radio button, I dunno what it does"/>
                                              <font>
                                                 <Font size="15.0" />
                                              </font>
@@ -73,6 +74,7 @@
                                              </HBox.margin>
                                           </RadioButton>
                                           <RadioButton fx:id="airlinesRadioButton" mnemonicParsing="false" onAction="#onAirlinesRadioPressed" text="Airlines" textFill="WHITE">
+                                             <properties helpText="Airlines radio button, I dunno what it does"/>
                                              <font>
                                                 <Font size="15.0" />
                                              </font>
@@ -81,6 +83,7 @@
                                              </HBox.margin>
                                           </RadioButton>
                                           <RadioButton fx:id="routesRadioButton" mnemonicParsing="false" onAction="#onRoutesRadioPressed" text="Routes" textFill="WHITE">
+                                             <properties helpText="Routes radio button, I dunno what it does"/>
                                              <font>
                                                 <Font size="15.0" />
                                              </font>
@@ -140,11 +143,17 @@
                                           <Insets left="80.0" right="25.0" />
                                        </GridPane.margin>
                                     </TextField>
-                                    <Button mnemonicParsing="false" onAction="#onSearchPressed" prefHeight="33.0" prefWidth="69.0" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font></Button>
+                                       <Button mnemonicParsing="false" onAction="#onSearchPressed" prefHeight="33.0"
+                                               prefWidth="69.0" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                                               GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                                               GridPane.valignment="CENTER">
+                                          <properties helpText="Some random search help text stuff"/>
+                                          <font>
+                                             <Font size="14.0"/>
+                                          </font>
+                                       </Button>
                                     <Label fx:id="errorMessage" maxWidth="-Infinity" textFill="RED" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+
                                        <padding>
                                           <Insets left="25.0" />
                                        </padding>
@@ -201,7 +210,7 @@
                               <Insets bottom="25.0" left="25.0" right="25.0" />
                            </StackPane.margin>
                         </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" onAction="#onHelp" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -324,7 +333,7 @@
                               <Insets left="25.0" right="25.0" />
                            </padding>
                         </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" onAction="#onHelp" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -453,7 +462,7 @@
                               <Insets left="25.0" right="25.0" />
                            </padding>
                         </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" onAction="#onHelp" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -621,7 +630,7 @@
                               <Insets left="25.0" right="25.0" />
                            </padding>
                         </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" onAction="#onHelp" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -716,7 +725,7 @@
                               <Insets left="25.0" right="25.0" />
                            </padding>
                         </VBox>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
+                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="?" onAction="#onHelp" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
                            <font>
                               <Font size="12.0" />
                            </font>
