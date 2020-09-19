@@ -14,9 +14,6 @@ import java.util.List;
  *
  * Contains the functions save, update, delete, getData, and dataExists for routes that directly interact with the database.
  * Implements the Accessor interface.
- *
- * @author Inga Tokarenko
- * @author Billie Johnson
  */
 public class RouteAccessor implements Accessor {
 
@@ -25,9 +22,6 @@ public class RouteAccessor implements Accessor {
     /**
      * Constructor for RouteAccessor.
      * Gets the connection to the database.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public RouteAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -40,8 +34,6 @@ public class RouteAccessor implements Accessor {
      *
      * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The route_id of the route that was just created.
-     *
-     * @author Inga Tokarenko
      */
     public int save(List<Object> data) {
         int result;
@@ -87,9 +79,6 @@ public class RouteAccessor implements Accessor {
      * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
      * @return int result The number of rows modified or -1 for error
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
                       String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
@@ -168,9 +157,6 @@ public class RouteAccessor implements Accessor {
      *
      * @param id The route_id of the route to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean delete(int id) {
         boolean result = false;
@@ -191,13 +177,10 @@ public class RouteAccessor implements Accessor {
     }
 
     /**
+     * Retrieves the route with the provided id.
      *
-     *
-     * @param id
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @param id int id of a route.
+     * @return ResultSet of the route.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -216,16 +199,13 @@ public class RouteAccessor implements Accessor {
     }
 
     /**
-     *
+     * Retrieves all the routes with provided data.
      *
      * @param source_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param dest_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param stops The number of stops on this route, 0 if it is direct. An integer.
      * @param equipment 3-letter codes for plane type(s) typically used on this flight, separated by spaces.
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @return ResultSet of all the routes.
      */
     public ResultSet getData(ArrayList<String> source_airport, ArrayList<String> dest_airport, int stops, String equipment) {
         boolean check = true;
@@ -302,9 +282,6 @@ public class RouteAccessor implements Accessor {
      *
      * @param id An integer route_id.
      * @return boolean result True if a route exists with the given route_id, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -331,8 +308,6 @@ public class RouteAccessor implements Accessor {
      * Gets the maximum route_id contained in the database.
      *
      * @return int id The maximum route_id in the database.
-     *
-     * @author Billie Johnson
      */
     public int getMaxID() {
         int id = 0;

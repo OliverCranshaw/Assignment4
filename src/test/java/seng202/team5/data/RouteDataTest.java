@@ -17,9 +17,7 @@ public class RouteDataTest {
         RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
         assertEquals((Integer) 4, test.getStops());
-
     }
-
 
 
     @Test
@@ -36,7 +34,6 @@ public class RouteDataTest {
 
         assertNull(test.getEquipment());
         assertNull(test.getSourceAirport());
-
     }
 
 
@@ -54,7 +51,6 @@ public class RouteDataTest {
         int validityValue = test.checkValues();
 
         assertEquals(1, validityValue);
-
     }
 
 
@@ -73,5 +69,4 @@ public class RouteDataTest {
 
         assertEquals(-5, validityValue);
     }
-
 }

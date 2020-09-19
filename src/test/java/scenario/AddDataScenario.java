@@ -1,4 +1,4 @@
-package seng202.team5.scenario;
+package scenario;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -187,8 +187,8 @@ public class AddDataScenario {
 
     @Then("the airport is added with iata {string} and icao {string}")
     public void airportAdded(String iata, String icao) {
-        Assert.assertTrue(airportService.airportExists(iata));
-        Assert.assertTrue(airportService.airportExists(icao));
+        Assert.assertTrue(airportService.dataExists(iata));
+        Assert.assertTrue(airportService.dataExists(icao));
     }
 
     // Adding an airport with an invalid name
@@ -253,7 +253,7 @@ public class AddDataScenario {
 
     @Then("the airport parameters are rejected, and the airport is not added with icao {string}")
     public void airportRejectedInvalidIATA(String icao) {
-        Assert.assertFalse(airportService.airportExists(icao));
+        Assert.assertFalse(airportService.dataExists(icao));
     }
 
     // Adding an airport with an invalid ICAO code
@@ -273,7 +273,7 @@ public class AddDataScenario {
 
     @Then("the airport parameters are rejected, and the airport is not added with iata {string}")
     public void airportRejectedInvalidICAO(String iata) {
-        Assert.assertFalse(airportService.airportExists(iata));
+        Assert.assertFalse(airportService.dataExists(iata));
     }
 
     // Adding an airport with an invalid latitude
@@ -368,8 +368,8 @@ public class AddDataScenario {
 
     @Then("the airport parameters are rejected, and the airport is not added with iata {string} and icao {string}")
     public void airportRejectedInvalid(String iata, String icao) {
-        Assert.assertFalse(airportService.airportExists(iata));
-        Assert.assertFalse(airportService.airportExists(icao));
+        Assert.assertFalse(airportService.dataExists(iata));
+        Assert.assertFalse(airportService.dataExists(icao));
     }
 
 
@@ -433,7 +433,7 @@ public class AddDataScenario {
     public void flightEntryInvalidLocation(int flightID, String location_type, String altitude, String latitude, String longitude, String location) {
         flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
-        Assert.assertFalse(airportService.airportExists(location));
+        Assert.assertFalse(airportService.dataExists(location));
         Assert.assertEquals(-4, flightData.checkValues());
     }
 
