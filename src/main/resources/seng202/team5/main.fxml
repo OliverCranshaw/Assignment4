@@ -602,7 +602,7 @@
                                                 <TextField fx:id="routeCodeshare" layoutX="390.0" layoutY="78.0" />
                                                 <TextField fx:id="routeStops" layoutX="390.0" layoutY="112.0" />
                                                 <TextField fx:id="routeEquip" layoutX="390.0" layoutY="146.0" />
-                                                <Button layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" text="Save" />
+                                                <Button fx:id="routeSaveBtn" layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" text="Save" />
                                                 <Button fx:id="routeCancelBtn" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteCancelBtnPressed" text="Cancel Modify" />
                                              </children></AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />

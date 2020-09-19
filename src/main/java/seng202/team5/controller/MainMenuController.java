@@ -409,6 +409,12 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button airlineCancelBtn;
 
+    @FXML
+    private Button routeSaveBtn;
+
+    @FXML
+    private Button routeCancelBtn;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -590,7 +596,21 @@ public class MainMenuController implements Initializable {
         airportCancelBtn.setVisible(false);
         airlineSaveBtn.setVisible(false);
         airlineCancelBtn.setVisible(false);
+        routeSaveBtn.setVisible(false);
+        routeCancelBtn.setVisible(false);
 
+        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
+                routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
+                airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
+                airportAltitude, airportTimezone, airportDST, airportTZ);
+        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
+        List<Label> lblElements = Arrays.asList(lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
+                lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip, lblAirlineID, lblAirlineName, lblAirlineAlias,
+                lblAirlineIATA, lblAirlineICAO, lblAirlineCallsign, lblAirlineCountry, lblAirlineActive, lblAirportID, lblAirportName, lblAirportCity, lblAirportCountry, lblAirportIATA, lblAirportICAO, lblAirportLatitude, lblAirportLongitude,
+                lblAirportAltitude, lblAirportTimezone, lblAirportDST, lblAirportTZ);
+        ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
+        setFieldsEmpty(elementsVisible);
+        setLabelsEmpty(lblElementsVisible, false);
 
     }
 
@@ -1367,11 +1387,12 @@ public class MainMenuController implements Initializable {
         setAirlineElementsEditable(true);
         airlineSaveBtn.setVisible(true);
         airlineCancelBtn.setVisible(true);
-        System.out.println("Pressed");
     }
 
     public void onModifyRouteBtnPressed(ActionEvent actionEvent) {
         setRouteElementsEditable(true);
+        routeSaveBtn.setVisible(true);
+        routeCancelBtn.setVisible(true);
     }
 
     public void onModifyAirportBtnPressed(ActionEvent actionEvent) {
@@ -1401,7 +1422,7 @@ public class MainMenuController implements Initializable {
 
 
     public void setRouteElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
+        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeDepAirport, routeDesAirport,
                 routeCodeshare, routeStops, routeEquip);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         setElementsEditable(elementsVisible, bool);
@@ -1456,8 +1477,26 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
-    public void onRouteSaveBtnPressed(ActionEvent event) {
-
+    public void onRouteSaveBtnPressed(ActionEvent event) throws SQLException {
+        Integer id = Integer.parseInt(routeID.getText());
+        String airline = routeAirline.getText();
+        Integer airlineID = Integer.parseInt(routeAirlineID.getText());
+        String srcAirport = routeDepAirport.getText();
+        Integer srcAirportID = Integer.parseInt(routeDepAirportID.getText());
+        String dstAirport = routeDesAirport.getText();
+        Integer dstAirportID = Integer.parseInt(routeDesAirportID.getText());
+        String codeShare = routeCodeshare.getText();
+        Integer stops = Integer.parseInt(routeStops.getText());
+        String equipment = routeEquip.getText();
+        int result = routeService.update(id, airline, srcAirport, dstAirport, codeShare, stops, equipment);
+        if (result > 0) {
+            updateRouteTable();
+        } else {
+            //TODO Error message
+        }
+        setRouteElementsEditable(false);
+        routeSaveBtn.setVisible(false);
+        routeCancelBtn.setVisible(false);
     }
 
 
