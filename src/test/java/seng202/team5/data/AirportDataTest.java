@@ -66,7 +66,7 @@ public class AirportDataTest {
         String altitude = "554";
         String timezone = "53";
         String dst = "S";
-        String tz = "tzTime";
+        String tz = "Auckland/New Zealand";
 
         AirportData test = new AirportData(airport, city, country, iata, icao, latitude,
                 longitude, altitude, timezone, dst, tz);

@@ -72,12 +72,12 @@ public class DataExporterTest {
 
     @Test
     public void exportAirlinesTest() {
-        File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
+        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
 
-        dataExporter.exportAirlines("src/test/java/data/", "airlines.csv");
+        dataExporter.exportAirlines(new File ("src/test/java/seng202/team5/data/airlines.csv"));
 
-        airlineFile = new File("src/test/java/data/airlines.csv");
+        airlineFile = new File("src/test/java/seng202/team5/data/airlines.csv");
 
         assertTrue(airlineFile.exists());
 
@@ -111,12 +111,12 @@ public class DataExporterTest {
 
     @Test
     public void exportAirportsTest() {
-        File airportFile = new File("src/test/java/data/testfiles/airports.txt");
+        File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        dataExporter.exportAirports("src/test/java/data/", "airports.csv");
+        dataExporter.exportAirports(new File("src/test/java/seng202/team5/data/airports.csv"));
 
-        airportFile = new File("src/test/java/data/airports.csv");
+        airportFile = new File("src/test/java/seng202/team5/data/airports.csv");
 
         assertTrue(airportFile.exists());
 
@@ -152,19 +152,19 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightTest() {
-        File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
+        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
-        File airportFile = new File("src/test/java/data/testfiles/airports.txt");
+        File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        File flightFile = new File("src/test/java/data/testfiles/normal_flight.txt");
+        File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
-        flightFile = new File("src/test/java/data/testfiles/normal_flight_entry.txt");
+        flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
         readFile.readFlightData(flightFile);
 
-        dataExporter.exportFlight(1, "src/test/java/data/", "flight-NZCH-WSSS.csv");
+        dataExporter.exportFlight(1, new File ("src/test/java/seng202/team5/data/flight-NZCH-WSSS.csv"));
 
-        flightFile = new File("src/test/java/data/flight-NZCH-WSSS.csv");
+        flightFile = new File("src/test/java/seng202/team5/data/flight-NZCH-WSSS.csv");
 
         assertTrue(flightFile.exists());
 
@@ -197,19 +197,19 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightsTest() {
-        File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
+        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
-        File airportFile = new File("src/test/java/data/testfiles/airports.txt");
+        File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        File flightFile = new File("src/test/java/data/testfiles/normal_flight.txt");
+        File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
-        flightFile = new File("src/test/java/data/testfiles/normal_flight_entry.txt");
+        flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
         readFile.readFlightData(flightFile);
 
-        dataExporter.exportFlights("src/test/java/data/", "flights.csv");
+        dataExporter.exportFlights(new File("src/test/java/seng202/team5/data/flights.csv"));
 
-        flightFile = new File("src/test/java/data/flights.csv");
+        flightFile = new File("src/test/java/seng202/team5/data/flights.csv");
 
         assertTrue(flightFile.exists());
 
@@ -242,17 +242,17 @@ public class DataExporterTest {
 
     @Test
     public void exportRoutesTest() {
-        File airlineFile = new File("src/test/java/data/testfiles/airlines.txt");
+        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
-        File airportFile = new File("src/test/java/data/testfiles/airports.txt");
+        File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        File routeFile = new File("src/test/java/data/testfiles/normal_routes_multiple.txt");
+        File routeFile = new File("src/test/java/seng202/team5/data/testfiles/normal_routes_multiple.txt");
         readFile.readRouteData(routeFile);
 
-        dataExporter.exportRoutes("src/test/java/data/", "routes.csv");
+        dataExporter.exportRoutes(new File("src/test/java/seng202/team5/data/routes.csv"));
 
-        routeFile = new File("src/test/java/data/routes.csv");
+        routeFile = new File("src/test/java/seng202/team5/data/routes.csv");
 
         assertTrue(routeFile.exists());
 
