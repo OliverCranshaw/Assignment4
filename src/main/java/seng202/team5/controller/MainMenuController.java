@@ -727,6 +727,51 @@ public class MainMenuController implements Initializable {
             }
         });
 
+        searchTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+
+            if (flightsRadioButton.isSelected()) {
+                if (newSelection != null) {
+                    FlightModel selected = (FlightModel) newSelection;
+                    try {
+                        setSearchFlightSingleRecord(selected);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            } else if (airlinesRadioButton.isSelected()) {
+                if (newSelection != null) {
+                    AirlineModel selected = (AirlineModel) newSelection;
+                    try {
+                        setSearchAirlineSingleRecord(selected);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            } else if (airportsRadioButton.isSelected()) {
+                if (newSelection != null) {
+                    AirportModel selected = (AirportModel) newSelection;
+                    try {
+                        setSearchAirportSingleRecord(selected);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            } else if (routesRadioButton.isSelected()) {
+                if (newSelection != null) {
+                    RouteModel selected = (RouteModel) newSelection;
+                    try {
+                        setSearchRouteSingleRecord(selected);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
         try {
             setFlightSingleRecord(null);
         } catch (SQLException throwables) {
