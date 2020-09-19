@@ -37,8 +37,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
         stmt.executeUpdate();
 
-        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
-        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
         Assert.assertEquals(0, airportService.update(10, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
         Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
     }

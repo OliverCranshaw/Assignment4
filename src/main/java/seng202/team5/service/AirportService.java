@@ -3,6 +3,7 @@ package seng202.team5.service;
 import seng202.team5.accessor.AirportAccessor;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -77,15 +78,27 @@ public class AirportService implements Service {
      * @return int result The airport_id of the airport that was just updated by the AirportAccessor.
      */
     public int update(int id, String new_name, String new_city, String new_country, String new_iata,
-                      String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                      float new_timezone, String new_dst, String new_tz) {
+                      String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
+                      Float new_timezone, String new_dst, String new_tz) throws SQLException {
+        ResultSet currentContent = getData(id);
+        // Check for whether there exists an entry for this airport id in the database
+        if (!currentContent.next()) {
+            return 0; // 0 rows were updated
+        }
+
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        if (!iataIsValid(new_iata)) {
-            return -1;
+        String currIATA = currentContent.getString(5);
+        String currICAO = currentContent.getString(6);
+        if (!currIATA.equals(new_iata)) {
+            if (!iataIsValid(new_iata)) {
+                return -1;
+            }
         }
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
-        if (!icaoIsValid(new_icao)) {
-            return -1;
+        if (!currICAO.equals(new_icao)) {
+            if (!icaoIsValid(new_icao)) {
+                return -1;
+            }
         }
         // Passes the parameters into the update method of the AirportAccessor
         return accessor.update(id, new_name, new_city, new_country, new_iata, new_icao, new_latitude,

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,76 +81,95 @@ public class RouteAccessor implements Accessor {
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
      * @return int result The number of rows modified or -1 for error
      */
-    public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
-                      String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
+    public int update(int id, String new_airline, Integer new_airline_id, String new_source_airport, Integer new_source_airport_id,
+                      String new_dest_airport, Integer new_dest_airport_id, String new_codeshare, Integer new_stops, String new_equipment) {
         int result;
-        ArrayList<Object> elements = new ArrayList<>();
+        List<Object> element = Arrays.asList(new_airline, new_airline_id, new_source_airport, new_source_airport_id, new_dest_airport,
+                new_dest_airport_id, new_codeshare, new_stops, new_equipment);
+        ArrayList<Object> elements = new ArrayList<>(element);
         String search = "UPDATE ROUTE_DATA SET ";
-
-        // Checks one by one if any of the parameters are null
-        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
+        search = search + "airline = ?, airline_id = ?, source_airport = ?, source_airport_id = ?, destination_airport =? , destination_airport_id = ?"
+                + ", codeshare = ?, stops = ?, equipment = ? WHERE route_id = ?";
         try {
-            if (new_airline != null) {
-                search = search + "airline = ?, airline_id = ?, ";
-                elements.add(new_airline);
-                elements.add(new_airline_id);
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            for (int i = 0; i < elements.size(); i++) {
+                stmt.setObject(i+1, elements.get(i));
             }
-            if (new_source_airport != null) {
-                search = search + "source_airport = ?, source_airport_id = ?, ";
-                elements.add(new_source_airport);
-                elements.add(new_source_airport_id);
-            }
-            if (new_dest_airport != null) {
-                search = search + "destination_airport = ?, destination_airport_id = ?, ";
-                elements.add(new_dest_airport);
-                elements.add(new_dest_airport_id);
-            }
-            if (new_codeshare != null) {
-                search = search + "codeshare = ?, ";
-                elements.add(new_codeshare);
-            }
-            if (new_stops != -1) {
-                search = search + "stops = ?, ";
-                elements.add(new_stops);
-            }
-            if (new_equipment != null) {
-                search = search + "equipment = ? ";
-                elements.add(new_equipment);
-            }
-
-            // Checks if there are any elements in the ArrayList
-            // If there are not, the result is set to an error code of -2
-            if (elements.size() == 0) {
-                result = -2;
-            } else {
-                // Checks if the query ends with a comma (happens if equipment is not to be updated)
-                // If it does, removes it
-                // Adds the WHERE clause to the query, which is route_id
-                if (search.endsWith(", ")) {
-                    search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
-                } else {
-                    search = search + "WHERE route_id = ?";
-                }
-                elements.add(id);
-
-                PreparedStatement stmt = dbHandler.prepareStatement(search);
-                // Iterates through the ArrayList and adds each value to the query
-                int index = 1;
-                for (Object element: elements) {
-                    stmt.setObject(index, element);
-                    index++;
-                }
-                // Executes the update and sets result to the airport_id of the airport just updated
-                result = stmt.executeUpdate();
-            }
-        } catch (Exception e) {
+            stmt.setObject(elements.size()+1, id);
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints out an error message
             result = -1;
             System.out.println("Unable to update route data with id " + id);
             System.out.println(e.getMessage());
         }
-
         return result;
+
+//
+//
+//        // Checks one by one if any of the parameters are null
+//        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
+//        try {
+//            if (new_airline != null) {
+//                search = search + "airline = ?, airline_id = ?, ";
+//                elements.add(new_airline);
+//                elements.add(new_airline_id);
+//            }
+//            if (new_source_airport != null) {
+//                search = search + "source_airport = ?, source_airport_id = ?, ";
+//                elements.add(new_source_airport);
+//                elements.add(new_source_airport_id);
+//            }
+//            if (new_dest_airport != null) {
+//                search = search + "destination_airport = ?, destination_airport_id = ?, ";
+//                elements.add(new_dest_airport);
+//                elements.add(new_dest_airport_id);
+//            }
+//            if (new_codeshare != null) {
+//                search = search + "codeshare = ?, ";
+//                elements.add(new_codeshare);
+//            }
+//            if (new_stops != -1) {
+//                search = search + "stops = ?, ";
+//                elements.add(new_stops);
+//            }
+//            if (new_equipment != null) {
+//                search = search + "equipment = ? ";
+//                elements.add(new_equipment);
+//            }
+//            // Checks if there are any elements in the ArrayList
+//            // If there are not, the result is set to an error code of -2
+//            if (elements.size() == 0) {
+//                result = -2;
+//            } else {
+//                // Checks if the query ends with a comma (happens if equipment is not to be updated)
+//                // If it does, removes it
+//                // Adds the WHERE clause to the query, which is route_id
+//                if (search.endsWith(", ")) {
+//                    search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
+//                } else {
+//                    search = search + "WHERE route_id = ?";
+//                }
+//                elements.add(id);
+//
+//                PreparedStatement stmt = dbHandler.prepareStatement(search);
+//                // Iterates through the ArrayList and adds each value to the query
+//                int index = 1;
+//                for (Object element: elements) {
+//                    stmt.setObject(index, element);
+//                    index++;
+//                }
+//                // Executes the update and sets result to the airport_id of the airport just updated
+//                result = stmt.executeUpdate();
+//            }
+//        } catch (Exception e) {
+//            // If any of the above fails, sets result to the error code -1 and prints out an error message
+//            result = -1;
+//            System.out.println("Unable to update route data with id " + id);
+//            System.out.println(e.getMessage());
+//        }
+//
+//        return result;
     }
 
     /**
