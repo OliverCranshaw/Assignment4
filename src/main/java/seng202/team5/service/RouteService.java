@@ -87,8 +87,11 @@ public class RouteService implements Service {
         int new_source_airport_id = -1;
         int new_dest_airport_id = -1;
 
-        RouteService routeService = new RouteService();
-        ResultSet data = routeService.getData(id);
+        ResultSet data = getData(id);
+        // Check for whether there exists an entry for this route id in the database
+        if (!data.next()) {
+            return 0; // 0 rows were updated
+        }
 
 
         String currAirline = data.getString(2);

@@ -68,10 +68,15 @@ public class AirlineService implements Service {
      */
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
                       String new_callsign, String new_country, String new_active) throws SQLException {
+        ResultSet currentContent = getData(id);
+        // Check for whether there exists an entry for this airline id in the database
+        if (!currentContent.next()) {
+            return 0; // 0 rows were updated
+        }
+
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        AirlineService airlineService = new AirlineService();
-        String currIATA = airlineService.getData(id).getString(4);
-        String currICAO = airlineService.getData(id).getString(5);
+        String currIATA = currentContent.getString(4);
+        String currICAO = currentContent.getString(5);
         if (currIATA == null || (!currIATA.equals(new_iata))) {
             if (!iataIsValid(new_iata)) {
                 return -1;

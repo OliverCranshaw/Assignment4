@@ -80,10 +80,15 @@ public class AirportService implements Service {
     public int update(int id, String new_name, String new_city, String new_country, String new_iata,
                       String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
                       Float new_timezone, String new_dst, String new_tz) throws SQLException {
+        ResultSet currentContent = getData(id);
+        // Check for whether there exists an entry for this airport id in the database
+        if (!currentContent.next()) {
+            return 0; // 0 rows were updated
+        }
+
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        AirportService airportService = new AirportService();
-        String currIATA = airportService.getData(id).getString(5);
-        String currICAO = airportService.getData(id).getString(6);
+        String currIATA = currentContent.getString(5);
+        String currICAO = currentContent.getString(6);
         if (!currIATA.equals(new_iata)) {
             if (!iataIsValid(new_iata)) {
                 return -1;
