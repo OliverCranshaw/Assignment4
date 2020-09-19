@@ -7,6 +7,7 @@ import seng202.team5.database.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AirportServiceTest extends BaseDatabaseTest {
@@ -19,6 +20,27 @@ public class AirportServiceTest extends BaseDatabaseTest {
     public void setUp() {
         super.setUp();
         airportService = new AirportService();
+    }
+
+
+    @Test
+    public void testUpdateAirport() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i+1, testData.get(i));
+        }
+        stmt.executeUpdate();
+
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAT", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(-1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAO", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(0, airportService.update(10, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
     }
 
 
@@ -141,7 +163,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testAddAirport() throws SQLException {
+    public void testSaveAirport() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
         List<Object> testData2 = new ArrayList<>(testData);
@@ -189,5 +211,65 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
 
         dbHandler.close();
+    }
+
+
+    @Test
+    public void testDeleteAirport() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i+1, testData.get(i));
+        }
+        stmt.executeUpdate();
+
+        // Performs the delete operation
+        Assert.assertTrue(airportService.delete(1));
+
+        // Checks that the airport has been deleted
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "SELECT * FROM AIRPORT_DATA");
+        ResultSet resultSet = stmt2.executeQuery();
+        Assert.assertFalse(resultSet.next());
+    }
+
+
+    @Test
+    public void testIataIsValid() {
+        Assert.assertTrue(airportService.iataIsValid(null));
+        Assert.assertTrue(airportService.iataIsValid("IAT"));
+    }
+
+
+    @Test
+    public void testIcaoIsValid() {
+        Assert.assertTrue(airportService.icaoIsValid(null));
+        Assert.assertTrue(airportService.icaoIsValid("IACO"));
+    }
+
+
+    @Test
+    public void testGetMaxID() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        for (int i = 0; i<3; i++) {
+            // Adds an airport
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int j = 0; j<testData.size(); j++) {
+                stmt.setObject(j+1, testData.get(j));
+            }
+            stmt.executeUpdate();
+
+            // Checks maximum ID against expected value
+            Assert.assertEquals(i + 1, airportService.getMaxID());
+        }
     }
 }

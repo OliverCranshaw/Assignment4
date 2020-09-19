@@ -195,7 +195,7 @@ public class AddDataTest {
         id = concreteAddData.addFlightEntry(1, "VOR", "", "0", "-43.4866", "172.534");
         assertEquals(-4, id);
 
-        id = concreteAddData.addFlightEntry(1, "APT", "NZ", "0", "-43.4866", "172.534");
+        id = concreteAddData.addFlightEntry(1, "FIX", "", "0", "-43.4866", "172.534");
         assertEquals(-4, id);
 
         id = concreteAddData.addFlightEntry(1, "FIX", "NZC", "", "-43.4866", "172.534");
