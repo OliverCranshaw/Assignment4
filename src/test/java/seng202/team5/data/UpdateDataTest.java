@@ -64,7 +64,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
         assert airportService.save("Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone") != -1;
         int id = airportService.getMaxID(); // Hmmm
 
-        List<Object> newFields = List.of("New name", "New England", "There", "ATI", "AOCI", 3.0, 4.0, 17, 21.0f, "A", "Sometime");
+        List<Object> newFields = List.of("New name", "New England", "There", "ATI", "AOCI", 3.0, 4.0, 17, 21.0f, "A", "Somewhere/Sometime");
         int result = updateData.updateAirport(
                 1,
                 (String)newFields.get(0),
@@ -79,6 +79,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
                 (String)newFields.get(9),
                 (String)newFields.get(10)
         );
+        System.out.println("Result is " + result);
         Assert.assertTrue(result >= 0);
 
         ResultSet resultSet = airportService.getData(id);
