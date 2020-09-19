@@ -118,6 +118,15 @@ public class AirlineService implements Service {
     }
 
     /**
+     * Retrieves all airlines withe the given IATA or ICAO
+     * @param code IATA or ICAO of an airline
+     * @return ResultSet of airline.
+     */
+    public ResultSet getData(String code) {
+        return accessor.getData(code);
+    }
+
+    /**
      * Checks if the airline with the provided IATA/ICAO exists.
      *
      * @param code IATA or ICAO of an airline.

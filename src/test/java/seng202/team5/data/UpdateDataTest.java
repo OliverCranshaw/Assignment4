@@ -96,29 +96,29 @@ public class UpdateDataTest extends BaseDatabaseTest {
 
     @Test
     public void testUpdateAirportFailed() {
-        Assert.assertEquals(-2, updateData.updateAirport(1234, "", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-2, updateData.updateAirport(1234, null, "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
+        Assert.assertEquals(-2, updateData.updateAirport(1234, "", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-2, updateData.updateAirport(1234, null, "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
-        Assert.assertEquals(-3, updateData.updateAirport(1234, "Airport Name", "", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-3, updateData.updateAirport(1234, "Airport Name", null, "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
+        Assert.assertEquals(-3, updateData.updateAirport(1234, "Airport Name", "", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-3, updateData.updateAirport(1234, "Airport Name", null, "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
-        Assert.assertEquals(-4, updateData.updateAirport(1234, "Airport Name", "England", "", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-4, updateData.updateAirport(1234, "Airport Name", "England", null, "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
+        Assert.assertEquals(-4, updateData.updateAirport(1234, "Airport Name", "England", "", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-4, updateData.updateAirport(1234, "Airport Name", "England", null, "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
-        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "I", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IA", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IATA", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone"));
+        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "I", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IA", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-5, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IATA", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
-        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "I", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "IC", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICA", 1.0, 2.0,15, 7, "E", "Timey zone"));
-        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAOO", 1.0, 2.0,15, 7, "E", "Timey zone"));
+        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "I", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "IC", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICA", 1.0, 2.0,15, 7f, "E", "Timey zone"));
+        Assert.assertEquals(-6, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAOO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
-        Assert.assertEquals(-11, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "Y", "Timey zone"));
-        Assert.assertEquals(-11, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "EA", "Timey zone"));
+        Assert.assertEquals(-11, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "Y", "Timey zone"));
+        Assert.assertEquals(-11, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "EA", "Timey zone"));
 
-        Assert.assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", ""));
-        Assert.assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", null));
+        Assert.assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", ""));
+        Assert.assertEquals(-12, updateData.updateAirport(1234, "Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", null));
     }
 
 

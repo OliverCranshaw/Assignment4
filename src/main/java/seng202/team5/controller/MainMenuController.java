@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
+import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.table.Search;
 import seng202.team5.data.DataExporter;
 import seng202.team5.service.AirlineService;
@@ -1418,7 +1419,7 @@ public class MainMenuController implements Initializable {
 
 
     public void setRouteElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeDepAirport, routeDesAirport,
+        List<TextField> elements = Arrays.asList(routeAirline, routeDepAirport, routeDesAirport,
                 routeCodeshare, routeStops, routeEquip);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         setElementsEditable(elementsVisible, bool);
@@ -1434,17 +1435,41 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onAirportSaveBtnPressed(ActionEvent event) throws SQLException {
         Integer id = Integer.parseInt(airportID.getText());
-        Double latitude = Double.parseDouble(airportLatitude.getText());
-        Double longitude = Double.parseDouble(airportLongitude.getText());
-        Integer altitude = Integer.parseInt(airportAltitude.getText());
-        float timezone = Float.parseFloat(airportTimezone.getText());
-        int result = airportService.update(id, airportName.getText(), airportCity.getText(),
-                airportCountry.getText(), airportIATA.getText(), airportICAO.getText(), latitude, longitude,
-                altitude, timezone, airportDST.getText(), airportTZ.getText());
-        System.out.println(result);
-        if (result > 0) {
-            updateAirportTable();
+        ResultSet currData = airportService.getData(id);
+        List<Object> elementList = Arrays.asList(currData.getString(2), currData.getString(3), currData.getString(4),
+                currData.getString(5), currData.getString(6), currData.getDouble(7), currData.getDouble(8),
+                currData.getInt(9), currData.getFloat(10), currData.getString(11), currData.getString(12));
+        ArrayList<Object> currElements = new ArrayList<Object>(elementList);
+        List<Object> elementList2 = null;
+        try {
+            elementList2 = Arrays.asList(airportName.getText(), airportCity.getText(), airportCountry.getText(), airportIATA.getText(), airportICAO.getText(),
+                    Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), Integer.parseInt(airportAltitude.getText()),
+                    Float.parseFloat(airportTimezone.getText()), airportDST.getText(), airportTZ.getText());
+        } catch (NumberFormatException e) {
+
         }
+        if (elementList2 != null) {
+            ArrayList<Object> newElements = new ArrayList<>(elementList2);
+            ArrayList<Object> toPassOn = new ArrayList<>();
+
+            for (int i = 0; i < currElements.size(); i++) {
+                toPassOn.add((currElements.get(i).equals(newElements.get(i))) ? null : newElements.get(i));
+            }
+
+            int result = airportService.update(id, (String) toPassOn.get(0), (String) toPassOn.get(1), (String) toPassOn.get(2), (String) toPassOn.get(3),
+                    (String) toPassOn.get(4), (Double) toPassOn.get(5), (Double) toPassOn.get(6), (toPassOn.get(7) == null) ? -1 : (Integer) toPassOn.get(7), (Float) toPassOn.get(8),
+                    (String) toPassOn.get(9), (String) toPassOn.get(10));
+
+            if (result > 0) {
+                updateAirportTable();
+            } else {
+                // TODO error handling
+            }
+        } else {
+            // TODO error handling
+        }
+
+
         setAirportElementsEditable(false);
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
@@ -1453,19 +1478,37 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onAirlineSaveBtnPressed(ActionEvent event) throws SQLException {
         Integer id = Integer.parseInt(airlineID.getText());
-        String name = (airlineName.getText() != null) ? airlineName.getText() : null;
-        String alias = (airlineAlias.getText() != null) ? airlineAlias.getText() : null;
-        String IATA = (airlineIATA.getText() != null) ? airlineIATA.getText() : null;
-        String ICAO = (airlineICAO.getText() != null) ? airlineICAO.getText() : null;
-        String callsign = (airlineCallsign.getText() != null) ? airlineCallsign.getText() : null;
-        String country = (airlineCountry.getText() != null) ? airlineCountry.getText() : null;
-        String active = (airlineActive.getText() != null) ? airlineActive.getText() : null;
-        int result = airlineService.update(id, name, alias, IATA, ICAO, callsign, country, active);
-        System.out.println("Id: " + id + ". Alias: " + alias + ". IATA: " + IATA + ". ICAO: " + ICAO + ". callsign: " + callsign + ". country: " + country + ". active: " + active);
-        System.out.println("Result: " + result);
+        ResultSet currData = airlineService.getData(id);
+        List<String> elementList = Arrays.asList(currData.getString(2), currData.getString(3), currData.getString(4),
+                currData.getString(5), currData.getString(6), currData.getString(7), currData.getString(8));
+        ArrayList<String> currElements = new ArrayList<String>(elementList);
+        List<String> elementList2 = Arrays.asList(airlineName.getText(), airlineAlias.getText(), airlineIATA.getText(), airlineICAO.getText(),
+                airlineCallsign.getText(), airlineCountry.getText(), airlineActive.getText());
+        ArrayList<String> newElements = new ArrayList<>(elementList2);
+
+        ArrayList<String> toPassOn = new ArrayList<>();
+
+        for (int i = 0; i < currElements.size(); i++) {
+            if (currElements.get(i) == null) {
+                if (newElements.get(i) == null || newElements.get(i).equals("")) {
+                    toPassOn.add(null);
+                } else {
+                    toPassOn.add(newElements.get(i));
+                }
+            } else {
+                toPassOn.add((currElements.get(i).equals(newElements.get(i))) ? null : newElements.get(i));
+            }
+
+        }
+
+        int result = airlineService.update(id, toPassOn.get(0), toPassOn.get(1), toPassOn.get(2), toPassOn.get(3), toPassOn.get(4),
+                toPassOn.get(5), toPassOn.get(6));
+
 
         if (result > 0) {
             updateAirlineTable();
+        } else {
+            // TODO error handling
         }
         setAirlineElementsEditable(false);
         airlineSaveBtn.setVisible(false);
@@ -1475,22 +1518,57 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onRouteSaveBtnPressed(ActionEvent event) throws SQLException {
         Integer id = Integer.parseInt(routeID.getText());
-        String airline = routeAirline.getText();
-        Integer airlineID = Integer.parseInt(routeAirlineID.getText());
-        String srcAirport = routeDepAirport.getText();
-        Integer srcAirportID = Integer.parseInt(routeDepAirportID.getText());
-        String dstAirport = routeDesAirport.getText();
-        Integer dstAirportID = Integer.parseInt(routeDesAirportID.getText());
-        String codeShare = routeCodeshare.getText();
-        Integer stops = Integer.parseInt(routeStops.getText());
-        String equipment = routeEquip.getText();
-        int result = routeService.update(id, airline, srcAirport, dstAirport, codeShare, stops, equipment);
+        ResultSet currData = routeService.getData(id);
+        List<Object> elementsList = Arrays.asList(currData.getString(2), currData.getString(4), currData.getString(6),
+                currData.getString(8), currData.getInt(9), currData.getString(10));
+        ArrayList<Object> currElements = new ArrayList<>(elementsList);
+        List<Object> elementsList2 = null;
+        try {
+            elementsList2 = Arrays.asList(routeAirline.getText(), routeDepAirport.getText(), routeDesAirport.getText(), routeCodeshare.getText(),
+                    Integer.parseInt(routeStops.getText()), routeEquip.getText());
+        } catch (NumberFormatException e) {
 
-        if (result > 0) {
-            updateRouteTable();
-        } else {
-            //TODO Error message
         }
+        if (elementsList2 != null) {
+            ArrayList<Object> newElements = new ArrayList<>(elementsList2);
+            ArrayList<Object> toPassOn = new ArrayList<>();
+
+            for (int i = 0; i < newElements.size(); i++) {
+                if (currElements.get(i) == null) {
+                    if (newElements.get(i) == null || newElements.get(i).equals("")) {
+                        toPassOn.add(null);
+                    } else {
+                        toPassOn.add(newElements.get(i));
+                    }
+                } else {
+                    toPassOn.add((currElements.get(i).equals(newElements.get(i))) ? null : newElements.get(i));
+                }
+            }
+
+            int result = routeService.update(id, (String) toPassOn.get(0), (String) toPassOn.get(1), (String) toPassOn.get(2),
+                    (String) toPassOn.get(3), (toPassOn.get(4) == null) ? -1 : (Integer) toPassOn.get(4), (String) toPassOn.get(5));
+
+            if (result > 0) {
+                updateRouteTable();
+                if (toPassOn.get(0) != null) {
+                    ResultSet data = airlineService.getData((String) toPassOn.get(0), null, null);
+
+                }
+                if (toPassOn.get(1) != null) {
+
+                }
+                if (toPassOn.get(2) != null) {
+
+                }
+            } else {
+                // TODO error handling
+            }
+
+
+        } else {
+            // TODO error handling
+        }
+
         setRouteElementsEditable(false);
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
@@ -1513,6 +1591,10 @@ public class MainMenuController implements Initializable {
         airlineSaveBtn.setVisible(false);
     }
 
-    public void onRouteCancelBtnPressed(ActionEvent actionEvent) {
+    public void onRouteCancelBtnPressed(ActionEvent actionEvent) throws SQLException {
+        setRouteElementsEditable(false);
+        setRouteSingleRecord((RouteModel)routeTableView.getSelectionModel().getSelectedItem());
+        routeCancelBtn.setVisible(false);
+        routeSaveBtn.setVisible(false);
     }
 }

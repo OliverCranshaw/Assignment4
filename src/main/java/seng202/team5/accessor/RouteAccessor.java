@@ -80,8 +80,8 @@ public class RouteAccessor implements Accessor {
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
      * @return int result The number of rows modified or -1 for error
      */
-    public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
-                      String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
+    public int update(int id, String new_airline, Integer new_airline_id, String new_source_airport, Integer new_source_airport_id,
+                      String new_dest_airport, Integer new_dest_airport_id, String new_codeshare, Integer new_stops, String new_equipment) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE ROUTE_DATA SET ";
@@ -116,7 +116,6 @@ public class RouteAccessor implements Accessor {
                 search = search + "equipment = ? ";
                 elements.add(new_equipment);
             }
-
             // Checks if there are any elements in the ArrayList
             // If there are not, the result is set to an error code of -2
             if (elements.size() == 0) {

@@ -41,8 +41,8 @@ public abstract class UpdateData {
      * @return int The airport_id of the airport that was just updated by the AirportService.
      */
     public abstract int updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
-                                       String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                                       float new_timezone, String new_dst, String new_tz);
+                                       String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
+                                       Float new_timezone, String new_dst, String new_tz);
 
     /**
      * Ensures validity of parameters, passes them into the updateFlight method of FlightService.

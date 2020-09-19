@@ -83,7 +83,7 @@ public class AirportAccessor implements Accessor {
      * @return int result The number of rows modified or -1 for error.
      */
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
-                      double new_latitude, double new_longitude, int new_altitude, float new_timezone, String new_dst, String new_tz) {
+                      Double new_latitude, Double new_longitude, Integer new_altitude, Float new_timezone, String new_dst, String new_tz) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE AIRPORT_DATA SET "; // The start of the SQL update statement
@@ -111,19 +111,19 @@ public class AirportAccessor implements Accessor {
                 search = search + "icao = ?, ";
                 elements.add(new_icao);
             }
-            if (new_latitude != -1) {
+            if (new_latitude != null) {
                 search = search + "latitude = ?, ";
                 elements.add(new_latitude);
             }
-            if (new_longitude != -1) {
+            if (new_longitude != null) {
                 search = search + "longitude = ?, ";
                 elements.add(new_longitude);
             }
-            if (new_altitude != -1) {
+            if (new_altitude != null) {
                 search = search + "altitude = ?, ";
                 elements.add(new_altitude);
             }
-            if (new_timezone != -1) {
+            if (new_timezone != null) {
                 search = search + "timezone = ?, ";
                 elements.add(new_timezone);
             }
@@ -135,7 +135,6 @@ public class AirportAccessor implements Accessor {
                 search = search + "tz_database_timezone = ? ";
                 elements.add(new_tz);
             }
-
             // Checks if there are any elements in the ArrayList
             // If there are not, the result is set to an error code of -2
             if (elements.size() == 0) {
@@ -150,7 +149,6 @@ public class AirportAccessor implements Accessor {
                     search = search + "WHERE airport_id = ?";
                 }
                 elements.add(id);
-
                 PreparedStatement stmt = dbHandler.prepareStatement(search);
                 // Iterates through the ArrayList and adds each value to the query
                 int index = 1;

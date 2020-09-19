@@ -80,7 +80,7 @@ public class RouteService implements Service {
      * @return int result The route_id of the route that was just updated by the RouteAccessor.
      */
     public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
-                      String new_codeshare, int new_stops, String new_equipment) {
+                      String new_codeshare, Integer new_stops, String new_equipment) {
         int new_airline_id = -1;
         int new_source_airport_id = -1;
         int new_dest_airport_id = -1;

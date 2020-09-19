@@ -70,8 +70,8 @@ public class ConcreteUpdateData extends UpdateData {
      */
     @Override
     public int updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
-                              String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                              float new_timezone, String new_dst, String new_tz) {
+                              String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
+                              Float new_timezone, String new_dst, String new_tz) {
         AirportData airportData = new AirportData(new_name, new_city, new_country, new_iata, new_icao, new_latitude, new_longitude, new_altitude, new_timezone, new_dst, new_tz);
         airportData.convertBlanksToNull();
 

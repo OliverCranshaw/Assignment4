@@ -77,12 +77,13 @@ public class AirportService implements Service {
      * @return int result The airport_id of the airport that was just updated by the AirportAccessor.
      */
     public int update(int id, String new_name, String new_city, String new_country, String new_iata,
-                      String new_icao, double new_latitude, double new_longitude, int new_altitude,
-                      float new_timezone, String new_dst, String new_tz) {
+                      String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
+                      Float new_timezone, String new_dst, String new_tz) {
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
         if (!iataIsValid(new_iata)) {
             return -1;
         }
+
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
         if (!icaoIsValid(new_icao)) {
             return -1;
