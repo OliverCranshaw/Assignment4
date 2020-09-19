@@ -24,7 +24,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
     @Test
     public void testGetAirlinesEmpty() throws SQLException {
-        ResultSet resultSet = airlineService.getAirlines(null, null, null);
+        ResultSet resultSet = airlineService.getData(null, null, null);
         Assert.assertFalse(resultSet.next());
     }
 
@@ -54,7 +54,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
                 for (String testCallsign : new String[]{null, callsign, "Not"+callsign}) {
                     boolean validCallsign = testCallsign == null || testCallsign.equals(callsign);
 
-                    ResultSet resultSet = airlineService.getAirlines(testName, testCountry, testCallsign);
+                    ResultSet resultSet = airlineService.getData(testName, testCountry, testCallsign);
 
                     String combination = new StringBuilder()
                             .append("name=")
@@ -111,7 +111,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
         for (int i = 0; i<3; i++) {
             int key = keys.get(i);
-            ResultSet resultSet = airlineService.getAirline(key);
+            ResultSet resultSet = airlineService.getData(key);
             Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
@@ -141,7 +141,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         testData2.set(3, "XYZ");
 
         for (List<String> entry : List.of(testData, testData2)) {
-            int res = airlineService.saveAirline(
+            int res = airlineService.save(
                     entry.get(0),
                     entry.get(1),
                     entry.get(2),

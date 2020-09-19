@@ -24,7 +24,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
     @Test
     public void testGetAirportsEmpty() throws SQLException {
-        ResultSet resultSet = airportService.getAirports(null, null, null);
+        ResultSet resultSet = airportService.getData(null, null, null);
         Assert.assertFalse(resultSet.next());
     }
 
@@ -55,7 +55,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 for (String testCountry : new String[]{null, country, "Not"+country}) {
                     boolean validCountry = testCountry == null || testCountry.equals(country);
 
-                    ResultSet resultSet = airportService.getAirports(testName, testCity, testCountry);
+                    ResultSet resultSet = airportService.getData(testName, testCity, testCountry);
 
                     String combination = new StringBuilder()
                             .append("name=")
@@ -116,7 +116,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
         for (int i = 0; i<3; i++) {
             int key = keys.get(i);
-            ResultSet resultSet = airportService.getAirport(key);
+            ResultSet resultSet = airportService.getData(key);
             Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
@@ -150,7 +150,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         testData2.set(4, "WXYZ");
 
         for (List<Object> entry : List.of(testData, testData2)) {
-            int res = airportService.saveAirport(
+            int res = airportService.save(
                     (String)entry.get(0),
                     (String)entry.get(1),
                     (String)entry.get(2),

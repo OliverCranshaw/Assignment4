@@ -10,8 +10,6 @@ import seng202.team5.service.RouteService;
  *
  * Overrides the updateAirline(), updateAirport(), updateFlightEntry(), updateFlight(), updateRoute() methods
  * of the UpdateData abstract class.
- *
- * @author Nathan Smithies
  */
 public class ConcreteUpdateData extends UpdateData {
 
@@ -35,9 +33,7 @@ public class ConcreteUpdateData extends UpdateData {
      * @param new_callsign The new callsign of the airline, may be "" if not to be updated.
      * @param new_country The new country of the airline, may be "" if not to be updated.
      * @param new_active The new active of the airline, "Y" or "N", may be "" if not to be updated.
-     * @return An error code representing the success/failure of the operation
-     *
-     * @author Nathan Smithies
+     * @return An error code representing the success/failure of the operation.
      */
     @Override
     public int updateAirline(int id, String new_name, String new_alias, String new_iata, String new_icao,
@@ -48,7 +44,7 @@ public class ConcreteUpdateData extends UpdateData {
         int validityValue = airlineData.checkValues();
         if (validityValue < 0) return validityValue;
 
-        return airlineService.updateAirline(id, airlineData.getName(), airlineData.getAlias(), airlineData.getIata(), airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
+        return airlineService.update(id, airlineData.getName(), airlineData.getAlias(), airlineData.getIata(), airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
     }
 
     /**
@@ -70,9 +66,7 @@ public class ConcreteUpdateData extends UpdateData {
      * @param new_timezone The new timezone of the airport, hours offset from UTC. A string, may be "" if not to be updated.
      * @param new_dst The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be "" if not to be updated.
      * @param new_tz The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be "" if not to be updated.
-     * @return An error code representing the success/failure of the operation
-     *
-     * @author Nathan Smithies
+     * @return An error code representing the success/failure of the operation.
      */
     @Override
     public int updateAirport(int id, String new_name, String new_city, String new_country, String new_iata,
@@ -84,7 +78,7 @@ public class ConcreteUpdateData extends UpdateData {
         int validityValue = airportData.checkValues();
         if (validityValue < 0) return validityValue;
 
-        return airportService.updateAirport(id, airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
+        return airportService.update(id, airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
                 airportData.getIata(), airportData.getIcao(), airportData.getLatitude(), airportData.getLongitude(),
                 airportData.getAltitude(), airportData.getTimezone(), airportData.getDst(), airportData.getTzDatabaseTimezone());
     }
@@ -97,14 +91,12 @@ public class ConcreteUpdateData extends UpdateData {
      * If they are valid pass them to FlightService.updateFlight
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be "" if not to be updated.
-     * @param new_airport The new 3-letter IATA or 4-letter ICAO code of the airport, may be "" if not to be updated.
+     * @param new_location The location of a flight, may be "" if not to be updated.
+     * @param new_location_type The location type of a flight, may be "" if not to be updated.
      * @param new_altitude The new altitude of the flight entry in feet, a string. May be "" if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a string. Negative is South and positive is North. May be "" if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a string. Negative is West and positive is East. May be "" if not to be updated.
-     * @return An error code representing the success/failure of the operation
-     *
-     * @author Nathan Smithies
+     * @return An error code representing the success/failure of the operation.
      */
     @Override
     public int updateFlightEntry(int id, String new_location_type, String new_location, int new_altitude,
@@ -114,7 +106,7 @@ public class ConcreteUpdateData extends UpdateData {
         int validityValue = flightData.checkValues();
         if (validityValue < 0)
             return validityValue;
-        return flightService.updateFlight(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(), flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
+        return flightService.update(flightData.getFlightId(), flightData.getLocationType(), flightData.getLocation(), flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
     }
 
     /**
@@ -131,9 +123,7 @@ public class ConcreteUpdateData extends UpdateData {
      * @param new_codeshare The new codeshare of the route, "Y" or "N", may be "" if not to be updated.
      * @param new_stops The new number of stops for the route, a string, may be "" if not to be updated.
      * @param new_equipment The new equipment for the route, may be "" if not to be updated.
-     * @return An error code representing the success/failure of the operation
-     *
-     * @author Nathan Smithies
+     * @return An error code representing the success/failure of the operation.
      */
     @Override
     public int updateRoute(int id, String new_airline, String new_source_airport, String new_dest_airport,
@@ -143,6 +133,6 @@ public class ConcreteUpdateData extends UpdateData {
         int validityValue = routeData.checkValues();
         if (validityValue < 0)
             return validityValue;
-        return routeService.updateRoute(id, routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(), routeData.getCodeShare(), routeData.getStops(), routeData.getEquipment());
+        return routeService.update(id, routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(), routeData.getCodeShare(), routeData.getStops(), routeData.getEquipment());
     }
 }

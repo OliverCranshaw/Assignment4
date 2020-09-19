@@ -25,7 +25,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
 
     @Test
     public void testInitialState() throws SQLException {
-        ResultSet stuff = flightService.getFlights(null, null);
+        ResultSet stuff = flightService.getData(null, null);
         Assert.assertFalse(stuff.next());
     }
 
@@ -81,7 +81,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, airport, altitude, longitude, latitude);
+        int res = flightService.save(flightService.getNextFlightID(), airline, airport, altitude, longitude, latitude);
 
         Assert.assertEquals(1, res);
 
@@ -146,7 +146,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmt.executeUpdate();
 
         // Calling the saveFlight() method
-        int res = flightService.saveFlight(flightService.getNextFlightID(), airline, "LAX", altitude, longitude, latitude);
+        int res = flightService.save(flightService.getNextFlightID(), airline, "LAX", altitude, longitude, latitude);
 
         Assert.assertEquals(-1, res);
     }
@@ -193,7 +193,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         int id = result.getInt(1);
 
 
-        int res = flightService.updateFlight(id, "FIX", airport, altitude, latitude, longitude);
+        int res = flightService.update(id, "FIX", airport, altitude, latitude, longitude);
 
         Assert.assertEquals(1, res);
 
@@ -252,7 +252,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         int id = result.getInt(1);
 
 
-        int res = flightService.updateFlight(id, "APT", airport, altitude, latitude, longitude);
+        int res = flightService.update(id, "APT", airport, altitude, latitude, longitude);
 
         Assert.assertEquals(-1, res);
     }
@@ -408,7 +408,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
 
         int flight_id = resultData.getInt(2);
 
-        boolean res = flightService.deleteFlight(flight_id);
+        boolean res = flightService.delete(flight_id);
 
         // Creating a statement to get the count of flight, in order to check if the flight has been deleted.
         PreparedStatement stmtFlightCount = dbHandler.prepareStatement(flightCountQuery);
@@ -552,7 +552,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         stmtFlight.executeUpdate();
 
 
-        boolean res = flightService.deleteFlight(2);
+        boolean res = flightService.delete(2);
 
         Assert.assertFalse(res);
     }
@@ -619,13 +619,13 @@ public class FlightServiceTest extends BaseDatabaseTest {
         Integer id = result.getInt(1);
 
         // Checking that all values of the retrieved flight are the same as the original one
-        ResultSet flightRetrieved = flightService.getFlight(id);
+        ResultSet flightRetrieved = flightService.getData(id);
         for (int i=1; i < 8; i++) {
             Assert.assertEquals(result.getObject(i), flightRetrieved.getObject(i));
         }
 
         // Checking that getFlight returns null for an non-existent id
-        ResultSet nonExistentFlight = flightService.getFlight(123122323);
+        ResultSet nonExistentFlight = flightService.getData(123122323);
         Assert.assertFalse(nonExistentFlight.next());
     }
 
@@ -671,7 +671,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         List expectedResults = Arrays.asList(2, "VOR", "SYD", 10000, 321.5, 123.2);
         ArrayList<Object> expectedResultsList = new ArrayList<Object>(expectedResults);
         // Getting the actual results
-        ResultSet result = flightService.getFlights("VOR", "SYD");
+        ResultSet result = flightService.getData("VOR", "SYD");
 
         // Comparing the actual results to the expected results
         for (int i = 2; i < 8; i++) {
@@ -680,7 +680,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
 
 
         // Getting results for a airline that doesn't exist
-        ResultSet resultInvalid = flightService.getFlights("NEFNE>NFNE", "aNESN");
+        ResultSet resultInvalid = flightService.getData("NEFNE>NFNE", "aNESN");
         Assert.assertFalse(resultInvalid.next());
     }
 

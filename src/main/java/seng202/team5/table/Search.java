@@ -14,10 +14,6 @@ import java.util.ArrayList;
  * Contains the functions searchAirline, searchAirport, searchFlight, searchRoute. Each
  * function uses its relative accessor class to search for and return data specified by the
  * users' input.
- *
- *
- * @author Oliver Cranshaw
- * @author Inga Tokarenko
  */
 
 public class Search {
@@ -36,9 +32,6 @@ public class Search {
     /** Constructor for the Search class.
      * Creates an instance of each service class and
      * an empty ArrayList of search data.
-     *
-     *  @author Oliver Cranshaw
-     *  @author Inga Tokarenko
      */
     public Search() {
 
@@ -63,9 +56,6 @@ public class Search {
     /** Setter for the search data.
      *
      * @param data A list of data input by the user to specify what they are searching for.
-     *
-     * @author Oliver Cranshaw
-     * @author Inga Tokarenko
      */
     public void setSearchData(ArrayList<Object> data) {
         searchData = data;
@@ -77,9 +67,6 @@ public class Search {
      * the database.
      *
      * @return a ResultSet containing the data from the database that satisfies the search criteria.
-     *
-     * @author Oliver Cranshaw
-     * @author Inga Tokarenko
      */
     public ResultSet searchAirline() {
 
@@ -87,11 +74,9 @@ public class Search {
         String country = searchData.get(1) == null ? null : searchData.get(1).toString();
         String callsign = searchData.get(2) == null ? null : searchData.get(2).toString();
 
-        result = airlineService.getAirlines(name, country, callsign);
+        result = airlineService.getData(name, country, callsign);
 
         return result;
-
-
     }
 
     /**
@@ -100,9 +85,6 @@ public class Search {
      * the database.
      *
      * @return a ResultSet containing the data from the database that satisfies the search criteria.
-     *
-     * @author Oliver Cranshaw
-     * @author Inga Tokarenko
      */
     public ResultSet searchAirport() {
 
@@ -110,7 +92,7 @@ public class Search {
         String city = searchData.get(1) == null ? null : searchData.get(1).toString();
         String country = searchData.get(2) == null ? null : searchData.get(2).toString();
 
-        result = airportService.getAirports(name, city, country);
+        result = airportService.getData(name, city, country);
 
         return result;
     }
@@ -121,19 +103,15 @@ public class Search {
      * the database.
      *
      * @return a ResultSet containing the data from the database that satisfies the search criteria.
-     *
-     * @author Oliver Cranshaw
-     * @author Inga Tokarenko
      */
     public ResultSet searchFlight() {
 
         String location_type = searchData.get(0) == null ? null : searchData.get(0).toString();
         String location = searchData.get(1) == null ? null : searchData.get(1).toString();
 
-        result = flightService.getFlights(location_type, location);
+        result = flightService.getData(location_type, location);
 
         return result;
-
     }
 
     /**
@@ -142,9 +120,6 @@ public class Search {
      * the database.
      *
      * @return a ResultSet containing the data from the database that satisfies the search criteria.
-     *
-     * @author Oliver Cranshaw
-     * @author Inga Tokarenko
      */
     public ResultSet searchRoute() {
 
@@ -154,9 +129,8 @@ public class Search {
         String equipment = searchData.get(3) == null ? null : searchData.get(3).toString();
 
 
-        result = routeService.getRoutes(sourceAirport, destAirport, numStops, equipment);
+        result = routeService.getData(sourceAirport, destAirport, numStops, equipment);
         System.out.println(result);
         return result;
     }
-
 }

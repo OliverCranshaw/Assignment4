@@ -12,11 +12,8 @@ import java.util.List;
 /**
  * RouteService
  *
- * Contains the functions save, update, delete, getRoute(s), and validity check functions for routes that interact with Accessors.
+ * Contains the functions save, update, delete, getData, and validity check functions for routes that interact with Accessors.
  * Implements the Service interface.
- *
- * @author Inga Tokarenko
- * @author Billie Johnson
  */
 public class RouteService implements Service {
 
@@ -27,8 +24,6 @@ public class RouteService implements Service {
     /**
      * Constructor for RouteService.
      * Creates a RouteAccessor, AirlineAccessor, and AirportAccessor.
-     *
-     * @author Inga Tokarenko 
      */
     public RouteService() {
         accessor = new RouteAccessor();
@@ -46,10 +41,8 @@ public class RouteService implements Service {
      * @param stops The number of stops for the flight, 0 if it is direct. An integer, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int result The route_id of the route that was just created by the RouteAccessor.
-     *
-     * @author Inga Tokarenko 
      */
-    public int saveRoute(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+    public int save(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airlineAccessor.dataExists(airline)) {
             return -1;
@@ -93,11 +86,9 @@ public class RouteService implements Service {
      * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
      * @return int result The route_id of the route that was just updated by the RouteAccessor.
-     *
-     * @author Billie Johnson
      */
-    public int updateRoute(int id, String new_airline, String new_source_airport, String new_dest_airport,
-                           String new_codeshare, int new_stops, String new_equipment) {
+    public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
+                      String new_codeshare, int new_stops, String new_equipment) {
         int new_airline_id = -1;
         int new_source_airport_id = -1;
         int new_dest_airport_id = -1;
@@ -155,10 +146,8 @@ public class RouteService implements Service {
      *
      * @param id The route_id of the route to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
-     * @author Billie Johnson
      */
-    public boolean deleteRoute(int id) {
+    public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
             System.out.println("Could not delete route, does not exist.");
             return false;
@@ -172,10 +161,8 @@ public class RouteService implements Service {
      *
      * @param id int value of an id.
      * @return ResultSet of a route.
-     *
-     * @author Inga Tokarenko 
      */
-    public ResultSet getRoute(int id) {
+    public ResultSet getData(int id) {
         return accessor.getData(id);
     }
 
@@ -187,10 +174,8 @@ public class RouteService implements Service {
      * @param stops int containing number of stops.
      * @param equipment string containing type of equipment.
      * @return ResultSet of routes.
-     *
-     * @author Inga Tokarenko
      */
-    public ResultSet getRoutes(String source_airport, String dest_airport, int stops, String equipment) {
+    public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
         ArrayList airportSourceIataIcao = null;
         ArrayList airportDestIataIcao = null;
 
@@ -218,8 +203,6 @@ public class RouteService implements Service {
      *
      * @param codeshare
      * @return boolean True if the codeshare is valid, False otherwise.
-     *
-     * @author Billie Johnson
      */
     public boolean codeshareIsValid(String codeshare) {
         return (codeshare == null || codeshare.equals("Y"));
@@ -231,8 +214,6 @@ public class RouteService implements Service {
      *
      * @param equipment
      * @return boolean True if the equipment is valid, False otherwise.
-     *
-     * @author Billie Johnson
      */
     public boolean equipmentIsValid(String equipment) {
         return equipment != null && equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*");
@@ -243,8 +224,6 @@ public class RouteService implements Service {
      * Calls the getMaxID method of the RouteAccessor to get the maximum route_id contained in the database.
      *
      * @return int The maximum route_id contained in the database.
-     *
-     * @author Billie Johnson
      */
     public int getMaxID() {
         return accessor.getMaxID();

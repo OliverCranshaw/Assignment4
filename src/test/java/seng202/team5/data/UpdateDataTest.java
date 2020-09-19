@@ -25,14 +25,14 @@ public class UpdateDataTest extends BaseDatabaseTest {
     @Test
     public void testUpdateAirline() throws SQLException {
         AirlineService airlineService = new AirlineService();
-        assert airlineService.saveAirline("Airline Name", "Airline Alias", "IA", "ICA", "Callsigny", "Here", "Y") != -1;
+        assert airlineService.save("Airline Name", "Airline Alias", "IA", "ICA", "Callsigny", "Here", "Y") != -1;
         int id = airlineService.getMaxID(); // Hmmm
 
         List<String> newFields = List.of("New name", "New alias", "AI", "CIA", "Callsigner", "There", "N");
         int result = updateData.updateAirline(id, newFields.get(0), newFields.get(1), newFields.get(2), newFields.get(3), newFields.get(4), newFields.get(5), newFields.get(6));
         Assert.assertTrue(result >= 0);
 
-        ResultSet resultSet = airlineService.getAirline(id);
+        ResultSet resultSet = airlineService.getData(id);
         assert resultSet.next();
         for (int i = 0; i<newFields.size(); i++) {
             Assert.assertEquals(newFields.get(i), resultSet.getObject(i + 2));
@@ -61,7 +61,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
     @Test
     public void testUpdateAirport() throws SQLException {
         AirportService airportService = new AirportService();
-        assert airportService.saveAirport("Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone") != -1;
+        assert airportService.save("Airport Name", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7, "E", "Timey zone") != -1;
         int id = airportService.getMaxID(); // Hmmm
 
         List<Object> newFields = List.of("New name", "New England", "There", "ATI", "AOCI", 3.0, 4.0, 17, 21.0f, "A", "Sometime");
@@ -81,7 +81,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
         );
         Assert.assertTrue(result >= 0);
 
-        ResultSet resultSet = airportService.getAirport(id);
+        ResultSet resultSet = airportService.getData(id);
         assert resultSet.next();
         for (int i = 0; i<newFields.size(); i++) {
             Object item = newFields.get(i);

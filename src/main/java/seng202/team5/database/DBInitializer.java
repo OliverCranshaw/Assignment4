@@ -10,8 +10,6 @@ import java.sql.SQLException;
  * DBInitializer
  *
  * Creates a database.
- *
- * @author Billie Johnson
  */
 public class DBInitializer {
 

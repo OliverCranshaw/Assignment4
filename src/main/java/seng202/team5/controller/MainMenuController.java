@@ -544,10 +544,10 @@ public class MainMenuController implements Initializable {
         routeService = new RouteService();
         flightService = new FlightService();
 
-        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
-        airportTable = new AirportTable(airportService.getAirports(null, null, null));
-        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
-        flightTable = new FlightTable(flightService.getFlights(null, null));
+        airlineTable = new AirlineTable(airlineService.getData(null, null, null));
+        airportTable = new AirportTable(airportService.getData(null, null, null));
+        routeTable = new RouteTable(routeService.getData(null, null, -1, null));
+        flightTable = new FlightTable(flightService.getData(null, null));
 
         try {
             airlineTable.createTable();
@@ -600,7 +600,7 @@ public class MainMenuController implements Initializable {
         } else {
             flightEntries = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
-            ResultSet flightData = flightService.getFlight(flightID);
+            ResultSet flightData = flightService.getData(flightID);
             while (flightData.next()) {
                 Integer id = flightData.getInt(1);
                 Integer flightId = flightData.getInt(2);
@@ -627,7 +627,7 @@ public class MainMenuController implements Initializable {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
         } else {
-            ResultSet routeData = routeService.getRoute(routeModel.getRouteId());
+            ResultSet routeData = routeService.getData(routeModel.getRouteId());
             setLabels(routeData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
         }
@@ -642,7 +642,7 @@ public class MainMenuController implements Initializable {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
         } else {
-            ResultSet airlineData = airlineService.getAirline(airlineModel.getId());
+            ResultSet airlineData = airlineService.getData(airlineModel.getId());
             setLabels(airlineData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
         }
@@ -661,7 +661,7 @@ public class MainMenuController implements Initializable {
             setLabelsEmpty(lblElementsVisible, false);
 
         } else {
-            ResultSet airportData = airportService.getAirport(airportModel.getId());
+            ResultSet airportData = airportService.getData(airportModel.getId());
             setLabels(airportData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
         }
@@ -1140,9 +1140,9 @@ public class MainMenuController implements Initializable {
             String srcAirportIata = (String) datum.get(3);
             String dstLocation = (String) datum.get(8);
             String dstAirportIata = (String) datum.get(9);
-            ResultSet srcAirportSet = airportService.getAirport(srcAirportIata);
+            ResultSet srcAirportSet = airportService.getData(srcAirportIata);
             String srcAirport = (srcAirportSet.next()) ? srcAirportSet.getString(2) : srcAirportIata;
-            ResultSet dstAirportSet = airportService.getAirport(dstAirportIata);
+            ResultSet dstAirportSet = airportService.getData(dstAirportIata);
             String dstAirport = (dstAirportSet.next()) ? dstAirportSet.getString(2) : dstAirportIata;
             list.add(new FlightModel(flightId, srcLocation, srcAirport, dstLocation, dstAirport, idRange));
         }
@@ -1197,7 +1197,7 @@ public class MainMenuController implements Initializable {
         if (srcAirportText == null) {
             srcIata = null;
         } else {
-            ResultSet srcAirport = airportService.getAirports(srcAirportText, null, null);
+            ResultSet srcAirport = airportService.getData(srcAirportText, null, null);
             if (srcAirport.next()) {
                 srcIata = srcAirport.getString(5);
             } else {
@@ -1207,7 +1207,7 @@ public class MainMenuController implements Initializable {
         if (dstAirportText == null) {
             dstIata = null;
         } else {
-            ResultSet dstAirport = airportService.getAirports(dstAirportText, null, null);
+            ResultSet dstAirport = airportService.getData(dstAirportText, null, null);
             if (dstAirport.next()) {
                 dstIata = dstAirport.getString(5);
             } else {
@@ -1220,26 +1220,26 @@ public class MainMenuController implements Initializable {
 
 
     public void updateAirportTable() throws SQLException {
-        airportTable = new AirportTable(airportService.getAirports(null, null, null));
+        airportTable = new AirportTable(airportService.getData(null, null, null));
         airportTable.createTable();
         populateAirportTable(airportTableView, airportTable.getData());
     }
 
 
     public void updateAirlineTable() throws SQLException {
-        airlineTable = new AirlineTable(airlineService.getAirlines(null, null, null));
+        airlineTable = new AirlineTable(airlineService.getData(null, null, null));
         airlineTable.createTable();
         populateAirlineTable(rawAirlineTable, airlineTable.getData());
     }
 
     public void updateRouteTable() throws SQLException {
-        routeTable = new RouteTable(routeService.getRoutes(null, null, -1, null));
+        routeTable = new RouteTable(routeService.getData(null, null, -1, null));
         routeTable.createTable();
         populateRouteTable(routeTableView, routeTable.getData());
     }
 
     public void updateFlightTable() throws SQLException {
-        flightTable = new FlightTable(flightService.getFlights(null, null));
+        flightTable = new FlightTable(flightService.getData(null, null));
         flightTable.createTable();
         populateFlightTable(flightTableView, flightTable.getData());
     }
@@ -1421,7 +1421,7 @@ public class MainMenuController implements Initializable {
         Double longitude = Double.parseDouble(airportLongitude.getText());
         Integer altitude = Integer.parseInt(airportAltitude.getText());
         float timezone = Float.parseFloat(airportTimezone.getText());
-        int result = airportService.updateAirport(id, airportName.getText(), airportCity.getText(),
+        int result = airportService.update(id, airportName.getText(), airportCity.getText(),
                 airportCountry.getText(), airportIATA.getText(), airportICAO.getText(), latitude, longitude,
                 altitude, timezone, airportDST.getText(), airportTZ.getText());
         if (result > 0) {
@@ -1443,7 +1443,7 @@ public class MainMenuController implements Initializable {
         String callsign = (airlineCallsign.getText() != null) ? airlineCallsign.getText() : null;
         String country = (airlineCountry.getText() != null) ? airlineCountry.getText() : null;
         String active = (airlineActive.getText() != null) ? airlineActive.getText() : null;
-        int result = airlineService.updateAirline(id, name, alias, IATA, ICAO, callsign, country, active);
+        int result = airlineService.update(id, name, alias, IATA, ICAO, callsign, country, active);
         System.out.println("Id: " + id + ". Alias: " + alias + ". IATA: " + IATA + ". ICAO: " + ICAO + ". callsign: " + callsign + ". country: " + country + ". active: " + active);
         System.out.println("Result: " + result);
 

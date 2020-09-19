@@ -24,7 +24,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
     @Test
     public void testInitialState() throws SQLException {
-        ResultSet stuff = routeService.getRoutes(null, null, 0, null); // delete later comment for a push
+        ResultSet stuff = routeService.getData(null, null, 0, null); // delete later comment for a push
         Assert.assertFalse(stuff.next());
     }
 
@@ -90,7 +90,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the saveRoute() of the routeService. This is the method being tested.
-        int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res = routeService.save(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
         // Ensuring the routeService returns no errors
         Assert.assertEquals(1, res);
@@ -180,7 +180,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the saveRoute() of the routeService. This is the method being tested.
-        int res = routeService.saveRoute(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res = routeService.save(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
         Assert.assertEquals(-1, res);
 
 
@@ -349,7 +349,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the updateRoute method that is being tested, replacing the destination airport
-        int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JPN", codeShare, stops, equipment);
+        int res = routeService.update(testRouteId, airline, sourceAirport, "JPN", codeShare, stops, equipment);
 
 
         // Creating a statement to retrieve all data of the route.
@@ -501,11 +501,11 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the updateRoute method, using a destination airport that isn't in the database
-        int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
+        int res = routeService.update(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
         // Running the updateRoute method, using a codeShare that is invalid
-        int res2 = routeService.updateRoute(testRouteId, airline, sourceAirport, destinationAirport, "E", stops, equipment);
+        int res2 = routeService.update(testRouteId, airline, sourceAirport, destinationAirport, "E", stops, equipment);
         // Running the updateRoute method, using a routeId that doesn't exist
-        int res3 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res3 = routeService.update(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
 
         Assert.assertEquals(-1, res);
@@ -644,7 +644,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int testRouteId = resultRouteId.getInt(1);
 
         // running the routeService deleteRoute method (the method being tested)
-        boolean res = routeService.deleteRoute(testRouteId);
+        boolean res = routeService.delete(testRouteId);
 
 
         // Creating a statement to get the count of routes, in order to check if the route has been deleted
@@ -663,7 +663,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         Connection dbHandler = DBConnection.getConnection();
 
         // Attempting to delete a route that doesnt exist
-        boolean res = routeService.deleteRoute(4);
+        boolean res = routeService.delete(4);
 
         Assert.assertFalse(res);
     }
@@ -781,7 +781,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int actualId = routeIdSet.getInt(1);
 
         // Retrieving the route from the database
-        ResultSet routeRetrieved = routeService.getRoute(testAirlineId);
+        ResultSet routeRetrieved = routeService.getData(testAirlineId);
 
         // Preparing a statement to retrieving to retrieve the expected route from the database
         PreparedStatement stmtExpectedRoute = dbHandler.prepareStatement(routeDataQuery);
@@ -794,7 +794,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         }
 
         // Checking the getRoute returns an empty resultSet when an id not in use given
-        Assert.assertFalse(routeService.getRoute(53423412).next());
+        Assert.assertFalse(routeService.getData(53423412).next());
     }
 
 
@@ -914,7 +914,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         int actualId = routeIdSet.getInt(1);
 
         // Retrieving the routes that match the actual result
-        ResultSet actualResult = routeService.getRoutes("Heathrow", "ChCh", stops, equipment);
+        ResultSet actualResult = routeService.getData("Heathrow", "ChCh", stops, equipment);
 
         // Getting the expected result from the database
         PreparedStatement expectedResultStmt = dbHandler.prepareStatement(routeAllDataQuery);
@@ -927,7 +927,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         }
 
         // Checking the getRoutes method can deal with invalid airports
-        ResultSet invalidRoutes = routeService.getRoutes("lesnfslk", "elfsknef", 434, "ENS");
+        ResultSet invalidRoutes = routeService.getData("lesnfslk", "elfsknef", 434, "ENS");
         Assert.assertFalse(invalidRoutes.next());
     }
 
