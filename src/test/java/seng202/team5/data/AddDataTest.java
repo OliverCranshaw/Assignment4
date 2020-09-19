@@ -16,8 +16,8 @@ public class AddDataTest {
 
     private ConcreteAddData concreteAddData;
     private ReadFile readFile;
-    private File airlines = new File("src/test/java/data/testfiles/airlines.txt");
-    private File airports = new File("src/test/java/data/testfiles/airports.txt");
+    private File airlines = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
+    private File airports = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
     private int id;
     private static Connection con;
 

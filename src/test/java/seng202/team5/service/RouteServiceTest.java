@@ -123,9 +123,9 @@ public class RouteServiceTest extends BaseDatabaseTest {
     public void testAddInvalidRoute() throws SQLException {
         // Setting up variables for a test Route
         String airline = "ITA";
-        String sourceAirport = "ATA";
+        String sourceAirport = "AAA";
         String destinationAirport = "AUS";
-        String codeShare = "P";
+        String codeShare = "Y";
         int stops = 6;
         String equipment = "AJF";
 
@@ -501,16 +501,13 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
         // Running the updateRoute method, using a destination airport that isn't in the database
-        int res = routeService.update(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
-        // Running the updateRoute method, using a codeShare that is invalid
-        int res2 = routeService.update(testRouteId, airline, sourceAirport, destinationAirport, "E", stops, equipment);
+        int res = routeService.updateRoute(testRouteId, airline, sourceAirport, "JON", codeShare, stops, equipment);
         // Running the updateRoute method, using a routeId that doesn't exist
-        int res3 = routeService.update(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        int res2 = routeService.updateRoute(4, airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
 
 
         Assert.assertEquals(-1, res);
-        Assert.assertEquals(-1, res2);
-        Assert.assertEquals(0, res3);
+        Assert.assertEquals(0, res2);
     }
 
 
@@ -930,29 +927,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         ResultSet invalidRoutes = routeService.getData("lesnfslk", "elfsknef", 434, "ENS");
         Assert.assertFalse(invalidRoutes.next());
     }
-
-
-    @Test
-    public void testCodeShareIsValid() {
-        // Testing if codeShareIsValid behaves as expected
-        Assert.assertTrue(routeService.codeshareIsValid(null));
-        Assert.assertTrue(routeService.codeshareIsValid("Y"));
-        Assert.assertFalse(routeService.codeshareIsValid("N"));
-    }
-
-
-    @Test
-    public void testEquipmentIsValid() {
-        // Testing if equipmentIsValid behaves as expected
-        Assert.assertTrue(routeService.equipmentIsValid("NFE"));
-        Assert.assertTrue(routeService.equipmentIsValid("NFE ENF"));
-        Assert.assertTrue(routeService.equipmentIsValid("NFE NES LAP"));
-        Assert.assertFalse(routeService.equipmentIsValid(""));
-        Assert.assertFalse(routeService.equipmentIsValid(null));
-        Assert.assertFalse(routeService.equipmentIsValid("FSFE"));
-        Assert.assertFalse(routeService.equipmentIsValid("JEN ELNS"));
-    }
-
+    
 
     @Test
     public void testGetMaxId() throws SQLException {

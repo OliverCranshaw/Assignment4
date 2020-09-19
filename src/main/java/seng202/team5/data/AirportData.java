@@ -204,10 +204,10 @@ public class AirportData implements Data {
         } else if (this.country == null) {
             // Ensures the country of the airport is not null
             return -4;
-        } else if (!((this.iata == null) || ( this.iata.length() == 3))) {
+        } else if (!((this.iata == null) || (this.iata.matches("^[A-Z0-9]{3}$")))) {
             // Ensures the iata of the airport is not null and is of the correct length (3)
             return -5;
-        } else if (!((this.icao == null) || (this.icao.length() == 4))) {
+        } else if (!((this.icao == null) || (this.icao.matches("^[A-Z0-9]{4}$")))) {
             // Ensures the icao of the airport is not null and is of the correct length (4)
             return -6;
         } else if (this.latitude == null) {
@@ -225,7 +225,7 @@ public class AirportData implements Data {
         } else if (this.dst == null || !(dstValues.contains(this.dst)) ) {
             // Ensures the dst of the airport is not null and that the dst is within the expected domain
             return -11;
-        } else if (this.tzDatabaseTimezone == null) {
+        } else if (this.tzDatabaseTimezone == null || !(this.tzDatabaseTimezone.matches("^[A-Za-z]+((\\s|_)?[A-Za-z]+)+/[A-Za-z]+((\\s|_)?[A-Za-z]+)*$"))) {
             // Ensures the tzDatabaseTimezone of the airport is not null
             return -12;
         } else {
