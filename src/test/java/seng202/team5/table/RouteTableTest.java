@@ -1,6 +1,9 @@
 package seng202.team5.table;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
@@ -14,12 +17,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RouteTableTest extends TestCase {
+public class RouteTableTest {
 
     private static final String dbFile = "test.db";
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
@@ -28,8 +31,8 @@ public class RouteTableTest extends TestCase {
 
     }
 
-    @Override
-    protected void tearDown() throws SQLException {
+    @After
+    public void tearDown() throws SQLException {
         System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
@@ -38,6 +41,7 @@ public class RouteTableTest extends TestCase {
     }
 
 
+    @Test
     public void testFilterTable() throws SQLException {
 
         // Getting a connection to the test database
@@ -97,17 +101,15 @@ public class RouteTableTest extends TestCase {
         // Creating the actual result array list
         ArrayList<ArrayList<Object>> actualResult = testTable.getData();
         // Sanity size check
-        assertEquals(1, actualResult.size());
+        Assert.assertEquals(1, actualResult.size());
 
         // Running assertion to check expected same as actual
         for (int i = 1; i < expectedResultList.size(); i++) {
-            assertEquals(expectedResultList.get(i), actualResult.get(0).get(i+1));
+            Assert.assertEquals(expectedResultList.get(i), actualResult.get(0).get(i+1));
         }
 
         // Re-filtering the table by null to check if clears filter properly
         testTable.FilterTable(null, null, null, null);
-        assertEquals(testTable.getData().size(), 3);
-
-
+        Assert.assertEquals(testTable.getData().size(), 3);
     }
 }

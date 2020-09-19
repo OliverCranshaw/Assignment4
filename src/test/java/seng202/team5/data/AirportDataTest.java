@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 public class AirportDataTest {
 
-
     @Test
     public void testValidStringConstructor() {
         String airport = "airport";
@@ -55,7 +54,6 @@ public class AirportDataTest {
     }
 
 
-
     @Test
     public void testCheckValidValues() {
         String airport = "airport";
@@ -68,14 +66,13 @@ public class AirportDataTest {
         String altitude = "554";
         String timezone = "53";
         String dst = "S";
-        String tz = "tzTime";
+        String tz = "Auckland/New Zealand";
 
         AirportData test = new AirportData(airport, city, country, iata, icao, latitude,
                 longitude, altitude, timezone, dst, tz);
         int validityValue = test.checkValues();
         assertEquals(1, validityValue);
     }
-
 
 
     @Test
@@ -96,7 +93,5 @@ public class AirportDataTest {
                 longitude, altitude, timezone, dst, tz);
         int validityValue = test.checkValues();
         assertEquals(-11, validityValue);
-
     }
-
 }

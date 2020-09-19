@@ -1,6 +1,5 @@
 package seng202.team5.table;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +10,11 @@ import java.util.List;
  * A class that extends DataTable and is used to store flight data to be used for display
  * in the GUI, as well as providing methods that use the filtering tables to filter for a desired
  * subset of the data.
- *
- * @author Jack Ryan
  */
 public class FlightTable extends DataTable {
 
     /**
-     * Construcotr for the RouteData
+     * Constructor for the RouteData
      *
      * @param newOrgData ResultSEet of full set of data
      */

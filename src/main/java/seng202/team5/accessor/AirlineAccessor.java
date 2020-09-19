@@ -14,9 +14,6 @@ import java.util.List;
  *
  * Contains the functions save, update, delete, getData, and dataExists for airlines that directly interact with the database.
  * Implements the Accessor interface.
- *
- * @author Inga Tokarenko
- * @author Billie Johnson
  */
 public class AirlineAccessor implements Accessor {
 
@@ -25,9 +22,6 @@ public class AirlineAccessor implements Accessor {
     /**
      * Constructor for AirlineAccessor.
      * Gets the connection to the database.
-     *
-     * @author Inga Tokarenko
-     * @author Billie Johnson 
      */
     public AirlineAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -39,9 +33,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The airline_id of the airline that was just created.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public int save(List<Object> data) {
         int result;
@@ -84,9 +75,6 @@ public class AirlineAccessor implements Accessor {
      * @param new_country The new country of the airline, may be null if not to be updated.
      * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The number of rows edited or -1 for error.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
                       String new_callsign, String new_country, String new_active) {
@@ -166,9 +154,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param id The airline_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean delete(int id) {
         boolean result = false;
@@ -189,13 +174,10 @@ public class AirlineAccessor implements Accessor {
     }
 
     /**
+     * Retrieves the airline with the provided id.
      *
-     *
-     * @param id
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko
-     * @author Billie Johnson
+     * @param id int id of a airline.
+     * @return ResultSet of the route data.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -214,15 +196,12 @@ public class AirlineAccessor implements Accessor {
     }
 
     /**
+     * Retrieves all the airlines with provided data.
      *
-     *
-     * @param name
-     * @param country
-     * @param callsign
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @param name String name of an ariline, can be null.
+     * @param country String country of an airline, can be null.
+     * @param callsign String callsign of an airline, can be null
+     * @return ResultSet of all the airline.
      */
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
@@ -271,9 +250,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param code A 2-letter IATA or 3-letter ICAO code.
      * @return int result The airline_id of the airline with the given IATA or ICAO code if one exists.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public int getAirlineId(String code) {
         int result;
@@ -301,9 +277,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param name The name of the airline.
      * @return iata result The iata of the airline with the name.
-     *
-     * @author Inga Tokarenko
-     * @author Billie Johnson
      */
     public ArrayList getAirlineIataIcao(String name) {
         ArrayList<String> result = new ArrayList<>();
@@ -338,9 +311,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param id An integer airline_id.
      * @return boolean result True if an airline exists with the given airline_id, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -367,9 +337,6 @@ public class AirlineAccessor implements Accessor {
      *
      * @param code A 2-letter IATA or 3-letter ICAO code.
      * @return boolean result True if an airline with the given code exists, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean dataExists(String code) {
         boolean result = false;
@@ -389,7 +356,6 @@ public class AirlineAccessor implements Accessor {
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
             System.out.println(e.getMessage());
         }
-
         return result;
     }
 
@@ -397,8 +363,6 @@ public class AirlineAccessor implements Accessor {
      * Gets the maximum airline_id contained in the database.
      *
      * @return int id The maximum airline_id in the database.
-     *
-     * @author Billie Johnson
      */
     public int getMaxID() {
         int id = 0;
