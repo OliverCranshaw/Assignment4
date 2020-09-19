@@ -38,23 +38,18 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
         Assert.assertEquals(1, stmt.executeUpdate());
 
-        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "I", "Ica", "Callsigny", "Countryy", "Y"));
-        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ic", "Callsigny", "Countryy", "Y"));
-        Assert.assertEquals(-1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Nah"));
-        Assert.assertEquals(-1, airlineService.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(0, airlineService.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
         Assert.assertEquals(1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
     }
 
-    
     @Test
-    public void testGetAirlinesEmpty() throws SQLException {
-        ResultSet resultSet = airlineService.getData(null, null, null);
-        Assert.assertFalse(resultSet.next());
-    }
+    public void testGetAirlines() throws SQLException {
+        {
+            // Test empty database
+            ResultSet resultSet = airlineService.getData(null, null, null);
+            Assert.assertFalse(resultSet.next());
+        }
 
-
-    @Test
-    public void testGetAirlinesSingle() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
                 "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
@@ -257,8 +252,6 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     public void testIataIsValid() {
         Assert.assertTrue(airlineService.iataIsValid(null));
         Assert.assertTrue(airlineService.iataIsValid("ab"));
-        Assert.assertFalse(airlineService.iataIsValid("a"));
-        Assert.assertFalse(airlineService.iataIsValid("abc"));
     }
 
 
@@ -266,8 +259,6 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     public void testIcaoIsValid() {
         Assert.assertTrue(airlineService.icaoIsValid(null));
         Assert.assertTrue(airlineService.icaoIsValid("abc"));
-        Assert.assertFalse(airlineService.icaoIsValid("ab"));
-        Assert.assertFalse(airlineService.icaoIsValid("abcd"));
     }
 
 
