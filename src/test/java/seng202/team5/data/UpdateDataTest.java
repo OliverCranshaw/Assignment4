@@ -41,7 +41,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testUpdateAirlineFailed() {
+    public void testUpdateAirlineFailed() throws SQLException {
         Assert.assertEquals(-2, updateData.updateAirline(1234, null, "Alias", "IA", "ICA", "Call", "Here", "Y"));
         Assert.assertEquals(-2, updateData.updateAirline(1234, "", "Alias", "IA", "ICA", "Call", "Here", "Y"));
 
@@ -95,7 +95,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testUpdateAirportFailed() {
+    public void testUpdateAirportFailed() throws SQLException {
         Assert.assertEquals(-2, updateData.updateAirport(1234, "", "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
         Assert.assertEquals(-2, updateData.updateAirport(1234, null, "England", "Here", "IAT", "ICAO", 1.0, 2.0,15, 7f, "E", "Timey zone"));
 
@@ -140,7 +140,7 @@ public class UpdateDataTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testUpdateRouteFailed() {
+    public void testUpdateRouteFailed() throws SQLException {
         Assert.assertEquals(-2, updateData.updateRoute(1, null, "abc", "def", "Y", 1, "a"));
         Assert.assertEquals(-2, updateData.updateRoute(1, "", "abc", "def", "Y", 1, "a"));
         Assert.assertEquals(-2, updateData.updateRoute(1, "a", "abc", "def", "Y", 1, "a"));

@@ -3,6 +3,7 @@ package seng202.team5.service;
 import seng202.team5.accessor.AirlineAccessor;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,16 +67,22 @@ public class AirlineService implements Service {
      * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
      */
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) {
+                      String new_callsign, String new_country, String new_active) throws SQLException {
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        if (!iataIsValid(new_iata)) {
-            return -1;
+        AirlineService airlineService = new AirlineService();
+        String currIATA = airlineService.getData(id).getString(4);
+        String currICAO = airlineService.getData(id).getString(5);
+        if (currIATA == null || (!currIATA.equals(new_iata))) {
+            if (!iataIsValid(new_iata)) {
+                return -1;
+            }
         }
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
-        if (!icaoIsValid(new_icao)) {
-            return -1;
+        if (!(currICAO.equals(new_icao) || new_icao == null)) {
+            if (!icaoIsValid(new_icao)) {
+                return -1;
+            }
         }
-
         // Passes the parameters into the update method of the AirlineAccessor
         return accessor.update(id, new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
     }
