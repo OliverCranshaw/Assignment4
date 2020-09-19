@@ -86,7 +86,7 @@ public class RouteAccessor implements Accessor {
      * @param new_codeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
      * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param new_equipment The new equipment for the route, may be null if not to be updated.
-     * @return int result The route_id of the route that was just updated.
+     * @return int result The number of rows modified or -1 for error
      *
      * @author Inga Tokarenko 
      * @author Billie Johnson
@@ -180,33 +180,10 @@ public class RouteAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM ROUTE_DATA WHERE route_id = ?");
             stmt.setInt(1, id); // Adds the route_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete route data with id " + id);
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     * Selects all routes from the database and returns them.
-     *
-     * @return ResultSet result Contains the routes in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM ROUTE_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve routes.");
             System.out.println(e.getMessage());
         }
 
@@ -263,11 +240,12 @@ public class RouteAccessor implements Accessor {
 
                 for (String value:source_airport) {
                     if (value != null) {
-                        addString = elements.size() == 0 ? " source_airport = ? " : " or source_airport = ? ";
+                        addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
                         query = query + addString;
                         elements.add(value);
                     }
                 }
+                query = query + ") ";
             }
             if (dest_airport != null) {
                 if (source_airport != null) {
@@ -278,12 +256,13 @@ public class RouteAccessor implements Accessor {
 
                 for (String value:dest_airport) {
                     if (value != null) {
-                        addString = check ? " destination_airport = ? " : " or destination_airport = ? ";
+                        addString = check ? " (destination_airport = ? " : " or destination_airport = ? ";
                         query = query + addString;
                         elements.add(value);
                         check = false;
                     }
                 }
+                query = query + ") ";
             }
             if (stops != -1) {
                 if (source_airport != null || dest_airport != null) {
@@ -301,8 +280,8 @@ public class RouteAccessor implements Accessor {
                 }
                 elements.add(equipment);
             }
-
             PreparedStatement stmt = dbHandler.prepareStatement(query);
+
             int index = 1;
             for (Object element: elements) {
                 stmt.setObject(index, element);

@@ -5,6 +5,7 @@ import seng202.team5.accessor.AirportAccessor;
 import seng202.team5.accessor.FlightAccessor;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,13 +54,16 @@ public class FlightService implements Service {
      */
     public int saveFlight(int flightID, String location_type, String location, int altitude, double latitude, double longitude) {
         // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
-        if (!locationTypeisValid(location_type)) {
+        if (!locationTypeIsValid(location_type)) {
             return -1;
         }
-        else if (location_type == "APT") {
+        else if (location_type.equals("APT")) {
             if (!airportAccessor.dataExists(location)) {
                 return -1;
             }
+        }
+        else if (location != null && location.length() < 1) {
+            return -1;
         }
 
         // Adds the parameters into an List to pass into the save method of the FlightAccessor
@@ -85,10 +89,39 @@ public class FlightService implements Service {
                             double new_latitude, double new_longitude) {
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
-        if (new_location_type != null) {
-            if (locationTypeisValid(new_location_type)) {
-                return -1;
+        try {
+            ResultSet flightEntry = getFlight(id);
+            String location_type = flightEntry.getString("location_type");
+            String location = flightEntry.getString("location");
+
+            if (new_location_type != null) {
+                if (!locationTypeIsValid(new_location_type)) {
+                    return -1;
+                }
+                else if (new_location_type.equals("APT"))  {
+                    if (new_location != null && !airportAccessor.dataExists(new_location)) {
+                        return -1;
+                    }
+                    else if (!airportAccessor.dataExists(location)) {
+                        return -1;
+                    }
+                }
+                else {
+                    if (new_location != null && new_location.length() < 1) {
+                        return -1;
+                    }
+                }
             }
+            else if (new_location != null) {
+                if (location_type.equals("APT") && !airportAccessor.dataExists(new_location)) {
+                    return -1;
+                }
+                else if (new_location != null && new_location.length() < 1) {
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
 
         // Passes the parameters into the update method of the FlightAccessor
@@ -130,10 +163,10 @@ public class FlightService implements Service {
     }
 
     /**
+     * Retrieves the flight with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of a flight.
      *
      * @author Inga Tokarenko
      */
@@ -142,26 +175,16 @@ public class FlightService implements Service {
     }
 
     /**
+     * Retrieves all flights with the given parameters.
      *
-     *
-     * @param airline
-     * @param airport
-     * @return
+     * @param location_type string containing location type.
+     * @param location string containing location.
+     * @return ResultSet of flights.
      *
      * @author Inga Tokarenko
      */
-    public ResultSet getFlights(String airline, String airport) {
-        ArrayList airlineIataIcao = null;
-        ArrayList airportIataIcao = null;
-
-        if (airline != null) {
-            airlineIataIcao = airlineAccessor.getAirlineIataIcao(airline);
-        }
-        if (airport != null) {
-            airportIataIcao = airportAccessor.getAirportIataIcao(airport);
-        }
-
-        return accessor.getData(airlineIataIcao, airportIataIcao);
+    public ResultSet getFlights(String location_type, String location) {
+        return accessor.getData(location_type, location);
     }
 
     /**
@@ -172,9 +195,13 @@ public class FlightService implements Service {
      *
      * @author Billie Johnson
      */
-    public boolean locationTypeisValid(String location_type) {
+    public boolean locationTypeIsValid(String location_type) {
         return valid_location_types.contains(location_type);
     }
+
+//    public boolean locationIsValid(String location) {
+//        return (location.matches("^[A-Z]+$"));
+//    }
 
     /**
      * Calls the getMaxFlightID method of the FlightAccessor to get the maximum flight_id contained in the database, and then adds one to it.

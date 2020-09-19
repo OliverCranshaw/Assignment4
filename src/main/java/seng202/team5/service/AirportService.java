@@ -133,10 +133,10 @@ public class AirportService implements Service {
     }
 
     /**
+     * Retrieves the airport with specified id.
      *
-     *
-     * @param id
-     * @return
+     * @param id int value of an id.
+     * @return ResultSet of an airport.
      *
      * @author Inga Tokarenko
      */
@@ -145,17 +145,39 @@ public class AirportService implements Service {
     }
 
     /**
+     * Retrieves the aiport with specified IATA/ICAO.
      *
+     * @param code
+     * @return ResultSet of an airport.
      *
-     * @param name
-     * @param city
-     * @param country
-     * @return
+     * @author Inga Tokarenko
+     */
+    public ResultSet getAirport(String code) {
+        return accessor.getData(code);
+    }
+
+    /**
+     * Retrieves all airports with the given parameters.
+     *
+     * @param name string containing the airport name.
+     * @param city string containing a city.
+     * @param country string containing a country.
+     * @return ResultSet of airports.
      *
      * @author Inga Tokarenko
      */
     public ResultSet getAirports(String name, String city, String country) {
         return accessor.getData(name, city, country);
+    }
+
+    /**
+     * Checks if an airport exists with the given IATA/ICAO code.
+     *
+     * @param code An airport IATA/ICAO code.
+     * @return boolean True if the airport exists, false otherwise.
+     */
+    public boolean airportExists(String code) {
+        return accessor.dataExists(code);
     }
 
     /**

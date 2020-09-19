@@ -42,13 +42,13 @@ public class FilterRouteTable extends ConcreteFilterTable {
         ArrayList<Object> current;
         currentPos = 0;
         remove = false;
-
+        System.out.println("----------------------------------");
         while (hasMore()) {
             current = elements.get(currentPos);
             String currentDep = (String) current.get(3);
             String currentDes = (String) current.get(5);
             int stops = (int) current.get(8);
-            String currentEquip = (String) current.get(9);
+            ArrayList<String> currentEquip = (ArrayList<String>) current.get(9);
 
             if (airportDep != null) {
                 containsAirportDep(currentDep);
@@ -66,6 +66,8 @@ public class FilterRouteTable extends ConcreteFilterTable {
                 elements.remove((currentPos));
                 currentPos = 0;
                 remove = false;
+            } else {
+                currentPos++;
             }
         }
     }
@@ -79,7 +81,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void containsAirportDep(String currentDep) {
-        if (currentDep != airportDep) {
+        if (!currentDep.equals(airportDep)) {
             remove = true;
         }
     }
@@ -93,7 +95,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void containsAirportDes(String currentDes) {
-        if (currentDes != airportDes) {
+        if (!currentDes.equals(airportDes)) {
             remove = true;
         }
     }
@@ -107,10 +109,14 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * @author Inga Tokarenko
      */
     public void isDirect(int stops) {
-        if (direct == "direct") {
-            remove = stops > 0 ? true : false;
-        } else if (direct == "not direct") {
-            remove = stops > 0 ? false : true;
+        if (direct.equals("direct")) {
+            if (stops > 0) {
+                remove = true;
+            }
+        } else if (direct.equals("not direct")) {
+            if (stops <= 0) {
+                remove = true;
+            }
         }
     }
 
@@ -122,9 +128,11 @@ public class FilterRouteTable extends ConcreteFilterTable {
      *
      * @author Inga Tokarenko
      */
-    public void containsEquip(String currentEquip) {
-        if (!equip.contains(currentEquip)) {
-            remove = true;
+    public void containsEquip(ArrayList<String> currentEquip) {
+        for (Object value : equip) {
+            if (!currentEquip.contains(value)) {
+                remove = true;
+            }
         }
     }
 
@@ -168,7 +176,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      *
      * @author Inga Tokarenko
      */
-    public void setEquip(ArrayList<String> newEquip) {
-        equip = newEquip;
+    public void setEquip(ArrayList<String> newEquip) { equip = newEquip;
     }
 }
