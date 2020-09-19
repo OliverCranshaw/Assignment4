@@ -1441,13 +1441,13 @@ public class MainMenuController implements Initializable {
         int result = airportService.update(id, airportName.getText(), airportCity.getText(),
                 airportCountry.getText(), airportIATA.getText(), airportICAO.getText(), latitude, longitude,
                 altitude, timezone, airportDST.getText(), airportTZ.getText());
+        System.out.println(result);
         if (result > 0) {
             updateAirportTable();
         }
         setAirportElementsEditable(false);
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
-
     }
 
     @FXML
@@ -1485,6 +1485,7 @@ public class MainMenuController implements Initializable {
         Integer stops = Integer.parseInt(routeStops.getText());
         String equipment = routeEquip.getText();
         int result = routeService.update(id, airline, srcAirport, dstAirport, codeShare, stops, equipment);
+
         if (result > 0) {
             updateRouteTable();
         } else {
