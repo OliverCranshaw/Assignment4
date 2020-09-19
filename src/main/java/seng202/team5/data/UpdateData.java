@@ -4,8 +4,6 @@ package seng202.team5.data;
  * UpdateData
  *
  * Contains abstract methods for updating airlines, airports, flight entries, and routes.
- *
- * @author Billie Johnson
  */
 public abstract class UpdateData {
 
@@ -74,5 +72,4 @@ public abstract class UpdateData {
      */
     public abstract int updateRoute(int id, String new_airline, String new_source_airport, String new_dest_airport,
                                      String new_codeshare, int new_stops, String new_equipment);
-
 }

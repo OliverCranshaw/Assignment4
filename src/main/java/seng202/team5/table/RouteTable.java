@@ -6,15 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 /**
  * RouteTable
  *
  * A class that extends DataTable and is used to store route data to be used for display
  * in the GUI, as well as providing methods that use the filtering tables to filter for a desired
  * subset of data
- *
- * @author Jack Ryan
  */
 public class RouteTable extends DataTable {
 
@@ -28,39 +25,43 @@ public class RouteTable extends DataTable {
     }
 
 
-
     @Override
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
-        ResultSetMetaData md = orgData.getMetaData();
-        // Gets the number of columns (ie the number of variables)
-        int columns = md.getColumnCount();
-        // Initializing an arraylist of arraylists to store the extracted data in
-        ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
-        // Iterates through the result set
-        while(orgData.next()) {
-            // An arraylist of each instance of the data type
-            ArrayList<Object> row = new ArrayList<>(columns);
-            // Iterates through the data, storing it in the arraylist
-            for (int i=1; i<=columns; ++i) {
-                if (i != 10) {
-                    row.add(orgData.getObject(i));
-                } else {
-                    // Converts the Equipment String into an ArrayList of strings
-                    String equipString = (String) orgData.getObject(i);
-                    String[] equipment = equipString.split(" ");
-                    ArrayList<String> equipArray = new ArrayList<>(Arrays.asList(equipment));
-                    row.add(equipArray);
+        if (orgData != null) {
+            ResultSetMetaData md = orgData.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            // Iterates through the result set
+            while(orgData.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    if (i != 10) {
+                        row.add(orgData.getObject(i));
+                    } else {
+                        // Converts the Equipment String into an ArrayList of strings
+                        String equipString = (String) orgData.getObject(i);
+                        String[] equipment = equipString.split(" ");
+                        ArrayList<String> equipArray = new ArrayList<>(Arrays.asList(equipment));
+                        row.add(equipArray);
+                    }
                 }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
             }
-            // Adds the extracted data to the overall arraylist of data
-            list.add(row);
+            // Sets the filtered data to the new Arraylist of arraylists
+            filteredData = list;
+            originalDataArrayList = list;
+        } else {
+            filteredData = new ArrayList<>();
+            originalDataArrayList = new ArrayList<>();
         }
-        // Sets the filtered data to the new Arraylist of arraylists
-        filteredData = list;
+
     }
-
-
 
     /**
      * filterTable(ArrayList)

@@ -21,7 +21,6 @@ import java.util.Set;
  */
 public class AirlineTable extends DataTable {
 
-
     /**
      * Constructor for AirlineTable
      *
@@ -49,10 +48,5 @@ public class AirlineTable extends DataTable {
         filter.setActive(active);
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
-
     }
-
-
-
-
 }

@@ -1,5 +1,6 @@
 package seng202.team5.controller;
 
+import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,6 +15,7 @@ import javafx.stage.Window;
 import seng202.team5.data.ConcreteAddData;
 
 import javax.swing.event.ChangeListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +32,11 @@ public class AddAirportMenuController {
     @FXML
     private TextField countryField;
 
-
     @FXML
     private TextField iataField;
 
     @FXML
     private TextField icaoField;
-
 
     @FXML
     private TextField latitudeField;
@@ -46,7 +46,6 @@ public class AddAirportMenuController {
 
     @FXML
     private TextField altitudeField;
-
 
     @FXML
     private TextField timezoneField;
@@ -59,8 +58,6 @@ public class AddAirportMenuController {
 
     @FXML
     private Text errorMessage;
-
-
 
 
     @FXML
@@ -114,11 +111,9 @@ public class AddAirportMenuController {
                     setDefaults();
                 }
             }
-
         } catch (NumberFormatException e) {
             System.out.println("Invalid number");
         }
-
     }
 
 

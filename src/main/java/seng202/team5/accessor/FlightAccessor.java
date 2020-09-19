@@ -14,9 +14,6 @@ import java.util.List;
  *
  * Contains the functions save, update, delete, getData, and dataExists for flights that directly interact with the database.
  * Implements the Accessor interface.
- *
- * @author Inga Tokarenko
- * @author Billie Johnson
  */
 public class FlightAccessor implements Accessor{
 
@@ -25,9 +22,6 @@ public class FlightAccessor implements Accessor{
     /**
      * Constructor for FlightAccessor.
      * Gets the connection to the database.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public FlightAccessor() {
         dbHandler = DBConnection.getConnection();
@@ -39,9 +33,6 @@ public class FlightAccessor implements Accessor{
      *
      * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The unique id of the flight entry that was just created.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public int save(List<Object> data) {
         int result;
@@ -81,24 +72,16 @@ public class FlightAccessor implements Accessor{
      * @param new_altitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
      * @param new_latitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
      * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
-     * @return int result The unique id of the flight entry that was just updated.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @return int result The number of rows modified or -1 for error.
      */
     public int update(int id, String new_location_type, String new_location, int new_altitude,
                       double new_latitude, double new_longitude) {
         int result;
-        int flight_id;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE FLIGHT_DATA SET "; // The start of the SQL update statement
 
         try {
             // Retrieves the flight_id of the flight entry to be updated
-            PreparedStatement flight_stmt = dbHandler.prepareStatement("SELECT flight_id FROM FLIGHT_DATA WHERE id = ?");
-            flight_stmt.setObject(1, id);
-            ResultSet flights = flight_stmt.executeQuery();
-            flight_id = flights.getInt(1);
 
             // Checks one by one if any of the parameters are null
             // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
@@ -152,7 +135,7 @@ public class FlightAccessor implements Accessor{
             } catch (Exception e) {
                 // If any of the above fails, sets result to the error code -1 and prints out an error message
                 result = -1;
-                String str = "Unable to update flight data with id " + id + " and flight id " + flight_id;
+                String str = "Unable to update flight data with id " + id;
                 System.out.println(str);
                 System.out.println(e.getMessage());
             }
@@ -171,9 +154,6 @@ public class FlightAccessor implements Accessor{
      *
      * @param id The flight_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean deleteFlight(int id) {
         boolean result = false;
@@ -183,7 +163,7 @@ public class FlightAccessor implements Accessor{
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM FLIGHT_DATA WHERE flight_id = ?");
             stmt.setInt(1, id); // Adds the flight_id to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete flight data with flight id " + id);
@@ -198,9 +178,6 @@ public class FlightAccessor implements Accessor{
      *
      * @param id The unique id of the flight entry to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean delete(int id) {
         boolean result = false;
@@ -210,7 +187,7 @@ public class FlightAccessor implements Accessor{
             PreparedStatement stmt = dbHandler.prepareStatement("DELETE FROM FLIGHT_DATA WHERE id = ?");
             stmt.setInt(1, id); // Adds the unique id of the flight entry to the delete statement
             // Executes the delete operation, returns True if successful
-            result = stmt.execute();
+            result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete flight data with id " + id);
@@ -221,36 +198,10 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
-     * Selects all flights from the database and returns them.
+     * Retrieves the flight with the provided id.
      *
-     * @return ResultSet result Contains the flights in the database.
-     *
-     * @author Billie Johnson
-     */
-    public ResultSet getAllData() {
-        ResultSet result = null;
-
-        try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM FLIGHT_DATA");
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve flights.");
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     *
-     *
-     * @param id
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @param id int id of a flight.
+     * @return ResultSet of the route.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -270,52 +221,30 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
+     * Retrieves all the flights with provided data.
      *
-     *
-     * @param airline
-     * @param airport
-     * @return ResultSet result
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
+     * @param location_type String location_type of a flight, can be null.
+     * @param location String location of a flight, can be null.
+     * @return ResultSet of all the flights.
      */
-    public ResultSet getData(ArrayList<String> airline, ArrayList<String> airport) {
-        boolean check = true;
-        String addString = "";
+    public ResultSet getData(String location_type, String location) {
         ResultSet result = null;
         String query = "SELECT * FROM FLIGHT_DATA";
         ArrayList<String> elements = new ArrayList<>();
 
         try {
-            if (airline != null) {
-
-                query = query + " WHERE ";
-
-                for (String value:airline) {
-                    if (value != null) {
-                        addString = elements.size() == 0 ? " airline = ? " : " or airline = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                    }
-                }
+            if (location_type != null) {
+                query = query + " WHERE location_type = ? ";
+                elements.add(location_type);
             }
-            if (airport != null) {
-                if (airline != null) {
-                    query = query + " and ";
+            if (location != null) {
+                if (location_type != null) {
+                    query = query + " and location = ?";
                 } else {
-                    query = query + " WHERE ";
+                    query = query + " WHERE location = ?";
                 }
-
-                for (String value:airport) {
-                    if (value != null) {
-                        addString = check ? " airport = ? " : " or airport = ? ";
-                        query = query + addString;
-                        elements.add(value);
-                        check = false;
-                    }
-                }
+                elements.add(location);
             }
-
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {
@@ -337,9 +266,6 @@ public class FlightAccessor implements Accessor{
      *
      * @param id An integer flight_id.
      * @return boolean result True if any flight entries exist with the given flight_id, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean flightExists(int id) {
         boolean result = false;
@@ -367,9 +293,6 @@ public class FlightAccessor implements Accessor{
      *
      * @param id An integer, a unique id of a flight entry.
      * @return boolean result True if a flight entry exists with the given id, False otherwise.
-     *
-     * @author Inga Tokarenko 
-     * @author Billie Johnson
      */
     public boolean dataExists(int id) {
         boolean result = false;
@@ -396,8 +319,6 @@ public class FlightAccessor implements Accessor{
      * Gets the maximum flight_id contained in the database.
      *
      * @return int id The maximum flight_id in the database.
-     *
-     * @author Billie Johnson
      */
     public int getMaxFlightID() {
         int id = 0;
@@ -422,8 +343,6 @@ public class FlightAccessor implements Accessor{
      * Gets the maximum unique id contained in the flight data table.
      *
      * @return int id The maximum unique id in the flight data table.
-     *
-     * @author Billie Johnson
      */
     public int getMaxID() {
         int id = 0;

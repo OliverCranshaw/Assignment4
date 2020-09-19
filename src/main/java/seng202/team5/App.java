@@ -9,11 +9,8 @@ import seng202.team5.database.DBInitializer;
 
 import java.io.IOException;
 
-
 /**
-/** noice
- * Le main class
- * comment very good
+ * Main class that activates the GUI and creates the database.
  */
 public class App extends Application {
 
@@ -31,10 +28,7 @@ public class App extends Application {
         mainStage.show();
     }
 
-
-
     public static void main(String[] args) {
         launch(args);
     }
-
 }

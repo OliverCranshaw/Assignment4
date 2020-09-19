@@ -7,8 +7,6 @@ import java.util.ArrayList;
  *
  * Contains the functions filterTable, checks for if the data in the row, and setters.
  * Extends the ConcreteFilterTable abstract class.
- *
- * @author Inga Tokarenko
  */
 public class FilterRouteTable extends ConcreteFilterTable {
 
@@ -23,8 +21,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the elements.
      *
      * @param data The ArrayList that is passed through with information from the table.
-     *
-     * @author Inga Tokarenko
      */
     public FilterRouteTable(ArrayList<ArrayList<Object>> data) {
         super(data);
@@ -34,8 +30,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Overrides the the parent class.
      * Goes through each element and checks weather it matches any criteria that was set at the beginning.
      * If an element does not match the criteria it is removed from the elements array and the currentPos is reset back to zero.
-     *
-     * @author Inga Tokarenko
      */
     @Override
     public void filterTable() {
@@ -48,7 +42,7 @@ public class FilterRouteTable extends ConcreteFilterTable {
             String currentDep = (String) current.get(3);
             String currentDes = (String) current.get(5);
             int stops = (int) current.get(8);
-            String currentEquip = (String) current.get(9);
+            ArrayList<String> currentEquip = (ArrayList<String>) current.get(9);
 
             if (airportDep != null) {
                 containsAirportDep(currentDep);
@@ -66,6 +60,8 @@ public class FilterRouteTable extends ConcreteFilterTable {
                 elements.remove((currentPos));
                 currentPos = 0;
                 remove = false;
+            } else {
+                currentPos++;
             }
         }
     }
@@ -75,11 +71,9 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the remove to true if the airports don't match.
      *
      * @param currentDep the airportDep from the current element.
-     *
-     * @author Inga Tokarenko
      */
     public void containsAirportDep(String currentDep) {
-        if (currentDep != airportDep) {
+        if (!currentDep.equals(airportDep)) {
             remove = true;
         }
     }
@@ -89,11 +83,9 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the remove to true if the airports don't match.
      *
      * @param currentDes the airportDes from the current element.
-     *
-     * @author Inga Tokarenko
      */
     public void containsAirportDes(String currentDes) {
-        if (currentDes != airportDes) {
+        if (!currentDes.equals(airportDes)) {
             remove = true;
         }
     }
@@ -103,14 +95,16 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the remove to true depending on the number of stops.
      *
      * @param stops the number of stops from the current element.
-     *
-     * @author Inga Tokarenko
      */
     public void isDirect(int stops) {
-        if (direct == "direct") {
-            remove = stops > 0 ? true : false;
-        } else if (direct == "not direct") {
-            remove = stops > 0 ? false : true;
+        if (direct.equals("direct")) {
+            if (stops > 0) {
+                remove = true;
+            }
+        } else if (direct.equals("not direct")) {
+            if (stops <= 0) {
+                remove = true;
+            }
         }
     }
 
@@ -119,12 +113,12 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the remove to true if the equipments don't match.
      *
      * @param currentEquip the equipment from the current element.
-     *
-     * @author Inga Tokarenko
      */
-    public void containsEquip(String currentEquip) {
-        if (!equip.contains(currentEquip)) {
-            remove = true;
+    public void containsEquip(ArrayList<String> currentEquip) {
+        for (Object value : equip) {
+            if (!currentEquip.contains(value)) {
+                remove = true;
+            }
         }
     }
 
@@ -132,8 +126,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the airportDep to newAirport.
      *
      * @param newAirport the airport iata/icao.
-     *
-     * @author Inga Tokarenko
      */
     public void setAirportDep(String newAirport) {
         airportDep = newAirport;
@@ -143,8 +135,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the airportDes to newAirport.
      *
      * @param newAirport the airport iata/icao.
-     *
-     * @author Inga Tokarenko
      */
     public void setAirportDes(String newAirport) {
         airportDes = newAirport;
@@ -154,8 +144,6 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the direct to newDirect.
      *
      * @param newDirect String that contains either direct or not direct string.
-     *
-     * @author Inga Tokarenko
      */
     public void setDirect(String newDirect) {
         direct = newDirect;
@@ -165,10 +153,24 @@ public class FilterRouteTable extends ConcreteFilterTable {
      * Sets the equip to newEquip.
      *
      * @param newEquip the equipment.
-     *
-     * @author Inga Tokarenko
      */
-    public void setEquip(ArrayList<String> newEquip) {
-        equip = newEquip;
+    public void setEquip(ArrayList<String> newEquip) { equip = newEquip; }
+
+    /**
+     * Gets remove and returns it.
+     *
+     * @return boolean either true or false
+     */
+    public boolean getRemove() {
+        return remove;
+    }
+
+    /**
+     * Gets elements and returns it.
+     *
+     * @return ArrayList<ArrayList<Object>> of the elements.
+     */
+    public ArrayList<ArrayList<Object>> getElements() {
+        return elements;
     }
 }

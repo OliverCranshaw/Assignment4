@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.UploadFlightMenuController">
    <columnConstraints>
@@ -19,16 +22,21 @@
    <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="600.0" GridPane.rowIndex="1">
          <columnConstraints>
-            <ColumnConstraints maxWidth="524.0" minWidth="10.0" prefWidth="260.0" />
-            <ColumnConstraints maxWidth="520.0" minWidth="60.0" prefWidth="75.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="260.0" />
+            <ColumnConstraints maxWidth="524.0" minWidth="10.0" prefWidth="20.800018310546875" />
+            <ColumnConstraints maxWidth="557.6000122070312" minWidth="60.0" prefWidth="556.0000366210937" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="22.39996337890625" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="44.59996643066407" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="182.20003356933594" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="38.400008010864255" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="132.79999198913572" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Button fx:id="selectFileButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onSelectFilePressed" text="Select File" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <content>
+                  <Text fx:id="errorList" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="551.7366828918457" />
+               </content>
+            </ScrollPane>
          </children>
       </GridPane>
       <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
@@ -38,10 +46,16 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label text="File must be a .txt file and have lines in the format of &lt;airline code&gt;,&lt;airport code&gt;,&lt;altitude&gt;,&lt;latitude&gt;,&lt;longitude&gt;" textAlignment="CENTER" wrapText="true" />
+            <Label text="File must be a .txt file and have lines in the format of &lt;location type&gt;,&lt;location&gt;,&lt;altitude&gt;,&lt;latitude&gt;,&lt;longitude&gt;" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
             <Label layoutX="10.0" layoutY="160.0" text="The file must only contain a single flight, although a single flight may have multiple entries." textAlignment="CENTER" wrapText="true" />
-            <Label text="Airline code is an airline IATA or ICAO code, must be 2 or 3 characters." textAlignment="CENTER" wrapText="true" />
-            <Label text="Airport code is an airport IATA or ICAO code, must be 3 or 4 characters." textAlignment="CENTER" wrapText="true" />
+            <Label text="Location type is the type of the location for the flight entry, must be one of &quot;APT&quot;, &quot;FIX&quot;, or &quot;VOR&quot;." textAlignment="CENTER" wrapText="true" />
+            <Label text="Location is the location code of the flight entry. If location type is &quot;APT&quot; it must be an airport IATA/ICAO code, which are 3/4 characters." textAlignment="CENTER" wrapText="true">
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding></Label>
             <Label text="Altitude must be a whole number." textAlignment="CENTER" wrapText="true" />
          </children>
       </VBox>

@@ -9,8 +9,6 @@ import java.sql.Statement;
  * DBTableInitializer
  *
  * Creates the database tables for airport, airline, flight, and route data.
- *
- * @author Billie Johnson
  */
 public class DBTableInitializer {
 
