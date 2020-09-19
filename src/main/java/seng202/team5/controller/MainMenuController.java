@@ -416,6 +416,192 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button routeCancelBtn;
 
+    @FXML
+    private Label lblAirportIDS;
+
+    @FXML
+    private TextField airportIDS;
+
+    @FXML
+    private Label lblAirportNameS;
+
+    @FXML
+    private TextField airportNameS;
+
+    @FXML
+    private Label lblAirportCityS;
+
+    @FXML
+    private TextField airportCityS;
+
+    @FXML
+    private Label lblAirportCountryS;
+
+    @FXML
+    private TextField airportCountryS;
+
+    @FXML
+    private Label lblAirportIATAS;
+
+    @FXML
+    private TextField airportIATAS;
+
+    @FXML
+    private Label lblAirportICAOS;
+
+    @FXML
+    private TextField airportICAOS;
+
+    @FXML
+    private Label lblAirportLatitudeS;
+
+    @FXML
+    private TextField airportLatitudeS;
+
+    @FXML
+    private Label lblAirportLongitudeS;
+
+    @FXML
+    private TextField airportLongitudeS;
+
+    @FXML
+    private Label lblAirportAltitudeS;
+
+    @FXML
+    private TextField airportAltitudeS;
+
+    @FXML
+    private Label lblAirportTimezoneS;
+
+    @FXML
+    private TextField airportTimezoneS;
+
+    @FXML
+    private Label lblAirportDSTS;
+
+    @FXML
+    private TextField airportDSTS;
+
+    @FXML
+    private Label lblAirportTZS;
+
+    @FXML
+    private TextField airportTZS;
+
+    @FXML
+    private Label lblAirlineIDS;
+
+    @FXML
+    private TextField airlineIDS;
+
+    @FXML
+    private Label lblAirlineNameS;
+
+    @FXML
+    private TextField airlineNameS;
+
+    @FXML
+    private Label lblAirlineAliasS;
+
+    @FXML
+    private TextField airlineAliasS;
+
+    @FXML
+    private Label lblAirlineIATAS;
+
+    @FXML
+    private TextField airlineIATAS;
+
+    @FXML
+    private Label lblAirlineICAOS;
+
+    @FXML
+    private TextField airlineICAOS;
+
+    @FXML
+    private Label lblAirlineCallsignS;
+
+    @FXML
+    private TextField airlineCallsignS;
+
+    @FXML
+    private Label lblAirlineCountryS;
+
+    @FXML
+    private TextField airlineCountryS;
+
+    @FXML
+    private Label lblAirlineActiveS;
+
+    @FXML
+    private TextField airlineActiveS;
+
+    @FXML
+    private Label lblRouteIDS;
+
+    @FXML
+    private TextField routeIDS;
+
+    @FXML
+    private Label lblRouteAirlineS;
+
+    @FXML
+    private TextField routeAirlineS;
+
+    @FXML
+    private Label lblRouteAirlineIDS;
+
+    @FXML
+    private TextField routeAirlineIDS;
+
+    @FXML
+    private Label lblRouteDepAirportS;
+
+    @FXML
+    private TextField routeDepAirportS;
+
+    @FXML
+    private Label lblRouteDepAirportIDS;
+
+    @FXML
+    private TextField routeDepAirportIDS;
+
+    @FXML
+    private Label lblRouteDesAirportS;
+
+    @FXML
+    private TextField routeDesAirportS;
+
+    @FXML
+    private Label lblRouteDesAirportIDS;
+
+    @FXML
+    private TextField routeDesAirportIDS;
+
+    @FXML
+    private Label lblRouteCodeshareS;
+
+    @FXML
+    private TextField routeCodeshareS;
+
+    @FXML
+    private Label lblRouteStopsS;
+
+    @FXML
+    private TextField routeStopsS;
+
+    @FXML
+    private Label lblRouteEquipS;
+
+    @FXML
+    private TextField routeEquipS;
+
+
+    @FXML
+    private TableView searchFlightSingleRecordTableView;
+
+
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -600,22 +786,158 @@ public class MainMenuController implements Initializable {
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
 
+        searchTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+
+            if (airlinesRadioButton.isSelected()) {
+
+
+                if (newSelection != null) {
+                    AirlineModel selected = (AirlineModel) newSelection;
+                    try {
+                        setSearchAirlineSingleRecord(selected);
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+
+            else if (airportsRadioButton.isSelected()) {
+
+
+                if (newSelection != null) {
+                    AirportModel selected = (AirportModel) newSelection;
+                    try {
+                        setSearchAirportSingleRecord(selected);
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+
+            else if (flightsRadioButton.isSelected()) {
+
+
+                if (newSelection != null) {
+                    FlightModel selected = (FlightModel) newSelection;
+                    try {
+                        setSearchFlightSingleRecord(selected);
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+
+            else if (routesRadioButton.isSelected()) {
+
+
+                if (newSelection != null) {
+                    RouteModel selected = (RouteModel) newSelection;
+                    try {
+                        setSearchRouteSingleRecord(selected);
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+        try {
+            setFlightSingleRecord(null);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+
+        dataExporter = new DataExporter();
+
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        routeService = new RouteService();
+        flightService = new FlightService();
+
+        airlineTable = new AirlineTable(airlineService.getData(null, null, null));
+        airportTable = new AirportTable(airportService.getData(null, null, null));
+        routeTable = new RouteTable(routeService.getData(null, null, -1, null));
+        flightTable = new FlightTable(flightService.getData(null, null));
+
+        try {
+            airlineTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        populateAirlineTable(rawAirlineTable, airlineTable.getData());
+
+
+        try {
+            airportTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        populateAirportTable(airportTableView, airportTable.getData());
+
+        try {
+            routeTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        populateRouteTable(routeTableView, routeTable.getData());
+
+
+        try {
+            flightTable.createTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            populateFlightTable(flightTableView, flightTable.getData());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        setSearchTableFlights();
+
+        airportSaveBtn.setVisible(false);
+        airportCancelBtn.setVisible(false);
+        airlineSaveBtn.setVisible(false);
+        airlineCancelBtn.setVisible(false);
+        routeSaveBtn.setVisible(false);
+        routeCancelBtn.setVisible(false);
+
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
                 airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
-                airportAltitude, airportTimezone, airportDST, airportTZ);
-        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
+                airportAltitude, airportTimezone, airportDST, airportTZ, airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS,
+                airportLongitudeS, airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS, airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS,
+                airlineCallsignS, airlineCountryS, airlineActiveS, routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
+
         List<Label> lblElements = Arrays.asList(lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
                 lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip, lblAirlineID, lblAirlineName, lblAirlineAlias,
                 lblAirlineIATA, lblAirlineICAO, lblAirlineCallsign, lblAirlineCountry, lblAirlineActive, lblAirportID, lblAirportName, lblAirportCity, lblAirportCountry, lblAirportIATA, lblAirportICAO, lblAirportLatitude, lblAirportLongitude,
-                lblAirportAltitude, lblAirportTimezone, lblAirportDST, lblAirportTZ);
+                lblAirportAltitude, lblAirportTimezone, lblAirportDST, lblAirportTZ, lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS,
+                lblAirportLatitudeS, lblAirportLongitudeS, lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS, lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS,
+                lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS, lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
+
+        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
         setFieldsEmpty(elementsVisible);
         setLabelsEmpty(lblElementsVisible, false);
 
     }
 
-    private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
+    void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
             flightSingleRecordTableView.getItems().removeAll();
         } else {
@@ -637,7 +959,7 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    private void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
+    void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
@@ -654,7 +976,7 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    private void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
+    void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         List<Label> lblElements = Arrays.asList(lblAirlineID, lblAirlineName, lblAirlineAlias, lblAirlineIATA, lblAirlineICAO, lblAirlineCallsign, lblAirlineCountry, lblAirlineActive);
@@ -669,7 +991,7 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    private void setAirportSingleRecord(AirportModel airportModel) throws SQLException {
+    void setAirportSingleRecord(AirportModel airportModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
@@ -687,6 +1009,80 @@ public class MainMenuController implements Initializable {
             setLabelsEmpty(lblElementsVisible, true);
         }
     }
+
+    void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
+        if (flightModel == null) {
+            searchFlightSingleRecordTableView.getItems().removeAll();
+        } else {
+            flightEntries = FXCollections.observableArrayList();
+            Integer flightID = flightModel.getFlightId();
+            ResultSet flightData = flightService.getData(flightID);
+            while (flightData.next()) {
+                Integer id = flightData.getInt(1);
+                Integer flightId = flightData.getInt(2);
+                String locationType = flightData.getString(3);
+                String location = flightData.getString(4);
+                Integer altitude = flightData.getInt(5);
+                Double latitude = flightData.getDouble(6);
+                Double longitude = flightData.getDouble(7);
+                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                flightEntries.add(newEntry);
+            }
+            searchFlightSingleRecordTableView.setItems(flightEntries);
+        }
+    }
+
+    void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
+        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
+                routeCodeshare, routeStops, routeEquip);
+        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
+        List<Label> lblElements = Arrays.asList(lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
+                lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip);
+        ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
+        if (routeModel == null) {
+            setFieldsEmpty(elementsVisible);
+            setLabelsEmpty(lblElementsVisible, false);
+        } else {
+            ResultSet routeData = routeService.getData(routeModel.getRouteId());
+            setLabels(routeData, elementsVisible);
+            setLabelsEmpty(lblElementsVisible, true);
+        }
+    }
+
+    void setSearchAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
+        List<TextField> elements = Arrays.asList(airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS, airlineCallsignS, airlineCountryS, airlineActiveS);
+        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
+        List<Label> lblElements = Arrays.asList(lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS, lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS);
+        ArrayList<Label> lblElementsVisible = new ArrayList<>(lblElements);
+        if (airlineModel == null) {
+            setFieldsEmpty(elementsVisible);
+            setLabelsEmpty(lblElementsVisible, false);
+        } else {
+            ResultSet airlineData = airlineService.getData(airlineModel.getId());
+            setLabels(airlineData, elementsVisible);
+            setLabelsEmpty(lblElementsVisible, true);
+        }
+    }
+
+    void setSearchAirportSingleRecord(AirportModel airportModel) throws SQLException {
+        List<TextField> elements = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS, airportLongitudeS,
+                airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS);
+        ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
+        List<Label> lblElements = Arrays.asList(lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS, lblAirportLatitudeS, lblAirportLongitudeS,
+                lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS);
+        ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
+
+        if (airportModel == null) {
+            setFieldsEmpty(elementsVisible);
+            setLabelsEmpty(lblElementsVisible, false);
+
+        } else {
+            ResultSet airportData = airportService.getData(airportModel.getId());
+            setLabels(airportData, elementsVisible);
+            setLabelsEmpty(lblElementsVisible, true);
+        }
+    }
+
 
     private void setFieldsEmpty(ArrayList<TextField> elementsVisible) {
         for (TextField field : elementsVisible) {
@@ -858,6 +1254,26 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onFlightsRadioPressed() {
 
+        List<TextField> allSearchTextFields = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS,
+                airportLongitudeS, airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS, airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS,
+                airlineCallsignS, airlineCountryS, airlineActiveS, routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
+
+        List<Label> allSearchLabels = Arrays.asList(lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS,
+                lblAirportLatitudeS, lblAirportLongitudeS, lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS, lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS,
+                lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS, lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
+
+
+        ArrayList<TextField> textFields = new ArrayList<TextField>(allSearchTextFields);
+        ArrayList<Label> labels = new ArrayList<Label>(allSearchLabels);
+
+        setFieldsEmpty(textFields);
+        setLabelsEmpty(labels, false);
+
+        searchFlightSingleRecordTableView.setVisible(true);
+        searchFlightSingleRecordTableView.setDisable(false);
+
         flightsRadioButton.setSelected(true);
         airportsRadioButton.setSelected(false);
         airlinesRadioButton.setSelected(false);
@@ -887,6 +1303,27 @@ public class MainMenuController implements Initializable {
     }
     @FXML
     public void onAirportsRadioPressed() {
+
+        List<TextField> allSearchTextFields = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS,
+                airportLongitudeS, airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS, airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS,
+                airlineCallsignS, airlineCountryS, airlineActiveS, routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
+
+        List<Label> allSearchLabels = Arrays.asList(lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS,
+                lblAirportLatitudeS, lblAirportLongitudeS, lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS, lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS,
+                lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS, lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
+
+
+        ArrayList<TextField> textFields = new ArrayList<TextField>(allSearchTextFields);
+        ArrayList<Label> labels = new ArrayList<Label>(allSearchLabels);
+
+        setFieldsEmpty(textFields);
+        setLabelsEmpty(labels, false);
+
+
+        searchFlightSingleRecordTableView.setVisible(false);
+        searchFlightSingleRecordTableView.setDisable(true);
 
         flightsRadioButton.setSelected(false);
         airportsRadioButton.setSelected(true);
@@ -918,6 +1355,26 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onAirlinesRadioPressed() {
 
+        List<TextField> allSearchTextFields = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS,
+                airportLongitudeS, airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS, airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS,
+                airlineCallsignS, airlineCountryS, airlineActiveS, routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
+
+        List<Label> allSearchLabels = Arrays.asList(lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS,
+                lblAirportLatitudeS, lblAirportLongitudeS, lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS, lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS,
+                lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS, lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
+
+
+        ArrayList<TextField> textFields = new ArrayList<TextField>(allSearchTextFields);
+        ArrayList<Label> labels = new ArrayList<Label>(allSearchLabels);
+
+        setFieldsEmpty(textFields);
+        setLabelsEmpty(labels, false);
+
+        searchFlightSingleRecordTableView.setVisible(false);
+        searchFlightSingleRecordTableView.setDisable(true);
+
         flightsRadioButton.setSelected(false);
         airportsRadioButton.setSelected(false);
         airlinesRadioButton.setSelected(true);
@@ -947,6 +1404,27 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onRoutesRadioPressed() {
+
+        List<TextField> allSearchTextFields = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS,
+                airportLongitudeS, airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS, airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS,
+                airlineCallsignS, airlineCountryS, airlineActiveS, routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
+
+        List<Label> allSearchLabels = Arrays.asList(lblAirportIDS, lblAirportNameS, lblAirportCityS, lblAirportCountryS, lblAirportIATAS, lblAirportICAOS,
+                lblAirportLatitudeS, lblAirportLongitudeS, lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS, lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS,
+                lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS, lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
+
+
+        ArrayList<TextField> textFields = new ArrayList<TextField>(allSearchTextFields);
+        ArrayList<Label> labels = new ArrayList<Label>(allSearchLabels);
+
+        setFieldsEmpty(textFields);
+        setLabelsEmpty(labels, false);
+
+        searchFlightSingleRecordTableView.setVisible(false);
+        searchFlightSingleRecordTableView.setDisable(true);
+
 
         flightsRadioButton.setSelected(false);
         airportsRadioButton.setSelected(false);
