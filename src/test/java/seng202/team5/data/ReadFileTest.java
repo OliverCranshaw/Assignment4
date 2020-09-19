@@ -1,6 +1,5 @@
 package seng202.team5.data;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +59,7 @@ public class ReadFileTest {
         }
     }
 
+
     @Test
     public void removeQuotesTest() {
         String quotes_only = "\"\"";
@@ -72,6 +72,7 @@ public class ReadFileTest {
         assertEquals("\\N", readFile.removeQuotes(no_quotes));
         assertEquals("New Zealand", readFile.removeQuotes(quotes));
     }
+
 
     @Test
     public void getEntriesNormalTest() {
@@ -91,6 +92,7 @@ public class ReadFileTest {
         assertEquals(expected_route_entries, readFile.getEntries(route_line));
     }
 
+
     @Test
     public void getEntriesAbnormalTest() {
         String airline_line = "1,\"Private flight\",\\N,\"-\",\"N/A\",\"\",\"\",\"Y\"";
@@ -109,6 +111,7 @@ public class ReadFileTest {
         assertEquals(expected_blank_entries, readFile.getEntries(blank_line));
     }
 
+
     @Test
     public void readAirlineTest() {
         airlineFile = new File("src/test/java/seng202/team5/data/testfiles/normal_airline_with_id.txt");
@@ -121,6 +124,7 @@ public class ReadFileTest {
         assertEquals(3, readFile.readAirlineData(airlineFile).get(0));
     }
 
+
     @Test
     public void readAirlineFailTest() {
         airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airline_too_few_entries.txt");
@@ -130,17 +134,20 @@ public class ReadFileTest {
         assertEquals(-3, readFile.readAirlineData(airlineFile).get(0));
     }
 
+
     @Test
     public void readAirlinesTest() {
         airlineFile = new File("src/test/java/seng202/team5/data/testfiles/normal_airlines_multiple.txt");
         assertEquals(5, readFile.readAirlineData(airlineFile).get(0));
     }
 
+
     @Test
     public void readAirlinesFailTest() {
         airlineFile = new File("src/test/java/seng202/team5/data/testfiles/abnormal_airlines_multiple.txt");
         assertEquals(3, readFile.readAirlineData(airlineFile).get(0));
     }
+
 
     @Test
     public void readAirportTest() {
@@ -154,6 +161,7 @@ public class ReadFileTest {
         assertEquals(3, readFile.readAirportData(airportFile).get(0));
     }
 
+
     @Test
     public void readAirportFailTest() {
         airportFile = new File("src/test/java/seng202/team5/data/testfiles/airport_too_few_entries.txt");
@@ -163,17 +171,20 @@ public class ReadFileTest {
         assertEquals(-3, readFile.readAirportData(airportFile).get(0));
     }
 
+
     @Test
     public void readAirportsTest() {
         airportFile = new File("src/test/java/seng202/team5/data/testfiles/normal_airports_multiple.txt");
         assertEquals(5, readFile.readAirportData(airportFile).get(0));
     }
 
+
     @Test
     public void readAirportsFailTest() {
         airportFile = new File("src/test/java/seng202/team5/data/testfiles/abnormal_airports_multiple.txt");
         assertEquals(3, readFile.readAirportData(airportFile).get(0));
     }
+
 
     @Test
     public void readFlightEntryTest() {
@@ -185,6 +196,7 @@ public class ReadFileTest {
         assertEquals(expected, readFile.readFlightData(flightFile).get(0));
     }
 
+
     @Test
     public void readFlightEntryFailTest() {
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/flight_entry_too_few_entries.txt");
@@ -194,6 +206,7 @@ public class ReadFileTest {
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/flight_entry_too_many_entries.txt");
         assertEquals(expected, readFile.readFlightData(flightFile).get(0));
     }
+
 
     @Test
     public void readFlightTest() {
@@ -205,6 +218,7 @@ public class ReadFileTest {
         assertEquals(expected, readFile.readFlightData(flightFile).get(0));
     }
 
+
     @Test
     public void readFlightFailTest() {
         readFile.readAirlineData(airlines);
@@ -214,6 +228,7 @@ public class ReadFileTest {
         expected = new ArrayList<>(Arrays.asList(-1, -1));
         assertEquals(expected, readFile.readFlightData(flightFile).get(0));
     }
+
 
     @Test
     public void readRouteTest() {
@@ -227,6 +242,7 @@ public class ReadFileTest {
         assertEquals(2, readFile.readRouteData(routeFile).get(0));
     }
 
+
     @Test
     public void readRouteFailTest() {
         routeFile = new File("src/test/java/seng202/team5/data/testfiles/route_too_few_entries.txt");
@@ -239,6 +255,7 @@ public class ReadFileTest {
         assertEquals(-4, readFile.readRouteData(routeFile).get(0));
     }
 
+
     @Test
     public void readRoutesTest() {
         readFile.readAirlineData(airlines);
@@ -247,6 +264,7 @@ public class ReadFileTest {
         routeFile = new File("src/test/java/seng202/team5/data/testfiles/normal_routes_multiple.txt");
         assertEquals(5, readFile.readRouteData(routeFile).get(0));
     }
+
 
     @Test
     public void readRoutesFailTest() {

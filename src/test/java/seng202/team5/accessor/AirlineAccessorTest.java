@@ -1,7 +1,8 @@
 package seng202.team5.accessor;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import seng202.team5.database.DBConnection;
 import seng202.team5.service.BaseDatabaseTest;
 
@@ -17,16 +18,14 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
     private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
 
-    public AirlineAccessorTest(String testName) { super(testName); }
-
-    public static Test suite() { return new TestSuite(AirlineAccessorTest.class); }
-
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         super.setUp();
         airlineAccessor = new AirlineAccessor();
     }
 
+
+    @Test
     public void testSave() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -42,7 +41,7 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             int key = airlineAccessor.save(new ArrayList<>(data));
 
             // Check operation did not fail
-            assertTrue(key != -1);
+            Assert.assertTrue(key != -1);
 
             // Query airline data with airport_id=key
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -51,18 +50,20 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             ResultSet resultSet = stmt.executeQuery();
 
             // Check that there is at least one result
-            assertTrue("Failed to fetch airline_id=" + key, resultSet.next());
+            Assert.assertTrue("Failed to fetch airline_id=" + key, resultSet.next());
 
             // Check the result contents
             for (int i = 0; i<data.size(); i++) {
-                assertEquals(data.get(i), resultSet.getObject(2 + i));
+                Assert.assertEquals(data.get(i), resultSet.getObject(2 + i));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
     }
 
+
+    @Test
     public void testUpdate() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -76,17 +77,17 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
         ResultSet keys = stmt.getGeneratedKeys();
         keys.next();
         int key = keys.getInt(1);
 
 
-        assertEquals(0, airlineAccessor.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
+        Assert.assertEquals(0, airlineAccessor.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
 
         List<String> newData = List.of("Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y");
 
-        assertEquals(1, airlineAccessor.update(1, newData.get(0), newData.get(1), newData.get(2), newData.get(3), newData.get(4), newData.get(5), newData.get(6)));
+        Assert.assertEquals(1, airlineAccessor.update(1, newData.get(0), newData.get(1), newData.get(2), newData.get(3), newData.get(4), newData.get(5), newData.get(6)));
 
 
         // Query airline data with airport_id=key
@@ -95,17 +96,19 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         stmt2.setObject(1, key);
         ResultSet resultSet = stmt2.executeQuery();
         // Check that there is at least one result
-        assertTrue("Failed to fetch airline_id=" + 1, resultSet.next());
+        Assert.assertTrue("Failed to fetch airline_id=" + 1, resultSet.next());
 
         // Check the result contents
         for (int i = 0; i<newData.size(); i++) {
-            assertEquals(newData.get(i), resultSet.getObject(2 + i));
+            Assert.assertEquals(newData.get(i), resultSet.getObject(2 + i));
         }
 
         // Check there are no more than 1 result
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testDelete() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -117,30 +120,32 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             stmt.setObject(i + 1, testData.get(i));
         }
 
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         // Gets the airline ID
         ResultSet rs = stmt.getGeneratedKeys();
-        assertTrue(rs.next());
+        Assert.assertTrue(rs.next());
         int id = rs.getInt(1);
         rs.close();
 
         // Ensure delete fails it doesn't exist
-        assertFalse(airlineAccessor.delete(-1));
+        Assert.assertFalse(airlineAccessor.delete(-1));
 
         // Performs the delete
-        assertTrue(airlineAccessor.delete(id));
+        Assert.assertTrue(airlineAccessor.delete(id));
 
         PreparedStatement stmt2 = dbHandler.prepareStatement(
                 "SELECT * FROM AIRLINE_DATA");
         ResultSet resultSet = stmt2.executeQuery();
 
         // Check that we don't find anything
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
 
         dbHandler.close();
     }
 
+
+    @Test
     public void testGetAllData() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -155,20 +160,22 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
                 stmt.setObject(j + 1, testData.get(j));
             }
 
-            assertEquals(1, stmt.executeUpdate());
+            Assert.assertEquals(1, stmt.executeUpdate());
         }
 
         ResultSet resultSet = airlineAccessor.getData(null, null, null);
         for (int i = 0; i<2; i++) {
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
             // Check the result contents
             for (int j = 0; j<testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                Assert.assertEquals(testData.get(j), resultSet.getObject(2 + j));
             }
         }
-        assertFalse(resultSet.next());
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testGetDataByID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
@@ -187,11 +194,11 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airline ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
         }
@@ -199,26 +206,28 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         for (int i = 0; i<3; i++) {
             int key = keys.get(i);
             ResultSet resultSet = airlineAccessor.getData(key);
-            assertNotNull("Key " + key + " not found", resultSet);
+            Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
 
             // Check name
-            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+            Assert.assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
 
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                Assert.assertEquals(testData.get(j), resultSet.getObject(2 + j));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
 
-        assertFalse(airlineAccessor.getData(10000).next());
+        Assert.assertFalse(airlineAccessor.getData(10000).next());
     }
 
+
+    @Test
     public void testGetData() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -256,12 +265,12 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
                     // If filter matches the data in the database
                     if (validName && validCountry && validCallsign) {
-                        assertTrue(combination, resultSet.next());
+                        Assert.assertTrue(combination, resultSet.next());
                         for (int i = 0; i<testData.size(); i++) {
-                            assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
+                            Assert.assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
                         }
                     }
-                    assertFalse(combination, resultSet.next());
+                    Assert.assertFalse(combination, resultSet.next());
                 }
             }
         }
@@ -269,6 +278,8 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         dbHandler.close();
     }
 
+
+    @Test
     public void testGetAirlineId() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
@@ -286,11 +297,11 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airline ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
         }
@@ -299,15 +310,17 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             int key = keys.get(i);
 
             String iataCode = i + testData.get(2).substring(1);
-            assertEquals(key, airlineAccessor.getAirlineId(iataCode));
+            Assert.assertEquals(key, airlineAccessor.getAirlineId(iataCode));
 
             String icaoCode = i + testData.get(3).substring(1);
-            assertEquals(key, airlineAccessor.getAirlineId(icaoCode));
+            Assert.assertEquals(key, airlineAccessor.getAirlineId(icaoCode));
         }
 
-        assertEquals(-1, airlineAccessor.getAirlineId("Something else"));
+        Assert.assertEquals(-1, airlineAccessor.getAirlineId("Something else"));
     }
 
+
+    @Test
     public void testGetAirlineIataIcao() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -320,17 +333,19 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         }
 
         // Executes the insert operation, sets the result to the airport_id of the new airport
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         ArrayList iataIcao = airlineAccessor.getAirlineIataIcao(testData.get(0));
 
         for (int i = 0; i<2; i++) {
-            assertEquals(testData.get(i + 2), iataIcao.get(i));
+            Assert.assertEquals(testData.get(i + 2), iataIcao.get(i));
         }
 
-        assertTrue(airlineAccessor.getAirlineIataIcao("Not in thee database").isEmpty());
+        Assert.assertTrue(airlineAccessor.getAirlineIataIcao("Not in thee database").isEmpty());
     }
 
+
+    @Test
     public void testDataExistsById() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -343,17 +358,19 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         }
 
         // Executes the insert operation, sets the result to the airport_id of the new airport
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
         ResultSet rs = stmt.getGeneratedKeys();
-        assertTrue(rs.next());
+        Assert.assertTrue(rs.next());
         int key = rs.getInt(1);
 
 
-        assertTrue(airlineAccessor.dataExists(key));
-        assertFalse(airlineAccessor.dataExists(key + 1));
+        Assert.assertTrue(airlineAccessor.dataExists(key));
+        Assert.assertFalse(airlineAccessor.dataExists(key + 1));
     }
 
+
+    @Test
     public void testDataExists() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -366,14 +383,16 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         }
 
         // Executes the insert operation, sets the result to the airport_id of the new airport
-        assertEquals(1, stmt.executeUpdate());
+        Assert.assertEquals(1, stmt.executeUpdate());
 
 
-        assertTrue(airlineAccessor.dataExists(testData.get(2)));
-        assertTrue(airlineAccessor.dataExists(testData.get(3)));
-        assertFalse(airlineAccessor.dataExists("Shouldn't exist in DB"));
+        Assert.assertTrue(airlineAccessor.dataExists(testData.get(2)));
+        Assert.assertTrue(airlineAccessor.dataExists(testData.get(3)));
+        Assert.assertFalse(airlineAccessor.dataExists("Shouldn't exist in DB"));
     }
 
+
+    @Test
     public void testGetMaxID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -392,15 +411,15 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airline ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             maxKey = Math.max(maxKey, key);
 
-            assertEquals(maxKey, airlineAccessor.getMaxID());
+            Assert.assertEquals(maxKey, airlineAccessor.getMaxID());
         }
     }
 }

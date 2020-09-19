@@ -9,11 +9,8 @@ import java.util.List;
 /**
  * AirlineService
  *
- * Contains the functions save, update, delete, getAirline(s), and validity check functions for airlines that interact with Accessors.
+ * Contains the functions save, update, delete, getData, and validity check functions for airlines that interact with Accessors.
  * Implements the Service interface.
- *
- * @author Inga Tokarenko
- * @author Billie Johnson
  */
 public class AirlineService implements Service {
 
@@ -22,8 +19,6 @@ public class AirlineService implements Service {
     /**
      * Constructor for AirlineService.
      * Creates an AirlineAccessor.
-     *
-     * @author Inga Tokarenko
      */
     public AirlineService() { accessor = new AirlineAccessor(); }
 
@@ -38,10 +33,8 @@ public class AirlineService implements Service {
      * @param country The country of the airline.
      * @param active "Y" if the airline is or has until recently been operational, "N" if it is defunct, cannot be null.
      * @return int result The airline_id of the airline that was just created by the AirlineAccessor.
-     *
-     * @author Inga Tokarenko
      */
-    public int saveAirline(String name, String alias, String iata, String icao, String callsign, String country, String active) {
+    public int save(String name, String alias, String iata, String icao, String callsign, String country, String active) {
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
         if (!iataIsValid(iata)) {
@@ -71,11 +64,9 @@ public class AirlineService implements Service {
      * @param new_country The new country of the airline, may be null if not to be updated.
      * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
-     *
-     * @author Billie Johnson
      */
-    public int updateAirline(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                            String new_callsign, String new_country, String new_active) {
+    public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
+                      String new_callsign, String new_country, String new_active) {
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
         if (!iataIsValid(new_iata)) {
             return -1;
@@ -94,10 +85,8 @@ public class AirlineService implements Service {
      *
      * @param id The airline_id of the airline to be deleted.
      * @return boolean result True if the delete operation is successful, False otherwise.
-     * 
-     * @author Billie Johnson
      */
-    public boolean deleteAirline(int id) {
+    public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
             System.out.println("Could not delete airline, does not exist.");
             return false;
@@ -111,10 +100,8 @@ public class AirlineService implements Service {
      *
      * @param id int value of an id.
      * @return ResultSet of an airline.
-     *
-     * @author Inga Tokarenko
      */
-    public ResultSet getAirline(int id) {
+    public ResultSet getData(int id) {
         return accessor.getData(id);
     }
 
@@ -125,10 +112,8 @@ public class AirlineService implements Service {
      * @param country string value of a country.
      * @param callign string value of a callsign.
      * @return ResultSet of airlines.
-     *
-     * @author Inga Tokarenko
      */
-    public ResultSet getAirlines(String name, String country, String callign) {
+    public ResultSet getData(String name, String country, String callign) {
         return accessor.getData(name, country, callign);
     }
 
@@ -137,8 +122,6 @@ public class AirlineService implements Service {
      *
      * @param code IATA or ICAO of an airline.
      * @return boolean true or false.
-     *
-     * @author Inga Tokarenko
      */
     public boolean airlineExists(String code) {
         return accessor.dataExists(code);
@@ -150,8 +133,6 @@ public class AirlineService implements Service {
      *
      * @param iata An airline IATA code.
      * @return boolean True if the IATA code is valid, False otherwise.
-     *
-     * @author Billie Johnson
      */
     public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
         return (iata == null || !airlineExists(iata));
@@ -163,8 +144,6 @@ public class AirlineService implements Service {
      *
      * @param icao An airline ICAO code.
      * @return boolean True if the ICAO code is valid, False otherwise.
-     *
-     * @author Billie Johnson
      */
     public boolean icaoIsValid(String icao) {
         return (icao == null || !airlineExists(icao));
@@ -174,8 +153,6 @@ public class AirlineService implements Service {
      * Calls the getMaxID method of the AirlineAccessor to get the maximum airline_id contained in the database.
      *
      * @return int The maximum airline_id contained in the database.
-     *
-     * @author Billie Johnson
      */
     public int getMaxID() {
         return accessor.getMaxID();

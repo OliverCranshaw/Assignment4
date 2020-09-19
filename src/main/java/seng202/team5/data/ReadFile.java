@@ -10,8 +10,6 @@ import java.util.Arrays;
  * ReadFile
  *
  * Reads a given file line by line, splits the entries to pass into ConcreteAddData methods.
- *
- * @author Billie Johnson
  */
 public class ReadFile {
 
@@ -37,8 +35,6 @@ public class ReadFile {
      * If any of this doesn't work, prints an error message.
      *
      * @param file The input file to be read.
-     *
-     * @author Billie Johnson
      */
     public void getFile(File file) {
         try {
@@ -55,8 +51,6 @@ public class ReadFile {
      *
      * @param string The input string that you want to remove quotation marks from.
      * @return String The new string without quotation marks.
-     *
-     * @author Billie Johnson
      */
     public String removeQuotes(String string) {
         return string.replaceAll("\"", "");
@@ -67,8 +61,6 @@ public class ReadFile {
      *
      * @param line The line that is to be split into separate parts.
      * @return ArrayList<String> splitline The list of strings from the line that has been split and have had any quotation marks removed from them.
-     *
-     * @author Billie Johnson
      */
     public ArrayList<String> getEntries(String line) {
         // Splits the given line at every comma into an ArrayList of strings
@@ -87,8 +79,6 @@ public class ReadFile {
      *
      * @param file The input file to be read.
      * @return int id The airline_id of the new airline created by ConcreteAddData.
-     *
-     * @author Billie Johnson
      */
     public ArrayList<Object> readAirlineData(File file) {
         int id = 0;
@@ -168,8 +158,6 @@ public class ReadFile {
      *
      * @param file The input file to be read.
      * @return int id The airport_id of the new airport created by ConcreteAddData.
-     *
-     * @author Billie Johnson
      */
     public ArrayList<Object> readAirportData(File file) {
         int id = -1;
@@ -278,8 +266,6 @@ public class ReadFile {
      *
      * @param file The input file to be read.
      * @return ArrayList<Integer> ids An ArrayList containing the flight_id and the unique id of the new flight entry created by ConcreteAddData.
-     *
-     * @author Billie Johnson
      */
     public ArrayList<Object> readFlightData(File file) {
         int flightID = -1;
@@ -372,8 +358,6 @@ public class ReadFile {
      *
      * @param file The input file to be read.
      * @return int id The route_id of the new route created by ConcreteAddData.
-     *
-     * @author Billie Johnson
      */
     public ArrayList<Object> readRouteData(File file) {
         int id = -1;
@@ -460,5 +444,4 @@ public class ReadFile {
 
         return new ArrayList<>(Arrays.asList(id, errors));
     }
-
 }

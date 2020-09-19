@@ -65,7 +65,7 @@ public class SingleRecordAirlineController {
     private void update() {
         assert ID != -1;
 
-        ResultSet resultSet = service.getAirline(ID);
+        ResultSet resultSet = service.getData(ID);
 
         try {
             airlineID.setText(resultSet.getString(2));

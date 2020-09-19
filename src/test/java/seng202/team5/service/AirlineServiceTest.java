@@ -1,7 +1,8 @@
 package seng202.team5.service;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import org.junit.Assert;
+import org.junit.Before;
 import seng202.team5.database.DBConnection;
 
 import java.sql.*;
@@ -14,21 +15,21 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
     private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
 
-    public AirlineServiceTest(String testName) { super(testName); }
-
-    public static Test suite() { return new TestSuite(AirlineServiceTest.class); }
-
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         super.setUp();
         airlineService = new AirlineService();
     }
 
+
+    @Test
     public void testGetAirlinesEmpty() throws SQLException {
-        ResultSet resultSet = airlineService.getAirlines(null, null, null);
-        assertFalse(resultSet.next());
+        ResultSet resultSet = airlineService.getData(null, null, null);
+        Assert.assertFalse(resultSet.next());
     }
 
+
+    @Test
     public void testGetAirlinesSingle() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(
@@ -53,7 +54,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
                 for (String testCallsign : new String[]{null, callsign, "Not"+callsign}) {
                     boolean validCallsign = testCallsign == null || testCallsign.equals(callsign);
 
-                    ResultSet resultSet = airlineService.getAirlines(testName, testCountry, testCallsign);
+                    ResultSet resultSet = airlineService.getData(testName, testCountry, testCallsign);
 
                     String combination = new StringBuilder()
                             .append("name=")
@@ -66,12 +67,12 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
                     // If filter matches the data in the database
                     if (validName && validCountry && validCallsign) {
-                        assertTrue(combination, resultSet.next());
+                        Assert.assertTrue(combination, resultSet.next());
                         for (int i = 0; i<testData.size(); i++) {
-                            assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
+                            Assert.assertEquals(combination, testData.get(i), resultSet.getObject(2 + i));
                         }
                     }
-                    assertFalse(combination, resultSet.next());
+                    Assert.assertFalse(combination, resultSet.next());
                 }
             }
         }
@@ -79,6 +80,8 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         dbHandler.close();
     }
 
+
+    @Test
     public void testGetAirlineByID() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         List<Integer> keys = new ArrayList<>();
@@ -97,36 +100,38 @@ public class AirlineServiceTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            assertEquals(1, changes);
+            Assert.assertEquals(1, changes);
 
             // Gets the airport ID
             ResultSet rs = stmt.getGeneratedKeys();
-            assertTrue(rs.next());
+            Assert.assertTrue(rs.next());
             int key = rs.getInt(1);
             keys.add(key);
         }
 
         for (int i = 0; i<3; i++) {
             int key = keys.get(i);
-            ResultSet resultSet = airlineService.getAirline(key);
-            assertNotNull("Key " + key + " not found", resultSet);
+            ResultSet resultSet = airlineService.getData(key);
+            Assert.assertNotNull("Key " + key + " not found", resultSet);
 
             // Check that there is at least one result
-            assertTrue(resultSet.next());
+            Assert.assertTrue(resultSet.next());
 
             // Check name
-            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+            Assert.assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
 
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
-                assertEquals(testData.get(j), resultSet.getObject(2 + j));
+                Assert.assertEquals(testData.get(j), resultSet.getObject(2 + j));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
     }
 
+
+    @Test
     public void testAddAirline() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
 
@@ -136,7 +141,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         testData2.set(3, "XYZ");
 
         for (List<String> entry : List.of(testData, testData2)) {
-            int res = airlineService.saveAirline(
+            int res = airlineService.save(
                     entry.get(0),
                     entry.get(1),
                     entry.get(2),
@@ -146,7 +151,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
                     entry.get(6)
             );
             // Check operation did not fail
-            assertTrue(res != -1);
+            Assert.assertTrue(res != -1);
 
             // Query airline data with airport_id=res
             PreparedStatement stmt = dbHandler.prepareStatement(
@@ -155,15 +160,15 @@ public class AirlineServiceTest extends BaseDatabaseTest {
             ResultSet resultSet = stmt.executeQuery();
 
             // Check that there is at least one result
-            assertTrue("Failed to fetch airline_id=" + res, resultSet.next());
+            Assert.assertTrue("Failed to fetch airline_id=" + res, resultSet.next());
 
             // Check the result contents
             for (int i = 0; i<entry.size(); i++) {
-                assertEquals(entry.get(i), resultSet.getObject(2 + i));
+                Assert.assertEquals(entry.get(i), resultSet.getObject(2 + i));
             }
 
             // Check there are no more than 1 result
-            assertFalse(resultSet.next());
+            Assert.assertFalse(resultSet.next());
         }
 
         dbHandler.close();
