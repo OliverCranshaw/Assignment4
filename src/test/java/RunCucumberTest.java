@@ -5,8 +5,9 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = {"src/test/resources"},
-        glue = {"src/test/java/scenario"},
+        glue = "scenario",
         plugin = {"pretty", "html:target/cucumber.html"},
+        dryRun = false,
         snippets = CucumberOptions.SnippetType.CAMELCASE)
 
 public class RunCucumberTest {
