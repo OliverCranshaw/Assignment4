@@ -1,9 +1,11 @@
 package seng202.team5.service;
 
 import seng202.team5.accessor.AirportAccessor;
+import seng202.team5.accessor.RouteAccessor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class AirportService implements Service {
     private final AirportAccessor accessor;
     private final FlightService flightService;
     private final RouteService routeService;
+    private final RouteAccessor routeAccessor;
 
     /**
      * Constructor for AirportService.
@@ -27,6 +30,7 @@ public class AirportService implements Service {
         accessor = new AirportAccessor();
         flightService = new FlightService();
         routeService = new RouteService();
+        routeAccessor = new RouteAccessor();
     }
 
     /**
@@ -84,15 +88,23 @@ public class AirportService implements Service {
     public int update(int id, String new_name, String new_city, String new_country, String new_iata,
                       String new_icao, Double new_latitude, Double new_longitude, Integer new_altitude,
                       Float new_timezone, String new_dst, String new_tz) throws SQLException {
+
         // Gets the current IATA and ICAO before the update, if the IATA or ICAO is new then checks the validity
         String currIATA = getData(id).getString("iata");
         String currICAO = getData(id).getString("icao");
+
+        // Check if IATA and ICAO are both null
+        if (new_iata == null && new_icao == null) {
+            return -1;
+        }
+
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
         if (!currIATA.equals(new_iata)) {
             if (!iataIsValid(new_iata)) {
                 return -1;
             }
         }
+
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
         if (!currICAO.equals(new_icao)) {
             if (!icaoIsValid(new_icao)) {
@@ -105,11 +117,14 @@ public class AirportService implements Service {
                     new_longitude, new_altitude, new_timezone, new_dst, new_tz);
 
         // Also updates any flight entries or routes that used the previous IATA/ICAO code
-        updateFlightEntries(new_iata, currIATA);
-        updateFlightEntries(new_icao, currICAO);
-
-        updateRoutes(new_iata, currIATA);
-        updateRoutes(new_icao, currICAO);
+        if (!new_iata.equals(currIATA) && new_iata != null) {
+            updateFlightEntries(new_iata, currIATA);
+            updateRoutes(new_iata, currIATA);
+        }
+        if (!new_icao.equals(currICAO) || new_iata == null) {
+            updateFlightEntries(new_icao, currICAO);
+            updateRoutes(new_icao, currICAO);
+        }
 
         return value;
     }
@@ -206,8 +221,11 @@ public class AirportService implements Service {
         ResultSet result;
 
         if (!(new_code.equals(old_code))) {
-            if ((result = routeService.getData(old_code, null, -1, null)) != null) {
-                System.out.println(result.next());
+
+            ArrayList code = new ArrayList();
+            code.add(old_code);
+
+            if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
                 while (result.next()) {
                     int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
                             new_code, result.getString("destination_airport"), result.getString("codeshare"),
@@ -215,20 +233,20 @@ public class AirportService implements Service {
                     System.out.println(res);
                 }
             }
-            System.out.println(result.next());
         }
 
         if (!(new_code.equals(old_code))) {
-            if ((result = routeService.getData(null, old_code, -1, null)) != null) {
+
+            ArrayList code = new ArrayList();
+            code.add(old_code);
+
+            if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
                 while (result.next()) {
-                    System.out.println(result.next());
                     int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
                             result.getString("source_airport"), new_code, result.getString("codeshare"),
                             result.getInt("stops"), result.getString("equipment"));
-                    System.out.println(res);
                 }
             }
-            System.out.println(result.next());
         }
     }
 

@@ -101,12 +101,6 @@ public class RouteService implements Service {
         String currDstAIrport = data.getString(6);
         Integer currDstAirportID = data.getInt(7);
 
-
-        System.out.println(id);
-        System.out.println(new_airline);
-        System.out.println(new_source_airport);
-        System.out.println(new_dest_airport);
-
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
         // If one does, gets the airline_id of the airline with the given IATA or ICAO code

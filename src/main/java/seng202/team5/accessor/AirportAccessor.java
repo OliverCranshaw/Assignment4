@@ -86,17 +86,23 @@ public class AirportAccessor implements Accessor {
     public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
                       Double new_latitude, Double new_longitude, Integer new_altitude, Float new_timezone, String new_dst, String new_tz) throws SQLException {
         int result;
+
         List<Object> element = Arrays.asList(new_name, new_city, new_country, new_iata, new_icao, new_latitude, new_longitude,
             new_altitude, new_timezone, new_dst, new_tz);
         ArrayList<Object> elements = new ArrayList<>(element);
-        String search = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, longitude = ?, altitude = ?"
+
+        String query = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, longitude = ?, altitude = ?"
                 + ", timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
-        PreparedStatement stmt = dbHandler.prepareStatement(search);
+
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+
         for (int i = 0; i < elements.size(); i++) {
             stmt.setObject(i+1, elements.get(i));
         }
+
         stmt.setObject(elements.size() + 1, id);
         result = stmt.executeUpdate();
+
         return result;
 //        // Checks one by one if any of the parameters are null
 //        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
