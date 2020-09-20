@@ -614,6 +614,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button routeDeleteBtn;
 
+    @FXML
+    private Button flightDeleteBtn;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -724,6 +727,7 @@ public class MainMenuController implements Initializable {
                 FlightModel selected = (FlightModel) newSelection;
                 try {
                     setFlightSingleRecord(selected);
+                    flightDeleteBtn.setDisable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -860,6 +864,8 @@ public class MainMenuController implements Initializable {
         routeCancelBtn.setVisible(false);
         routeDeleteBtn.setVisible(false);
 
+        flightDeleteBtn.setDisable(true);
+
 
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
@@ -882,11 +888,12 @@ public class MainMenuController implements Initializable {
         setFieldsEmpty(elementsVisible);
         setLabelsEmpty(lblElementsVisible, false);
 
+
     }
 
     private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
-            flightSingleRecordTableView.getItems().removeAll();
+            flightSingleRecordTableView.getItems().clear();
         } else {
             flightEntries = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
@@ -2099,7 +2106,7 @@ public class MainMenuController implements Initializable {
 
     }
 
-
+    @FXML
     public void onRouteDeleteBtnPressed(ActionEvent actionEvent) {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         Integer id = Integer.parseInt(routeID.getText());
@@ -2121,5 +2128,46 @@ public class MainMenuController implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    public void onFlightDeleteBtnPressed(ActionEvent event) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer flight_id = ((FlightEntry) flightSingleRecordTableView.getItems().get(0)).getFlightID();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Flight");
+        alert.setContentText("Delete Flight with flight_ID: " + flight_id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteFlight(flight_id);
+                flightDeleteBtn.setDisable(true);
+                try {
+                    setFlightSingleRecord(null);
+                    updateFlightTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+    }
+
+    public void handleFlightDeleteEntry(ActionEvent actionEvent) throws SQLException {
+        // Fetch the selected row
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        FlightEntry selectedForDeletion = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedForDeletion != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Flight Entry");
+            alert.setContentText("Confirm Deletion of flight_entry with id: " + selectedForDeletion.getID() + ".");
+            Optional<ButtonType> answer = alert.showAndWait();
+            if (answer.get() == ButtonType.OK && !selectedForDeletion.getLocationType().equals("APT")) {
+                // Confirmed deletion option
+                deleter.deleteFlightEntry(selectedForDeletion.getID());
+                updateFlightTable();
+                flightSingleRecordTableView.getItems().remove(selectedForDeletion);
+            }
+        }
     }
 }
