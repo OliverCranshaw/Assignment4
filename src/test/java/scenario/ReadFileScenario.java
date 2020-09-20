@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class ReadFileScenario {
 
     private ReadFile readFile;
-    private ArrayList<Integer> expected_ids;
+    private ArrayList<Integer> expectedIDs;
     private Object ids;
     private int id;
     private final File airlines = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
@@ -219,8 +219,8 @@ public class ReadFileScenario {
 
     @Then("a flight entry is added with id 1 and flight id 1")
     public void addedFlightEntry() {
-        expected_ids = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
-        Assert.assertEquals(expected_ids, ids);
+        expectedIDs = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
+        Assert.assertEquals(expectedIDs, ids);
     }
 
     // Reading a valid flight from a file
@@ -240,8 +240,8 @@ public class ReadFileScenario {
 
     @Then("the flight entries are all added with flight id 1 and an incrementing unique id")
     public void addedFlight() {
-        expected_ids = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
-        Assert.assertEquals(expected_ids, ids);
+        expectedIDs = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
+        Assert.assertEquals(expectedIDs, ids);
     }
 
     // Reading invalid flight entry data with the wrong number of entries
@@ -258,8 +258,8 @@ public class ReadFileScenario {
 
     @Then("the flight data is rejected, and two error codes of {int} are returned")
     public void rejectedFlightEntryTooFewEntries(int error) {
-        expected_ids = new ArrayList<>(Arrays.asList(error, error));
-        Assert.assertEquals(expected_ids, ids);
+        expectedIDs = new ArrayList<>(Arrays.asList(error, error));
+        Assert.assertEquals(expectedIDs, ids);
     }
 
     // Reading a flight from a file with some invalid flight entries
@@ -276,9 +276,9 @@ public class ReadFileScenario {
 
     @Then("an invalid flight entry is reached all previous ones are deleted, and two error codes of {int} are returned")
     public void rejectedFlight(int error) {
-        expected_ids = new ArrayList<>(Arrays.asList(error, error));
+        expectedIDs = new ArrayList<>(Arrays.asList(error, error));
 
-        Assert.assertEquals(expected_ids, ids);
+        Assert.assertEquals(expectedIDs, ids);
     }
 
 

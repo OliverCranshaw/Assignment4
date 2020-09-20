@@ -71,13 +71,13 @@ public class AddRouteMenuController {
             {
                 ResultSet resultSet = airlineService.getData(airlineName, null, null);
                 AirlineData airline = new AirlineData(resultSet);
-                System.out.println(airline.getIata());
+                System.out.println(airline.getIATA());
                 if (airline.getName() == null) {
                     System.out.println("Please ensure the given airline is in the database");
-                } else if(airline.getIata() == null && airline.getIcao() == null) {
+                } else if(airline.getIATA() == null && airline.getICAO() == null) {
                     System.out.println("Please ensure the selected Airline has an associated IATA or ICAO value");
                 } else {
-                    airlineCode = (airline.getIata() == null) ? airline.getIcao() : airline.getIata();
+                    airlineCode = (airline.getIATA() == null) ? airline.getICAO() : airline.getIATA();
                 }
             }
             {
@@ -85,10 +85,10 @@ public class AddRouteMenuController {
                 AirportData srcAirport = new AirportData(resultSet);
                 if (srcAirport.getAirportName() == null) {
                     System.out.println("Please ensure the given source airport is in the database");
-                } else if (srcAirport.getIata() == null && srcAirport.getIcao() == null) {
+                } else if (srcAirport.getIATA() == null && srcAirport.getICAO() == null) {
                     System.out.println("Please ensure the selected source airport has an associated IATA or ICAO value");
                 } else {
-                    sourceCode = (srcAirport.getIata() == null) ? srcAirport.getIcao() : srcAirport.getIata();
+                    sourceCode = (srcAirport.getIATA() == null) ? srcAirport.getICAO() : srcAirport.getIATA();
                 }
             }
             {
@@ -96,10 +96,10 @@ public class AddRouteMenuController {
                 AirportData dstAirport = new AirportData(resultSet);
                 if (dstAirport.getAirportName() == null) {
                     System.out.println("Please ensure the given destination airport is in the database");
-                } else if (dstAirport.getIata() == null && dstAirport.getIcao() == null) {
+                } else if (dstAirport.getIATA() == null && dstAirport.getICAO() == null) {
                     System.out.println("Please ensure the selected destination airport has an associated IATA or ICAO value");
                 } else {
-                    destCode = (dstAirport.getIata() == null) ? dstAirport.getIcao() : dstAirport.getIata();
+                    destCode = (dstAirport.getIATA() == null) ? dstAirport.getICAO() : dstAirport.getIATA();
                 }
             }
         } catch (SQLException e) {

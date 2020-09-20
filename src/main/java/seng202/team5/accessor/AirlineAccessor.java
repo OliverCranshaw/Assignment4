@@ -68,95 +68,34 @@ public class AirlineAccessor implements Accessor {
      * Not every field must be updated.
      *
      * @param id The airline_id of the given airline you want to update.
-     * @param new_name The new name of the airline, may be null if not to be updated.
-     * @param new_alias The new alias of the airline, may be null if not to be updated.
-     * @param new_iata The new 2-letter IATA code of the airline, may be null if not to be updated.
-     * @param new_icao The new 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_callsign The new callsign of the airline, may be null if not to be updated.
-     * @param new_country The new country of the airline, may be null if not to be updated.
-     * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
+     * @param newName The new name of the airline, may be null if not to be updated.
+     * @param newAlias The new alias of the airline, may be null if not to be updated.
+     * @param newIATA The new 2-letter IATA code of the airline, may be null if not to be updated.
+     * @param newICAO The new 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param newCallsign The new callsign of the airline, may be null if not to be updated.
+     * @param newCountry The new country of the airline, may be null if not to be updated.
+     * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The number of rows edited or -1 for error.
      */
-    public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) throws SQLException {
+    public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
+                      String newCallsign, String newCountry, String newActive) throws SQLException {
         int result;
-        List<Object> element = Arrays.asList(new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
+
+        List<Object> element = Arrays.asList(newName, newAlias, newIATA, newICAO, newCallsign, newCountry, newActive);
         ArrayList<Object> elements = new ArrayList<>(element);
-        String search = "UPDATE AIRLINE_DATA SET "; // The start of the SQL update statement
-        search = search + "airline_name = ?, alias = ?, iata = ?, icao = ?, callsign = ?, country = ?, active = ? WHERE"
-                + " airline_id = ?";
+        // The SQL update statement
+        String search = "UPDATE AIRLINE_DATA SET airline_name = ?, alias = ?, iata = ?, icao = ?, callsign = ?, " +
+                        "country = ?, active = ? WHERE airline_id = ?";
         PreparedStatement stmt = dbHandler.prepareStatement(search);
+        // Adds the parameters to the SQL statement
         for (int i = 0; i < elements.size(); i++) {
             stmt.setObject(i+1, elements.get(i));
         }
         stmt.setObject(elements.size()+1, id);
+        // Executes the update operation
         result = stmt.executeUpdate();
+
         return result;
-//        // Checks one by one if any of the parameters are null
-//        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
-//        try {
-//            if (new_name != null) {
-//                search = search + "airline_name = ?, ";
-//                elements.add(new_name);
-//            }
-//            if (new_alias != null) {
-//                search = search + "alias = ?, ";
-//                elements.add(new_alias);
-//            }
-//            if (new_iata != null) {
-//                search = search + "iata = ?, ";
-//                elements.add(new_iata);
-//            }
-//            if (new_icao != null) {
-//                search = search + "icao = ?, ";
-//                elements.add(new_icao);
-//            }
-//            if (new_callsign != null) {
-//                search = search + "callsign = ?, ";
-//                elements.add(new_callsign);
-//            }
-//            if (new_country != null) {
-//                search = search + "country = ?, ";
-//                elements.add(new_country);
-//            }
-//            if (new_active != null) {
-//                search = search + "active = ? ";
-//                elements.add(new_active);
-//            }
-//
-//            // Checks if there are any elements in the ArrayList
-//            // If there are not, the result is set to an error code of -2
-//            if (elements.size() == 0) {
-//                result = -2;
-//            } else {
-//                // Checks if the query ends with a comma (happens if active is not to be updated)
-//                // If it does, removes it
-//                // Adds the WHERE clause to the query, which is airline_id
-//                if (search.endsWith(", ")) {
-//                    search = search.substring(0, search.length() - 2) + " WHERE airline_id = ?";
-//                } else {
-//                    search = search + "WHERE airline_id = ?";
-//                }
-//                elements.add(id);
-//
-//                PreparedStatement stmt = dbHandler.prepareStatement(search);
-//                // Iterates through the ArrayList and adds each value to the query
-//                int index = 1;
-//                for (Object element: elements) {
-//                    stmt.setObject(index, element);
-//                    index++;
-//                }
-//                // Executes the update and sets result to the number of rows that were modified
-//                result = stmt.executeUpdate();
-//            }
-//        } catch (Exception e) {
-//            // If any of the above fails, sets result to the error code -1 and prints out an error message
-//            result = -1;
-//            System.out.println("Unable to update airline data with id " + id);
-//            System.out.println(e.getMessage());
-//        }
-//
-//        return result;
     }
 
     /**

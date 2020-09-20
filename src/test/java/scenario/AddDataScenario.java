@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class AddDataScenario {
 
     private int id;
-    private int flight_id;
+    //private int flightID;
     private AirlineData airlineData;
     private AirportData airportData;
     private FlightData flightData;
@@ -378,112 +378,112 @@ public class AddDataScenario {
     // Adding a valid flight entry
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string}, {string}")
-    public void validFlightEntryParameters(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
+    public void validFlightEntryParameters(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
-        flight_id = flightID;
+        //flightID = flightID;
         Assert.assertEquals(1, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string}, {string}")
-    public void addValidFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addValidFlightEntry(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
-    @Then("the flight entry is added with flight id 1 and unique id 1")
-    public void flightEntryAdded() {
-        ArrayList<Integer> expected_ids = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
-        ArrayList<Integer> ids = new ArrayList<>(Arrays.asList(flight_id, id));
-        Assert.assertEquals(expected_ids, ids);
+    @Then("the flight entry is added with flight id {int} and unique id 1")
+    public void flightEntryAdded(int flightID) {
+        ArrayList<Integer> expectedIDs = new ArrayList<>(Arrays.asList(flightService.getNextFlightID() - 1, flightService.getMaxID()));
+        ArrayList<Integer> ids = new ArrayList<>(Arrays.asList(flightID, id));
+        Assert.assertEquals(expectedIDs, ids);
     }
 
     // Adding a flight entry with an invalid flight ID
 
     @Given("valid flight entry parameters {string}, {string}, {string}, {string}, {string} except for an invalid flight id {int}")
-    public void flightEntryInvalidFlightID(String location_type, String location, String altitude, String latitude, String longitude, int flightID) {
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+    public void flightEntryInvalidFlightID(String locationType, String location, String altitude, String latitude, String longitude, int flightID) {
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-2, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {string}, {string}, {string}, {string}, {string} and invalid flight id {int}")
-    public void addFlightEntryInvalidFlightID(String location_type, String location, String altitude, String latitude, String longitude, int flightID) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidFlightID(String locationType, String location, String altitude, String latitude, String longitude, int flightID) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     // Adding a flight entry with an invalid location type
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid location type {string}")
-    public void flightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String location_type) {
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+    public void flightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String locationType) {
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-3, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string} and invalid location type {string}")
-    public void addFlightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String location_type) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidLocationType(int flightID, String location, String altitude, String latitude, String longitude, String locationType) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     // Adding a flight entry with an invalid location
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid location {string}")
-    public void flightEntryInvalidLocation(int flightID, String location_type, String altitude, String latitude, String longitude, String location) {
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+    public void flightEntryInvalidLocation(int flightID, String locationType, String altitude, String latitude, String longitude, String location) {
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertFalse(airportService.dataExists(location));
         Assert.assertEquals(-4, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string} and invalid location {string}")
-    public void addFlightEntryInvalidLocation(int flightID, String location_type, String altitude, String latitude, String longitude, String location) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidLocation(int flightID, String locationType, String altitude, String latitude, String longitude, String location) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     // Adding a flight entry with an invalid altitude
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid altitude {string}")
-    public void flightEntryInvalidAltitude(int flightID, String location_type, String location, String latitude, String longitude, String altitude) {
+    public void flightEntryInvalidAltitude(int flightID, String locationType, String location, String latitude, String longitude, String altitude) {
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-5, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string} and invalid altitude {string}")
-    public void addFlightEntryInvalidAltitude(int flightID, String location_type, String location, String latitude, String longitude, String altitude) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidAltitude(int flightID, String locationType, String location, String latitude, String longitude, String altitude) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     // Adding a flight entry with an invalid latitude
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid latitude {string}")
-    public void flightEntryInvalidLatitude(int flightID, String location_type, String location, String altitude, String longitude, String latitude) {
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+    public void flightEntryInvalidLatitude(int flightID, String locationType, String location, String altitude, String longitude, String latitude) {
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-6, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string} and invalid latitude {string}")
-    public void addFlightEntryInvalidLatitude(int flightID, String location_type, String location, String altitude, String longitude, String latitude) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidLatitude(int flightID, String locationType, String location, String altitude, String longitude, String latitude) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     // Adding a flight entry with an invalid longitude
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid longitude {string}")
-    public void flightEntryInvalidLongitude(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
-        flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+    public void flightEntryInvalidLongitude(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
+        flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         flightData.convertBlanksToNull();
         Assert.assertEquals(-7, flightData.checkValues());
     }
 
     @When("adding a flight entry with parameters {int}, {string}, {string}, {string}, {string} and invalid longitude {string}")
-    public void addFlightEntryInvalidLongitude(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
-        id = concreteAddData.addFlightEntry(flightID, location_type, location, altitude, latitude, longitude);
+    public void addFlightEntryInvalidLongitude(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
+        id = concreteAddData.addFlightEntry(flightID, locationType, location, altitude, latitude, longitude);
     }
 
     @Then("the flight parameters are rejected, and an error code {int} is returned")
@@ -497,19 +497,19 @@ public class AddDataScenario {
     // Adding a valid route
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string}, {string}")
-    public void validRouteParameters(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment) {
+    public void validRouteParameters(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
         concreteAddData.addAirport("Mount Hagen", "Mount Hagen", "Papua New Guinea", "HGU", "AYMH", "-5.826789", "144.295861", "5388", "10", "U", "Pacific/Port_Moresby");
         concreteAddData.addAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");
 
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(1, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string}, {string}")
-    public void addValidRoute(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addValidRoute(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     @Then("the route is added with id 1")
@@ -520,85 +520,85 @@ public class AddDataScenario {
     // Adding a route with an invalid airline code
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for an invalid airline code {string}")
-    public void routeInvalidAirline(String source_airport, String dest_airport, String codeshare, String stops, String equipment, String airline) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidAirline(String sourceAirport, String destAirport, String codeshare, String stops, String equipment, String airline) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-2, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid airline code {string}")
-    public void addRouteInvalidAirline(String source_airport, String dest_airport, String codeshare, String stops, String equipment, String airline) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidAirline(String sourceAirport, String destAirport, String codeshare, String stops, String equipment, String airline) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     // Adding a route with an invalid source airport code
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for an invalid source airport code {string}")
-    public void routeInvalidSourceAirport(String airline, String dest_airport, String codeshare, String stops, String equipment, String source_airport) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidSourceAirport(String airline, String destAirport, String codeshare, String stops, String equipment, String sourceAirport) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-3, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid source airport code {string}")
-    public void addRouteInvalidSourceAirport(String airline, String dest_airport, String codeshare, String stops, String equipment, String source_airport) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidSourceAirport(String airline, String destAirport, String codeshare, String stops, String equipment, String sourceAirport) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     // Adding a route with an invalid destination airport code
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for an invalid destination airport code {string}")
-    public void routeInvalidDestinationAirport(String airline, String source_airport, String codeshare, String stops, String equipment, String dest_airport) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidDestinationAirport(String airline, String sourceAirport, String codeshare, String stops, String equipment, String destAirport) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-4, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid destination airport code {string}")
-    public void addRouteInvalidDestinationAirport(String airline, String source_airport, String codeshare, String stops, String equipment, String dest_airport) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidDestinationAirport(String airline, String sourceAirport, String codeshare, String stops, String equipment, String destAirport) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     // Adding a route with an invalid codeshare
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for an invalid codeshare {string}")
-    public void routeInvalidCodeshare(String airline, String source_airport, String dest_airport, String stops, String equipment, String codeshare) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidCodeshare(String airline, String sourceAirport, String destAirport, String stops, String equipment, String codeshare) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-5, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid codeshare {string}")
-    public void addRouteInvalidCodeshare(String airline, String source_airport, String dest_airport, String stops, String equipment, String codeshare) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidCodeshare(String airline, String sourceAirport, String destAirport, String stops, String equipment, String codeshare) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     // Adding a route with invalid stops
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for invalid stops {string}")
-    public void routeInvalidStops(String airline, String source_airport, String dest_airport, String codeshare, String equipment, String stops) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidStops(String airline, String sourceAirport, String destAirport, String codeshare, String equipment, String stops) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-6, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid stops {string}")
-    public void addRouteInvalidStops(String airline, String source_airport, String dest_airport, String codeshare, String equipment, String stops) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidStops(String airline, String sourceAirport, String destAirport, String codeshare, String equipment, String stops) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     // Adding a route with invalid equipment
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string} except for invalid equipment {string}")
-    public void routeInvalidEquipment(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment) {
-        routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void routeInvalidEquipment(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
+        routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(-7, routeData.checkValues());
     }
 
     @When("adding a route with parameters {string}, {string}, {string}, {string}, {string} and invalid equipment {string}")
-    public void addRouteInvalidEquipment(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment) {
-        id = concreteAddData.addRoute(airline, source_airport, dest_airport, codeshare, stops, equipment);
+    public void addRouteInvalidEquipment(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
+        id = concreteAddData.addRoute(airline, sourceAirport, destAirport, codeshare, stops, equipment);
     }
 
     @Then("the route parameters are rejected, and an error code {int} is returned")

@@ -12,7 +12,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seng202.team5.App;
+import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.table.Search;
 import seng202.team5.data.DataExporter;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static java.lang.Math.abs;
 
@@ -38,15 +41,6 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private TabPane mainTabs;
-
-    @FXML
-    private Tab tableRecordsTab;
-
-    @FXML
-    private Tab generalTab;
-
-    @FXML
-    private Tab airlineDataTab;
 
     @FXML
     private RadioButton flightsRadioButton;
@@ -598,13 +592,44 @@ public class MainMenuController implements Initializable {
     @FXML
     private TextField routeEquipS;
 
+    @FXML
+    private TableColumn flightDbIDS;
+
+    @FXML
+    private TableColumn flightIDS;
+
+    @FXML
+    private TableColumn flightLocationTypeS;
+
+    @FXML
+    private TableColumn flightLocationS;
+
+    @FXML
+    private TableColumn flightAltitudeS;
+
+    @FXML
+    private TableColumn flightLatitudeS;
+
+    @FXML
+    private TableColumn flightLongitudeS;
 
     @FXML
     private TableView searchFlightSingleRecordTableView;
 
-
     @FXML
     private Label airportInvalidFormatLbl;
+
+    @FXML
+    private Button airportDeleteBtn;
+
+    @FXML
+    private Button airlineDeleteBtn;
+
+    @FXML
+    private Button routeDeleteBtn;
+
+    @FXML
+    private Button flightDeleteBtn;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
@@ -622,6 +647,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<RouteModel> routeModels;
     private ObservableList<FlightModel> flightModels;
     private ObservableList<FlightEntry> flightEntries;
+    private ObservableList<FlightEntry> flightEntriesSearch;
 
 
 
@@ -669,13 +695,22 @@ public class MainMenuController implements Initializable {
         flightLatitude.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
         flightLongitude.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
 
+        // Setting the cell value factories for the search flight entry table
+        flightDbIDS.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        flightIDS.setCellValueFactory(new PropertyValueFactory<>("FlightID"));
+        flightLocationTypeS.setCellValueFactory(new PropertyValueFactory<>("LocationType"));
+        flightLocationS.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        flightAltitudeS.setCellValueFactory(new PropertyValueFactory<>("Altitude"));
+        flightLatitudeS.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
+        flightLongitudeS.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
+
 
         modifyAirportBtn.setDisable(true);
         modifyAirlineBtn.setDisable(true);
         modifyRouteBtn.setDisable(true);
         modifyFlightBtn.setDisable(true);
 
-        // Adding Listeners to all four tables so that the selected Items can be displayed in the single record viewer
+        // Adding Listeners to all five tables so that the selected Items can be displayed in the single record viewer
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirportModel selected = (AirportModel) newSelection;
@@ -684,6 +719,11 @@ public class MainMenuController implements Initializable {
                     setAirportElementsEditable(false);
                     modifyAirportBtn.setDisable(false);
                     airportInvalidFormatLbl.setVisible(false);
+                    airportSaveBtn.setVisible(false);
+                    airportCancelBtn.setVisible(false);
+                    airportDeleteBtn.setVisible(false);
+                    setAirportElementsEditable(false);
+                    setAirportUpdateColour(null);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -696,6 +736,11 @@ public class MainMenuController implements Initializable {
                     setAirlineSingleRecord(selected);
                     setAirlineElementsEditable(false);
                     modifyAirlineBtn.setDisable(false);
+                    airlineSaveBtn.setVisible(false);
+                    airlineCancelBtn.setVisible(false);
+                    airlineDeleteBtn.setVisible(false);
+                    setAirlineElementsEditable(false);
+                    setAirlineUpdateColour(null);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -707,6 +752,7 @@ public class MainMenuController implements Initializable {
                 FlightModel selected = (FlightModel) newSelection;
                 try {
                     setFlightSingleRecord(selected);
+                    flightDeleteBtn.setDisable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -719,6 +765,11 @@ public class MainMenuController implements Initializable {
                     setRouteSingleRecord(selected);
                     setRouteElementsEditable(false);
                     modifyRouteBtn.setDisable(false);
+                    routeSaveBtn.setVisible(false);
+                    routeDeleteBtn.setVisible(false);
+                    routeCancelBtn.setVisible(false);
+                    setRouteElementsEditable(false);
+                    setAirlineUpdateColour(null);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -777,6 +828,12 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
 
+        try {
+            setSearchFlightSingleRecord(null);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
 
 
 
@@ -831,10 +888,15 @@ public class MainMenuController implements Initializable {
 
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
+        airportDeleteBtn.setVisible(false);
         airlineSaveBtn.setVisible(false);
         airlineCancelBtn.setVisible(false);
+        airlineDeleteBtn.setVisible(false);
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
+        routeDeleteBtn.setVisible(false);
+        flightDeleteBtn.setDisable(true);
+
 
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
@@ -857,11 +919,12 @@ public class MainMenuController implements Initializable {
         setFieldsEmpty(elementsVisible);
         setLabelsEmpty(lblElementsVisible, false);
 
+
     }
 
     private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
-            flightSingleRecordTableView.getItems().removeAll();
+            flightSingleRecordTableView.getItems().clear();
         } else {
             flightEntries = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
@@ -934,9 +997,9 @@ public class MainMenuController implements Initializable {
 
     private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
-            searchFlightSingleRecordTableView.getItems().removeAll();
+            searchFlightSingleRecordTableView.getItems().clear();
         } else {
-            flightEntries = FXCollections.observableArrayList();
+            flightEntriesSearch = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
             ResultSet flightData = flightService.getData(flightID);
             while (flightData.next()) {
@@ -948,18 +1011,20 @@ public class MainMenuController implements Initializable {
                 Double latitude = flightData.getDouble(6);
                 Double longitude = flightData.getDouble(7);
                 FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
-                flightEntries.add(newEntry);
+                flightEntriesSearch.add(newEntry);
             }
-            searchFlightSingleRecordTableView.setItems(flightEntries);
+            searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
+
         }
+
     }
 
     private void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
-        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
-                routeCodeshare, routeStops, routeEquip);
+        List<TextField> elements = Arrays.asList(routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
-        List<Label> lblElements = Arrays.asList(lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
-                lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip);
+        List<Label> lblElements = Arrays.asList(lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
         if (routeModel == null) {
             setFieldsEmpty(elementsVisible);
@@ -1054,11 +1119,6 @@ public class MainMenuController implements Initializable {
         File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
 
         return file;
-    }
-
-    @FXML
-    public void onViewMorePressed() {
-        mainTabs.getSelectionModel().select(tableRecordsTab);
     }
 
     @FXML
@@ -1207,8 +1267,8 @@ public class MainMenuController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
-        firstSearchType.setText("Airline:");
-        secondSearchType.setText("Airport:");
+        firstSearchType.setText("Location Type:");
+        secondSearchType.setText("Location:");
         thirdSearchType.setVisible(false);
         fourthSearchType.setVisible(false);
 
@@ -1391,13 +1451,12 @@ public class MainMenuController implements Initializable {
             fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
 
-
-            System.out.printf("Location Type: %s, Location: %s\n%n", fields.get(0), fields.get(1));
-
             searchInstance.setSearchData(fields);
             result = searchInstance.searchFlight();
 
             if (result == null) {
+                errorMessage.setText("Sorry but there are no results for your search.");
+            } else if (!result.next()) {
                 errorMessage.setText("Sorry but there are no results for your search.");
             } else {
                 errorMessage.setText("");
@@ -1413,8 +1472,6 @@ public class MainMenuController implements Initializable {
             fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
             fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
-
-            System.out.printf("Name: %s, City: %s, Country: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
             result = searchInstance.searchAirport();
@@ -1442,9 +1499,6 @@ public class MainMenuController implements Initializable {
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
             fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
 
-
-            System.out.printf("Name: %s, Country: %s, Callsign: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
-
             searchInstance.setSearchData(fields);
             result = searchInstance.searchAirline();
 
@@ -1467,8 +1521,6 @@ public class MainMenuController implements Initializable {
                 fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
                 fields.add(thirdSearchEntry.getText().isBlank() ? -1 : Integer.parseInt(thirdSearchEntry.getText()));
                 fields.add(fourthSearchEntry.getText().isBlank() ? null : fourthSearchEntry.getText());
-
-                System.out.printf("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n%n", fields.get(0), fields.get(1), fields.get(2), fields.get(3));
 
                 searchInstance.setSearchData(fields);
                 result = searchInstance.searchRoute();
@@ -1781,27 +1833,41 @@ public class MainMenuController implements Initializable {
         return result;
     }
 
-    public void onModifyAirlineBtnPressed(ActionEvent actionEvent) {
-        setAirlineUpdateColour(null);
-        setAirlineElementsEditable(true);
-        airlineSaveBtn.setVisible(true);
-        airlineCancelBtn.setVisible(true);
+    public void onModifyAirlineBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (rawAirlineTable.getSelectionModel().getSelectedItem() != null) {
+            setAirlineUpdateColour(null);
+            setAirlineElementsEditable(true);
+            airlineSaveBtn.setVisible(true);
+            airlineDeleteBtn.setVisible(true);
+            airlineCancelBtn.setVisible(true);
+        } else {
+            setAirlineSingleRecord(null);
+        }
     }
 
-    public void onModifyRouteBtnPressed(ActionEvent actionEvent) {
-        setRouteUpdateColour(null);
-        setRouteElementsEditable(true);
-        routeSaveBtn.setVisible(true);
-        routeCancelBtn.setVisible(true);
+    public void onModifyRouteBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (routeTableView.getSelectionModel().getSelectedItem() != null) {
+            setRouteUpdateColour(null);
+            setRouteElementsEditable(true);
+            routeSaveBtn.setVisible(true);
+            routeCancelBtn.setVisible(true);
+            routeDeleteBtn.setVisible(true);
+        } else {
+            setRouteSingleRecord(null);
+        }
     }
 
-    public void onModifyAirportBtnPressed(ActionEvent actionEvent) {
-        setAirportUpdateColour(null);
-        airportInvalidFormatLbl.setVisible(false);
-        setAirportElementsEditable(true);
-        airportSaveBtn.setVisible(true);
-        airportCancelBtn.setVisible(true);
-
+    public void onModifyAirportBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (airportTableView.getSelectionModel().getSelectedItem() != null) {
+            setAirportUpdateColour(null);
+            airportInvalidFormatLbl.setVisible(false);
+            setAirportElementsEditable(true);
+            airportSaveBtn.setVisible(true);
+            airportCancelBtn.setVisible(true);
+            airportDeleteBtn.setVisible(true);
+        } else {
+            setAirportSingleRecord(null);
+        }
     }
 
     public void onModifyFlightBtnPressed(ActionEvent actionEvent) {
@@ -1809,14 +1875,14 @@ public class MainMenuController implements Initializable {
     }
 
     public void setAirportElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportLatitude, airportLongitude,
+        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elementsEditable = new ArrayList<TextField>(elements);
         setElementsEditable(elementsEditable, bool);
     }
 
     public void setAirlineElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineCallsign, airlineCountry,
+        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
                 airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         setElementsEditable(elementsVisible, bool);
@@ -1843,12 +1909,34 @@ public class MainMenuController implements Initializable {
         setAirportUpdateColour(null);
         Integer id = Integer.parseInt(airportID.getText());
         List<Object> elementList2 = null;
+        Double latitude = null;
+        Double longitude = null;
+        Integer altitude = null;
+        Float timezone = null;
         try {
+            latitude = Double.parseDouble(airportLatitude.getText());
+        } catch(NumberFormatException e) {
+            airportLatitude.setStyle("-fx-border-color: #ff0000;");
+        }
+        try {
+            longitude = Double.parseDouble(airportLongitude.getText());
+        } catch (NumberFormatException e) {
+            airportLongitude.setStyle("-fx-border-color: #ff0000;");
+        }
+        try {
+            altitude = Integer.parseInt(airportAltitude.getText());
+        } catch (NumberFormatException e) {
+            airportAltitude.setStyle("-fx-border-color: #ff0000;");
+        }
+        try {
+            timezone = Float.parseFloat(airportTimezone.getText());
+        } catch (NumberFormatException e) {
+            airportTimezone.setStyle("-fx-border-color: #ff0000;");
+        }
+
+        if (!(latitude == null || longitude == null || altitude == null || timezone == null)) {
             elementList2 = Arrays.asList(airportName.getText(), airportCity.getText(), airportCountry.getText(), airportIATA.getText(), airportICAO.getText(),
-                    Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), Integer.parseInt(airportAltitude.getText()),
-                    Float.parseFloat(airportTimezone.getText()), airportDST.getText(), airportTZ.getText());
-        } catch (NumberFormatException e) { }
-        if (elementList2 != null) {
+                        latitude, longitude, altitude, timezone, airportDST.getText(), airportTZ.getText());
             ArrayList<Object> newElements = new ArrayList<>(elementList2);
             ConcreteUpdateData updater = new ConcreteUpdateData();
             int result = updater.updateAirport(id, (String) newElements.get(0), (String) newElements.get(1), (String) newElements.get(2), (String) newElements.get(3),
@@ -1856,16 +1944,18 @@ public class MainMenuController implements Initializable {
                     (String) newElements.get(9), (String) newElements.get(10));
             if (result > 0) {
                 updateAirportTable();
+                setAirportElementsEditable(false);
+                airportSaveBtn.setVisible(false);
+                airportCancelBtn.setVisible(false);
+                airportDeleteBtn.setVisible(false);
+            } else if (result == -1) {
+               setAirportUpdateColour(3);
+               setAirportUpdateColour(4);
             } else {
-                System.out.println(result);
                 setAirportUpdateColour(abs(result) - 2);
             }
-        } else {
-            airportInvalidFormatLbl.setVisible(true);
+
         }
-        setAirportElementsEditable(false);
-        airportSaveBtn.setVisible(false);
-        airportCancelBtn.setVisible(false);
     }
 
     @FXML
@@ -1882,57 +1972,79 @@ public class MainMenuController implements Initializable {
                 newElements.get(5), newElements.get(6));
         if (result > 0) {
             updateAirlineTable();
-
+            setAirlineElementsEditable(false);
+            airlineSaveBtn.setVisible(false);
+            airlineDeleteBtn.setVisible(false);
+            airlineCancelBtn.setVisible(false);
         } else {
-            System.out.println(result);
-            setAirlineUpdateColour(abs(result) - 2);
+            switch (result) {
+                case -1:
+                    setAirlineUpdateColour(2);
+                    setAirlineUpdateColour(3);
+                    break;
+                case -2:
+                    setAirlineUpdateColour(0);
+                    break;
+                case -3:
+                    setAirlineUpdateColour(2);
+                    break;
+                case -4:
+                    setAirlineUpdateColour(3);
+                    break;
+                case -5:
+                    setAirlineUpdateColour(6);
+                    break;
+            }
         }
-        setAirlineElementsEditable(false);
-        airlineSaveBtn.setVisible(false);
-        airlineCancelBtn.setVisible(false);
+
     }
 
     @FXML
     public void onRouteSaveBtnPressed(ActionEvent event) throws SQLException {
         setRouteUpdateColour(null);
         Integer id = Integer.parseInt(routeID.getText());
-        List<Object> elementsList2 = null;
+        List<Object> elements;
+        Integer stops = null;
         try {
-            elementsList2 = Arrays.asList(routeAirline.getText(), routeDepAirport.getText(), routeDesAirport.getText(), routeCodeshare.getText(),
-                    Integer.parseInt(routeStops.getText()), routeEquip.getText());
-        } catch (NumberFormatException e) { }
-        if (elementsList2 != null) {
-            ArrayList<Object> newElements = new ArrayList<>(elementsList2);
+            stops = Integer.parseInt(routeStops.getText());
+        } catch (NumberFormatException e) {
+            setRouteUpdateColour(4);
+        }
+        if (stops != null) {
+            elements = Arrays.asList(routeAirline.getText(), routeDepAirport.getText(), routeDesAirport.getText(), routeCodeshare.getText(),
+                    stops, routeEquip.getText());
 
             ConcreteUpdateData updater = new ConcreteUpdateData();
 
-            int result = updater.updateRoute(id, (String) newElements.get(0), (String) newElements.get(1), (String) newElements.get(2),
-                    (String) newElements.get(3), (newElements.get(4) == null) ? -1 : (Integer) newElements.get(4), (String) newElements.get(5));
-            System.out.println(result);
-            System.out.println(newElements);
+            int result = updater.updateRoute(id, (String) elements.get(0), (String) elements.get(1), (String) elements.get(2),
+                    (String) elements.get(3), (elements.get(4) == null) ? -1 : (Integer) elements.get(4), (String) elements.get(5));
             if (result > 0) {
                 updateRouteTable();
-                Integer routeAirlineID1 = airlineService.getData((String) newElements.get(0)).getInt(1);
-                Integer routeSrcAirportID1 = airportService.getData((String) newElements.get(1)).getInt(1);
-                Integer routeDstAirportID1 = airportService.getData((String) newElements.get(2)).getInt(1);
+                Integer routeAirlineID1 = airlineService.getData((String) elements.get(0)).getInt(1);
+                Integer routeSrcAirportID1 = airportService.getData((String) elements.get(1)).getInt(1);
+                Integer routeDstAirportID1 = airportService.getData((String) elements.get(2)).getInt(1);
                 routeAirlineID.setText(String.valueOf(routeAirlineID1));
                 routeDepAirportID.setText(String.valueOf(routeSrcAirportID1));
                 routeDesAirportID.setText(String.valueOf(routeDstAirportID1));
+                setRouteElementsEditable(false);
+                routeSaveBtn.setVisible(false);
+                routeCancelBtn.setVisible(false);
+                routeDeleteBtn.setVisible(false);
+            } else if (result == - 1) {
+                setRouteUpdateColour(0);
+                setRouteUpdateColour(1);
+                setRouteUpdateColour(2);
             } else {
-                System.out.println(result);
                 setRouteUpdateColour(abs(result) - 2);
             }
-        } else {
-            System.out.println("Error formatting");
+
         }
-        setRouteElementsEditable(false);
-        routeSaveBtn.setVisible(false);
-        routeCancelBtn.setVisible(false);
+
     }
 
     public void setAirportUpdateColour(Integer index) {
         airportInvalidFormatLbl.setVisible(false);
-        List<TextField> element = Arrays.asList(airportName, airportCity, airportCountry, airportLatitude, airportLongitude,
+        List<TextField> element = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elements = new ArrayList<TextField>(element);
         if (index == null) {
@@ -1946,7 +2058,7 @@ public class MainMenuController implements Initializable {
 
 
     public void setAirlineUpdateColour(Integer index) {
-        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineCallsign, airlineCountry,
+        List<TextField> elements = Arrays.asList(airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
                 airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         if (index == null) {
@@ -1979,6 +2091,8 @@ public class MainMenuController implements Initializable {
         setAirportSingleRecord((AirportModel)airportTableView.getSelectionModel().getSelectedItem());
         airportCancelBtn.setVisible(false);
         airportSaveBtn.setVisible(false);
+        airportDeleteBtn.setVisible(false);
+        setAirportUpdateColour(null);
     }
 
     @FXML
@@ -1987,12 +2101,161 @@ public class MainMenuController implements Initializable {
         setAirlineSingleRecord((AirlineModel)rawAirlineTable.getSelectionModel().getSelectedItem());
         airlineCancelBtn.setVisible(false);
         airlineSaveBtn.setVisible(false);
+        airlineDeleteBtn.setVisible(false);
+        setAirlineUpdateColour(null);
     }
 
+    @FXML
     public void onRouteCancelBtnPressed(ActionEvent actionEvent) throws SQLException {
         setRouteElementsEditable(false);
         setRouteSingleRecord((RouteModel)routeTableView.getSelectionModel().getSelectedItem());
         routeCancelBtn.setVisible(false);
         routeSaveBtn.setVisible(false);
+        routeDeleteBtn.setVisible(false);
+        setRouteUpdateColour(null);
+    }
+
+    
+    
+    @FXML
+    public void onAirportDeleteBtnPressed(ActionEvent actionEvent) throws SQLException {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(airportID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airport");
+        alert.setContentText("Delete Airport with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteAirport(id);
+                airportDeleteBtn.setVisible(false);
+                airportSaveBtn.setVisible(false);
+                airportCancelBtn.setVisible(false);
+                try {
+                    setAirportSingleRecord(null);
+                    updateAirportTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+
+    }
+
+    public void onAirlineDeleteBtnPressed(ActionEvent actionEvent) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(airlineID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airline");
+        alert.setContentText("Delete Airline with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteAirline(id);
+                airlineDeleteBtn.setVisible(false);
+                airlineSaveBtn.setVisible(false);
+                airlineCancelBtn.setVisible(false);
+                try {
+                    setAirlineSingleRecord(null);
+                    updateAirlineTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    @FXML
+    public void onRouteDeleteBtnPressed(ActionEvent actionEvent) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(routeID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Route");
+        alert.setContentText("Delete Route with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteRoute(id);
+                routeDeleteBtn.setVisible(false);
+                routeSaveBtn.setVisible(false);
+                routeCancelBtn.setVisible(false);
+                try {
+                    setRouteSingleRecord(null);
+                    updateRouteTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+    }
+
+    @FXML
+    public void onFlightDeleteBtnPressed(ActionEvent event) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer flight_id = ((FlightEntry) flightSingleRecordTableView.getItems().get(0)).getFlightID();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Flight");
+        alert.setContentText("Delete Flight with flight_ID: " + flight_id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteFlight(flight_id);
+                flightDeleteBtn.setDisable(true);
+                try {
+                    setFlightSingleRecord(null);
+                    updateFlightTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+    }
+
+    @FXML
+    public void handleFlightDeleteEntry(ActionEvent actionEvent) throws SQLException {
+        // Fetch the selected row
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        FlightEntry selectedForDeletion = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+        if (selectedForDeletion != null && selectedForDeletion.getLocationType().equals("APT")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Flight Entry");
+            alert.setContentText("Cannot delete a flight entry that represents an airport");
+            alert.showAndWait();
+        } else if (selectedForDeletion != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Flight Entry");
+            alert.setContentText("Confirm Deletion of flight_entry with id: " + selectedForDeletion.getID() + ".");
+            Optional<ButtonType> answer = alert.showAndWait();
+            if (answer.get() == ButtonType.OK && !selectedForDeletion.getLocationType().equals("APT")) {
+                // Confirmed deletion option
+                deleter.deleteFlightEntry(selectedForDeletion.getID());
+                updateFlightTable();
+                flightSingleRecordTableView.getItems().remove(selectedForDeletion);
+            }
+        }
+    }
+
+    @FXML
+    public void handleFlightEditOption(ActionEvent actionEvent) throws SQLException {
+        // Fetch the selected row
+        FlightEntry selectedForEdit = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+        if (selectedForEdit != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(App.class.getResource("edit_flight_entry.fxml"));
+                Parent parent = loader.load();
+                EditFlightController controller = (EditFlightController) loader.getController();
+                controller.inflateUI(selectedForEdit);
+                Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setTitle("Edit flight Entry");
+                stage.setScene(new Scene(parent));
+                stage.show();
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        updateAirportTable();
     }
 }
