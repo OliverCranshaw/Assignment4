@@ -316,43 +316,6 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
-     * Checks if an identical flight entry exists
-     *
-     * @param id An integer, a flight id.
-     * @param location_type A string, a location type.
-     * @param location A string, a location.
-     * @param altitude An int, the altitude of the flight entry.
-     * @param latitude A double, the latitude of the flight entry.
-     * @param longitude A double, the longitude of the flight entry.
-     * @return boolean result True if an identical flight entry exists, False otherwise.
-     */
-    public boolean dataExists(int id, String location_type, String location, int altitude, double latitude, double longitude) {
-        boolean result = false;
-
-        try {
-            // The SQL search query - finds the number of identical flight entries
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(id) FROM FLIGHT_DATA WHERE flight_id = ? and location_type = ? and location = ? and altitude = ? and latitude = ? and longitude = ?");
-            // Adds the given parameters into the search query
-            stmt.setInt(1, id);
-            stmt.setString(2, location_type);
-            stmt.setString(3, location);
-            stmt.setInt(4, altitude);
-            stmt.setDouble(5, latitude);
-            stmt.setDouble(6, longitude);
-
-            Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
-        } catch (Exception e) {
-            // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve flight data with id " + id);
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
      * Gets the maximum flight_id contained in the database.
      *
      * @return int id The maximum flight_id in the database.
@@ -404,7 +367,7 @@ public class FlightAccessor implements Accessor{
      * Checks if an identical flight entry exists
      *
      * @param id An integer, a flight id.
-     * @param location_type A string, a location type.
+     * @param locationType A string, a location type.
      * @param location A string, a location.
      * @param altitude An int, the altitude of the flight entry.
      * @param latitude A double, the latitude of the flight entry.
