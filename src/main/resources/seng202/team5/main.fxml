@@ -1024,6 +1024,7 @@
                                                       <ContextMenu>
                                                         <items>
                                                           <MenuItem mnemonicParsing="false" onAction="#handleFlightDeleteEntry" text="Delete" />
+                                                           <MenuItem mnemonicParsing="false" onAction="#handleFlightEditOption" text="Edit" />
                                                         </items>
                                                       </ContextMenu>
                                                    </contextMenu>

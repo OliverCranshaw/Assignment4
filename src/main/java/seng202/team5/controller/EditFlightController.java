@@ -32,7 +32,7 @@ public class EditFlightController {
         setDefaults();
         ConcreteUpdateData updater = new ConcreteUpdateData();
         int id = currFlightEntry.getID();
-        if (locationTypeField.getText().equals("APT")) {
+        if (locationTypeField.getText().equals("APT") && locationTypeField.isEditable()) {
             locationTypeField.setStyle("-fx-border-color: #ff0000;");
         } else {
             Integer altitude = null;
@@ -85,7 +85,6 @@ public class EditFlightController {
                 }
             }
         }
-
     }
 
 
