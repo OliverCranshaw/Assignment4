@@ -89,8 +89,7 @@ public class AirportAccessor implements Accessor {
         List<Object> element = Arrays.asList(new_name, new_city, new_country, new_iata, new_icao, new_latitude, new_longitude,
             new_altitude, new_timezone, new_dst, new_tz);
         ArrayList<Object> elements = new ArrayList<>(element);
-        String search = "UPDATE AIRPORT_DATA SET "; // The start of the SQL update statement
-        search = search + "airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, longitude = ?, altitude = ?"
+        String search = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, longitude = ?, altitude = ?"
                 + ", timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
         PreparedStatement stmt = dbHandler.prepareStatement(search);
         for (int i = 0; i < elements.size(); i++) {

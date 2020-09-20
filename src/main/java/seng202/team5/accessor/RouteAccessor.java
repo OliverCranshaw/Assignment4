@@ -84,8 +84,10 @@ public class RouteAccessor implements Accessor {
     public int update(int id, String new_airline, Integer new_airline_id, String new_source_airport, Integer new_source_airport_id,
                       String new_dest_airport, Integer new_dest_airport_id, String new_codeshare, Integer new_stops, String new_equipment) {
         int result;
+        System.out.println(id);
         List<Object> element = Arrays.asList(new_airline, new_airline_id, new_source_airport, new_source_airport_id, new_dest_airport,
                 new_dest_airport_id, new_codeshare, new_stops, new_equipment);
+        System.out.println(element);
         ArrayList<Object> elements = new ArrayList<>(element);
         String search = "UPDATE ROUTE_DATA SET ";
         search = search + "airline = ?, airline_id = ?, source_airport = ?, source_airport_id = ?, destination_airport =? , destination_airport_id = ?"
@@ -212,6 +214,28 @@ public class RouteAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve route with id " + id);
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     * Retrieves the route with the provided airline code.
+     *
+     * @param airline String, airline IATA/ICAO code.
+     * @return ResultSet of the route.
+     */
+    public ResultSet getData(String airline) {
+        ResultSet result = null;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM ROUTE_DATA WHERE airline = ?");
+            stmt.setObject(1, airline);
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve route");
             System.out.println(e.getMessage());
         }
 

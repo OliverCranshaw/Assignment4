@@ -16,12 +16,16 @@ import java.util.List;
 public class AirlineService implements Service {
 
     private final AirlineAccessor accessor;
+    private final RouteService routeService;
 
     /**
      * Constructor for AirlineService.
      * Creates an AirlineAccessor.
      */
-    public AirlineService() { accessor = new AirlineAccessor(); }
+    public AirlineService() {
+        accessor = new AirlineAccessor();
+        routeService = new RouteService();
+    }
 
     /**
      * Checks the validity of input parameters and then passes them into the save method of the AirlineAccessor as an ArrayList.
@@ -68,15 +72,9 @@ public class AirlineService implements Service {
      */
     public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
                       String new_callsign, String new_country, String new_active) throws SQLException {
-        ResultSet currentContent = getData(id);
-        // Check for whether there exists an entry for this airline id in the database
-        if (!currentContent.next()) {
-            return 0; // 0 rows were updated
-        }
-
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        String currIATA = currentContent.getString(4);
-        String currICAO = currentContent.getString(5);
+        String currIATA = getData(id).getString("iata");
+        String currICAO = getData(id).getString("icao");
         if (currIATA == null || (!currIATA.equals(new_iata))) {
             if (!iataIsValid(new_iata)) {
                 return -1;
@@ -89,7 +87,13 @@ public class AirlineService implements Service {
             }
         }
         // Passes the parameters into the update method of the AirlineAccessor
-        return accessor.update(id, new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
+        int value = accessor.update(id, new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
+
+        // Updates any routes that used the previous IATA/ICAO code
+        updateRoutes(new_iata, currIATA);
+        updateRoutes(new_icao, currICAO);
+
+        return value;
     }
 
     /**
@@ -177,6 +181,20 @@ public class AirlineService implements Service {
      */
     public int getMaxID() {
         return accessor.getMaxID();
+    }
+
+    public void updateRoutes(String new_code, String old_code) throws SQLException {
+        ResultSet result;
+
+        if (!(new_code.equals(old_code))) {
+            if ((result = routeService.getData(old_code)) != null) {
+                while (result.next()) {
+                    routeService.update(result.getInt("route_id"), new_code, result.getString("source_airport"),
+                            result.getString("destination_airport"), result.getString("codeshare"),
+                            result.getInt("stops"), result.getString("equipment"));
+                }
+            }
+        }
     }
 }
 
