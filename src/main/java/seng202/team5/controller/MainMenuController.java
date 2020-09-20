@@ -1801,7 +1801,6 @@ public class MainMenuController implements Initializable {
         setAirportElementsEditable(true);
         airportSaveBtn.setVisible(true);
         airportCancelBtn.setVisible(true);
-
     }
 
     public void onModifyFlightBtnPressed(ActionEvent actionEvent) {
@@ -1809,14 +1808,14 @@ public class MainMenuController implements Initializable {
     }
 
     public void setAirportElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportLatitude, airportLongitude,
+        List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
         ArrayList<TextField> elementsEditable = new ArrayList<TextField>(elements);
         setElementsEditable(elementsEditable, bool);
     }
 
     public void setAirlineElementsEditable(Boolean bool) {
-        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineCallsign, airlineCountry,
+        List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
                 airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         setElementsEditable(elementsVisible, bool);
