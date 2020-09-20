@@ -117,7 +117,7 @@
                                        <GridPane.margin>
                                           <Insets right="20.0" />
                                        </GridPane.margin></TextField>
-                                    <Label fx:id="thirdSearchType" text="Country:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <Label fx:id="thirdSearchType" text="Country:" textFill="WHITE" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets left="7.0" />
                                        </GridPane.margin>
@@ -125,7 +125,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="fourthSearchType" text="Equipment:" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <Label fx:id="fourthSearchType" text="Equipment:" textFill="WHITE" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -232,7 +232,7 @@
                                                 <TextField fx:id="airlineCallsignS" layoutX="368.0" layoutY="50.0" />
                                                 <TextField fx:id="airlineCountryS" layoutX="368.0" layoutY="90.0" />
                                                 <TextField fx:id="airlineActiveS" layoutX="368.0" layoutY="130.0" />
-                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="185.0" prefWidth="550.0">
+                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="550.0">
                                                    <columns>
                                                       <TableColumn fx:id="flightDbID1" prefWidth="36.0" text="ID" />
                                                       <TableColumn fx:id="flightID1" prefWidth="58.0" text="Flight ID" />
@@ -251,21 +251,21 @@
                                                 <Label fx:id="lblRouteAirlineIDS" layoutY="100.0" text="Airline ID:" />
                                                 <Label fx:id="lblRouteDepAirportS" layoutY="130.0" text="Source Airport IATA/ICAO:" />
                                                 <Label fx:id="lblRouteDepAirportIDS" layoutY="160.0" text="Source Airport ID:" />
-                                                <Label fx:id="lblRouteDesAirportS" layoutX="260.0" layoutY="130.0" text="Desitination Airport IATA/ICAO:" />
-                                                <Label fx:id="lblRouteDesAirportIDS" layoutX="260.0" layoutY="160.0" text="Destination Aiport ID:" />
-                                                <Label fx:id="lblRouteCodeshareS" layoutX="260.0" layoutY="40.0" text="Codeshare:" />
-                                                <Label fx:id="lblRouteStopsS" layoutX="260.0" layoutY="70.0" text="No. Stops:" />
-                                                <Label fx:id="lblRouteEquipS" layoutX="260.0" layoutY="100.0" text="Equipment:" />
+                                                <Label fx:id="lblRouteDesAirportS" layoutX="260.0" layoutY="40.0" text="Desitination Airport IATA/ICAO:" />
+                                                <Label fx:id="lblRouteDesAirportIDS" layoutX="260.0" layoutY="70.0" text="Destination Aiport ID:" />
+                                                <Label fx:id="lblRouteCodeshareS" layoutX="260.0" layoutY="100.0" text="Codeshare:" />
+                                                <Label fx:id="lblRouteStopsS" layoutX="260.0" layoutY="130.0" text="No. Stops:" />
+                                                <Label fx:id="lblRouteEquipS" layoutX="260.0" layoutY="160.0" text="Equipment:" />
                                                 <TextField fx:id="routeIDS" layoutX="110.0" layoutY="35.0" />
                                                 <TextField fx:id="routeAirlineS" layoutX="110.0" layoutY="65.0" />
                                                 <TextField fx:id="routeAirlineIDS" layoutX="110.0" layoutY="95.0" />
                                                 <TextField fx:id="routeDepAirportS" layoutX="110.0" layoutY="125.0" />
                                                 <TextField fx:id="routeDepAirportIDS" layoutX="110.0" layoutY="155.0" />
-                                                <TextField fx:id="routeDesAirportS" layoutX="397.0" layoutY="125.0" />
-                                                <TextField fx:id="routeDesAirportIDS" layoutX="397.0" layoutY="155.0" />
-                                                <TextField fx:id="routeCodeshareS" layoutX="397.0" layoutY="35.0" />
-                                                <TextField fx:id="routeStopsS" layoutX="397.0" layoutY="65.0" />
-                                                <TextField fx:id="routeEquipS" layoutX="397.0" layoutY="95.0" />
+                                                <TextField fx:id="routeDesAirportS" layoutX="397.0" layoutY="35.0" />
+                                                <TextField fx:id="routeDesAirportIDS" layoutX="397.0" layoutY="65.0" />
+                                                <TextField fx:id="routeCodeshareS" layoutX="397.0" layoutY="95.0" />
+                                                <TextField fx:id="routeStopsS" layoutX="397.0" layoutY="125.0" />
+                                                <TextField fx:id="routeEquipS" layoutX="397.0" layoutY="155.0" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
@@ -276,7 +276,7 @@
                                     </SplitPane>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="10.0" top="5.0" />
                                  </VBox.margin>
                               </FlowPane>
                            </children>
@@ -363,34 +363,100 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="549.0">
                                              <children>
-                                                <Label fx:id="lblAirportID" layoutX="14.0" layoutY="14.0" text="Airport ID:" />
-                                                <Label fx:id="lblAirportName" layoutX="20.0" layoutY="40.0" text="Name:" />
-                                                <Label fx:id="lblAirportCity" layoutX="14.0" layoutY="65.0" text="City:" />
-                                                <Label fx:id="lblAirportCountry" layoutX="15.0" layoutY="91.0" text="Country:" />
-                                                <Label fx:id="lblAirportIATA" layoutX="12.0" layoutY="114.0" text="IATA:" />
-                                                <Label fx:id="lblAirportICAO" layoutX="10.0" layoutY="140.0" text="ICAO:" />
-                                                <Label fx:id="lblAirportLatitude" layoutX="276.0" layoutY="14.0" text="Latitude:" />
-                                                <Label fx:id="lblAirportLongitude" layoutX="272.0" layoutY="40.0" text="Longitude:" />
-                                                <Label fx:id="lblAirportAltitude" layoutX="277.0" layoutY="67.0" text="Altitude:" />
-                                                <Label fx:id="lblAirportTimezone" layoutX="273.0" layoutY="92.0" text="Timezone:" />
-                                                <Label fx:id="lblAirportDST" layoutX="276.0" layoutY="115.0" text="DST:" />
-                                                <Label fx:id="lblAirportTZ" layoutX="275.0" layoutY="140.0" text="TZ database time:" />
-                                                <TextField fx:id="airportID" layoutX="78.0" layoutY="11.0" />
-                                                <TextField fx:id="airportName" layoutX="78.0" layoutY="37.0" />
-                                                <TextField fx:id="airportCity" layoutX="78.0" layoutY="63.0" />
-                                                <TextField fx:id="airportLatitude" layoutX="368.0" layoutY="11.0" />
-                                                <TextField fx:id="airportICAO" layoutX="78.0" layoutY="136.0" />
-                                                <TextField fx:id="airportCountry" layoutX="78.0" layoutY="88.0" />
-                                                <TextField fx:id="airportIATA" layoutX="78.0" layoutY="111.0" />
-                                                <TextField fx:id="airportLongitude" layoutX="368.0" layoutY="36.0" />
-                                                <TextField fx:id="airportAltitude" layoutX="368.0" layoutY="61.0" />
-                                                <TextField fx:id="airportTimezone" layoutX="368.0" layoutY="87.0" />
-                                                <TextField fx:id="airportDST" layoutX="368.0" layoutY="110.0" />
-                                                <TextField fx:id="airportTZ" layoutX="368.0" layoutY="136.0" />
-                                                <Button fx:id="airportSaveBtn" layoutX="492.0" layoutY="208.0" mnemonicParsing="false" onAction="#onAirportSaveBtnPressed" text="Save" />
+                                                <Button fx:id="airportSaveBtn" layoutX="492.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportSaveBtnPressed" text="Save" />
                                                 <Button fx:id="airportCancelBtn" layoutX="12.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportCancelBtnPressed" text="Cancel Modify" />
                                                 <Label fx:id="airportInvalidFormatLbl" layoutX="96.0" layoutY="182.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
                                                 <Button fx:id="airportDeleteBtn" layoutX="104.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportDeleteBtnPressed" text="Delete Airport" />
+                                                <GridPane layoutX="14.0" layoutY="14.0" prefHeight="191.0" prefWidth="518.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="117.5" minWidth="10.0" prefWidth="90.5" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.5" minWidth="10.0" prefWidth="140.0" />
+                                                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="186.5" minWidth="10.0" prefWidth="153.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="140.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label fx:id="lblAirportID" text="Airport ID:">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportName" text="Name:" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportCity" text="City:" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airportID" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" />
+                                                      <TextField fx:id="airportName" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="airportCity" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <Label fx:id="lblAirportLatitude" text="Latitude:" GridPane.columnIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportLongitude" text="Longitude:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportAltitude" text="Altitude:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airportLatitude" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" />
+                                                      <TextField fx:id="airportLongitude" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="airportAltitude" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <Label fx:id="lblAirportCountry" text="Country:" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportIATA" text="IATA:" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportICAO" text="ICAO:" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airportCountry" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="airportIATA" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="airportICAO" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <Label fx:id="lblAirportTimezone" text="Timezone:" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportDST" text="DST:" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirportTZ" text="TZ database time:" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airportTimezone" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="airportDST" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="airportTZ" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                   </children>
+                                                </GridPane>
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
@@ -401,7 +467,7 @@
                                     </SplitPane>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
                               </FlowPane>
                            </children>
@@ -502,22 +568,70 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <Label fx:id="lblAirlineID" layoutX="14.0" layoutY="14.0" text="Airline ID:" />
-                                                <Label fx:id="lblAirlineName" layoutX="11.0" layoutY="48.0" text="Name:" />
-                                                <Label fx:id="lblAirlineAlias" layoutX="15.0" layoutY="82.0" text="Alias:" />
-                                                <Label fx:id="lblAirlineIATA" layoutX="14.0" layoutY="114.0" text="IATA:" />
-                                                <Label fx:id="lblAirlineICAO" layoutX="275.0" layoutY="14.0" text="ICAO:" />
-                                                <Label fx:id="lblAirlineCallsign" layoutX="276.0" layoutY="48.0" text="Callsign:" />
-                                                <Label fx:id="lblAirlineCountry" layoutX="275.0" layoutY="82.0" text="Country:" />
-                                                <Label fx:id="lblAirlineActive" layoutX="273.0" layoutY="114.0" text="Active:" />
-                                                <TextField fx:id="airlineID" layoutX="73.0" layoutY="10.0" />
-                                                <TextField fx:id="airlineName" layoutX="73.0" layoutY="44.0" />
-                                                <TextField fx:id="airlineAlias" layoutX="73.0" layoutY="78.0" />
-                                                <TextField fx:id="airlineIATA" layoutX="73.0" layoutY="110.0" />
-                                                <TextField fx:id="airlineICAO" layoutX="320.0" layoutY="10.0" />
-                                                <TextField fx:id="airlineCallsign" layoutX="320.0" layoutY="44.0" />
-                                                <TextField fx:id="airlineCountry" layoutX="320.0" layoutY="78.0" />
-                                                <TextField fx:id="airlineActive" layoutX="320.0" layoutY="110.0" />
+                                                <GridPane layoutX="11.0" layoutY="14.0" prefHeight="168.0" prefWidth="474.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="107.0" minWidth="10.0" prefWidth="81.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="167.0" />
+                                                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="95.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="167.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label fx:id="lblAirlineID" prefHeight="17.0" prefWidth="53.0" text="Airline ID:">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirlineName" prefHeight="17.0" prefWidth="36.0" text="Name:" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirlineAlias" prefHeight="17.0" prefWidth="29.0" text="Alias:" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airlineID" GridPane.columnIndex="1" />
+                                                      <TextField fx:id="airlineName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="airlineAlias" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <Label fx:id="lblAirlineIATA" text="IATA:" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airlineIATA" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <Label fx:id="lblAirlineICAO" prefHeight="17.0" prefWidth="32.0" text="ICAO:" GridPane.columnIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirlineCallsign" prefHeight="17.0" prefWidth="45.0" text="Callsign:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirlineCountry" prefHeight="17.0" prefWidth="47.0" text="Country:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblAirlineActive" prefHeight="17.0" prefWidth="37.0" text="Active:" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="airlineICAO" GridPane.columnIndex="3" />
+                                                      <TextField fx:id="airlineCallsign" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="airlineCountry" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="airlineActive" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                   </children>
+                                                </GridPane>
                                                 <Button fx:id="airlineSaveBtn" layoutX="494.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineSaveBtnPressed" text="Save" />
                                                 <Button fx:id="airlineCancelBtn" layoutX="11.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineCancelBtnPressed" text="Cancel Modify" />
                                                 <Button fx:id="airlineDeleteBtn" layoutX="104.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineDeleteBtnPressed" text="Delete Airline" />
@@ -531,7 +645,7 @@
                                     </SplitPane>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
                               </FlowPane>
                            </children>
@@ -624,7 +738,7 @@
                                           <Font size="15.0" />
                                        </font>
                                        <FlowPane.margin>
-                                          <Insets left="75.0" />
+                                          <Insets left="74.0" />
                                        </FlowPane.margin>
                                     </Text>
                                     <TextField fx:id="routeEquipmentField" promptText="Equipment">
@@ -668,29 +782,86 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="239.0" prefWidth="216.0">
                                              <children>
-                                                <Label fx:id="lblRouteID" layoutX="14.0" layoutY="14.0" text="Route ID:" />
-                                                <Label fx:id="lblRouteAirline" layoutX="14.0" layoutY="48.0" text="Airline IATA/ICAO:" />
-                                                <Label fx:id="lblRouteAirlineID" layoutX="13.0" layoutY="82.0" text="Airline ID:" />
-                                                <Label fx:id="lblRouteDepAirport" layoutX="14.0" layoutY="116.0" text="Source Airport IATA/ICAO:" />
-                                                <Label fx:id="lblRouteDepAirportID" layoutX="15.0" layoutY="150.0" text="Source Airport ID:" />
-                                                <Label fx:id="lblRouteDesAirport" layoutX="275.0" layoutY="116.0" text="Desitination Airport IATA/ICAO:" />
-                                                <Label fx:id="lblRouteDesAirportID" layoutX="275.0" layoutY="150.0" text="Destination Aiport ID:" />
-                                                <Label fx:id="lblRouteCodeshare" layoutX="276.0" layoutY="14.0" text="Codeshare:" />
-                                                <Label fx:id="lblRouteStops" layoutX="277.0" layoutY="48.0" text="No. Stops:" />
-                                                <Label fx:id="lblRouteEquip" layoutX="275.0" layoutY="82.0" text="Equipment:" />
-                                                <TextField fx:id="routeID" layoutX="117.0" layoutY="10.0" />
-                                                <TextField fx:id="routeAirline" layoutX="117.0" layoutY="44.0" />
-                                                <TextField fx:id="routeAirlineID" layoutX="117.0" layoutY="78.0" />
-                                                <TextField fx:id="routeDepAirport" layoutX="117.0" layoutY="112.0" />
-                                                <TextField fx:id="routeDepAirportID" layoutX="117.0" layoutY="146.0" />
-                                                <TextField fx:id="routeDesAirport" layoutX="390.0" layoutY="112.0" />
-                                                <TextField fx:id="routeDesAirportID" layoutX="390.0" layoutY="146.0" />
-                                                <TextField fx:id="routeCodeshare" layoutX="390.0" layoutY="10.0" />
-                                                <TextField fx:id="routeStops" layoutX="390.0" layoutY="44.0" />
-                                                <TextField fx:id="routeEquip" layoutX="390.0" layoutY="78.0" />
                                                 <Button fx:id="routeSaveBtn" layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" text="Save" />
                                                 <Button fx:id="routeCancelBtn" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteCancelBtnPressed" text="Cancel Modify" />
                                                 <Button fx:id="routeDeleteBtn" layoutX="105.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteDeleteBtnPressed" text="Delete Route" />
+                                                <GridPane layoutX="14.0" layoutY="14.0" prefHeight="155.0" prefWidth="518.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="165.5" minWidth="10.0" prefWidth="151.5" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="87.5" />
+                                                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="184.5" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.5" minWidth="10.0" prefWidth="92.5" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label fx:id="lblRouteID" text="Route ID:">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteAirline" text="Airline IATA/ICAO:" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteAirlineID" text="Airline ID:" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteDepAirport" text="Source Airport IATA/ICAO:" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteDepAirportID" text="Source Airport ID:" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="routeID" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" />
+                                                      <TextField fx:id="routeAirline" prefHeight="25.0" prefWidth="94.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="routeAirlineID" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="routeDepAirport" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="routeDepAirportID" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <Label fx:id="lblRouteCodeshare" text="Codeshare:" GridPane.columnIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteStops" text="No. Stops:" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteEquip" text="Equipment:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteDesAirport" text="Desitination Airport IATA/ICAO:" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lblRouteDesAirportID" text="Destination Aiport ID:" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets right="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="routeCodeshare" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" />
+                                                      <TextField fx:id="routeStops" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="routeEquip" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="routeDesAirport" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="routeDesAirportID" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                   </children>
+                                                </GridPane>
                                              </children></AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                                       </items>
@@ -700,7 +871,7 @@
                                     </SplitPane>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
                               </FlowPane>
                            </children>
@@ -753,10 +924,10 @@
                               </FlowPane>
                               <FlowPane prefHeight="546.0" prefWidth="1232.0">
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
                                  <children>
-                                    <TableView fx:id="flightTableView" prefHeight="535.0" prefWidth="640.0">
+                                    <TableView fx:id="flightTableView" prefHeight="540.0" prefWidth="633.0">
                                        <columns>
                                           <TableColumn fx:id="flightIdCol" prefWidth="75.0" text="Flight ID" />
                                           <TableColumn fx:id="flightSrcLocationCol" prefWidth="75.0" text="Source Location" />
@@ -771,14 +942,14 @@
                                           <Insets />
                                        </FlowPane.margin>
                                     </TableView>
-                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="540.0" prefWidth="551.0">
+                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="540.0" prefWidth="555.0">
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="550.0">
+                                                <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="556.0">
                                                   <columns>
-                                                    <TableColumn fx:id="flightDbID" prefWidth="36.0" text="ID" />
-                                                    <TableColumn fx:id="flightID" prefWidth="58.0" text="Flight ID" />
+                                                    <TableColumn fx:id="flightDbID" prefWidth="48.0" text="ID" />
+                                                    <TableColumn fx:id="flightID" prefWidth="110.0" text="Flight ID" />
                                                       <TableColumn fx:id="flightLocationType" prefWidth="102.0" text="Location Type" />
                                                       <TableColumn fx:id="flightLocation" prefWidth="104.0" text="Location" />
                                                       <TableColumn fx:id="flightAltitude" prefWidth="78.0" text="Altitude" />
