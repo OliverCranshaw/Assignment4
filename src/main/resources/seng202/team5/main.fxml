@@ -24,14 +24,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import java.net.URL?>
+
 <VBox fx:id="backdrop" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
+   <stylesheets>
+      <URL value="@main.css" />
+   </stylesheets>
    <children>
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="845.0" style="-fx-background-color: #404040;" text="AEROETTE" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="main_backdrop" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="52.0" prefWidth="845.0" style="-fx-background-color: #272727;" text="AEROETTE" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" style="-fx-background-color: #4C4C4C;" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="241.0" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" style="-fx-background-color: #4C4C4C; -fx-background-position: #591515;" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="241.0" VBox.vgrow="ALWAYS">
          <tabs>
             <Tab fx:id="generalTab" style="-fx-background-color: #358C84;" text="Search Data">
                <content>
@@ -360,10 +365,10 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="549.0">
                                              <children>
-                                                <Button fx:id="airportSaveBtn" layoutX="492.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportSaveBtnPressed" text="Save" />
+                                                <Button fx:id="airportSaveBtn" layoutX="492.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportSaveBtnPressed" style="-fx-background-color: #41A8BF;" text="Save" textFill="WHITE" />
                                                 <Button fx:id="airportCancelBtn" layoutX="12.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportCancelBtnPressed" text="Cancel Modify" />
                                                 <Label fx:id="airportInvalidFormatLbl" layoutX="96.0" layoutY="182.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
-                                                <Button fx:id="airportDeleteBtn" layoutX="104.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportDeleteBtnPressed" text="Delete Airport" />
+                                                <Button fx:id="airportDeleteBtn" layoutX="111.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportDeleteBtnPressed" style="-fx-background-color: #F25E3D;" text="Delete Airport" textFill="WHITE" />
                                                 <GridPane layoutX="14.0" layoutY="14.0" prefHeight="191.0" prefWidth="518.0">
                                                   <columnConstraints>
                                                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="117.5" minWidth="10.0" prefWidth="90.5" />
@@ -629,9 +634,9 @@
                                                       <TextField fx:id="airlineActive" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                                                    </children>
                                                 </GridPane>
-                                                <Button fx:id="airlineSaveBtn" layoutX="494.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineSaveBtnPressed" text="Save" />
+                                                <Button fx:id="airlineSaveBtn" layoutX="494.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineSaveBtnPressed" style="-fx-background-color: #41A8BF;" text="Save" textFill="WHITE" />
                                                 <Button fx:id="airlineCancelBtn" layoutX="11.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineCancelBtnPressed" text="Cancel Modify" />
-                                                <Button fx:id="airlineDeleteBtn" layoutX="104.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineDeleteBtnPressed" text="Delete Airline" />
+                                                <Button fx:id="airlineDeleteBtn" layoutX="111.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineDeleteBtnPressed" style="-fx-background-color: #F25E3D;" text="Delete Airline" textFill="WHITE" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
@@ -779,9 +784,9 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="239.0" prefWidth="216.0">
                                              <children>
-                                                <Button fx:id="routeSaveBtn" layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" text="Save" />
-                                                <Button fx:id="routeCancelBtn" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteCancelBtnPressed" text="Cancel Modify" />
-                                                <Button fx:id="routeDeleteBtn" layoutX="105.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteDeleteBtnPressed" text="Delete Route" />
+                                                <Button fx:id="routeSaveBtn" layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" style="-fx-background-color: #67BF63;" text="Save" textFill="WHITE" />
+                                                <Button fx:id="routeCancelBtn" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteCancelBtnPressed" style="-fx-background-color: #41A8BF;" text="Cancel Modify" textFill="WHITE" />
+                                                <Button fx:id="routeDeleteBtn" layoutX="113.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteDeleteBtnPressed" style="-fx-background-color: #F25E3D;" text="Delete Route" textFill="WHITE" />
                                                 <GridPane layoutX="14.0" layoutY="14.0" prefHeight="155.0" prefWidth="518.0">
                                                   <columnConstraints>
                                                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="165.5" minWidth="10.0" prefWidth="151.5" />
@@ -992,3 +997,4 @@
       </TabPane>
    </children>
 </VBox>
+
