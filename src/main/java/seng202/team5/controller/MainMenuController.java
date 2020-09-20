@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seng202.team5.App;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static java.lang.Math.abs;
 
@@ -2152,12 +2154,17 @@ public class MainMenuController implements Initializable {
         });
     }
 
+    @FXML
     public void handleFlightDeleteEntry(ActionEvent actionEvent) throws SQLException {
         // Fetch the selected row
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         FlightEntry selectedForDeletion = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
-
-        if (selectedForDeletion != null) {
+        if (selectedForDeletion != null && selectedForDeletion.getLocationType().equals("APT")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Flight Entry");
+            alert.setContentText("Cannot delete a flight entry that represents an airport");
+            alert.showAndWait();
+        } else if (selectedForDeletion != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Flight Entry");
             alert.setContentText("Confirm Deletion of flight_entry with id: " + selectedForDeletion.getID() + ".");
@@ -2167,6 +2174,29 @@ public class MainMenuController implements Initializable {
                 deleter.deleteFlightEntry(selectedForDeletion.getID());
                 updateFlightTable();
                 flightSingleRecordTableView.getItems().remove(selectedForDeletion);
+            }
+        }
+    }
+
+    @FXML
+    public void handleFlightEditOption(ActionEvent actionEvent) throws SQLException {
+        // Fetch the selected row
+        FlightEntry selectedForEdit = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+        ConcreteUpdateData updater = new ConcreteUpdateData();
+        if (selectedForEdit != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(App.class.getResource("edit_flight_entry.fxml"));
+                Parent parent = loader.load();
+
+                EditFlightController controller = (EditFlightController) loader.getController();
+                controller.inflateUI(selectedForEdit);
+                Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setTitle("Edit flight Entry");
+                stage.setScene(new Scene(parent));
+                stage.show();
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
             }
         }
     }
