@@ -2159,8 +2159,12 @@ public class MainMenuController implements Initializable {
         // Fetch the selected row
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         FlightEntry selectedForDeletion = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
-
-        if (selectedForDeletion != null) {
+        if (selectedForDeletion != null && selectedForDeletion.getLocationType().equals("APT")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Flight Entry");
+            alert.setContentText("Cannot delete a flight entry that represents an airport");
+            alert.showAndWait();
+        } else if (selectedForDeletion != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Flight Entry");
             alert.setContentText("Confirm Deletion of flight_entry with id: " + selectedForDeletion.getID() + ".");
