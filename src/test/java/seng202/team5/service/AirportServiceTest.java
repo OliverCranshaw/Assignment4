@@ -14,7 +14,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
     private AirportService airportService;
 
-    private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
+    private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Time/Zone");
 
     @Before
     public void setUp() {
@@ -270,4 +270,46 @@ public class AirportServiceTest extends BaseDatabaseTest {
             Assert.assertEquals(i + 1, airportService.getMaxID());
         }
     }
+
+    @Test
+    public void testDeleteFlight() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+        FlightService flightService = new FlightService();
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < testData.size(); j++) {
+            stmt.setObject(j + 1, testData.get(j));
+        }
+        stmt.executeUpdate();
+
+        List<Object> flightData = List.of(flightService.getNextFlightID(), "APT", "IAT", 4242, 235.1621, -125.12451);
+        stmt = dbHandler.prepareStatement(
+                "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, " +
+                    "altitude, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < flightData.size(); j++) {
+            stmt.setObject(j + 1, flightData.get(j));
+        }
+        stmt.executeUpdate();
+
+        flightData = List.of(flightService.getNextFlightID(), "APT", "ICAO", 4242, 235.1621, -125.12451);
+        stmt = dbHandler.prepareStatement(
+                "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, " +
+                        "altitude, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < flightData.size(); j++) {
+            stmt.setObject(j + 1, flightData.get(j));
+        }
+        stmt.executeUpdate();
+
+        airportService.delete(1);
+
+        Assert.assertFalse(airportService.dataExists("IAT"));
+        Assert.assertFalse(airportService.dataExists("ICAO"));
+
+        Assert.assertEquals(0, flightService.getMaxID());
+    }
+
 }
