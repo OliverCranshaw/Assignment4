@@ -43,15 +43,6 @@ public class MainMenuController implements Initializable {
     private TabPane mainTabs;
 
     @FXML
-    private Tab tableRecordsTab;
-
-    @FXML
-    private Tab generalTab;
-
-    @FXML
-    private Tab airlineDataTab;
-
-    @FXML
     private RadioButton flightsRadioButton;
 
     @FXML
@@ -602,6 +593,27 @@ public class MainMenuController implements Initializable {
     private TextField routeEquipS;
 
     @FXML
+    private TableColumn flightDbIDS;
+
+    @FXML
+    private TableColumn flightIDS;
+
+    @FXML
+    private TableColumn flightLocationTypeS;
+
+    @FXML
+    private TableColumn flightLocationS;
+
+    @FXML
+    private TableColumn flightAltitudeS;
+
+    @FXML
+    private TableColumn flightLatitudeS;
+
+    @FXML
+    private TableColumn flightLongitudeS;
+
+    @FXML
     private TableView searchFlightSingleRecordTableView;
 
     @FXML
@@ -682,6 +694,15 @@ public class MainMenuController implements Initializable {
         flightAltitude.setCellValueFactory(new PropertyValueFactory<>("Altitude"));
         flightLatitude.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
         flightLongitude.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
+
+        // Setting the cell value factories for the search flight entry table
+        flightDbIDS.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        flightIDS.setCellValueFactory(new PropertyValueFactory<>("FlightID"));
+        flightLocationTypeS.setCellValueFactory(new PropertyValueFactory<>("LocationType"));
+        flightLocationS.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        flightAltitudeS.setCellValueFactory(new PropertyValueFactory<>("Altitude"));
+        flightLatitudeS.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
+        flightLongitudeS.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
 
 
         modifyAirportBtn.setDisable(true);
@@ -804,6 +825,12 @@ public class MainMenuController implements Initializable {
             throwables.printStackTrace();
         }
 
+        try {
+            setSearchFlightSingleRecord(null);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
 
 
 
@@ -865,7 +892,6 @@ public class MainMenuController implements Initializable {
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
         routeDeleteBtn.setVisible(false);
-
         flightDeleteBtn.setDisable(true);
 
 
@@ -966,31 +992,28 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    private void setSearchFlightSingleRecord(FlightModel flightModelS) throws SQLException {
-        if (flightModelS == null) {
+    private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
+        if (flightModel == null) {
             searchFlightSingleRecordTableView.getItems().clear();
         } else {
             flightEntriesSearch = FXCollections.observableArrayList();
-            Integer flightID = flightModelS.getFlightId();
+            Integer flightID = flightModel.getFlightId();
             ResultSet flightData = flightService.getData(flightID);
-
             while (flightData.next()) {
                 Integer id = flightData.getInt(1);
-                System.out.println(id);
                 Integer flightId = flightData.getInt(2);
-                System.out.println(flightID);
                 String locationType = flightData.getString(3);
-                System.out.println(locationType);
                 String location = flightData.getString(4);
                 Integer altitude = flightData.getInt(5);
                 Double latitude = flightData.getDouble(6);
                 Double longitude = flightData.getDouble(7);
-                FlightEntry newEntryS = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
-                flightEntriesSearch.add(newEntryS);
-
+                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                flightEntriesSearch.add(newEntry);
             }
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
+
         }
+
     }
 
     private void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
@@ -1093,11 +1116,6 @@ public class MainMenuController implements Initializable {
         File file = fileChooser.showSaveDialog(((Node) event.getSource()).getScene().getWindow());
 
         return file;
-    }
-
-    @FXML
-    public void onViewMorePressed() {
-        mainTabs.getSelectionModel().select(tableRecordsTab);
     }
 
     @FXML
@@ -1430,13 +1448,12 @@ public class MainMenuController implements Initializable {
             fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
 
-
-            System.out.printf("Location Type: %s, Location: %s\n%n", fields.get(0), fields.get(1));
-
             searchInstance.setSearchData(fields);
             result = searchInstance.searchFlight();
 
             if (result == null) {
+                errorMessage.setText("Sorry but there are no results for your search.");
+            } else if (!result.next()) {
                 errorMessage.setText("Sorry but there are no results for your search.");
             } else {
                 errorMessage.setText("");
@@ -1452,8 +1469,6 @@ public class MainMenuController implements Initializable {
             fields.add(firstSearchEntry.getText().isBlank() ? null : firstSearchEntry.getText());
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
             fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
-
-            System.out.printf("Name: %s, City: %s, Country: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
 
             searchInstance.setSearchData(fields);
             result = searchInstance.searchAirport();
@@ -1481,9 +1496,6 @@ public class MainMenuController implements Initializable {
             fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
             fields.add(thirdSearchEntry.getText().isBlank() ? null : thirdSearchEntry.getText());
 
-
-            System.out.printf("Name: %s, Country: %s, Callsign: %s\n%n", fields.get(0), fields.get(1), fields.get(2));
-
             searchInstance.setSearchData(fields);
             result = searchInstance.searchAirline();
 
@@ -1506,8 +1518,6 @@ public class MainMenuController implements Initializable {
                 fields.add(secondSearchEntry.getText().isBlank() ? null : secondSearchEntry.getText());
                 fields.add(thirdSearchEntry.getText().isBlank() ? -1 : Integer.parseInt(thirdSearchEntry.getText()));
                 fields.add(fourthSearchEntry.getText().isBlank() ? null : fourthSearchEntry.getText());
-
-                System.out.printf("Source Airport: %s, Dest. Airpot: %s, Num. Stops: %s, Equipment: %s\n%n", fields.get(0), fields.get(1), fields.get(2), fields.get(3));
 
                 searchInstance.setSearchData(fields);
                 result = searchInstance.searchRoute();

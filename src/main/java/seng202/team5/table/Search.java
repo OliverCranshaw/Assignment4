@@ -130,7 +130,7 @@ public class Search {
 
 
         result = routeService.getData(sourceAirport, destAirport, numStops, equipment);
-        System.out.println(result);
+
         return result;
     }
 }
