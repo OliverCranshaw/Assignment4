@@ -630,6 +630,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<RouteModel> routeModels;
     private ObservableList<FlightModel> flightModels;
     private ObservableList<FlightEntry> flightEntries;
+    private ObservableList<FlightEntry> flightEntriesSearch;
 
 
 
@@ -683,7 +684,7 @@ public class MainMenuController implements Initializable {
         modifyRouteBtn.setDisable(true);
         modifyFlightBtn.setDisable(true);
 
-        // Adding Listeners to all four tables so that the selected Items can be displayed in the single record viewer
+        // Adding Listeners to all five tables so that the selected Items can be displayed in the single record viewer
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 AirportModel selected = (AirportModel) newSelection;
@@ -956,34 +957,39 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
-        if (flightModel == null) {
-            searchFlightSingleRecordTableView.getItems().removeAll();
+    private void setSearchFlightSingleRecord(FlightModel flightModelS) throws SQLException {
+        if (flightModelS == null) {
+            searchFlightSingleRecordTableView.getItems().clear();
         } else {
-            flightEntries = FXCollections.observableArrayList();
-            Integer flightID = flightModel.getFlightId();
+            flightEntriesSearch = FXCollections.observableArrayList();
+            Integer flightID = flightModelS.getFlightId();
             ResultSet flightData = flightService.getData(flightID);
+
             while (flightData.next()) {
                 Integer id = flightData.getInt(1);
+                System.out.println(id);
                 Integer flightId = flightData.getInt(2);
+                System.out.println(flightID);
                 String locationType = flightData.getString(3);
+                System.out.println(locationType);
                 String location = flightData.getString(4);
                 Integer altitude = flightData.getInt(5);
                 Double latitude = flightData.getDouble(6);
                 Double longitude = flightData.getDouble(7);
-                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
-                flightEntries.add(newEntry);
+                FlightEntry newEntryS = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                flightEntriesSearch.add(newEntryS);
+
             }
-            searchFlightSingleRecordTableView.setItems(flightEntries);
+            searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
         }
     }
 
     private void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
-        List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
-                routeCodeshare, routeStops, routeEquip);
+        List<TextField> elements = Arrays.asList(routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
+                routeCodeshareS, routeStopsS, routeEquipS);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
-        List<Label> lblElements = Arrays.asList(lblRouteID, lblRouteAirline, lblRouteAirlineID, lblRouteDepAirport, lblRouteDepAirportID,
-                lblRouteDesAirport, lblRouteDesAirportID, lblRouteCodeshare, lblRouteStops, lblRouteEquip);
+        List<Label> lblElements = Arrays.asList(lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
+                lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
         if (routeModel == null) {
             setFieldsEmpty(elementsVisible);
@@ -1231,8 +1237,8 @@ public class MainMenuController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
-        firstSearchType.setText("Airline:");
-        secondSearchType.setText("Airport:");
+        firstSearchType.setText("Location Type:");
+        secondSearchType.setText("Location:");
         thirdSearchType.setVisible(false);
         fourthSearchType.setVisible(false);
 

@@ -232,7 +232,7 @@
                                                 <TextField fx:id="airlineCallsignS" layoutX="368.0" layoutY="50.0" />
                                                 <TextField fx:id="airlineCountryS" layoutX="368.0" layoutY="90.0" />
                                                 <TextField fx:id="airlineActiveS" layoutX="368.0" layoutY="130.0" />
-                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="550.0">
+                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="185.0" prefWidth="550.0">
                                                    <columns>
                                                       <TableColumn fx:id="flightDbID1" prefWidth="36.0" text="ID" />
                                                       <TableColumn fx:id="flightID1" prefWidth="58.0" text="Flight ID" />
@@ -251,21 +251,21 @@
                                                 <Label fx:id="lblRouteAirlineIDS" layoutY="100.0" text="Airline ID:" />
                                                 <Label fx:id="lblRouteDepAirportS" layoutY="130.0" text="Source Airport IATA/ICAO:" />
                                                 <Label fx:id="lblRouteDepAirportIDS" layoutY="160.0" text="Source Airport ID:" />
-                                                <Label fx:id="lblRouteDesAirportS" layoutX="260.0" layoutY="40.0" text="Desitination Airport IATA/ICAO:" />
-                                                <Label fx:id="lblRouteDesAirportIDS" layoutX="260.0" layoutY="70.0" text="Destination Aiport ID:" />
-                                                <Label fx:id="lblRouteCodeshareS" layoutX="260.0" layoutY="100.0" text="Codeshare:" />
-                                                <Label fx:id="lblRouteStopsS" layoutX="260.0" layoutY="130.0" text="No. Stops:" />
-                                                <Label fx:id="lblRouteEquipS" layoutX="260.0" layoutY="160.0" text="Equipment:" />
+                                                <Label fx:id="lblRouteDesAirportS" layoutX="260.0" layoutY="130.0" text="Desitination Airport IATA/ICAO:" />
+                                                <Label fx:id="lblRouteDesAirportIDS" layoutX="260.0" layoutY="160.0" text="Destination Aiport ID:" />
+                                                <Label fx:id="lblRouteCodeshareS" layoutX="260.0" layoutY="40.0" text="Codeshare:" />
+                                                <Label fx:id="lblRouteStopsS" layoutX="260.0" layoutY="70.0" text="No. Stops:" />
+                                                <Label fx:id="lblRouteEquipS" layoutX="260.0" layoutY="100.0" text="Equipment:" />
                                                 <TextField fx:id="routeIDS" layoutX="110.0" layoutY="35.0" />
                                                 <TextField fx:id="routeAirlineS" layoutX="110.0" layoutY="65.0" />
                                                 <TextField fx:id="routeAirlineIDS" layoutX="110.0" layoutY="95.0" />
                                                 <TextField fx:id="routeDepAirportS" layoutX="110.0" layoutY="125.0" />
                                                 <TextField fx:id="routeDepAirportIDS" layoutX="110.0" layoutY="155.0" />
-                                                <TextField fx:id="routeDesAirportS" layoutX="397.0" layoutY="35.0" />
-                                                <TextField fx:id="routeDesAirportIDS" layoutX="397.0" layoutY="65.0" />
-                                                <TextField fx:id="routeCodeshareS" layoutX="397.0" layoutY="95.0" />
-                                                <TextField fx:id="routeStopsS" layoutX="397.0" layoutY="125.0" />
-                                                <TextField fx:id="routeEquipS" layoutX="397.0" layoutY="155.0" />
+                                                <TextField fx:id="routeDesAirportS" layoutX="397.0" layoutY="125.0" />
+                                                <TextField fx:id="routeDesAirportIDS" layoutX="397.0" layoutY="155.0" />
+                                                <TextField fx:id="routeCodeshareS" layoutX="397.0" layoutY="35.0" />
+                                                <TextField fx:id="routeStopsS" layoutX="397.0" layoutY="65.0" />
+                                                <TextField fx:id="routeEquipS" layoutX="397.0" layoutY="95.0" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
@@ -673,21 +673,21 @@
                                                 <Label fx:id="lblRouteAirlineID" layoutX="13.0" layoutY="82.0" text="Airline ID:" />
                                                 <Label fx:id="lblRouteDepAirport" layoutX="14.0" layoutY="116.0" text="Source Airport IATA/ICAO:" />
                                                 <Label fx:id="lblRouteDepAirportID" layoutX="15.0" layoutY="150.0" text="Source Airport ID:" />
-                                                <Label fx:id="lblRouteDesAirport" layoutX="275.0" layoutY="14.0" text="Desitination Airport IATA/ICAO:" />
-                                                <Label fx:id="lblRouteDesAirportID" layoutX="275.0" layoutY="48.0" text="Destination Aiport ID:" />
-                                                <Label fx:id="lblRouteCodeshare" layoutX="276.0" layoutY="82.0" text="Codeshare:" />
-                                                <Label fx:id="lblRouteStops" layoutX="277.0" layoutY="116.0" text="No. Stops:" />
-                                                <Label fx:id="lblRouteEquip" layoutX="275.0" layoutY="150.0" text="Equipment:" />
+                                                <Label fx:id="lblRouteDesAirport" layoutX="275.0" layoutY="116.0" text="Desitination Airport IATA/ICAO:" />
+                                                <Label fx:id="lblRouteDesAirportID" layoutX="275.0" layoutY="150.0" text="Destination Aiport ID:" />
+                                                <Label fx:id="lblRouteCodeshare" layoutX="276.0" layoutY="14.0" text="Codeshare:" />
+                                                <Label fx:id="lblRouteStops" layoutX="277.0" layoutY="48.0" text="No. Stops:" />
+                                                <Label fx:id="lblRouteEquip" layoutX="275.0" layoutY="82.0" text="Equipment:" />
                                                 <TextField fx:id="routeID" layoutX="117.0" layoutY="10.0" />
                                                 <TextField fx:id="routeAirline" layoutX="117.0" layoutY="44.0" />
                                                 <TextField fx:id="routeAirlineID" layoutX="117.0" layoutY="78.0" />
                                                 <TextField fx:id="routeDepAirport" layoutX="117.0" layoutY="112.0" />
                                                 <TextField fx:id="routeDepAirportID" layoutX="117.0" layoutY="146.0" />
-                                                <TextField fx:id="routeDesAirport" layoutX="390.0" layoutY="10.0" />
-                                                <TextField fx:id="routeDesAirportID" layoutX="390.0" layoutY="44.0" />
-                                                <TextField fx:id="routeCodeshare" layoutX="390.0" layoutY="78.0" />
-                                                <TextField fx:id="routeStops" layoutX="390.0" layoutY="112.0" />
-                                                <TextField fx:id="routeEquip" layoutX="390.0" layoutY="146.0" />
+                                                <TextField fx:id="routeDesAirport" layoutX="390.0" layoutY="112.0" />
+                                                <TextField fx:id="routeDesAirportID" layoutX="390.0" layoutY="146.0" />
+                                                <TextField fx:id="routeCodeshare" layoutX="390.0" layoutY="10.0" />
+                                                <TextField fx:id="routeStops" layoutX="390.0" layoutY="44.0" />
+                                                <TextField fx:id="routeEquip" layoutX="390.0" layoutY="78.0" />
                                                 <Button fx:id="routeSaveBtn" layoutX="487.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteSaveBtnPressed" text="Save" />
                                                 <Button fx:id="routeCancelBtn" layoutX="13.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteCancelBtnPressed" text="Cancel Modify" />
                                                 <Button fx:id="routeDeleteBtn" layoutX="105.0" layoutY="192.0" mnemonicParsing="false" onAction="#onRouteDeleteBtnPressed" text="Delete Route" />
