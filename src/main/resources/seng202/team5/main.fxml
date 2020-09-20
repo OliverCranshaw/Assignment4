@@ -177,7 +177,7 @@
                               <HBox alignment="BOTTOM_LEFT" />
                               <FlowPane prefHeight="21.0" prefWidth="1232.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onViewMorePressed" styleClass="general-button" text="View More">
+                                    <Button disable="true" mnemonicParsing="false" styleClass="general-button" text="View More" visible="false">
                                        <FlowPane.margin>
                                           <Insets left="469.0" />
                                        </FlowPane.margin></Button>
@@ -246,13 +246,13 @@
                                                 <TextField fx:id="airlineActiveS" layoutX="368.0" layoutY="130.0" />
                                                 <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
                                                    <columns>
-                                                      <TableColumn fx:id="flightDbID1" prefWidth="33.0" text="ID" />
-                                                      <TableColumn fx:id="flightID1" prefWidth="57.0" text="Flight ID" />
-                                                      <TableColumn fx:id="flightLocationType1" prefWidth="88.0" text="Location Type" />
-                                                      <TableColumn fx:id="flightLocation1" prefWidth="87.0" text="Location" />
-                                                      <TableColumn fx:id="flightAltitude1" prefWidth="108.0" text="Altitude" />
-                                                      <TableColumn fx:id="flightLatitude1" prefWidth="113.0" text="Latitude" />
-                                                      <TableColumn fx:id="flightLongitude1" prefWidth="87.0" text="Longitude" />
+                                                      <TableColumn fx:id="flightDbIDS" prefWidth="33.0" text="ID" />
+                                                      <TableColumn fx:id="flightIDS" prefWidth="57.0" text="Flight ID" />
+                                                      <TableColumn fx:id="flightLocationTypeS" prefWidth="88.0" text="Location Type" />
+                                                      <TableColumn fx:id="flightLocationS" prefWidth="87.0" text="Location" />
+                                                      <TableColumn fx:id="flightAltitudeS" prefWidth="108.0" text="Altitude" />
+                                                      <TableColumn fx:id="flightLatitudeS" prefWidth="113.0" text="Latitude" />
+                                                      <TableColumn fx:id="flightLongitudeS" prefWidth="87.0" text="Longitude" />
                                                    </columns>
                                                 </TableView>
                                                 <Label fx:id="lblRouteIDS" layoutY="40.0" text="Route ID:" textFill="WHITE" />
