@@ -1207,8 +1207,8 @@ public class MainMenuController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
-        firstSearchType.setText("Airline:");
-        secondSearchType.setText("Airport:");
+        firstSearchType.setText("Location Type:");
+        secondSearchType.setText("Location:");
         thirdSearchType.setVisible(false);
         fourthSearchType.setVisible(false);
 
