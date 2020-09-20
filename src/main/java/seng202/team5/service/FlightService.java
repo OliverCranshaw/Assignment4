@@ -40,6 +40,12 @@ public class FlightService implements Service {
      * @return int result The unique id of the flight entry that was just created by the FlightAccessor.
      */
     public int save(int flightID, String locationType, String location, int altitude, double latitude, double longitude) {
+        
+        // Checks if an identical flight entry already exists
+        if (accessor.dataExists(flightID, locationType, location, altitude, latitude, longitude)) {
+            return -1;
+        }
+        
         // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
         if (locationType.equals("APT")) {
             if (!airportAccessor.dataExists(location)) {
