@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.team5.App;
+import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.table.Search;
 import seng202.team5.data.DataExporter;
@@ -598,13 +599,20 @@ public class MainMenuController implements Initializable {
     @FXML
     private TextField routeEquipS;
 
-
     @FXML
     private TableView searchFlightSingleRecordTableView;
 
-
     @FXML
     private Label airportInvalidFormatLbl;
+
+    @FXML
+    private Button airportDeleteBtn;
+
+    @FXML
+    private Button airlineDeleteBtn;
+
+    @FXML
+    private Button routeDeleteBtn;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
@@ -684,6 +692,10 @@ public class MainMenuController implements Initializable {
                     setAirportElementsEditable(false);
                     modifyAirportBtn.setDisable(false);
                     airportInvalidFormatLbl.setVisible(false);
+                    airportSaveBtn.setVisible(false);
+                    airportCancelBtn.setVisible(false);
+                    airportDeleteBtn.setVisible(false);
+                    setAirportElementsEditable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -696,6 +708,10 @@ public class MainMenuController implements Initializable {
                     setAirlineSingleRecord(selected);
                     setAirlineElementsEditable(false);
                     modifyAirlineBtn.setDisable(false);
+                    airlineSaveBtn.setVisible(false);
+                    airlineCancelBtn.setVisible(false);
+                    airlineDeleteBtn.setVisible(false);
+                    setAirlineElementsEditable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -719,6 +735,10 @@ public class MainMenuController implements Initializable {
                     setRouteSingleRecord(selected);
                     setRouteElementsEditable(false);
                     modifyRouteBtn.setDisable(false);
+                    routeSaveBtn.setVisible(false);
+                    routeDeleteBtn.setVisible(false);
+                    routeCancelBtn.setVisible(false);
+                    setRouteElementsEditable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -831,10 +851,14 @@ public class MainMenuController implements Initializable {
 
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
+        airportDeleteBtn.setVisible(false);
         airlineSaveBtn.setVisible(false);
         airlineCancelBtn.setVisible(false);
+        airlineDeleteBtn.setVisible(false);
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
+        routeDeleteBtn.setVisible(false);
+
 
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
@@ -1781,26 +1805,41 @@ public class MainMenuController implements Initializable {
         return result;
     }
 
-    public void onModifyAirlineBtnPressed(ActionEvent actionEvent) {
-        setAirlineUpdateColour(null);
-        setAirlineElementsEditable(true);
-        airlineSaveBtn.setVisible(true);
-        airlineCancelBtn.setVisible(true);
+    public void onModifyAirlineBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (rawAirlineTable.getSelectionModel().getSelectedItem() != null) {
+            setAirlineUpdateColour(null);
+            setAirlineElementsEditable(true);
+            airlineSaveBtn.setVisible(true);
+            airlineDeleteBtn.setVisible(true);
+            airlineCancelBtn.setVisible(true);
+        } else {
+            setAirlineSingleRecord(null);
+        }
     }
 
-    public void onModifyRouteBtnPressed(ActionEvent actionEvent) {
-        setRouteUpdateColour(null);
-        setRouteElementsEditable(true);
-        routeSaveBtn.setVisible(true);
-        routeCancelBtn.setVisible(true);
+    public void onModifyRouteBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (routeTableView.getSelectionModel().getSelectedItem() != null) {
+            setRouteUpdateColour(null);
+            setRouteElementsEditable(true);
+            routeSaveBtn.setVisible(true);
+            routeCancelBtn.setVisible(true);
+            routeDeleteBtn.setVisible(true);
+        } else {
+            setRouteSingleRecord(null);
+        }
     }
 
-    public void onModifyAirportBtnPressed(ActionEvent actionEvent) {
-        setAirportUpdateColour(null);
-        airportInvalidFormatLbl.setVisible(false);
-        setAirportElementsEditable(true);
-        airportSaveBtn.setVisible(true);
-        airportCancelBtn.setVisible(true);
+    public void onModifyAirportBtnPressed(ActionEvent actionEvent) throws SQLException {
+        if (airportTableView.getSelectionModel().getSelectedItem() != null) {
+            setAirportUpdateColour(null);
+            airportInvalidFormatLbl.setVisible(false);
+            setAirportElementsEditable(true);
+            airportSaveBtn.setVisible(true);
+            airportCancelBtn.setVisible(true);
+            airportDeleteBtn.setVisible(true);
+        } else {
+            setAirportSingleRecord(null);
+        }
     }
 
     public void onModifyFlightBtnPressed(ActionEvent actionEvent) {
@@ -1865,6 +1904,7 @@ public class MainMenuController implements Initializable {
         setAirportElementsEditable(false);
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
+        airportDeleteBtn.setVisible(false);
     }
 
     @FXML
@@ -1888,6 +1928,7 @@ public class MainMenuController implements Initializable {
         }
         setAirlineElementsEditable(false);
         airlineSaveBtn.setVisible(false);
+        airlineDeleteBtn.setVisible(false);
         airlineCancelBtn.setVisible(false);
     }
 
@@ -1927,6 +1968,7 @@ public class MainMenuController implements Initializable {
         setRouteElementsEditable(false);
         routeSaveBtn.setVisible(false);
         routeCancelBtn.setVisible(false);
+        routeDeleteBtn.setVisible(false);
     }
 
     public void setAirportUpdateColour(Integer index) {
@@ -1978,6 +2020,7 @@ public class MainMenuController implements Initializable {
         setAirportSingleRecord((AirportModel)airportTableView.getSelectionModel().getSelectedItem());
         airportCancelBtn.setVisible(false);
         airportSaveBtn.setVisible(false);
+        airportDeleteBtn.setVisible(false);
     }
 
     @FXML
@@ -1986,12 +2029,91 @@ public class MainMenuController implements Initializable {
         setAirlineSingleRecord((AirlineModel)rawAirlineTable.getSelectionModel().getSelectedItem());
         airlineCancelBtn.setVisible(false);
         airlineSaveBtn.setVisible(false);
+        airlineDeleteBtn.setVisible(false);
     }
 
+    @FXML
     public void onRouteCancelBtnPressed(ActionEvent actionEvent) throws SQLException {
         setRouteElementsEditable(false);
         setRouteSingleRecord((RouteModel)routeTableView.getSelectionModel().getSelectedItem());
         routeCancelBtn.setVisible(false);
         routeSaveBtn.setVisible(false);
+        routeDeleteBtn.setVisible(false);
+    }
+
+    
+    
+    @FXML
+    public void onAirportDeleteBtnPressed(ActionEvent actionEvent) throws SQLException {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(airportID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airport");
+        alert.setContentText("Delete Airport with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteAirport(id);
+                airportDeleteBtn.setVisible(false);
+                airportSaveBtn.setVisible(false);
+                airportCancelBtn.setVisible(false);
+                try {
+                    setAirportSingleRecord(null);
+                    updateAirportTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+
+    }
+
+    public void onAirlineDeleteBtnPressed(ActionEvent actionEvent) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(airlineID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airline");
+        alert.setContentText("Delete Airline with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteAirline(id);
+                airlineDeleteBtn.setVisible(false);
+                airlineSaveBtn.setVisible(false);
+                airlineCancelBtn.setVisible(false);
+                try {
+                    setAirlineSingleRecord(null);
+                    updateAirlineTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    public void onRouteDeleteBtnPressed(ActionEvent actionEvent) {
+        ConcreteDeleteData deleter = new ConcreteDeleteData();
+        Integer id = Integer.parseInt(routeID.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Route");
+        alert.setContentText("Delete Route with ID: " + id + "?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                Boolean result = deleter.deleteRoute(id);
+                routeDeleteBtn.setVisible(false);
+                routeSaveBtn.setVisible(false);
+                routeCancelBtn.setVisible(false);
+                try {
+                    setRouteSingleRecord(null);
+                    updateRouteTable();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
     }
 }
