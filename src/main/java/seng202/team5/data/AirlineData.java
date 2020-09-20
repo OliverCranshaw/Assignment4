@@ -34,11 +34,11 @@ public class AirlineData implements Data {
         return alias;
     }
 
-    public String getIata() {
+    public String getIATA() {
         return iata;
     }
 
-    public String getIcao() {
+    public String getICAO() {
         return icao;
     }
 
@@ -79,7 +79,7 @@ public class AirlineData implements Data {
      * Convenience constructor for AirlineData
      *
      * @param resultSet ResultSet object from AirlineService
-     * @throws SQLException
+     * @throws SQLException Caused by ResultSet interactions
      */
     public AirlineData(ResultSet resultSet) throws SQLException {
         this(

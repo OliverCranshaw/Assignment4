@@ -51,6 +51,10 @@ public class AirportService implements Service {
      */
     public int save(String name, String city, String country, String iata, String icao, double latitude,
                     double longitude, int altitude, float timezone, String dst, String tz) {
+        // Checks that an airline has a unique code
+        if (iata == null && icao == null) {
+            return -1;
+        }
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
         if (!iataIsValid(iata)) {
@@ -88,25 +92,30 @@ public class AirportService implements Service {
     public int update(int id, String newName, String newCity, String newCountry, String newIATA,
                       String newICAO, Double newLatitude, Double newLongitude, Integer newAltitude,
                       Float newTimezone, String newDST, String newTZ) throws SQLException {
-
-        // Gets the current IATA and ICAO before the update, if the IATA or ICAO is new then checks the validity
-        String currIATA = getData(id).getString("iata");
-        String currICAO = getData(id).getString("icao");
-
         // Check if IATA and ICAO are both null
         if (newIATA == null && newICAO == null) {
             return -1;
         }
 
+        String currIATA = null;
+        String currICAO = null;
+
+        ResultSet currAirport = getData(id);
+        if (currAirport.next()) {
+            // Gets the current IATA and ICAO before the update
+            currIATA = currAirport.getString("iata");
+            currICAO = currAirport.getString("icao");
+        }
+
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        if (!currIATA.equals(newIATA)) {
+        if (currIATA != null && !currIATA.equals(newIATA)) {
             if (!iataIsValid(newIATA)) {
                 return -1;
             }
         }
 
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
-        if (!currICAO.equals(newICAO)) {
+        if (currICAO != null && !currICAO.equals(newICAO)) {
             if (!icaoIsValid(newICAO)) {
                 return -1;
             }
@@ -117,6 +126,7 @@ public class AirportService implements Service {
                     newLongitude, newAltitude, newTimezone, newDST, newTZ);
 
         // Also updates any flight entries or routes that used the previous IATA/ICAO code
+        // Checks that the new code is different from the old code
         if (!newIATA.equals(currIATA) && newIATA != null) {
             updateFlightEntries(newIATA, currIATA);
             updateRoutes(newIATA, currIATA);
@@ -140,7 +150,7 @@ public class AirportService implements Service {
             System.out.println("Could not delete airport, does not exist.");
             return false;
         }
-
+        // Checks if any flights contain the IATA/ICAO codes of the airport to be deleted and deletes them if they do
         try {
             deleteFlight(id);
         } catch (SQLException e) {
@@ -223,63 +233,78 @@ public class AirportService implements Service {
         return accessor.getMaxID();
     }
 
+    /**
+     * Updates any routes that contain the old airport IATA/ICAO code with the new code.
+     *
+     * @param newCode String, new airport IATA/ICAO code.
+     * @param oldCode String, old airport IATA/ICAO code.
+     * @throws SQLException Caused by the ResultSet interactions
+     */
     public void updateRoutes(String newCode, String oldCode) throws SQLException {
         ResultSet result;
 
-        if (!(newCode.equals(oldCode))) {
+        ArrayList code = new ArrayList();
+        code.add(oldCode);
 
-            ArrayList code = new ArrayList();
-            code.add(oldCode);
-
-            if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
-                while (result.next()) {
-                    int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
-                            newCode, result.getString("destination_airport"), result.getString("codeshare"),
-                            result.getInt("stops"), result.getString("equipment"));
-                    System.out.println(res);
-                }
+        // Checks if any routes contain the old code and updates them if it does
+        if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
+            while (result.next()) {
+                int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
+                        newCode, result.getString("destination_airport"), result.getString("codeshare"),
+                        result.getInt("stops"), result.getString("equipment"));
+                System.out.println(res);
             }
         }
 
-        if (!(newCode.equals(oldCode))) {
-
-            ArrayList code = new ArrayList();
-            code.add(oldCode);
-
-            if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
-                while (result.next()) {
-                    int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
-                            result.getString("source_airport"), newCode, result.getString("codeshare"),
-                            result.getInt("stops"), result.getString("equipment"));
-                }
+        // Checks if any routes contain the old code and updates them if it does
+        if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
+            while (result.next()) {
+                int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
+                        result.getString("source_airport"), newCode, result.getString("codeshare"),
+                        result.getInt("stops"), result.getString("equipment"));
             }
         }
     }
 
+    /**
+     * Updates any flight entries that contain the old airport IATA/ICAO code with the new code.
+     *
+     * @param newCode String, new airport IATA/ICAO code.
+     * @param oldCode String, old airport IATA/ICAO code.
+     * @throws SQLException Caused by the ResultSet interactions
+     */
     public void updateFlightEntries(String newCode, String oldCode) throws SQLException {
         ResultSet result;
 
-        if (!(newCode.equals(oldCode))) {
-            if ((result = flightService.getData("APT", oldCode)) != null) {
-                while (result.next()) {
-                    flightService.update(result.getInt("id"), result.getString("location_type"), newCode,
-                            result.getInt("altitude"), result.getDouble("latitude"), result.getDouble("longitude"));
-                }
+        // Checks if any flight entries contain the old code and updates them if it does
+        if ((result = flightService.getData("APT", oldCode)) != null) {
+            while (result.next()) {
+                flightService.update(result.getInt("id"), result.getString("location_type"), newCode,
+                        result.getInt("altitude"), result.getDouble("latitude"), result.getDouble("longitude"));
             }
         }
     }
 
+    /**
+     * Deletes any flights that contain an IATA/ICAO code of an airport to be deleted
+     *
+     * @param id int id of the airport being deleted
+     * @throws SQLException Caused by the ResultSet interactions
+     */
     public void deleteFlight(int id) throws SQLException {
         ResultSet result = getData(id);
+
+        // Gets the IATA/ICAO codes belonging to the airport to be deleted
         String iata = result.getString("iata");
         String icao = result.getString("icao");
 
+        // Checks if there are any flights with the IATA code, deletes them if there are
         if ((result = flightService.getData("APT", iata)) != null) {
             while (result.next()) {
                 flightService.delete(result.getInt("flight_id"));
             }
         }
-
+        // Checks if there are any flights with the ICAO code, deletes them if there are
         if ((result = flightService.getData("APT", icao)) != null) {
             while (result.next()) {
                 flightService.delete(result.getInt("flight_id"));

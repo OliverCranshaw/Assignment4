@@ -57,8 +57,8 @@ public class ConcreteAddData extends AddData {
         // If they are valid, then passes them into the saveAirline method of AirlineService
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
-            int result = airlineService.save(airlineData.getName(), airlineData.getAlias(), airlineData.getIata(),
-                    airlineData.getIcao(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
+            int result = airlineService.save(airlineData.getName(), airlineData.getAlias(), airlineData.getIATA(),
+                    airlineData.getICAO(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
             if (result != -1) {
                 int id = airlineService.getMaxID();
@@ -107,8 +107,8 @@ public class ConcreteAddData extends AddData {
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
             int result = airportService.save(airportData.getAirportName(), airportData.getCity(), airportData.getCountry(),
-                    airportData.getIata(), airportData.getIcao(), airportData.getLatitude(), airportData.getLongitude(),
-                    airportData.getAltitude(), airportData.getTimezone(), airportData.getDst(), airportData.getTzDatabaseTimezone());
+                    airportData.getIATA(), airportData.getICAO(), airportData.getLatitude(), airportData.getLongitude(),
+                    airportData.getAltitude(), airportData.getTimezone(), airportData.getDST(), airportData.getTZDatabaseTimezone());
 
             if (result != -1) {
                 int id = airportService.getMaxID();
@@ -132,7 +132,7 @@ public class ConcreteAddData extends AddData {
      * Otherwise returns an error code.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param locationType The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
      * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
@@ -140,9 +140,9 @@ public class ConcreteAddData extends AddData {
      * @return int The unique id of the new flight entry that has been created by FlightService.
      */
     @Override
-    public int addFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude) {
+    public int addFlightEntry(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
         // Creates a new instance of FlightData with the given parameters
-        FlightData flightData = new FlightData(flightID, location_type, location, altitude, latitude, longitude);
+        FlightData flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
         // Converts any empty strings to null
         flightData.convertBlanksToNull();
         // Checks the validity of the parameters
@@ -175,18 +175,18 @@ public class ConcreteAddData extends AddData {
      * Otherwise returns an error code.
      *
      * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param source_airport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
-     * @param dest_airport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
+     * @param sourceAirport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
+     * @param destAirport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int The route_id of the new route that has been created by RouteService.
      */
     @Override
-    public int addRoute(String airline, String source_airport, String dest_airport,
+    public int addRoute(String airline, String sourceAirport, String destAirport,
                         String codeshare, String stops, String equipment) {
         // Creates a new instance of RouteData with the given parameters
-        RouteData routeData = new RouteData(airline, source_airport, dest_airport, codeshare, stops, equipment);
+        RouteData routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         // Converts any empty strings to null
         routeData.convertBlanksToNull();
         // Checks the validity of the parameters
@@ -195,7 +195,7 @@ public class ConcreteAddData extends AddData {
         // If any of this fails or they aren't valid, an error code is returned and an error message is printed
         if (validityValue > 0) {
             int result = routeService.save(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
-                                            routeData.getCodeShare(), routeData.getStops(), routeData.getEquipment());
+                                            routeData.getCodeshare(), routeData.getStops(), routeData.getEquipment());
 
             if (result != -1) {
                 int id = routeService.getMaxID();

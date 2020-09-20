@@ -10,11 +10,11 @@ public class RouteDataTest {
         String airline = "323";
         String sourceAirport = "4444";
         String destinationAirport = "333";
-        String codeShare = "Y";
+        String codeshare = "Y";
         String stops = "4";
         String equipment = "HJA";
 
-        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeshare, stops, equipment);
 
         assertEquals((Integer) 4, test.getStops());
     }
@@ -25,11 +25,11 @@ public class RouteDataTest {
         String airline = "323";
         String sourceAirport = "";
         String destinationAirport = "333";
-        String codeShare = "Y";
+        String codeshare = "Y";
         String stops = "4";
         String equipment = "\\N";
 
-        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeshare, stops, equipment);
         test.convertBlanksToNull();
 
         assertNull(test.getEquipment());
@@ -42,11 +42,11 @@ public class RouteDataTest {
         String airline = "323";
         String sourceAirport = "FFF";
         String destinationAirport = "333";
-        String codeShare = "Y";
+        String codeshare = "Y";
         String stops = "4";
         String equipment = "FFS";
 
-        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeshare, stops, equipment);
 
         int validityValue = test.checkValues();
 
@@ -59,11 +59,11 @@ public class RouteDataTest {
         String airline = "323";
         String sourceAirport = "FFO";
         String destinationAirport = "333";
-        String codeShare = "F";
+        String codeshare = "F";
         String stops = "4";
         String equipment = "FSA";
 
-        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
+        RouteData test = new RouteData(airline, sourceAirport, destinationAirport, codeshare, stops, equipment);
 
         int validityValue = test.checkValues();
 

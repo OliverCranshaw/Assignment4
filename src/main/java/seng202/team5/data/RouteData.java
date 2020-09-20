@@ -16,7 +16,7 @@ public class RouteData implements Data {
     private String airline;
     private String sourceAirport;
     private String destinationAirport;
-    private String codeShare;
+    private String codeshare;
     private Integer stops;
     private String equipment;
 
@@ -33,8 +33,8 @@ public class RouteData implements Data {
         return destinationAirport;
     }
 
-    public String getCodeShare() {
-        return codeShare;
+    public String getCodeshare() {
+        return codeshare;
     }
 
     public Integer getStops() {
@@ -53,16 +53,16 @@ public class RouteData implements Data {
      * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
      * @param sourceAirport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
      * @param destinationAirport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
-     * @param codeShare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
+     * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      */
-    public RouteData(String airline,String sourceAirport, String destinationAirport, String codeShare, Integer stops,
+    public RouteData(String airline,String sourceAirport, String destinationAirport, String codeshare, Integer stops,
                      String equipment) {
         this.airline = airline;
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
-        this.codeShare = codeShare;
+        this.codeshare = codeshare;
         this.stops = stops;
         this.equipment = equipment;
     }
@@ -75,16 +75,16 @@ public class RouteData implements Data {
      * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
      * @param sourceAirport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
      * @param destinationAirport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
-     * @param codeShare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
+     * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      */
-    public RouteData(String airline,String sourceAirport, String destinationAirport,String codeShare, String stops,
+    public RouteData(String airline,String sourceAirport, String destinationAirport,String codeshare, String stops,
                      String equipment) {
         this.airline = airline;
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
-        this.codeShare = codeShare;
+        this.codeshare = codeshare;
         this.equipment = equipment;
 
         // Parsing stops to integer
@@ -114,8 +114,8 @@ public class RouteData implements Data {
         } else if (this.destinationAirport == null || (this.destinationAirport.length() != 3 && this.destinationAirport.length() != 4)) {
             // Ensures the destinationAirport is not null and is either an appropriate iata or icao length (3,4)
             return -4;
-        } else if (!(this.codeShare == null || this.codeShare.equals("Y"))) {
-            // Ensures the codeShare is either null or is within an appropriate domain
+        } else if (!(this.codeshare == null || this.codeshare.equals("Y"))) {
+            // Ensures the codeshare is either null or is within an appropriate domain
             return -5;
         } else if (this.stops == null || this.stops < 0) {
             // Ensures the stops is not null
@@ -148,8 +148,8 @@ public class RouteData implements Data {
         if (nullRepr.contains(this.destinationAirport)) {
             this.destinationAirport = null;
         }
-        if (nullRepr.contains(this.codeShare)) {
-            this.codeShare = null;
+        if (nullRepr.contains(this.codeshare)) {
+            this.codeshare = null;
         }
         if (nullRepr.contains(this.equipment)) {
             this.equipment = null;

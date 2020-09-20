@@ -29,7 +29,7 @@ public class FlightAccessor implements Accessor{
 
     /**
      * Creates a flight entry in the database with the given data.
-     * Requires the flight_id, airline IATA or ICAO code, airport IATA or ICAO code, altitude, latitude, and longitude.
+     * Requires the flightID, location type, location code, altitude, latitude, and longitude.
      *
      * @param data An List containing the data to be inserted into an entry in the database.
      * @return int result The unique id of the flight entry that was just created.
@@ -67,15 +67,15 @@ public class FlightAccessor implements Accessor{
      * Not every field must be updated.
      *
      * @param id The unique id of the given flight entry you want to update.
-     * @param new_location_type The new location type of the flight entry location, one of "APT", "VOR", or "FIX", may be null if not to be updated.
-     * @param new_location The new location of the flight entry, may be null if not to be updated.
-     * @param new_altitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
-     * @param new_latitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
-     * @param new_longitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
+     * @param newLocationType The new location type of the flight entry location, one of "APT", "VOR", or "FIX", may be null if not to be updated.
+     * @param newLocation The new location of the flight entry, may be null if not to be updated.
+     * @param newAltitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
+     * @param newLatitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
+     * @param newLongitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
      * @return int result The number of rows modified or -1 for error.
      */
-    public int update(int id, String new_location_type, String new_location, int new_altitude,
-                      double new_latitude, double new_longitude) {
+    public int update(int id, String newLocationType, String newLocation, int newAltitude,
+                      double newLatitude, double newLongitude) {
         int result;
         ArrayList<Object> elements = new ArrayList<>();
         String search = "UPDATE FLIGHT_DATA SET "; // The start of the SQL update statement
@@ -86,25 +86,25 @@ public class FlightAccessor implements Accessor{
             // Checks one by one if any of the parameters are null
             // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
             try {
-                if (new_location_type != null) {
+                if (newLocationType != null) {
                     search = search + "location_type = ?, ";
-                    elements.add(new_location_type);
+                    elements.add(newLocationType);
                 }
-                if (new_location != null) {
+                if (newLocation != null) {
                     search = search + "location = ?, ";
-                    elements.add(new_location);
+                    elements.add(newLocation);
                 }
-                if (new_altitude != -1) {
+                if (newAltitude != -1) {
                     search = search + "altitude = ?, ";
-                    elements.add(new_altitude);
+                    elements.add(newAltitude);
                 }
-                if (new_latitude != -1) {
+                if (newLatitude != -1) {
                     search = search + "latitude = ?, ";
-                    elements.add(new_latitude);
+                    elements.add(newLatitude);
                 }
-                if (new_longitude != -1) {
+                if (newLongitude != -1) {
                     search = search + "longitude = ? ";
-                    elements.add(new_longitude);
+                    elements.add(newLongitude);
                 }
 
                 // Checks if there are any elements in the ArrayList
@@ -374,7 +374,7 @@ public class FlightAccessor implements Accessor{
      * @param longitude A double, the longitude of the flight entry.
      * @return boolean result True if an identical flight entry exists, False otherwise.
      */
-    public boolean dataExists(int id, String location_type, String location, int altitude, double latitude, double longitude) {
+    public boolean dataExists(int id, String locationType, String location, int altitude, double latitude, double longitude) {
         boolean result = false;
 
         try {
@@ -383,7 +383,7 @@ public class FlightAccessor implements Accessor{
                     "SELECT COUNT(id) FROM FLIGHT_DATA WHERE flight_id = ? and location_type = ? and location = ? and altitude = ? and latitude = ? and longitude = ?");
             // Adds the given parameters into the search query
             stmt.setInt(1, id);
-            stmt.setString(2, location_type);
+            stmt.setString(2, locationType);
             stmt.setString(3, location);
             stmt.setInt(4, altitude);
             stmt.setDouble(5, latitude);
