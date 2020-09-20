@@ -61,37 +61,37 @@ public class AirlineService implements Service {
      * Checks the validity of input parameters and then passes them into the update method of the AirlineAccessor.
      *
      * @param id The airline_id of the given airline you want to update.
-     * @param new_name The new name of the airline, may be null if not to be updated.
-     * @param new_alias The new alias of the airline, may be null if not to be updated.
-     * @param new_iata The new 2-letter IATA code of the airline, may be null if not to be updated.
-     * @param new_icao The new 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_callsign The new callsign of the airline, may be null if not to be updated.
-     * @param new_country The new country of the airline, may be null if not to be updated.
-     * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
+     * @param newName The new name of the airline, may be null if not to be updated.
+     * @param newAlias The new alias of the airline, may be null if not to be updated.
+     * @param newIATA The new 2-letter IATA code of the airline, may be null if not to be updated.
+     * @param newICAO The new 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param newCallsign The new callsign of the airline, may be null if not to be updated.
+     * @param newCountry The new country of the airline, may be null if not to be updated.
+     * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
      */
-    public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) throws SQLException {
+    public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
+                      String newCallsign, String newCountry, String newActive) throws SQLException {
         // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
         String currIATA = getData(id).getString("iata");
         String currICAO = getData(id).getString("icao");
-        if (currIATA == null || (!currIATA.equals(new_iata))) {
-            if (!iataIsValid(new_iata)) {
+        if (currIATA == null || (!currIATA.equals(newIATA))) {
+            if (!iataIsValid(newIATA)) {
                 return -1;
             }
         }
         // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
-        if (!(currICAO.equals(new_icao) || new_icao == null)) {
-            if (!icaoIsValid(new_icao)) {
+        if (!(currICAO.equals(newICAO) || newICAO == null)) {
+            if (!icaoIsValid(newICAO)) {
                 return -1;
             }
         }
         // Passes the parameters into the update method of the AirlineAccessor
-        int value = accessor.update(id, new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
+        int value = accessor.update(id, newName, newAlias, newIATA, newICAO, newCallsign, newCountry, newActive);
 
         // Updates any routes that used the previous IATA/ICAO code
-        updateRoutes(new_iata, currIATA);
-        updateRoutes(new_icao, currICAO);
+        updateRoutes(newIATA, currIATA);
+        updateRoutes(newICAO, currICAO);
 
         return value;
     }
@@ -183,13 +183,13 @@ public class AirlineService implements Service {
         return accessor.getMaxID();
     }
 
-    public void updateRoutes(String new_code, String old_code) throws SQLException {
+    public void updateRoutes(String newCode, String oldCode) throws SQLException {
         ResultSet result;
 
-        if (!(new_code.equals(old_code))) {
-            if ((result = routeService.getData(old_code)) != null) {
+        if (!(newCode.equals(oldCode))) {
+            if ((result = routeService.getData(oldCode)) != null) {
                 while (result.next()) {
-                    routeService.update(result.getInt("route_id"), new_code, result.getString("source_airport"),
+                    routeService.update(result.getInt("route_id"), newCode, result.getString("source_airport"),
                             result.getString("destination_airport"), result.getString("codeshare"),
                             result.getInt("stops"), result.getString("equipment"));
                 }

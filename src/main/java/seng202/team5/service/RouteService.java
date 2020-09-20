@@ -36,34 +36,34 @@ public class RouteService implements Service {
      * Checks the validity of input parameters and then passes them into the save method of the RouteAccessor as an ArrayList.
      *
      * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param source_airport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
-     * @param dest_airport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
+     * @param sourceAirport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
+     * @param destAirport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. An integer, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int result The route_id of the route that was just created by the RouteAccessor.
      */
-    public int save(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+    public int save(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
         if (!airlineAccessor.dataExists(airline)) {
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airportAccessor.dataExists(source_airport)) {
+        if (!airportAccessor.dataExists(sourceAirport)) {
             return -1;
         }
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airportAccessor.dataExists(dest_airport)) {
+        if (!airportAccessor.dataExists(destAirport)) {
             return -1;
         }
 
-        int airline_id = airlineAccessor.getAirlineId(airline);
-        int source_airport_id = airportAccessor.getAirportId(source_airport);
-        int dest_airport_id = airportAccessor.getAirportId(dest_airport);
+        int airlineID = airlineAccessor.getAirlineId(airline);
+        int sourceAirportID = airportAccessor.getAirportId(sourceAirport);
+        int destAirportID = airportAccessor.getAirportId(destAirport);
 
         // Adds the parameters into an List to pass into the save method of the RouteAccessor
-        List<Object> elements = Arrays.asList(airline, airline_id, source_airport, source_airport_id, dest_airport,
-                dest_airport_id, codeshare, stops, equipment);
+        List<Object> elements = Arrays.asList(airline, airlineID, sourceAirport, sourceAirportID, destAirport,
+                destAirportID, codeshare, stops, equipment);
 
         return accessor.save(elements);
     }
@@ -72,20 +72,20 @@ public class RouteService implements Service {
      * Checks the validity of input parameters and then passes them into the update method of the RouteAccessor.
      *
      * @param id The route_id of the given route you want to update.
-     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_source_airport The new 3-letter IATA or 4-letter ICAO code of the source airport, may be null if not to be updated.
-     * @param new_dest_airport The new 3-letter IATA or 4-letter ICAO code of the destination airport, may be null if not to be updated.
-     * @param new_codeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
-     * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
-     * @param new_equipment The new equipment for the route, may be null if not to be updated.
+     * @param newAirline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param newSourceAirport The new 3-letter IATA or 4-letter ICAO code of the source airport, may be null if not to be updated.
+     * @param newDestAirport The new 3-letter IATA or 4-letter ICAO code of the destination airport, may be null if not to be updated.
+     * @param newCodeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
+     * @param newStops The new number of stops for the route, an integer, may be -1 if not to be updated.
+     * @param newEquipment The new equipment for the route, may be null if not to be updated.
      * @return int result The route_id of the route that was just updated by the RouteAccessor.
      */
-    public int update(int id, String new_airline, String new_source_airport, String new_dest_airport,
-                      String new_codeshare, Integer new_stops, String new_equipment) throws SQLException {
+    public int update(int id, String newAirline, String newSourceAirport, String newDestAirport,
+                      String newCodeshare, Integer newStops, String newEquipment) throws SQLException {
 
-        int new_airline_id = -1;
-        int new_source_airport_id = -1;
-        int new_dest_airport_id = -1;
+        int newAirlineID = -1;
+        int newSourceAirportID = -1;
+        int newDestAirportID = -1;
 
         ResultSet data = getData(id);
         // Check for whether there exists an entry for this route id in the database
@@ -104,45 +104,45 @@ public class RouteService implements Service {
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
         // If one does, gets the airline_id of the airline with the given IATA or ICAO code
-        if (!currAirline.equals(new_airline)) {
-            if (!airlineAccessor.dataExists(new_airline)) {
+        if (!currAirline.equals(newAirline)) {
+            if (!airlineAccessor.dataExists(newAirline)) {
                 return -1;
             } else {
-                new_airline_id = airlineAccessor.getAirlineId(new_airline);
+                newAirlineID = airlineAccessor.getAirlineId(newAirline);
             }
         } else {
-            new_airline_id = currAirlineID;
+            newAirlineID = currAirlineID;
         }
 
 
         // If the source airport is not null, checks that an airport with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
         // If one does, gets the airport_id of the airport with the given IATA or ICAO code
-        if (!currSrcAirport.equals(new_source_airport)) {
-            if (!airportAccessor.dataExists(new_source_airport)) {
+        if (!currSrcAirport.equals(newSourceAirport)) {
+            if (!airportAccessor.dataExists(newSourceAirport)) {
                 return -1;
             } else {
-                new_source_airport_id = airportAccessor.getAirportId(new_source_airport);
+                newSourceAirportID = airportAccessor.getAirportId(newSourceAirport);
             }
         } else {
-            new_source_airport_id = currSrcAirportID;
+            newSourceAirportID = currSrcAirportID;
         }
         // If the destination airport is not null, checks that an airport with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
         // If one does, gets the airport_id of the airport with the given IATA or ICAO code
-        if (!currDstAIrport.equals(new_dest_airport)) {
-            if (!airportAccessor.dataExists(new_dest_airport)) {
+        if (!currDstAIrport.equals(newDestAirport)) {
+            if (!airportAccessor.dataExists(newDestAirport)) {
                 return -1;
             } else {
-                new_dest_airport_id = airportAccessor.getAirportId(new_dest_airport);
+                newDestAirportID = airportAccessor.getAirportId(newDestAirport);
             }
         } else {
-            new_dest_airport_id = currDstAirportID;
+            newDestAirportID = currDstAirportID;
         }
 
         // Passes the parameters into the update method of the RouteAccessor
-        return accessor.update(id, new_airline, new_airline_id, new_source_airport, new_source_airport_id, new_dest_airport,
-                new_dest_airport_id, new_codeshare, new_stops, new_equipment);
+        return accessor.update(id, newAirline, newAirlineID, newSourceAirport, newSourceAirportID, newDestAirport,
+                newDestAirportID, newCodeshare, newStops, newEquipment);
     }
 
     /**
