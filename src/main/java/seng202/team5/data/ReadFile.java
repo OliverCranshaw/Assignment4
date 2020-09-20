@@ -119,7 +119,7 @@ public class ReadFile {
 
                     switch(id) {
                         case -1:
-                            error = "Line " + lineNum + ": Error adding airline, IATA or ICAO code may already exist in database.";
+                            error = "Line " + lineNum + ": Error adding airline, IATA or ICAO code may already exist in database or may both be null.";
                             errors.add(error);
                             break;
                         case -2:
@@ -199,7 +199,7 @@ public class ReadFile {
 
                     switch(id) {
                         case -1:
-                            error = "Line " + lineNum + ": Error adding airport, IATA or ICAO code may already exist in database.";
+                            error = "Line " + lineNum + ": Error adding airport, IATA or ICAO code may already exist in database or may both be null.";
                             errors.add(error);
                             break;
                         case -2:
