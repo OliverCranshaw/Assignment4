@@ -182,7 +182,7 @@
                               </FlowPane>
                               <FlowPane prefHeight="372.0" prefWidth="1232.0">
                                  <children>
-                                    <TableView fx:id="searchTableView" prefHeight="377.0" prefWidth="640.0">
+                                    <TableView fx:id="searchTableView" prefHeight="377.0" prefWidth="615.0">
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
@@ -190,7 +190,7 @@
                                           <Insets />
                                        </FlowPane.margin>
                                     </TableView>
-                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="359.0" prefWidth="551.0">
+                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="377.0" prefWidth="576.0">
                                       <items>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="549.0">
                                              <children>
@@ -234,19 +234,16 @@
                                                 <TextField fx:id="airlineCallsignS" layoutX="368.0" layoutY="50.0" />
                                                 <TextField fx:id="airlineCountryS" layoutX="368.0" layoutY="90.0" />
                                                 <TextField fx:id="airlineActiveS" layoutX="368.0" layoutY="130.0" />
-                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="550.0">
+                                                <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
                                                    <columns>
-                                                      <TableColumn fx:id="flightDbID1" prefWidth="36.0" text="ID" />
-                                                      <TableColumn fx:id="flightID1" prefWidth="58.0" text="Flight ID" />
-                                                      <TableColumn fx:id="flightLocationType1" prefWidth="102.0" text="Location Type" />
-                                                      <TableColumn fx:id="flightLocation1" prefWidth="104.0" text="Location" />
-                                                      <TableColumn fx:id="flightAltitude1" prefWidth="78.0" text="Altitude" />
-                                                      <TableColumn fx:id="flightLatitude1" prefWidth="84.0" text="Latitude" />
+                                                      <TableColumn fx:id="flightDbID1" prefWidth="33.0" text="ID" />
+                                                      <TableColumn fx:id="flightID1" prefWidth="57.0" text="Flight ID" />
+                                                      <TableColumn fx:id="flightLocationType1" prefWidth="88.0" text="Location Type" />
+                                                      <TableColumn fx:id="flightLocation1" prefWidth="87.0" text="Location" />
+                                                      <TableColumn fx:id="flightAltitude1" prefWidth="108.0" text="Altitude" />
+                                                      <TableColumn fx:id="flightLatitude1" prefWidth="113.0" text="Latitude" />
                                                       <TableColumn fx:id="flightLongitude1" prefWidth="87.0" text="Longitude" />
                                                    </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
                                                 </TableView>
                                                 <Label fx:id="lblRouteIDS" layoutY="40.0" text="Route ID:" />
                                                 <Label fx:id="lblRouteAirlineS" layoutY="70.0" text="Airline IATA/ICAO:" />
@@ -903,16 +900,19 @@
                               </Label>
                               <FlowPane prefHeight="19.0" prefWidth="1232.0">
                                  <children>
+                                    <Button mnemonicParsing="false" onAction="#onFlightRefreshButton" text="Refresh Table">
+                                       <FlowPane.margin>
+                                          <Insets left="455.0" />
+                                       </FlowPane.margin></Button>
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Download">
                                        <FlowPane.margin>
-                                          <Insets left="568.0" />
+                                          <Insets />
                                        </FlowPane.margin></Button>
                                     <Button alignment="CENTER" mnemonicParsing="false" text="Add Flight">
                                        <FlowPane.margin>
-                                          <Insets left="121.0" />
+                                          <Insets left="235.0" />
                                        </FlowPane.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#onFlightRefreshButton" text="Refresh Table" />
                                     <Button fx:id="flightDeleteBtn" mnemonicParsing="false" onAction="#onFlightDeleteBtnPressed" text="Delete Flight" />
                                     <Button fx:id="modifyFlightBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModifyFlightBtnPressed" text="Modify Flight">
                                        <FlowPane.margin>
@@ -930,42 +930,36 @@
                                     <Insets bottom="20.0" top="5.0" />
                                  </VBox.margin>
                                  <children>
-                                    <TableView fx:id="flightTableView" prefHeight="540.0" prefWidth="633.0">
+                                    <TableView fx:id="flightTableView" prefHeight="540.0" prefWidth="615.0">
                                        <columns>
                                           <TableColumn fx:id="flightIdCol" prefWidth="75.0" text="Flight ID" />
-                                          <TableColumn fx:id="flightSrcLocationCol" prefWidth="75.0" text="Source Location" />
-                                          <TableColumn fx:id="flightSrcAirportCol" prefWidth="75.0" text="Source Airport" />
-                                          <TableColumn fx:id="flightDstLocationCol" prefWidth="75.0" text="Destination Location" />
-                                          <TableColumn fx:id="flightDstAirportCol" prefWidth="75.0" text="Destination Airport" />
+                                          <TableColumn fx:id="flightSrcLocationCol" prefWidth="118.0" text="Source Location" />
+                                          <TableColumn fx:id="flightSrcAirportCol" prefWidth="117.0" text="Source Airport" />
+                                          <TableColumn fx:id="flightDstLocationCol" prefWidth="150.0" text="Destination Location" />
+                                          <TableColumn fx:id="flightDstAirportCol" prefWidth="172.0" text="Destination Airport" />
                                        </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
                                        <FlowPane.margin>
                                           <Insets />
                                        </FlowPane.margin>
                                     </TableView>
-                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="540.0" prefWidth="555.0">
+                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="540.0" prefWidth="577.0">
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="556.0">
+                                                <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="578.0">
                                                   <columns>
                                                     <TableColumn fx:id="flightDbID" prefWidth="48.0" text="ID" />
-                                                    <TableColumn fx:id="flightID" prefWidth="110.0" text="Flight ID" />
-                                                      <TableColumn fx:id="flightLocationType" prefWidth="102.0" text="Location Type" />
-                                                      <TableColumn fx:id="flightLocation" prefWidth="104.0" text="Location" />
-                                                      <TableColumn fx:id="flightAltitude" prefWidth="78.0" text="Altitude" />
-                                                      <TableColumn fx:id="flightLatitude" prefWidth="84.0" text="Latitude" />
-                                                      <TableColumn fx:id="flightLongitude" prefWidth="87.0" text="Longitude" />
+                                                    <TableColumn fx:id="flightID" prefWidth="68.0" text="Flight ID" />
+                                                      <TableColumn fx:id="flightLocationType" prefWidth="90.0" text="Location Type" />
+                                                      <TableColumn fx:id="flightLocation" prefWidth="85.0" text="Location" />
+                                                      <TableColumn fx:id="flightAltitude" prefWidth="97.0" text="Altitude" />
+                                                      <TableColumn fx:id="flightLatitude" prefWidth="90.0" text="Latitude" />
+                                                      <TableColumn fx:id="flightLongitude" prefWidth="99.0" text="Longitude" />
                                                   </columns>
-                                                   <columnResizePolicy>
-                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                   </columnResizePolicy>
                                                    <contextMenu>
                                                       <ContextMenu>
                                                         <items>
-                                                          <MenuItem mnemonicParsing="false" onAction="#handleFlightDeleteEntry" text="Delete"  />
+                                                          <MenuItem mnemonicParsing="false" onAction="#handleFlightDeleteEntry" text="Delete" />
                                                         </items>
                                                       </ContextMenu>
                                                    </contextMenu>
