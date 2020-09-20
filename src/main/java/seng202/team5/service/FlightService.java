@@ -32,23 +32,23 @@ public class FlightService implements Service {
      * Checks the validity of input parameters and then passes them into the save method of the FlightAccessor as an ArrayList.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param location_type The location type of the location of the flight entry, cannot be null.
+     * @param locationType The location type of the location of the flight entry, cannot be null.
      * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. An integer, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a double. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a double. Negative is West, positive is East, cannot be null.
      * @return int result The unique id of the flight entry that was just created by the FlightAccessor.
      */
-    public int save(int flightID, String location_type, String location, int altitude, double latitude, double longitude) {
+    public int save(int flightID, String locationType, String location, int altitude, double latitude, double longitude) {
         // Checks that if the location type is APT that the location exists in the airport database, if it doesn't, returns an error code of -1
-        if (location_type.equals("APT")) {
+        if (locationType.equals("APT")) {
             if (!airportAccessor.dataExists(location)) {
                 return -1;
             }
         }
 
         // Adds the parameters into an List to pass into the save method of the FlightAccessor
-        List<Object> elements = Arrays.asList(flightID, location_type, location, altitude, latitude, longitude);
+        List<Object> elements = Arrays.asList(flightID, locationType, location, altitude, latitude, longitude);
 
         return accessor.save(elements);
     }

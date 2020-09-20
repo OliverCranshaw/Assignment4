@@ -49,8 +49,8 @@ public class AirportDataTest {
 
         assertNull(test.getCountry());
         assertNull(test.getAirportName());
-        assertNull(test.getIata());
-        assertNull(test.getDst());
+        assertNull(test.getIATA());
+        assertNull(test.getDST());
     }
 
 

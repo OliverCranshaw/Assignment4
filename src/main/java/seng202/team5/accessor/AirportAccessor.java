@@ -70,119 +70,39 @@ public class AirportAccessor implements Accessor {
      * Not every field must be updated.
      *
      * @param id The airport_id of the given airport you want to update.
-     * @param new_name The new name of the airport, may be null if not to be updated.
-     * @param new_city The new city of the airport, may be null if not to be updated.
-     * @param new_country The new country of the airport, may be null if not to be updated.
-     * @param new_iata The new 3-letter IATA code of the airport, may be null if not to be updated.
-     * @param new_icao The new 4-letter ICAO code of the airport, may be null if not to be updated.
-     * @param new_latitude The new latitude of the airport, a double. Negative is South and positive is North. May be null if not to be updated.
-     * @param new_longitude The new longitude of the airport, a double. Negative is West and positive is East. May be null if not to be updated.
-     * @param new_altitude The new altitude of the airport in feet, an integer. May be null if not to be updated.
-     * @param new_timezone The new timezone of the airport, hours offset from UTC. A float, may be null if not to be updated.
-     * @param new_dst The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be null if not to be updated.
-     * @param new_tz The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
+     * @param newName The new name of the airport, may be null if not to be updated.
+     * @param newCity The new city of the airport, may be null if not to be updated.
+     * @param newCountry The new country of the airport, may be null if not to be updated.
+     * @param newIATA The new 3-letter IATA code of the airport, may be null if not to be updated.
+     * @param newICAO The new 4-letter ICAO code of the airport, may be null if not to be updated.
+     * @param newLatitude The new latitude of the airport, a double. Negative is South and positive is North. May be null if not to be updated.
+     * @param newLongitude The new longitude of the airport, a double. Negative is West and positive is East. May be null if not to be updated.
+     * @param newAltitude The new altitude of the airport in feet, an integer. May be null if not to be updated.
+     * @param newTimezone The new timezone of the airport, hours offset from UTC. A float, may be null if not to be updated.
+     * @param newDST The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be null if not to be updated.
+     * @param newTZ The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
      * @return int result The number of rows modified or -1 for error.
      */
-    public int update(int id, String new_name, String new_city, String new_country, String new_iata, String new_icao,
-                      Double new_latitude, Double new_longitude, Integer new_altitude, Float new_timezone, String new_dst, String new_tz) throws SQLException {
+    public int update(int id, String newName, String newCity, String newCountry, String newIATA, String newICAO,
+                      Double newLatitude, Double newLongitude, Integer newAltitude, Float newTimezone, String newDST, String newTZ) throws SQLException {
         int result;
 
-        List<Object> element = Arrays.asList(new_name, new_city, new_country, new_iata, new_icao, new_latitude, new_longitude,
-            new_altitude, new_timezone, new_dst, new_tz);
+        List<Object> element = Arrays.asList(newName, newCity, newCountry, newIATA, newICAO, newLatitude,
+                                            newLongitude, newAltitude, newTimezone, newDST, newTZ);
         ArrayList<Object> elements = new ArrayList<>(element);
-
-        String query = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, longitude = ?, altitude = ?"
-                + ", timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
-
+        // The SQL update statement
+        String query = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, " +
+                        "longitude = ?, altitude = ?, timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
         PreparedStatement stmt = dbHandler.prepareStatement(query);
-
+        // Adds the parameters to the SQL statement
         for (int i = 0; i < elements.size(); i++) {
             stmt.setObject(i+1, elements.get(i));
         }
-
         stmt.setObject(elements.size() + 1, id);
+        // Executes the update operation
         result = stmt.executeUpdate();
 
         return result;
-//        // Checks one by one if any of the parameters are null
-//        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
-//        try {
-//            if (new_name != null) {
-//                search = search + "airport_name = ?, ";
-//                elements.add(new_name);
-//            }
-//            if (new_city != null) {
-//                search = search + "city = ?, ";
-//                elements.add(new_city);
-//            }
-//            if (new_country != null) {
-//                search = search + "country = ?, ";
-//                elements.add(new_country);
-//            }
-//            if (new_iata != null) {
-//                search = search + "iata = ?, ";
-//                elements.add(new_iata);
-//            }
-//            if (new_icao != null) {
-//                search = search + "icao = ?, ";
-//                elements.add(new_icao);
-//            }
-//            if (new_latitude != null) {
-//                search = search + "latitude = ?, ";
-//                elements.add(new_latitude);
-//            }
-//            if (new_longitude != null) {
-//                search = search + "longitude = ?, ";
-//                elements.add(new_longitude);
-//            }
-//            if (new_altitude != null) {
-//                search = search + "altitude = ?, ";
-//                elements.add(new_altitude);
-//            }
-//            if (new_timezone != null) {
-//                search = search + "timezone = ?, ";
-//                elements.add(new_timezone);
-//            }
-//            if (new_dst != null) {
-//                search = search + "dst = ?, ";
-//                elements.add(new_dst);
-//            }
-//            if (new_tz != null) {
-//                search = search + "tz_database_timezone = ? ";
-//                elements.add(new_tz);
-//            }
-//            // Checks if there are any elements in the ArrayList
-//            // If there are not, the result is set to an error code of -2
-//            if (elements.size() == 0) {
-//                result = -2;
-//            } else {
-//                // Checks if the query ends with a comma (happens if tz_database_timezone is not to be updated)
-//                // If it does, removes it
-//                // Adds the WHERE clause to the query, which is airport_id
-//                if (search.endsWith(", ")) {
-//                    search = search.substring(0, search.length() - 2) + " WHERE airport_id = ?";
-//                } else {
-//                    search = search + "WHERE airport_id = ?";
-//                }
-//                elements.add(id);
-//                PreparedStatement stmt = dbHandler.prepareStatement(search);
-//                // Iterates through the ArrayList and adds each value to the query
-//                int index = 1;
-//                for (Object element: elements) {
-//                    stmt.setObject(index, element);
-//                    index++;
-//                }
-//                // Executes the update and sets result to the airport_id of the airport just updated
-//                result = stmt.executeUpdate();
-//            }
-//        } catch (Exception e) {
-//            // If any of the above fails, sets result to the error code -1 and prints out an error message
-//            result = -1;
-//            System.out.println("Unable to update airport data with id " + id);
-//            System.out.println(e.getMessage());
-//        }
-//
-//        return result;
     }
 
     /**
