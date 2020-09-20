@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,32 +11,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.EditFlightController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0" prefWidth="508.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.EditFlightController">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
    <children>
-      <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="281.0" prefWidth="508.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Label alignment="TOP_LEFT" layoutX="248.0" layoutY="9.0" text="Editing Flight">
+                  <Label alignment="TOP_LEFT" layoutX="168.0" layoutY="4.0" prefHeight="38.0" prefWidth="173.0" text="Editing Flight" textFill="WHITE">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="System Bold" size="26.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="flightIDsLabel" alignment="TOP_LEFT" layoutX="239.0" layoutY="11.0" text="ID: 6    FlightID: 2">
+                  <Label fx:id="flightIDsLabel" alignment="TOP_LEFT" layoutX="186.0" layoutY="10.0" text="ID: 6    FlightID: 2" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <HBox alignment="CENTER" prefHeight="116.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="508.0">
                <children>
-                  <Label text="Location_Type:" />
+                  <Label text="Location Type:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                   <TextField fx:id="locationTypeField">
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -42,18 +49,24 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="116.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="600.0">
                <children>
-                  <Label text="Location:" />
+                  <Label text="Location:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                   <TextField fx:id="locationField">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Label text="Altitude:">
+                  <Label text="Altitude:" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                   <TextField fx:id="altitudeField">
                      <HBox.margin>
@@ -62,36 +75,38 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="116.0" prefWidth="600.0">
+            <AnchorPane prefHeight="19.0" prefWidth="508.0">
                <children>
-                  <Label text="Latitude:" />
-                  <TextField fx:id="latitudeField">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Label text="Longitude:">
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
+                  <Label layoutX="21.0" layoutY="9.0" text="Latitude:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <TextField fx:id="longitudeField">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <TextField fx:id="latitudeField" layoutX="82.0" layoutY="7.0" />
+                  <Label layoutX="269.0" layoutY="9.0" text="Longitude:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="longitudeField" layoutX="345.0" layoutY="7.0" />
                </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            </AnchorPane>
+            <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <AnchorPane prefHeight="70.0" prefWidth="605.0">
-                     <children>
-                        <Button layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#cancelBtnPressed" text="Cancel" />
-                        <Button layoutX="534.0" layoutY="35.0" mnemonicParsing="false" onAction="#submitBtnPressed" text="Submit" />
-                     </children>
-                  </AnchorPane>
+                  <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#cancelBtnPressed" text="Cancel">
+                     <styleClass>
+                        <String fx:value="general-button" />
+                        <String fx:value="main-button" />
+                     </styleClass>
+                  </Button>
+                  <Button layoutX="451.0" layoutY="12.0" mnemonicParsing="false" onAction="#submitBtnPressed" text="Save">
+                     <styleClass>
+                        <String fx:value="save-button" />
+                        <String fx:value="main-button" />
+                     </styleClass>
+                  </Button>
                </children>
-            </HBox>
+            </AnchorPane>
          </children>
       </VBox>
    </children>

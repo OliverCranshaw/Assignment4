@@ -2,9 +2,19 @@
     -fx-background-color: #272727;
 }
 
-.single-record {
+.map {
+    -fx-border-width: 2;
+    -fx-border-style: none;
+    -fx-border-color: #2F817E;
+}
+
+.split-pane-divider {
+    -fx-background-color: #2F817E;
+}
+
+.split-pane {
     -fx-text-fill: white;
-    -fx-background-color: #4C4C4C;
+    -fx-background-color: #272727;
 }
 
 .tab-pane .tab-header-area .tab-header-background {
@@ -26,54 +36,62 @@
     -fx-font-weight: bold;
 }
 
-.jfx-tab-pane .tab-selected-line {
-    -fx-background-color: yellow;
+.radio-button .radio {
+    -fx-background-color: #591515;
 }
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
 .main-row-button {
     -fx-text-fill: white;
+    -fx-font-weight: bold;
     -fx-background-color:  #591515;
 }
 
 .save-button {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-color:  #67BF63;
+    -fx-background-color:  #3E783C;
 }
 
 .delete-button {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-color:  #F25E3D;
+    -fx-background-color:  #B85A3B;
 }
 
 .help-button {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-color:  #F29A2E;
+    -fx-background-color:  #AD6E21;
 }
 
 .general-button {
     -fx-text-fill: white;
-    -fx-background-color:  #41A8BF;
+    -fx-font-weight: bold;
+    -fx-background-color:  #2F817E;
 }
 
-.main-button {
-    -fx-font-weight: bold;
+.table {
+    -fx-text-fill: white;
 }
 
 .table-view{
     -fx-background-color: transparent;
 }
 
-.table-view:focused{
+.table-view:focused {
     -fx-background-color: transparent;
 }
 
-.table-view .column-header-background{
+.table-view .column-header-background {
     -fx-background-color: linear-gradient(#400D0D 0%, #922121 100%);
 }
 
-.table-view .column-header-background .label{
+.table-view .column-header-background .label {
     -fx-background-color: transparent;
     -fx-text-fill: white;
 }
@@ -82,18 +100,18 @@
     -fx-background-color: transparent;
 }
 
-.table-view .table-cell{
+.table-view .table-cell {
     -fx-text-fill: white;
 }
 
-.table-row-cell{
-    -fx-background-color: -fx-table-cell-border-color, #661414;
+.table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, #400D0D;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
 }
 
-.table-row-cell:odd{
-    -fx-background-color: -fx-table-cell-border-color, #591212;
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #660700;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
 }
