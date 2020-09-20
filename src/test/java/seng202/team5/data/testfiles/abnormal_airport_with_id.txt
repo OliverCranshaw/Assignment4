@@ -1,1 +1,1 @@
-9451,"Port Authority","New York","United States","",\N,40.756667,-73.991111,33,-5,"A","America/New_York"
+9451,"Port Authority","New York","United States","NYU",\N,40.756667,-73.991111,33,-5,"A","America/New_York"

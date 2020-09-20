@@ -60,9 +60,6 @@ public class AddDataTest {
 
         id = concreteAddData.addAirline("Airfix Aviation", "Airfix", "", "FIX", "AIRFIX", "Finland", "Y");
         assertEquals(2, id);
-
-        id = concreteAddData.addAirline("Airfix Aviation", "", "", "", "", "", "N");
-        assertEquals(3, id);
     }
 
 
@@ -85,6 +82,9 @@ public class AddDataTest {
 
         id = concreteAddData.addAirline("", "", "", "", "", "", "");
         assertEquals(-2, id);
+
+        id = concreteAddData.addAirline("Airfix Aviation", "", "", "", "", "", "N");
+        assertEquals(-1, id);
     }
 
 
@@ -103,10 +103,6 @@ public class AddDataTest {
         id = concreteAddData.addAirport("Tolmachevo", "Novosibirsk", "Russia", "OVB", "", "55.012622",
                  "82.650656", "365", "7", "A", "Asia/Omsk");
         assertEquals(3, id);
-
-        id = concreteAddData.addAirport("Balandino", "Chelyabinsk", "Russia", "", "", "55.305836",
-                "61.503333", "769", "6","E", "Asia/Yekaterinburg");
-        assertEquals(4, id);
     }
 
 
@@ -162,6 +158,10 @@ public class AddDataTest {
 
         id = concreteAddData.addAirport("", "", "", "", "", "", "", "", "", "", "");
         assertEquals(-2, id);
+
+        id = concreteAddData.addAirport("Balandino", "Chelyabinsk", "Russia", "", "", "55.305836",
+                "61.503333", "769", "6","E", "Asia/Yekaterinburg");
+        assertEquals(-1, id);
     }
 
 
