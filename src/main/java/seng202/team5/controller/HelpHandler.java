@@ -21,9 +21,18 @@ import seng202.team5.App;
 
 import java.io.IOException;
 
+/**
+ * Class for initiating help sessions.
+ * Its only public interface is the startHelp static method.
+ */
 public class HelpHandler implements EventHandler<MouseEvent> {
     private static final String CURSOR_NAME = App.class.getResource("help_cursor.png").toString();
 
+    /**
+     * Starts the help session on the given scene.
+     * This will change the cursor to a question mark and block inputs from being passed into this window.
+     * @param scene The window where the help is requested
+     */
     public static void startHelp(Scene scene) {
         scene.setCursor(Cursor.cursor(CURSOR_NAME));
 
@@ -40,22 +49,25 @@ public class HelpHandler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent) {
+        // If the helpStage exists then we must being showing the help dialog. So when we click we can cancel the help
         if (helpStage != null) {
             helpStage.close();
             endHelp();
             return;
         }
 
+        // Right click to cancel the help
         if (mouseEvent.isSecondaryButtonDown()) {
             endHelp();
             return;
         }
 
-        // Prevents the event from being process further
+        // Prevents the event from being process further. As in it blocks input
         mouseEvent.consume();
 
         PickResult pickResult = mouseEvent.getPickResult();
 
+        // Search the parent chain to find if there exists any help
         String helpText = null;
         Node node = pickResult.getIntersectedNode();
         while (node != null) {
@@ -102,6 +114,7 @@ public class HelpHandler implements EventHandler<MouseEvent> {
         helpStage.setX(centre.getX() - 158);
         helpStage.setY(centre.getY() + 2);
 
+        // Event handle for closing the help dialog by clicking on it
         helpStage.addEventFilter(MouseEvent.MOUSE_PRESSED, newEvent -> {
             helpStage.close();
             endHelp();
