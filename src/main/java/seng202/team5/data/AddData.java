@@ -46,26 +46,26 @@ public abstract class AddData {
      * Ensures validity of parameters, passes them into the saveFlight method of FlightService.
      *
      * @param flightID The integer flight_id of the new flight entry, cannot be null.
-     * @param location_type The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
+     * @param locationType The location type of the flight entry location, one of "APT", "VOR", or "FIX", cannot be null.
      * @param location The location of the flight entry, cannot be null.
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
      * @return int The unique id of the new flight entry that has been created by FlightService.
      */
-    public abstract int addFlightEntry(int flightID, String location_type, String location, String altitude, String latitude, String longitude);
+    public abstract int addFlightEntry(int flightID, String locationType, String location, String altitude, String latitude, String longitude);
 
     /**
      * Ensures validity of parameters, passes them into the saveRoute method of RouteService.
      *
      * @param airline The 2-letter IATA code or 3-letter ICAO code of the airline, cannot be null.
-     * @param source_airport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
-     * @param dest_airport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
+     * @param sourceAirport The 3-letter IATA code or 4-letter ICAO code of the source airport, cannot be null.
+     * @param destAirport The 3-letter IATA code or 4-letter ICAO code of the destination airport, cannot be null.
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
      * @return int The route_id of the new route that has been created by RouteService.
      */
-    public abstract int addRoute(String airline, String source_airport, String dest_airport, String codeshare, String stops, String equipment);
+    public abstract int addRoute(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment);
 
 }

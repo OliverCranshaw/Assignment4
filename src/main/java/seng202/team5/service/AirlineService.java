@@ -3,6 +3,7 @@ package seng202.team5.service;
 import seng202.team5.accessor.AirlineAccessor;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,12 +16,16 @@ import java.util.List;
 public class AirlineService implements Service {
 
     private final AirlineAccessor accessor;
+    private final RouteService routeService;
 
     /**
      * Constructor for AirlineService.
      * Creates an AirlineAccessor.
      */
-    public AirlineService() { accessor = new AirlineAccessor(); }
+    public AirlineService() {
+        accessor = new AirlineAccessor();
+        routeService = new RouteService();
+    }
 
     /**
      * Checks the validity of input parameters and then passes them into the save method of the AirlineAccessor as an ArrayList.
@@ -35,6 +40,10 @@ public class AirlineService implements Service {
      * @return int result The airline_id of the airline that was just created by the AirlineAccessor.
      */
     public int save(String name, String alias, String iata, String icao, String callsign, String country, String active) {
+        // Checks that an airline has a unique code
+        if (iata == null && icao == null) {
+            return -1;
+        }
         // Checks that the IATA code is valid and that if the IATA code is not null, it does not already exist in the database
         // If this is not true, returns an error code of -1
         if (!iataIsValid(iata)) {
@@ -56,28 +65,59 @@ public class AirlineService implements Service {
      * Checks the validity of input parameters and then passes them into the update method of the AirlineAccessor.
      *
      * @param id The airline_id of the given airline you want to update.
-     * @param new_name The new name of the airline, may be null if not to be updated.
-     * @param new_alias The new alias of the airline, may be null if not to be updated.
-     * @param new_iata The new 2-letter IATA code of the airline, may be null if not to be updated.
-     * @param new_icao The new 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_callsign The new callsign of the airline, may be null if not to be updated.
-     * @param new_country The new country of the airline, may be null if not to be updated.
-     * @param new_active The new active of the airline, "Y" or "N", may be null if not to be updated.
+     * @param newName The new name of the airline, may be null if not to be updated.
+     * @param newAlias The new alias of the airline, may be null if not to be updated.
+     * @param newIATA The new 2-letter IATA code of the airline, may be null if not to be updated.
+     * @param newICAO The new 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param newCallsign The new callsign of the airline, may be null if not to be updated.
+     * @param newCountry The new country of the airline, may be null if not to be updated.
+     * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
      */
-    public int update(int id, String new_name, String new_alias, String new_iata, String new_icao,
-                      String new_callsign, String new_country, String new_active) {
-        // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
-        if (!iataIsValid(new_iata)) {
-            return -1;
-        }
-        // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
-        if (!icaoIsValid(new_icao)) {
+    public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
+                      String newCallsign, String newCountry, String newActive) throws SQLException {
+        // Check if IATA and ICAO are both null
+        if (newIATA == null && newICAO == null) {
             return -1;
         }
 
+        String currIATA = null;
+        String currICAO = null;
+
+        ResultSet currAirline = getData(id);
+        if (currAirline.next()) {
+            // Gets the current IATA and ICAO before the update
+            currIATA = getData(id).getString("iata");
+            currICAO = getData(id).getString("icao");
+        }
+
+        // Checks that the IATA code is valid (which includes null), if it isn't returns an error code of -1
+        if (currIATA != null && !currIATA.equals(newIATA)) {
+            if (!iataIsValid(newIATA)) {
+                return -1;
+            }
+        }
+
+        // Checks that the ICAO code is valid (which includes null), if it isn't returns an error code of -1
+        if (currICAO != null && !currICAO.equals(newICAO)) {
+            if (!icaoIsValid(newICAO)) {
+                return -1;
+            }
+        }
+
         // Passes the parameters into the update method of the AirlineAccessor
-        return accessor.update(id, new_name, new_alias, new_iata, new_icao, new_callsign, new_country, new_active);
+        int value = accessor.update(id, newName, newAlias, newIATA, newICAO, newCallsign, newCountry, newActive);
+
+        // Also updates any flight entries or routes that used the previous IATA/ICAO code
+        // Checks that the new code is different from the old code
+        if (newIATA != null && !newIATA.equals(currIATA)) {
+            updateRoutes(newIATA, currIATA);
+        }
+        if (newICAO != null && !newICAO.equals(currICAO)) {
+            updateRoutes(newICAO, currICAO);
+        }
+
+        return value;
     }
 
     /**
@@ -115,6 +155,15 @@ public class AirlineService implements Service {
      */
     public ResultSet getData(String name, String country, String callign) {
         return accessor.getData(name, country, callign);
+    }
+
+    /**
+     * Retrieves all airlines withe the given IATA or ICAO
+     * @param code IATA or ICAO of an airline
+     * @return ResultSet of airline.
+     */
+    public ResultSet getData(String code) {
+        return accessor.getData(code);
     }
 
     /**
@@ -156,6 +205,26 @@ public class AirlineService implements Service {
      */
     public int getMaxID() {
         return accessor.getMaxID();
+    }
+
+    /**
+     * Updates any routes that contain the old airline IATA/ICAO code with the new code.
+     *
+     * @param newCode String, new airport IATA/ICAO code.
+     * @param oldCode String, old airport IATA/ICAO code.
+     * @throws SQLException Caused by the ResultSet interactions
+     */
+    public void updateRoutes(String newCode, String oldCode) throws SQLException {
+        ResultSet result;
+
+        // Checks if any routes contain the old code and updates them if it does
+        if ((result = routeService.getData(oldCode)) != null) {
+            while (result.next()) {
+                routeService.update(result.getInt("route_id"), newCode, result.getString("source_airport"),
+                        result.getString("destination_airport"), result.getString("codeshare"),
+                        result.getInt("stops"), result.getString("equipment"));
+            }
+        }
     }
 }
 

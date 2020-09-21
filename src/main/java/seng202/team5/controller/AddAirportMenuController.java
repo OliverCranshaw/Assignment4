@@ -80,7 +80,7 @@ public class AddAirportMenuController {
                 if (outcome < 0) {
                     if (outcome == -1) {
                         System.out.println("Service Error");
-                        errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airport within the database");
+                        errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airport within the database \nand that they are not both empty");
                         errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
                         errorMessage.setFill(Color.RED);
                         errorMessage.setVisible(true);

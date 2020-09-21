@@ -1,10 +1,8 @@
 package seng202.team5.controller;
 
-import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -14,12 +12,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Window;
 import seng202.team5.data.ConcreteAddData;
-import seng202.team5.controller.MainMenuController;
-import seng202.team5.service.AirlineService;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddAirlineMenuController {
     public AddAirlineMenuController() {}
@@ -49,7 +42,7 @@ public class AddAirlineMenuController {
     private Text errorMessage;
 
     @FXML
-    public void onAddPressed() throws SQLException {
+    public void onAddPressed() {
         try {
             ConcreteAddData concreteAddData = new ConcreteAddData();
             String active = activeField.isSelected() ? "Y" : "N";
@@ -59,7 +52,7 @@ public class AddAirlineMenuController {
             if (outcome < 0) {
                 if (outcome == -1) {
                     System.out.println("Service Error");
-                    errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airline within the database");
+                    errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airline within the database \nand that they are not both empty");
                     errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
                     errorMessage.setFill(Color.RED);
                     errorMessage.setVisible(true);

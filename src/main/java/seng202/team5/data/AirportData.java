@@ -42,11 +42,11 @@ public class AirportData implements Data {
         return country;
     }
 
-    public String getIata() {
+    public String getIATA() {
         return iata;
     }
 
-    public String getIcao() {
+    public String getICAO() {
         return icao;
     }
 
@@ -66,11 +66,11 @@ public class AirportData implements Data {
         return timezone;
     }
 
-    public String getDst() {
+    public String getDST() {
         return dst;
     }
 
-    public String getTzDatabaseTimezone() {
+    public String getTZDatabaseTimezone() {
         return tzDatabaseTimezone;
     }
 
@@ -166,7 +166,7 @@ public class AirportData implements Data {
      * Convenience constructor for AirportData
      *
      * @param resultSet ResultSet object from AirportService
-     * @throws SQLException
+     * @throws SQLException Caused by ResultSet interactions
      */
     public AirportData(ResultSet resultSet) throws SQLException {
         this(
