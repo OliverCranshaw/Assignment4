@@ -17,8 +17,8 @@ public class AirlineDataTest {
         AirlineData test = new AirlineData(testName, alias, iata, icao, country, callsign, active);
         test.convertBlanksToNull();
         assertNull(test.getAlias());
-        assertNull(test.getIcao());
-        assertNotNull(test.getIata());
+        assertNull(test.getICAO());
+        assertNotNull(test.getIATA());
     }
 
 

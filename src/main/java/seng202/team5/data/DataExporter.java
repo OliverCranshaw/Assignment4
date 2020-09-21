@@ -177,14 +177,14 @@ public class DataExporter {
             while (flight.next()) {
                 // Gets the data from each column of the row
                 int id = flight.getInt("id");
-                String location_type = flight.getString("location_type");
+                String locationType = flight.getString("location_type");
                 String location = flight.getString("location");
                 int altitude = flight.getInt("altitude");
                 double latitude = flight.getDouble("latitude");
                 double longitude = flight.getDouble("longitude");
 
                 // Creates a formatted line with the values
-                line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, location_type, location, altitude, latitude, longitude);
+                line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, locationType, location, altitude, latitude, longitude);
 
                 // Creates a new line in the file, and then writes the formatted line into it
                 fileWriter.write(line);
@@ -222,14 +222,14 @@ public class DataExporter {
                 // Gets the data from each column of the row
                 int id = flights.getInt("id");
                 int flightID = flights.getInt("flight_id");
-                String location_type = flights.getString("location_type");
+                String locationType = flights.getString("location_type");
                 String location = flights.getString("location");
                 int altitude = flights.getInt("altitude");
                 double latitude = flights.getDouble("latitude");
                 double longitude = flights.getDouble("longitude");
 
                 // Creates a formatted line with the values
-                line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, location_type, location, altitude, latitude, longitude);
+                line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, locationType, location, altitude, latitude, longitude);
 
                 // Creates a new line in the file, and then writes the formatted line into it
                 fileWriter.write(line);
@@ -268,10 +268,10 @@ public class DataExporter {
                 int routeID = routes.getInt("route_id");
                 String airline = routes.getString("airline");
                 int airlineID = routes.getInt("airline_id");
-                String source_airport = routes.getString("source_airport");
-                int source_airportID = routes.getInt("source_airport_id");
-                String dest_airport = routes.getString("destination_airport");
-                int dest_airportID = routes.getInt("destination_airport_id");
+                String sourceAirport = routes.getString("source_airport");
+                int sourceAirportID = routes.getInt("source_airport_id");
+                String destAirport = routes.getString("destination_airport");
+                int destAirportID = routes.getInt("destination_airport_id");
                 String codeshare = routes.getString("codeshare");
                 int stops = routes.getInt("stops");
                 String equipment = routes.getString("equipment");
@@ -282,7 +282,7 @@ public class DataExporter {
                 }
 
                 // Creates a formatted line with the values
-                line = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s", routeID, airline, airlineID, source_airport, source_airportID, dest_airport, dest_airportID, codeshare, stops, equipment);
+                line = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s", routeID, airline, airlineID, sourceAirport, sourceAirportID, destAirport, destAirportID, codeshare, stops, equipment);
 
                 // Creates a new line in the file, and then writes the formatted line into it
                 fileWriter.write(line);

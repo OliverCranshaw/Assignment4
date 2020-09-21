@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,80 +70,37 @@ public class RouteAccessor implements Accessor {
      * Not every field must be updated.
      *
      * @param id The route_id of the given route you want to update.
-     * @param new_airline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
-     * @param new_airline_id The airline_id of the airline with the given IATA or ICAO code.
-     * @param new_source_airport The new 3-letter IATA or 4-letter ICAO code of the source airport, may be null if not to be updated.
-     * @param new_source_airport_id The airport_id of the source airline with the given IATA or ICAO code.
-     * @param new_dest_airport The new 3-letter IATA or 4-letter ICAO code of the destination airport, may be null if not to be updated.
-     * @param new_dest_airport_id The airport_id of the destination airline with the given IATA or ICAO code.
-     * @param new_codeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
-     * @param new_stops The new number of stops for the route, an integer, may be -1 if not to be updated.
-     * @param new_equipment The new equipment for the route, may be null if not to be updated.
+     * @param newAirline The new 2-letter IATA or 3-letter ICAO code of the airline, may be null if not to be updated.
+     * @param newAirlineID The airline_id of the airline with the given IATA or ICAO code.
+     * @param newSourceAirport The new 3-letter IATA or 4-letter ICAO code of the source airport, may be null if not to be updated.
+     * @param newSourceAirportID The airport_id of the source airline with the given IATA or ICAO code.
+     * @param newDestAirport The new 3-letter IATA or 4-letter ICAO code of the destination airport, may be null if not to be updated.
+     * @param newDestAirportID The airport_id of the destination airline with the given IATA or ICAO code.
+     * @param newCodeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
+     * @param newStops The new number of stops for the route, an integer, may be -1 if not to be updated.
+     * @param newEquipment The new equipment for the route, may be null if not to be updated.
      * @return int result The number of rows modified or -1 for error
      */
-    public int update(int id, String new_airline, int new_airline_id, String new_source_airport, int new_source_airport_id,
-                      String new_dest_airport, int new_dest_airport_id, String new_codeshare, int new_stops, String new_equipment) {
+    public int update(int id, String newAirline, Integer newAirlineID, String newSourceAirport, Integer newSourceAirportID,
+                      String newDestAirport, Integer newDestAirportID, String newCodeshare, Integer newStops, String newEquipment) {
         int result;
-        ArrayList<Object> elements = new ArrayList<>();
-        String search = "UPDATE ROUTE_DATA SET ";
 
-        // Checks one by one if any of the parameters are null
-        // If the parameter isn't null, then it is added to the query and the value is added to an ArrayList
+        List<Object> element = Arrays.asList(newAirline, newAirlineID, newSourceAirport, newSourceAirportID, newDestAirport,
+                newDestAirportID, newCodeshare, newStops, newEquipment);
+        ArrayList<Object> elements = new ArrayList<>(element);
+        // The SQL update statement
+        String search = "UPDATE ROUTE_DATA SET airline = ?, airline_id = ?, source_airport = ?, source_airport_id = ?, " +
+                "destination_airport =? , destination_airport_id = ?, codeshare = ?, stops = ?, equipment = ? WHERE route_id = ?";
         try {
-            if (new_airline != null) {
-                search = search + "airline = ?, airline_id = ?, ";
-                elements.add(new_airline);
-                elements.add(new_airline_id);
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            // Adds the parameters to the SQL statement
+            for (int i = 0; i < elements.size(); i++) {
+                stmt.setObject(i+1, elements.get(i));
             }
-            if (new_source_airport != null) {
-                search = search + "source_airport = ?, source_airport_id = ?, ";
-                elements.add(new_source_airport);
-                elements.add(new_source_airport_id);
-            }
-            if (new_dest_airport != null) {
-                search = search + "destination_airport = ?, destination_airport_id = ?, ";
-                elements.add(new_dest_airport);
-                elements.add(new_dest_airport_id);
-            }
-            if (new_codeshare != null) {
-                search = search + "codeshare = ?, ";
-                elements.add(new_codeshare);
-            }
-            if (new_stops != -1) {
-                search = search + "stops = ?, ";
-                elements.add(new_stops);
-            }
-            if (new_equipment != null) {
-                search = search + "equipment = ? ";
-                elements.add(new_equipment);
-            }
-
-            // Checks if there are any elements in the ArrayList
-            // If there are not, the result is set to an error code of -2
-            if (elements.size() == 0) {
-                result = -2;
-            } else {
-                // Checks if the query ends with a comma (happens if equipment is not to be updated)
-                // If it does, removes it
-                // Adds the WHERE clause to the query, which is route_id
-                if (search.endsWith(", ")) {
-                    search = search.substring(0, search.length() - 2) + " WHERE route_id = ?";
-                } else {
-                    search = search + "WHERE route_id = ?";
-                }
-                elements.add(id);
-
-                PreparedStatement stmt = dbHandler.prepareStatement(search);
-                // Iterates through the ArrayList and adds each value to the query
-                int index = 1;
-                for (Object element: elements) {
-                    stmt.setObject(index, element);
-                    index++;
-                }
-                // Executes the update and sets result to the airport_id of the airport just updated
-                result = stmt.executeUpdate();
-            }
-        } catch (Exception e) {
+            stmt.setObject(elements.size()+1, id);
+            // Executes the update operation
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints out an error message
             result = -1;
             System.out.println("Unable to update route data with id " + id);
@@ -199,15 +157,37 @@ public class RouteAccessor implements Accessor {
     }
 
     /**
+     * Retrieves the route with the provided airline code.
+     *
+     * @param airline String, airline IATA/ICAO code.
+     * @return ResultSet of the route.
+     */
+    public ResultSet getData(String airline) {
+        ResultSet result = null;
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT * FROM ROUTE_DATA WHERE airline = ?");
+            stmt.setObject(1, airline);
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve route");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      * Retrieves all the routes with provided data.
      *
-     * @param source_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
-     * @param dest_airport The 3-letter IATA or 3-letter ICAO code of the destination airport.
+     * @param sourceAirport The 3-letter IATA or 3-letter ICAO code of the destination airport.
+     * @param destAirport The 3-letter IATA or 3-letter ICAO code of the destination airport.
      * @param stops The number of stops on this route, 0 if it is direct. An integer.
      * @param equipment 3-letter codes for plane type(s) typically used on this flight, separated by spaces.
      * @return ResultSet of all the routes.
      */
-    public ResultSet getData(ArrayList<String> source_airport, ArrayList<String> dest_airport, int stops, String equipment) {
+    public ResultSet getData(ArrayList<String> sourceAirport, ArrayList<String> destAirport, int stops, String equipment) {
         boolean check = true;
         String addString = "";
         ResultSet result = null;
@@ -215,10 +195,10 @@ public class RouteAccessor implements Accessor {
         ArrayList<Object> elements = new ArrayList<>();
 
         try {
-            if (source_airport != null) {
+            if (sourceAirport != null) {
                 query = query + " WHERE ";
 
-                for (String value:source_airport) {
+                for (String value:sourceAirport) {
                     if (value != null) {
                         addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
                         query = query + addString;
@@ -227,14 +207,14 @@ public class RouteAccessor implements Accessor {
                 }
                 query = query + ") ";
             }
-            if (dest_airport != null) {
-                if (source_airport != null) {
+            if (destAirport != null) {
+                if (sourceAirport != null) {
                     query = query + " and ";
                 } else {
                     query = query + " WHERE ";
                 }
 
-                for (String value:dest_airport) {
+                for (String value:destAirport) {
                     if (value != null) {
                         addString = check ? " (destination_airport = ? " : " or destination_airport = ? ";
                         query = query + addString;
@@ -245,7 +225,7 @@ public class RouteAccessor implements Accessor {
                 query = query + ") ";
             }
             if (stops != -1) {
-                if (source_airport != null || dest_airport != null) {
+                if (sourceAirport != null || destAirport != null) {
                     query = query + " and stops = ?";
                 } else {
                     query = query + " WHERE stops = ?";
@@ -253,7 +233,7 @@ public class RouteAccessor implements Accessor {
                 elements.add(stops);
             }
             if (equipment != null) {
-                if (source_airport != null || dest_airport != null || stops != -1) {
+                if (sourceAirport != null || destAirport != null || stops != -1) {
                     query = query + " and equipment = ?";
                 } else {
                     query = query + " WHERE equipment = ?";
@@ -298,6 +278,44 @@ public class RouteAccessor implements Accessor {
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data with id " + id);
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     * Checks if an identical route exists.
+     *
+     * @param airline A string, an airline IATA/ICAO code.
+     * @param source_airport A string, an airport IATA/ICAO code.
+     * @param dest_airport A string, an airport IATA/ICAO code.
+     * @param codeshare A string, "Y" if the route is run by a different airline.
+     * @param stops An integer, the number of stops, 0 for direct.
+     * @param equipment A string, a list of equipment codes separated by spaces.
+     * @return boolean result True if an identical route exists, False otherwise.
+     */
+    public boolean dataExists(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+        boolean result = false;
+
+        try {
+            // The SQL search query - finds the number of identical routes
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT COUNT(route_id) FROM ROUTE_DATA WHERE airline = ? and source_airport = ? " +
+                            "and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?");
+            // Adds the given parameters to the search query
+            stmt.setString(1, airline);
+            stmt.setString(2, source_airport);
+            stmt.setString(3, dest_airport);
+            stmt.setString(4, codeshare);
+            stmt.setInt(5, stops);
+            stmt.setString(6, equipment);
+
+            Object data = stmt.executeQuery().getObject(1);
+            result = (int) data == 0 ? false : true;
+        } catch (Exception e) {
+            // If any of the above fails, prints out an error message
+            System.out.println("Unable to retrieve route data.");
             System.out.println(e.getMessage());
         }
 
