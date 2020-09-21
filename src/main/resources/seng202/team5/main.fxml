@@ -790,7 +790,6 @@
                                           <String fx:value="main-button" />
                                        </styleClass>
                                     </Button>
-<<<<<<< src/main/resources/seng202/team5/main.fxml
                                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#onDownloadAirlineDataPressed" prefHeight="25.0" prefWidth="76.0" styleClass="general-button" text="Download">
                                        <FlowPane.margin>
                                           <Insets left="36.0" />
