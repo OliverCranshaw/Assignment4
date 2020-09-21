@@ -204,7 +204,8 @@
                                        </FlowPane.margin>
                                     </TableView>
                                     <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="377.0" prefWidth="576.0">
-                                      <items>
+                                       <properties helpText="Single result viewer"/>
+                                       <items>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="549.0">
                                              <children>
                                                 <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
