@@ -27,6 +27,14 @@ public class EditFlightController {
 
     private FlightEntry currFlightEntry;
 
+
+    /**
+     * submitBtnPressed
+     *
+     * Edits the currently editing flight if the values given are valid, otherwise
+     * given error signs to the user
+     * @param event
+     */
     @FXML
     public void submitBtnPressed(javafx.event.ActionEvent event) {
         setDefaults();
@@ -87,14 +95,24 @@ public class EditFlightController {
         }
     }
 
-
+    /**
+     * cancelBtnPressed
+     *
+     * Closes the current window
+     * @param actionEvent
+     */
     @FXML
     public void cancelBtnPressed(javafx.event.ActionEvent actionEvent) {
         Window window = ((Node)actionEvent.getSource()).getScene().getWindow();
         window.hide();
     }
 
-
+    /**
+     * inflateUI
+     *
+     * Populates the TextFields with the current values
+     * @param flightEntry - flightEntry being modified
+     */
     public void inflateUI(FlightEntry flightEntry) {
         currFlightEntry = flightEntry;
         String ids = String.format("ID: %d    FlightID: %d", flightEntry.getID(), flightEntry.getFlightID());
@@ -110,7 +128,11 @@ public class EditFlightController {
         longitudeField.setText(String.valueOf(flightEntry.getLongitude()));
     }
 
-
+    /**
+     * setDefaults
+     *
+     * Sets the colours of the TextFields to black
+     */
     public void setDefaults() {
         locationTypeField.setStyle("-fx-border-color: #000000;");
         locationField.setStyle("-fx-border-color: #000000;");

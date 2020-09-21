@@ -650,7 +650,12 @@ public class MainMenuController implements Initializable {
     private ObservableList<FlightEntry> flightEntriesSearch;
 
 
-
+    /**
+     * Initializer for MainMenuController
+     * Sets up all tables, buttons, listeners, services, etc
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -704,7 +709,7 @@ public class MainMenuController implements Initializable {
         flightLatitudeS.setCellValueFactory(new PropertyValueFactory<>("Latitude"));
         flightLongitudeS.setCellValueFactory(new PropertyValueFactory<>("Longitude"));
 
-
+        // Disabling the modify buttons for the
         modifyAirportBtn.setDisable(true);
         modifyAirlineBtn.setDisable(true);
         modifyRouteBtn.setDisable(true);
@@ -822,6 +827,7 @@ public class MainMenuController implements Initializable {
             }
         });
 
+
         try {
             setFlightSingleRecord(null);
         } catch (SQLException throwables) {
@@ -835,20 +841,21 @@ public class MainMenuController implements Initializable {
         }
 
 
-
-
         dataExporter = new DataExporter();
 
+
+        // Initializing the required services and tables for the main menu
         airlineService = new AirlineService();
         airportService = new AirportService();
         routeService = new RouteService();
         flightService = new FlightService();
-
         airlineTable = new AirlineTable(airlineService.getData(null, null, null));
         airportTable = new AirportTable(airportService.getData(null, null, null));
         routeTable = new RouteTable(routeService.getData(null, null, -1, null));
         flightTable = new FlightTable(flightService.getData(null, null));
 
+
+        // Creating and populate all the tables with data
         try {
             airlineTable.createTable();
         } catch (SQLException throwables) {
@@ -886,6 +893,7 @@ public class MainMenuController implements Initializable {
 
         setSearchTableFlights();
 
+        // Setting all modify buttons to visible
         airportSaveBtn.setVisible(false);
         airportCancelBtn.setVisible(false);
         airportDeleteBtn.setVisible(false);
@@ -897,7 +905,7 @@ public class MainMenuController implements Initializable {
         routeDeleteBtn.setVisible(false);
         flightDeleteBtn.setDisable(true);
 
-
+        // Lists of elements and label elements which need visibility toggled
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip, airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive,
                 airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
@@ -916,12 +924,22 @@ public class MainMenuController implements Initializable {
 
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
+
+        // Emptying and hiding fields
         setFieldsEmpty(elementsVisible);
         setLabelsEmpty(lblElementsVisible, false);
 
 
     }
 
+    /**
+     * setFlightSingleRecord
+     *
+     * Sets the flight single record table to contain the relevant entries
+     * from the given flight model
+     * @param flightModel - flight model used to populate table
+     * @throws SQLException
+     */
     private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
             flightSingleRecordTableView.getItems().clear();
@@ -944,6 +962,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setRouteSingleRecord
+     *
+     * Sets the route single record labels to contain the relevant entries
+     * @param routeModel - Route model used to populate labels
+     * @throws SQLException
+     */
     private void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip);
@@ -961,6 +986,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * setAirlineSingleRecord
+     *
+     * Sets the airline single record labels to contain the relevant entries
+     * @param airlineModel - Airline Model used ot populate labels
+     * @throws SQLException
+     */
     private void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
@@ -976,6 +1009,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setAirportSingleRecord
+     *
+     * Sets the airport single record labels to contain relevant entries
+     * @param airportModel - airport Model used to populate labels
+     * @throws SQLException
+     */
     private void setAirportSingleRecord(AirportModel airportModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
@@ -995,6 +1035,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * setSearchFlightSingleRecord
+     *
+     * Sets the flight single record table for the search tab to contain relevant entries
+     * @param flightModel - flight Model used to populate table
+     * @throws SQLException
+     */
     private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
             searchFlightSingleRecordTableView.getItems().clear();
@@ -1019,6 +1067,13 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * setSearchRouteSingleRecord
+     *
+     * Sets the route single record labels for the search tab to contain relevant data
+     * @param routeModel - route model used to populate labels
+     * @throws SQLException
+     */
     private void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
         List<TextField> elements = Arrays.asList(routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
                 routeCodeshareS, routeStopsS, routeEquipS);
@@ -1036,6 +1091,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setSearchAirlineSingleRecord
+     *
+     * Sets the airline single record labels for the search tab to contain relevant data
+     * @param airlineModel - airline model used to populate labels
+     * @throws SQLException
+     */
     private void setSearchAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS, airlineCallsignS, airlineCountryS, airlineActiveS);
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
@@ -1051,6 +1113,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setSearchAirportSingleRecord
+     *
+     * Sets aiport single record labels for the search table to contain relevant data
+     * @param airportModel - airport model used to populate labels
+     * @throws SQLException
+     */
     private void setSearchAirportSingleRecord(AirportModel airportModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS, airportLongitudeS,
                 airportAltitudeS, airportTimezoneS, airportDSTS, airportTZS);
@@ -1070,7 +1139,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-
+    /**
+     * setFieldsEmpty
+     *
+     * Sets given arraylist of TextFields to be invisible and also sets their colour to black
+     * @param elementsVisible - ArrayList of TextFields
+     */
     private void setFieldsEmpty(ArrayList<TextField> elementsVisible) {
         for (TextField field : elementsVisible) {
             if (field != null) {
@@ -1081,6 +1155,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setLabelsEmpty
+     *
+     * Sets given labels to be visible or not depending on the given boolean
+     * @param elementsVisible ArrayList of Labels
+     * @param bool boolean that determines if setting element to visible or not
+     */
     private void setLabelsEmpty(ArrayList<Label> elementsVisible, Boolean bool) {
         for (Label lbl : elementsVisible) {
             if (lbl != null) {
@@ -1089,6 +1170,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setLabels
+     *
+     * Sets given elementsVisible to contain the given elementData
+     * @param elementData ResultSet of data to populate TextFields with
+     * @param elementsVisible ArrayList of TextFields
+     * @throws SQLException
+     */
     private void setLabels(ResultSet elementData, ArrayList<TextField> elementsVisible) throws SQLException {
         for (TextField field : elementsVisible) {
             field.setVisible(true);
@@ -1099,6 +1188,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onHelp
+     *
+     * Handles the requesting of help by using the HelpHandler to call startHelp
+     * @param event
+     */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
 
@@ -1106,6 +1202,14 @@ public class MainMenuController implements Initializable {
         HelpHandler.startHelp(scene);
     }
 
+
+    /**
+     * selectFolder
+     *
+     * Gets input from the user on where the file should be saved
+     * @param event
+     * @return - File
+     */
     public File selectFolder(ActionEvent event) {
         dataExporter = new DataExporter();
 
@@ -1121,6 +1225,14 @@ public class MainMenuController implements Initializable {
         return file;
     }
 
+    /**
+     * onAddAirportPressed
+     *
+     * Handles add airport button pressing by showing new window which contains
+     * UI to add new airport
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onAddAirportPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1132,6 +1244,14 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     * onUploadAirportDataPressed
+     *
+     * Starts the upload airport data window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1143,6 +1263,13 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * onDownloadAirportDataPressed
+     *
+     * Starts the download airport data window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDownloadAirportDataPressed(ActionEvent event) throws IOException {
         File file = selectFolder(event);
@@ -1152,6 +1279,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onAddAirlinePressed
+     *
+     * Starts the add airline window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onAddAirlinePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1163,6 +1298,14 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     * onUploadAirlineDataPressed
+     *
+     * Stars the upload airline window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onUploadAirlineDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1174,6 +1317,14 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     * onDowloadAirlineDataPressed
+     *
+     * Stars the download airline window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDownloadAirlineDataPressed(ActionEvent event) throws IOException {
         File file = selectFolder(event);
@@ -1183,6 +1334,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onUploadFlightPressed
+     *
+     * Starts the upload flight window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onUploadFlightPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1194,6 +1353,13 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * onDownloadFlightsPressed
+     *
+     * Starts the download flights window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDownloadFlightsPressed(ActionEvent event) throws IOException {
         File file = selectFolder(event);
@@ -1203,6 +1369,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onAddRoutePressed
+     *
+     * Starts the add route window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1214,6 +1388,14 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     * onUploadRouteDataPressed
+     *
+     * Starts the upload route data window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onUploadRouteDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
@@ -1225,6 +1407,13 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * onDownloadRouteDataPressed
+     *
+     * Starts the download route data window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onDownloadRouteDataPressed(ActionEvent event) throws IOException {
         File file = selectFolder(event);
@@ -1234,6 +1423,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onFlightsRadioPressed
+     *
+     * Changes the UI of the search tab to be in the format to handle Flight searching,
+     * flight results showing in tables, and flight single record viewing.
+     */
     @FXML
     public void onFlightsRadioPressed() {
 
@@ -1284,6 +1480,13 @@ public class MainMenuController implements Initializable {
 
 
     }
+
+    /**
+     * onAirportsRadioPressed
+     *
+     * Changes the UI of the search tab to be in the format to handle Airport searching,
+     * airport results showing in tables, and airport single record viewing.
+     */
     @FXML
     public void onAirportsRadioPressed() {
 
@@ -1335,6 +1538,12 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * onAirlinesRadioPressed
+     *
+     * Changes the UI of the search tab to be in the format to handle Airlines searching,
+     * airlines results showing in tables, and airlines single record viewing.
+     */
     @FXML
     public void onAirlinesRadioPressed() {
 
@@ -1385,6 +1594,13 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * onRoutesRadioPressed
+     *
+     * Changes the UI of the search tab to be in the format to handle Route searching,
+     * route results showing in tables, and route single record viewing.
+     */
     @FXML
     public void onRoutesRadioPressed() {
 
@@ -1437,6 +1653,14 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * onSearchPressed
+     *
+     * Searches for data from the database, depending on what radio button is selected, also displaying the result
+     * in the result tables, as well as setting up for the single record viewing
+     * @throws SQLException
+     */
     @FXML
     public void onSearchPressed() throws SQLException {
 
@@ -1547,7 +1771,13 @@ public class MainMenuController implements Initializable {
 
     }
 
-
+    /**
+     * populateAirlineTable
+     *
+     * Populates the given airline tableView with the given data
+     * @param tableView - TableView
+     * @param data - ArrayList of ArrayList of Object
+     */
     private void populateAirlineTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
 
         ArrayList<AirlineModel> list = new ArrayList<>();
@@ -1563,7 +1793,13 @@ public class MainMenuController implements Initializable {
         tableView.setItems(airlineModels);
     }
 
-
+    /**
+     * populateAirportTable
+     *
+     * Populates the given airport table with the given data
+     * @param tableView - TableView
+     * @param data - ArrayList of ArrayList of Object
+     */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
@@ -1577,7 +1813,13 @@ public class MainMenuController implements Initializable {
         tableView.setItems(airportModels);
     }
 
-
+    /**
+     * populateRouteTable
+     *
+     * Populates the given route table with the given data
+     * @param tableView - TableView
+     * @param data - ArrayList of ArrayList of Object
+     */
     private void populateRouteTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
@@ -1598,7 +1840,14 @@ public class MainMenuController implements Initializable {
         tableView.setItems(routeModels);
     }
 
-
+    /**
+     * populateFlightTable
+     *
+     * Populates the given flight table witht the given data
+     * @param tableView - TableView
+     * @param data - ArrayList of ArrayList of data
+     * @throws SQLException
+     */
     private void populateFlightTable(TableView tableView, ArrayList<ArrayList<Object>> data) throws SQLException {
         ArrayList<FlightModel> list = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
@@ -1623,10 +1872,14 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * onAirlineApplyFilterButton
+     *
+     * Applies the selected filters to the airline table
+     * @param actionEvent
+     */
     @FXML
     public void onAirlineApplyFilterButton(ActionEvent actionEvent) {
-
-
         airlineTable.FilterTable(null, null);
         String countryText = countryAirlineField.getText();
         String activeText = (String) airlineActiveDropdown.getValue();
@@ -1642,6 +1895,12 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * onAirportApplyFilterButton
+     *
+     * Applies the selected filters to the airline table
+     * @param actionEvent
+     */
     @FXML
     public void onAirportApplyFilterButton(ActionEvent actionEvent) {
         airportTable.FilterTable(null);
@@ -1651,6 +1910,14 @@ public class MainMenuController implements Initializable {
         populateAirportTable(airportTableView, airportTable.getData());
     }
 
+
+    /**
+     * onRouteApplyFilterButton
+     *
+     * Applies the selected filter to the route table
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void onRouteApplyFilterButton(ActionEvent actionEvent) throws SQLException {
         routeTable.FilterTable(null, null, null, null);
@@ -1690,26 +1957,49 @@ public class MainMenuController implements Initializable {
         populateRouteTable(routeTableView, routeTable.getData());
     }
 
-
+    /**
+     * updateAirportTable
+     *
+     * Updates the airport table with data from the database
+     * @throws SQLException
+     */
     public void updateAirportTable() throws SQLException {
         airportTable = new AirportTable(airportService.getData(null, null, null));
         airportTable.createTable();
         populateAirportTable(airportTableView, airportTable.getData());
     }
 
-
+    /**
+     * updateAirlineTable
+     *
+     * Updates the airline table with data from the database
+     * @throws SQLException
+     */
     public void updateAirlineTable() throws SQLException {
         airlineTable = new AirlineTable(airlineService.getData(null, null, null));
         airlineTable.createTable();
         populateAirlineTable(rawAirlineTable, airlineTable.getData());
     }
 
+    /**
+     * updateRouteTable
+     *
+     * Updates the route table with data from the database
+     * @throws SQLException
+     */
     public void updateRouteTable() throws SQLException {
         routeTable = new RouteTable(routeService.getData(null, null, -1, null));
         routeTable.createTable();
         populateRouteTable(routeTableView, routeTable.getData());
     }
 
+
+    /**
+     * updateFlightTable
+     *
+     * Updates the flight table with data from the database
+     * @throws SQLException
+     */
     public void updateFlightTable() throws SQLException {
         flightTable = new FlightTable(flightService.getData(null, null));
         flightTable.createTable();
@@ -1717,8 +2007,11 @@ public class MainMenuController implements Initializable {
     }
 
 
-
-
+    /**
+     * setSearchTableFlights
+     *
+     * Changes all the columns in the search table to match the attributes to of the Flights
+     */
     public void setSearchTableFlights() {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
@@ -1737,7 +2030,11 @@ public class MainMenuController implements Initializable {
         searchTableView.getColumns().addAll(flightIdCol, flightSrcLocationCol, flightSrcAirportCol, flightDstLocationCol, flightDstAirportCol);
     }
 
-
+    /**
+     * setSearchTableAirport
+     *
+     * Changes all the columns in the search table to match the attributes to of the Airports
+     */
     public void setSearchTableAirports() {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
@@ -1752,6 +2049,11 @@ public class MainMenuController implements Initializable {
         searchTableView.getColumns().addAll(airportNameCol, airportCityCol, airportCountryCol);
     }
 
+    /**
+     * setSearchTableAirlines
+     *
+     * Changes all the columns in the search table to match the attributes to of the Airlines
+     */
     public void setSearchTableAirlines() {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
@@ -1768,6 +2070,12 @@ public class MainMenuController implements Initializable {
         searchTableView.getColumns().addAll(airlineNameCol, airlineAliasCol, airlineCountryCol, airlineActiveCol);
     }
 
+
+    /**
+     * setSearchTableRoutes
+     *
+     * Changes all the columns in the search table to match the attributes to of the Routes
+     */
     public void setSearchTableRoutes() {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
@@ -1787,29 +2095,63 @@ public class MainMenuController implements Initializable {
 
     }
 
-
+    /**
+     * onAirportRefreshButton
+     *
+     * Updates the airport table from a button press
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirportRefreshButton(ActionEvent event) throws SQLException {
         updateAirportTable();
     }
 
+    /**
+     * onAirlineRefreshButton
+     *
+     * Updates the airline table from a button press
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirlineRefreshButton(ActionEvent event) throws  SQLException {
         updateAirlineTable();
     }
 
+    /**
+     * onRouteRefreshButton
+     *
+     * Updates the route table from a button press
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onRouteRefreshButton(ActionEvent event) throws  SQLException {
         updateRouteTable();
     }
 
+
+    /**
+     * onFlightRefreshButton
+     *
+     * Updates the flight table from a button press
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onFlightRefreshButton(ActionEvent event) throws  SQLException {
         updateFlightTable();
     }
 
 
-
+    /**
+     * convertCSStringToArrayList
+     *
+     * Converts a comma seperated string to an arraylist of strings
+     * @param string
+     * @return ArrayList of String
+     */
     public ArrayList<String> convertCSStringToArrayList(String string) {
         String[] list = string.split(",");
         ArrayList<String> newList = convertToArrayList(list);
@@ -1825,6 +2167,14 @@ public class MainMenuController implements Initializable {
         return newList;
     }
 
+
+    /**
+     * convertToArrayList
+     *
+     * Converts a primitive array of strings to an arraylist
+     * @param list
+     * @return ArrayList of String
+     */
     public ArrayList<String> convertToArrayList(String[] list) {
         ArrayList<String> result = new ArrayList<>();
         for (String component : list) {
@@ -1833,6 +2183,13 @@ public class MainMenuController implements Initializable {
         return result;
     }
 
+    /**
+     * onModifyAirlineBtnPressed
+     *
+     * Starts the modify airline mode
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void onModifyAirlineBtnPressed(ActionEvent actionEvent) throws SQLException {
         if (rawAirlineTable.getSelectionModel().getSelectedItem() != null) {
             setAirlineUpdateColour(null);
@@ -1845,6 +2202,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * onModifyRouteBtnPressed
+     *
+     * Starts the modify route mode
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void onModifyRouteBtnPressed(ActionEvent actionEvent) throws SQLException {
         if (routeTableView.getSelectionModel().getSelectedItem() != null) {
             setRouteUpdateColour(null);
@@ -1857,6 +2221,14 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onModifyAirportBtnPressed
+     *
+     * Starts the modify airport mode
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void onModifyAirportBtnPressed(ActionEvent actionEvent) throws SQLException {
         if (airportTableView.getSelectionModel().getSelectedItem() != null) {
             setAirportUpdateColour(null);
@@ -1870,10 +2242,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    public void onModifyFlightBtnPressed(ActionEvent actionEvent) {
-
-    }
-
+    /**
+     * setAirportElementsEditable
+     *
+     * Sets the airport TextFields to be editable or not (depending on given bool)
+     * @param bool - boolean
+     */
     public void setAirportElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
                 airportAltitude, airportTimezone, airportDST, airportTZ);
@@ -1881,6 +2255,12 @@ public class MainMenuController implements Initializable {
         setElementsEditable(elementsEditable, bool);
     }
 
+    /**
+     * setAirlineElementsEditable
+     *
+     * Sets the airline TextFields to be editable or not (depending on given bool)
+     * @param bool - boolean
+     */
     public void setAirlineElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
                 airlineActive);
@@ -1888,7 +2268,12 @@ public class MainMenuController implements Initializable {
         setElementsEditable(elementsVisible, bool);
     }
 
-
+    /**
+     * setRouteElementsEditable
+     *
+     * Sets the route TextFields to be editable or not (depending on given bool)
+     * @param bool - boolean
+     */
     public void setRouteElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(routeAirline, routeDepAirport, routeDesAirport,
                 routeCodeshare, routeStops, routeEquip);
@@ -1896,13 +2281,26 @@ public class MainMenuController implements Initializable {
         setElementsEditable(elementsVisible, bool);
     }
 
-
+    /**
+     * setElementsEditable
+     *
+     * Sets the given TextFields to be editable or not (depending on given bool)
+     * @param bool - boolean
+     */
     public void setElementsEditable(ArrayList<TextField> elementsEditable, Boolean bool) {
         for (TextField field : elementsEditable) {
             field.setEditable(bool);
         }
     }
 
+    /**
+     * onAirportSaveBtnPressed
+     *
+     * Saves the airport if the given data if in the right form,
+     * other wise handles errors and prompts user on where they are
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirportSaveBtnPressed(ActionEvent event) throws SQLException {
         airportInvalidFormatLbl.setVisible(false);
@@ -1958,6 +2356,15 @@ public class MainMenuController implements Initializable {
         }
     }
 
+
+    /**
+     * onAirlineSaveBtnPressed
+     *
+     * Saves the airline if the given data if in the right form,
+     * other wise handles errors and prompts user on where they are
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirlineSaveBtnPressed(ActionEvent event) throws SQLException {
         setAirlineUpdateColour(null);
@@ -1999,6 +2406,15 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * onRouteSaveBtnPressed
+     *
+     * Saves the route if the given data if in the right form,
+     * other wise handles errors and prompts user on where they are
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onRouteSaveBtnPressed(ActionEvent event) throws SQLException {
         setRouteUpdateColour(null);
@@ -2042,6 +2458,13 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * setAirportUpdateColour
+     *
+     * Updates the colours of the airport TextFields by the given index
+     * @param index
+     */
     public void setAirportUpdateColour(Integer index) {
         airportInvalidFormatLbl.setVisible(false);
         List<TextField> element = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
@@ -2056,7 +2479,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
-
+    /**
+     * setAirlineUpdateColour
+     *
+     * Updates the colours of the airline TextFields by the given index
+     * @param index
+     */
     public void setAirlineUpdateColour(Integer index) {
         List<TextField> elements = Arrays.asList(airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
                 airlineActive);
@@ -2070,6 +2498,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * setRouteUpdateColour
+     *
+     * Updates the colours of the airline TextFields by the given index
+     * @param index
+     */
     public void setRouteUpdateColour(Integer index) {
         List<TextField> elements = Arrays.asList(routeAirline, routeDepAirport, routeDesAirport,
                 routeCodeshare, routeStops, routeEquip);
@@ -2084,6 +2518,13 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * onAirportCancelBtnPressed
+     *
+     * Cancels current airport modify
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirportCancelBtnPressed(ActionEvent event) throws SQLException {
         airportInvalidFormatLbl.setVisible(false);
@@ -2095,6 +2536,13 @@ public class MainMenuController implements Initializable {
         setAirportUpdateColour(null);
     }
 
+    /**
+     * onAirlineCancelBtnPressed
+     *
+     * Cancels current airline modify
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onAirlineCancelBtnPressed(ActionEvent event) throws SQLException {
         setAirlineElementsEditable(false);
@@ -2105,6 +2553,13 @@ public class MainMenuController implements Initializable {
         setAirlineUpdateColour(null);
     }
 
+    /**
+     * onRouteCancelBtnPressed
+     *
+     * Cancels current route modify
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void onRouteCancelBtnPressed(ActionEvent actionEvent) throws SQLException {
         setRouteElementsEditable(false);
@@ -2115,8 +2570,14 @@ public class MainMenuController implements Initializable {
         setRouteUpdateColour(null);
     }
 
-    
-    
+
+    /**
+     * onAirportDeleteBtnPressed
+     *
+     * Deletes airport that is currently being modified
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void onAirportDeleteBtnPressed(ActionEvent actionEvent) throws SQLException {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
@@ -2143,6 +2604,14 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * onAirlineDeleteBtnPressed
+     *
+     * Deletes airline that is currently being modified
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void onAirlineDeleteBtnPressed(ActionEvent actionEvent) {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         Integer id = Integer.parseInt(airlineID.getText());
@@ -2167,6 +2636,14 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    /**
+     * onRouteDeleteBtnPressed
+     *
+     * Deletes route that is currently being modified
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void onRouteDeleteBtnPressed(ActionEvent actionEvent) {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
@@ -2191,6 +2668,13 @@ public class MainMenuController implements Initializable {
         });
     }
 
+    /**
+     * onFlightDeleteBtnPressed
+     *
+     * Deletes flight that is currently being modified
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onFlightDeleteBtnPressed(ActionEvent event) {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
@@ -2213,6 +2697,14 @@ public class MainMenuController implements Initializable {
         });
     }
 
+
+    /**
+     * handleFlightDeleteEntry
+     *
+     * Handles the delete flight entry by starting delete flight window
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void handleFlightDeleteEntry(ActionEvent actionEvent) throws SQLException {
         // Fetch the selected row
@@ -2237,6 +2729,13 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * handleFlightEditOption
+     *
+     * Handles the flight edit option by starting the flight edit window
+     * @param actionEvent
+     * @throws SQLException
+     */
     @FXML
     public void handleFlightEditOption(ActionEvent actionEvent) throws SQLException {
         // Fetch the selected row
