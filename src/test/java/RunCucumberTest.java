@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
         glue = "scenario",
         plugin = {"pretty", "html:target/cucumber.html"},
         dryRun = false,
-        snippets = CucumberOptions.SnippetType.CAMELCASE)
+        snippets = CucumberOptions.SnippetType.CAMELCASE,
+        publish = true)
 
 public class RunCucumberTest {
 

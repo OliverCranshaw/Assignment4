@@ -32,10 +32,10 @@ public class ReadFileScenario {
     private File airportFile;
     private File flightFile;
     private File routeFile;
-    AirlineService airlineService;
-    AirportService airportService;
-    FlightService flightService;
-    RouteService routeService;
+    private AirlineService airlineService;
+    private AirportService airportService;
+    private FlightService flightService;
+    private RouteService routeService;
 
     @Before
     public void setup() {
