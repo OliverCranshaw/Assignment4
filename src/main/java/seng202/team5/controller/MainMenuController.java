@@ -713,7 +713,6 @@ public class MainMenuController implements Initializable {
         modifyAirportBtn.setDisable(true);
         modifyAirlineBtn.setDisable(true);
         modifyRouteBtn.setDisable(true);
-        modifyFlightBtn.setDisable(true);
 
         // Adding Listeners to all five tables so that the selected Items can be displayed in the single record viewer
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
