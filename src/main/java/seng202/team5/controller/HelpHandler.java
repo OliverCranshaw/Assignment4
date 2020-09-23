@@ -5,10 +5,12 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.*;
@@ -26,7 +28,7 @@ import java.io.IOException;
  * Its only public interface is the startHelp static method.
  */
 public class HelpHandler implements EventHandler<MouseEvent> {
-    private static final String CURSOR_NAME = App.class.getResource("help_cursor.png").toString();
+    private static final Image CURSOR_IMAGE = new Image(App.class.getResource("help_cursor.png").toString());
 
     /**
      * Starts the help session on the given scene.
@@ -34,7 +36,7 @@ public class HelpHandler implements EventHandler<MouseEvent> {
      * @param scene The window where the help is requested
      */
     public static void startHelp(Scene scene) {
-        scene.setCursor(Cursor.cursor(CURSOR_NAME));
+        scene.setCursor(new ImageCursor(CURSOR_IMAGE, CURSOR_IMAGE.getWidth() * (1.0/3.0), CURSOR_IMAGE.getHeight() * (1.0/3.0)));
 
         HelpHandler helpHandler = new HelpHandler(scene);
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, helpHandler);
