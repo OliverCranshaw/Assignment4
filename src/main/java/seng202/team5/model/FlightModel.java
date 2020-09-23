@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.model;
 
 
 import javafx.beans.property.SimpleIntegerProperty;

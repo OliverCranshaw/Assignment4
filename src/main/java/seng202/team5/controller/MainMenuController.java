@@ -16,6 +16,7 @@ import javafx.stage.StageStyle;
 import seng202.team5.App;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
+import seng202.team5.model.*;
 import seng202.team5.table.Search;
 import seng202.team5.data.DataExporter;
 import seng202.team5.service.AirlineService;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static java.lang.Math.abs;
 
@@ -646,8 +646,8 @@ public class MainMenuController implements Initializable {
     private ObservableList<AirportModel> airportModels;
     private ObservableList<RouteModel> routeModels;
     private ObservableList<FlightModel> flightModels;
-    private ObservableList<FlightEntry> flightEntries;
-    private ObservableList<FlightEntry> flightEntriesSearch;
+    private ObservableList<FlightEntryModel> flightEntries;
+    private ObservableList<FlightEntryModel> flightEntriesSearch;
 
 
     /**
@@ -954,7 +954,7 @@ public class MainMenuController implements Initializable {
                 Integer altitude = flightData.getInt(5);
                 Double latitude = flightData.getDouble(6);
                 Double longitude = flightData.getDouble(7);
-                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                FlightEntryModel newEntry = new FlightEntryModel(id, flightId, locationType, location, altitude, latitude, longitude);
                 flightEntries.add(newEntry);
             }
             flightSingleRecordTableView.setItems(flightEntries);
@@ -1057,7 +1057,7 @@ public class MainMenuController implements Initializable {
                 Integer altitude = flightData.getInt(5);
                 Double latitude = flightData.getDouble(6);
                 Double longitude = flightData.getDouble(7);
-                FlightEntry newEntry = new FlightEntry(id, flightId, locationType, location, altitude, latitude, longitude);
+                FlightEntryModel newEntry = new FlightEntryModel(id, flightId, locationType, location, altitude, latitude, longitude);
                 flightEntriesSearch.add(newEntry);
             }
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
@@ -2677,7 +2677,7 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onFlightDeleteBtnPressed(ActionEvent event) {
         ConcreteDeleteData deleter = new ConcreteDeleteData();
-        Integer flight_id = ((FlightEntry) flightSingleRecordTableView.getItems().get(0)).getFlightID();
+        Integer flight_id = ((FlightEntryModel) flightSingleRecordTableView.getItems().get(0)).getFlightID();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Flight");
         alert.setContentText("Delete Flight with flight_ID: " + flight_id + "?");
@@ -2708,7 +2708,7 @@ public class MainMenuController implements Initializable {
     public void handleFlightDeleteEntry(ActionEvent actionEvent) throws SQLException {
         // Fetch the selected row
         ConcreteDeleteData deleter = new ConcreteDeleteData();
-        FlightEntry selectedForDeletion = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+        FlightEntryModel selectedForDeletion = (FlightEntryModel) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
         if (selectedForDeletion != null && selectedForDeletion.getLocationType().equals("APT")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Delete Flight Entry");
@@ -2738,7 +2738,7 @@ public class MainMenuController implements Initializable {
     @FXML
     public void handleFlightEditOption(ActionEvent actionEvent) throws SQLException {
         // Fetch the selected row
-        FlightEntry selectedForEdit = (FlightEntry) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
+        FlightEntryModel selectedForEdit = (FlightEntryModel) flightSingleRecordTableView.getSelectionModel().getSelectedItem();
         if (selectedForEdit != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(App.class.getResource("edit_flight_entry.fxml"));

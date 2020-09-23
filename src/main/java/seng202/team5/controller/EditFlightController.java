@@ -7,8 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import seng202.team5.data.ConcreteUpdateData;
-
-import java.awt.event.ActionEvent;
+import seng202.team5.model.FlightEntryModel;
 
 public class EditFlightController {
 
@@ -25,7 +24,7 @@ public class EditFlightController {
     @FXML
     private TextField longitudeField;
 
-    private FlightEntry currFlightEntry;
+    private FlightEntryModel currFlightEntryModel;
 
 
     /**
@@ -39,7 +38,7 @@ public class EditFlightController {
     public void submitBtnPressed(javafx.event.ActionEvent event) {
         setDefaults();
         ConcreteUpdateData updater = new ConcreteUpdateData();
-        int id = currFlightEntry.getID();
+        int id = currFlightEntryModel.getID();
         if (locationTypeField.getText().equals("APT") && locationTypeField.isEditable()) {
             locationTypeField.setStyle("-fx-border-color: #ff0000;");
         } else {
@@ -111,21 +110,21 @@ public class EditFlightController {
      * inflateUI
      *
      * Populates the TextFields with the current values
-     * @param flightEntry - flightEntry being modified
+     * @param flightEntryModel - flightEntry being modified
      */
-    public void inflateUI(FlightEntry flightEntry) {
-        currFlightEntry = flightEntry;
-        String ids = String.format("ID: %d    FlightID: %d", flightEntry.getID(), flightEntry.getFlightID());
+    public void inflateUI(FlightEntryModel flightEntryModel) {
+        currFlightEntryModel = flightEntryModel;
+        String ids = String.format("ID: %d    FlightID: %d", flightEntryModel.getID(), flightEntryModel.getFlightID());
         flightIDsLabel.setText(ids);
-        locationTypeField.setText(flightEntry.getLocationType());
-        if(flightEntry.getLocationType().equals("APT")) {
+        locationTypeField.setText(flightEntryModel.getLocationType());
+        if(flightEntryModel.getLocationType().equals("APT")) {
             locationTypeField.setEditable(false);
             locationField.setEditable(false);
         }
-        locationField.setText(flightEntry.getLocation());
-        altitudeField.setText(String.valueOf(flightEntry.getAltitude()));
-        latitudeField.setText(String.valueOf(flightEntry.getLatitude()));
-        longitudeField.setText(String.valueOf(flightEntry.getLongitude()));
+        locationField.setText(flightEntryModel.getLocation());
+        altitudeField.setText(String.valueOf(flightEntryModel.getAltitude()));
+        latitudeField.setText(String.valueOf(flightEntryModel.getLatitude()));
+        longitudeField.setText(String.valueOf(flightEntryModel.getLongitude()));
     }
 
     /**
