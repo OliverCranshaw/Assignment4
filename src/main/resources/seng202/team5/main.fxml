@@ -1268,16 +1268,11 @@
                                           <Insets left="443.0" />
                                        </FlowPane.margin>
                                        <properties helpText="Refresh the flight table contents" /></Button>
-                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" styleClass="general-button" text="Download">
+                                    <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" onAction="#onDownloadFlightsPressed" styleClass="general-button" text="Download">
                                        <properties helpText="Press to download all the airport data currently in the database to a CSV file" />
                                        <FlowPane.margin>
                                           <Insets left="3.0" />
                                        </FlowPane.margin></Button>
-                                    <Button alignment="CENTER" mnemonicParsing="false" styleClass="main-row-button" text="Add Flight">
-                                       <FlowPane.margin>
-                                          <Insets left="303.0" />
-                                       </FlowPane.margin>
-                                    </Button>
                                     <Button fx:id="flightDeleteBtn" mnemonicParsing="false" onAction="#onFlightDeleteBtnPressed" styleClass="main-row-button" text="Delete Flight">
                                        <properties helpText="Deletes the selected flight" />
                                        <FlowPane.margin>
