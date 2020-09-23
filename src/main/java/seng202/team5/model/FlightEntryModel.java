@@ -1,10 +1,10 @@
-package seng202.team5.controller;
+package seng202.team5.model;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class FlightEntry {
+public class FlightEntryModel {
 
     private SimpleIntegerProperty ID;
     private SimpleIntegerProperty flightID;
@@ -14,7 +14,7 @@ public class FlightEntry {
     private SimpleDoubleProperty latitude;
     private SimpleDoubleProperty longitude;
 
-    public FlightEntry(Integer id, Integer flightID, String locationType, String location, Integer altitude, double latitude, double longitude) {
+    public FlightEntryModel(Integer id, Integer flightID, String locationType, String location, Integer altitude, double latitude, double longitude) {
         this.ID = new SimpleIntegerProperty(id);
         this.flightID = new SimpleIntegerProperty(flightID);
         this.locationType = new SimpleStringProperty(locationType);
