@@ -27,10 +27,10 @@ public class AirportModel {
         airportService = new AirportService();
         try {
             int incRoutes = airportService.getIncRouteCount(id);
+            int outRoutes = airportService.getOutRouteCount(id);
             noIncRoutes = new SimpleIntegerProperty((incRoutes == -1) ? 0 : incRoutes);
-            noOutRoutes = new SimpleIntegerProperty();
-        } catch (SQLException e) {
-        }
+            noOutRoutes = new SimpleIntegerProperty((outRoutes == -1) ? 0 : outRoutes);
+        } catch (SQLException e) { }
     }
 
     public int getNoIncRoutes() {

@@ -333,9 +333,11 @@ public class AirportService implements Service {
      * @param id int id of the airport being queried
      * @return Integer - The count of how many outgoing routes the given airport has
      */
-    public int getOutRouteCount(int id) {
+    public int getOutRouteCount(int id) throws SQLException {
         Integer result = -1;
-        //result = accessor.getOutgoingRoutes(id);
+        if (getData(id).next()) {
+            result = accessor.getOutgoingRoutes(id);
+        }
         return result;
     }
 

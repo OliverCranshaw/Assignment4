@@ -358,4 +358,53 @@ public class AirportServiceTest extends BaseDatabaseTest {
         assertEquals(-1, nonExistingData);
     }
 
+
+    public void testGetOutRouteCount() throws SQLException {
+
+        Connection dbHandler = DBConnection.getConnection();
+        RouteService routeService = new RouteService();
+        AirlineService airlineService = new AirlineService();
+
+        // Adding a couple airports in order to be able to test routes between them
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < testData.size(); j++) {
+            stmt.setObject(j + 1, testData.get(j));
+        }
+        stmt.executeUpdate();
+
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        List<Object> testData2 = List.of("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "CHCH", 43.5321, 172.6396, 20, 12, "Z", "Pacific/Auckland");
+        for (int i = 0; i < testData2.size(); i++) {
+            stmt2.setObject(i+1, testData2.get(i));
+        }
+        stmt2.executeUpdate();
+
+
+        // Adding an airline for the routes to use
+        airlineService.save("Air New Zealand", "ANZ", "NZ", "ANZ", "AIRNEWZEALAND", "New Zealand", "Y");
+        // Adding routes between the two airports
+        routeService.save("NZ", "IAT", "CHC", "Y", 3, "GPS");
+        routeService.save("NZ", "IAT", "CHC", "N", 0, "GPS CK2");
+
+
+        int outgoingRoutesCount1 = airportService.getOutRouteCount(2);
+        int outgoingRoutesCount2 = airportService.getOutRouteCount(1);
+        int nonExistingData = airportService.getOutRouteCount(5);
+        assertEquals(0, outgoingRoutesCount1);
+        assertEquals(2, outgoingRoutesCount2);
+        assertEquals(-1, nonExistingData);
+
+
+    }
+
+
+
+
+
 }
