@@ -1,7 +1,5 @@
 package seng202.team5.table;
 
-import seng202.team5.database.DBConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 

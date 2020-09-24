@@ -1,14 +1,7 @@
 package seng202.team5.table;
 
-import seng202.team5.accessor.AirlineAccessor;
-import seng202.team5.database.DBConnection;
-import seng202.team5.service.AirlineService;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * AirlineTable
