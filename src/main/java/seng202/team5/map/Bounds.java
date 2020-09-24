@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Bounds is an object that represents a rectangular region between two points on the world map.
+ * It starts from the "southwest" point then covers all the space going northeast to the "northeast" point.
+ */
 public class Bounds {
     public final Coord southwest;
     public final Coord northeast;
 
+    /**
+     * Creates the smallest bounds object that contains the given coordinates
+     *
+     * @param coordinates A list of at least 2 coordinates
+     * @return Bound that contains all the input coordinates
+     */
     public static Bounds fromCoordinateList(List<Coord> coordinates) {
         if (coordinates.size() < 2) {
             throw new RuntimeException("Coordinate list with too few coordinates");
@@ -46,12 +56,34 @@ public class Bounds {
         return new Bounds(southern, western, northern, eastern);
     }
 
+    /**
+     * The bounds constructor
+     *
+     * @param southwest The southwestern most point within this bounds
+     * @param northeast The northeastern most point within this bounds
+     */
     public Bounds(Coord southwest, Coord northeast) {
         this.southwest = southwest;
         this.northeast = northeast;
     }
 
+    /**
+     * The bounds constructor
+     *
+     * @param southern Southern most latitude of this bounds
+     * @param western Western most longitude of this bounds
+     * @param northern Northern most latitude of this bounds
+     * @param eastern Eastern most longitude of this bounds
+     */
     public Bounds(double southern, double western, double northern, double eastern) {
         this(new Coord(southern, western), new Coord(northern, eastern));
+    }
+
+    @Override
+    public String toString() {
+        return "Bounds{" +
+                "southwest=" + southwest +
+                ", northeast=" + northeast +
+                '}';
     }
 }
