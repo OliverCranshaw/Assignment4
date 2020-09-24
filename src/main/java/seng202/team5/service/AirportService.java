@@ -311,4 +311,33 @@ public class AirportService implements Service {
             }
         }
     }
+
+    /**
+     * Gets the count of incoming routes for the given airport ID
+     *
+     * @param id int id of the airport being queried
+     * @return Integer - The count of how many incoming routes the given airport has
+     */
+    public int getIncRouteCount(int id) throws SQLException {
+        int result = -1;
+        if (getData(id).next()) {
+            result = accessor.getIncomingRoutes(id);
+        }
+        return result;
+    }
+
+
+    /**
+     * Gets the count of outgoing routes for the given airport ID
+     *
+     * @param id int id of the airport being queried
+     * @return Integer - The count of how many outgoing routes the given airport has
+     */
+    public int getOutRouteCount(int id) {
+        Integer result = -1;
+        //result = accessor.getOutgoingRoutes(id);
+        return result;
+    }
+
+
 }

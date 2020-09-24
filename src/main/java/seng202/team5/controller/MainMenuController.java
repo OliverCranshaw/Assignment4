@@ -392,9 +392,6 @@ public class MainMenuController implements Initializable {
     private Button modifyRouteBtn;
 
     @FXML
-    private Button modifyFlightBtn;
-
-    @FXML
     private Button airportSaveBtn;
 
     @FXML
@@ -631,6 +628,12 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button flightDeleteBtn;
 
+    @FXML
+    private TableColumn airportIncRoutesCol;
+
+    @FXML
+    private TableColumn airportOutRoutesCol;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -672,6 +675,8 @@ public class MainMenuController implements Initializable {
         airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
         airportCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirportCountry"));
+        airportIncRoutesCol.setCellValueFactory(new PropertyValueFactory<>("NoIncRoutes"));
+        airportOutRoutesCol.setCellValueFactory(new PropertyValueFactory<>("NoOutRoutes"));
 
         // Setting the cell value factories for the route table
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
@@ -2040,12 +2045,16 @@ public class MainMenuController implements Initializable {
         TableColumn<AirportModel, String> airportNameCol = new TableColumn<>("Name");
         TableColumn<AirportModel, String> airportCityCol = new TableColumn<>("City");
         TableColumn<AirportModel, String> airportCountryCol = new TableColumn<>("Country");
+        TableColumn<AirportModel, Integer> airportIncRoutesCol = new TableColumn<>("No. Incoming Routes");
+        TableColumn<AirportModel, Integer> airportOutRoutesCol = new TableColumn<>("No. Outgoing Routes");
 
         airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
         airportCountryCol.setCellValueFactory(new PropertyValueFactory<>("AirportCountry"));
+        airportIncRoutesCol.setCellValueFactory(new PropertyValueFactory<>("NoIncRoutes"));
+        airportOutRoutesCol.setCellValueFactory(new PropertyValueFactory<>("NoOutRoutes"));
 
-        searchTableView.getColumns().addAll(airportNameCol, airportCityCol, airportCountryCol);
+        searchTableView.getColumns().addAll(airportNameCol, airportCityCol, airportCountryCol, airportIncRoutesCol, airportOutRoutesCol);
     }
 
     /**

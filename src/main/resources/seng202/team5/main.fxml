@@ -567,6 +567,8 @@
                                           <TableColumn fx:id="airportNameCol" prefWidth="75.0" text="Name" />
                                           <TableColumn fx:id="airportCityCol" prefWidth="75.0" text="City" />
                                           <TableColumn fx:id="airportCountryCol" prefWidth="75.0" text="Country" />
+                                          <TableColumn fx:id="airportIncRoutesCol" prefWidth="75.0" text="No. Incoming Routes" />
+                                          <TableColumn fx:id="airportOutRoutesCol" prefWidth="75.0" text="No. Outgoing routes" />
                                        </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
