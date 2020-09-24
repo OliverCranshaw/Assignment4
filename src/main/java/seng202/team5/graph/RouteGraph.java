@@ -47,11 +47,13 @@ public class RouteGraph implements GraphBuilder { // pie chart
         pieChartData.sort(pieChartDataComparator.reversed());
         ObservableList<PieChart.Data> toReturn = FXCollections.observableArrayList(pieChartData.subList(0, 15));
         List<PieChart.Data> other = pieChartData.subList(15, pieChartData.size() - 1);
+        Integer num = 0;
         double count = 0;
         for (PieChart.Data data : other) {
             count = count + data.getPieValue();
+            num++;
         }
-        toReturn.add(new PieChart.Data("Other", count));
+        toReturn.add(new PieChart.Data("Other (" + num.toString() + ")", count));
 
 
         return toReturn;

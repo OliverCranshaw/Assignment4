@@ -27,6 +27,10 @@ public class PieChartController extends Application {
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
     private PieChart chart;
     private PieChart.Data selectedData;
+    private final Integer MIN = 0;
+    private final Integer MAX = 16777215;
+
+
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -49,6 +53,8 @@ public class PieChartController extends Application {
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
+
+
 
 
         for (final PieChart.Data segment : chart.getData()) {
@@ -76,4 +82,6 @@ public class PieChartController extends Application {
             node.setStyle("");
         });
     }
+
+
 }

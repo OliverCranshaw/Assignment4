@@ -2779,7 +2779,7 @@ public class MainMenuController implements Initializable {
     public void onGraphRouteBtnPressed(ActionEvent event) throws Exception {
 
         PieChartController controller = new PieChartController();
-        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes");
+        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes (Top 16)");
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }
