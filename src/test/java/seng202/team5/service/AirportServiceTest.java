@@ -361,6 +361,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
     @Test
     public void testGetOutRouteCount() throws SQLException {
 
+
         Connection dbHandler = DBConnection.getConnection();
         RouteService routeService = new RouteService();
         AirlineService airlineService = new AirlineService();
