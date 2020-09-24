@@ -97,6 +97,14 @@ public class MapView extends VBox {
     }
 
     /**
+     * Ensures that this map view will fit the given bounds
+     *
+     * @param bounds Bounds to fit to
+     * @param padding Extra padding to the given bounds
+     */
+    public void fitBounds(Bounds bounds, double padding) { callFunction("fitBounds", bounds, padding); }
+
+    /**
      * Adds a marker to the map with the given name and coordinate
      *
      * @param coord New marker coordinate
@@ -158,6 +166,9 @@ public class MapView extends VBox {
         if (object instanceof Coord) {
             Coord coord = (Coord)object;
             return String.format("{lat:%f,lng:%f}", coord.latitude, coord.longitude);
+        } if (object instanceof Bounds) {
+            Bounds bounds = (Bounds) object;
+            return String.format("{south:%f,west:%f,north:%f,east:%f}", bounds.southwest.latitude, bounds.southwest.longitude, bounds.northeast.latitude, bounds.northeast.longitude);
         } if (object instanceof String) {
             // Removes special characters
             String cleaned = ((String) object).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");

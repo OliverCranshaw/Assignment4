@@ -41,6 +41,10 @@
         map.setZoom(level);
     }
 
+    function fitBounds(bounds, padding) {
+        map.fitBounds(bounds, padding);
+    }
+
     function addMarker(latitude, longitude, title) {
         markers[currentMarkerID] = new google.maps.Marker({
             position: {lat: latitude, lng: longitude},
