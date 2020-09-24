@@ -41,14 +41,10 @@ public class MapView extends VBox {
             assert false;
         }
 
-        webView.setMaxHeight(Double.POSITIVE_INFINITY);
-        webView.setMaxWidth(Double.POSITIVE_INFINITY);
+        webView.prefHeightProperty().bind(this.heightProperty());
+        webView.prefWidthProperty().bind(this.widthProperty());
 
         this.getChildren().add(webView);
-    }
-
-    public WebView getWebView() {
-        return webView;
     }
 
     /**

@@ -638,18 +638,12 @@ public class MainMenuController implements Initializable {
     private Button flightDeleteBtn;
 
     @FXML
-    private AnchorPane searchMapViewHolder;
-
     private MapView searchMapView;
 
     @FXML
-    private AnchorPane airportMapViewHolder;
-
     private  MapView airportMapView;
 
     @FXML
-    private AnchorPane airlineMapViewHolder;
-
     private  MapView airlineMapView;
 
     private DataExporter dataExporter;
@@ -681,55 +675,31 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //Setting all map sub scenes to a zoomed out map view.
-        try {
-            searchMapView = new MapView();
-            searchMapView.addLoadListener((obs, oldState, newState) -> {
-                if (newState == Worker.State.SUCCEEDED) {
-                    // new page has loaded, process:
-                    searchMapView.setCentre(0, 0);
-                    searchMapView.setZoom(2);
-                    searchMapView.getWebView().prefHeightProperty().bind(searchMapViewHolder.heightProperty());
-                    searchMapView.getWebView().prefWidthProperty().bind(searchMapViewHolder.widthProperty());
-                }
-            });
-            searchMapViewHolder.getChildren().add(searchMapView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+         searchMapView.addLoadListener((obs, oldState, newState) -> {
+             if (newState == Worker.State.SUCCEEDED) {
+                 // new page has loaded, process:
+                 searchMapView.setCentre(0, 0);
+                 searchMapView.setZoom(2);
+             }
+         });
 
-        try {
-            airportMapView = new MapView();
-            airportMapView.addLoadListener((obs, oldState, newState) -> {
-                if (newState == Worker.State.SUCCEEDED) {
-                    // new page has loaded, process:
-                    airportMapView.setCentre(0, 0);
-                    airportMapView.setZoom(2);
-                    airportMapView.getWebView().prefHeightProperty().bind(airportMapViewHolder.heightProperty());
-                    airportMapView.getWebView().prefWidthProperty().bind(airportMapViewHolder.widthProperty());
+        airportMapView.addLoadListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                // new page has loaded, process:
+                airportMapView.setCentre(0, 0);
+                airportMapView.setZoom(2);
+            }
+        });
 
-                }
-            });
-            airportMapViewHolder.getChildren().add(airportMapView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        airlineMapView.addLoadListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                // new page has loaded, process:
+                airlineMapView.setCentre(0, 0);
+                airlineMapView.setZoom(2);
+            }
+        });
 
-        try {
-            airlineMapView = new MapView();
-            airlineMapView.addLoadListener((obs, oldState, newState) -> {
-                if (newState == Worker.State.SUCCEEDED) {
-                    // new page has loaded, process:
-                    airlineMapView.setCentre(0, 0);
-                    airlineMapView.setZoom(2);
-                    airlineMapView.getWebView().prefHeightProperty().bind(airlineMapViewHolder.heightProperty());
-                    airlineMapView.getWebView().prefWidthProperty().bind(airlineMapViewHolder.widthProperty());
 
-                }
-            });
-            airlineMapViewHolder.getChildren().add(airlineMapView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         // Setting the cell value factories for the airline table
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<>("AirlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<>("AirlineAlias"));
@@ -1097,7 +1067,6 @@ public class MainMenuController implements Initializable {
         if (airportModel == null) {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
-
         } else {
             ResultSet airportData = airportService.getData(airportModel.getId());
             setLabels(airportData, elementsVisible);
@@ -1106,7 +1075,6 @@ public class MainMenuController implements Initializable {
             airportMapView.addMarker(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), airportName.getText());
             airportMapView.setCentre(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()));
             airportMapView.setZoom(11);
-
         }
     }
 
