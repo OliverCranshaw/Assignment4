@@ -25,7 +25,6 @@ import java.util.List;
  */
 public class MapView extends VBox {
     private WebView webView;
-
     /**
      * The MapView constructor
      *
@@ -42,11 +41,14 @@ public class MapView extends VBox {
             assert false;
         }
 
-
         webView.setMaxHeight(Double.POSITIVE_INFINITY);
         webView.setMaxWidth(Double.POSITIVE_INFINITY);
 
         this.getChildren().add(webView);
+    }
+
+    public WebView getWebView() {
+        return webView;
     }
 
     /**

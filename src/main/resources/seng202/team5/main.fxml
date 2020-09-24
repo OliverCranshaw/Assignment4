@@ -452,7 +452,7 @@
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                                        <AnchorPane fx:id="searchMapViewHolder" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
                                       </items>
                                        <FlowPane.margin>
                                           <Insets left="40.0" />
@@ -706,7 +706,7 @@
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                                        <AnchorPane fx:id="airportMapViewHolder" minHeight="0.0" minWidth="0.0" styleClass="map" />
                                       </items>
                                        <FlowPane.margin>
                                           <Insets left="40.0" />
@@ -940,7 +940,7 @@
                                                 </Button>
                                              </children>
                                           </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                                        <AnchorPane fx:id="airlineMapViewHolder" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
                                       </items>
                                        <FlowPane.margin>
                                           <Insets left="40.0" />
