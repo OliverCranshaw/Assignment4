@@ -358,7 +358,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         assertEquals(-1, nonExistingData);
     }
 
-
+    @Test
     public void testGetOutRouteCount() throws SQLException {
 
         Connection dbHandler = DBConnection.getConnection();
