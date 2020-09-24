@@ -366,6 +366,29 @@ public class AirportAccessor implements Accessor {
         return id;
     }
 
+    /**
+     * Gets the number of outgoing routes that contain the airport.
+     *
+     * @param id int airport_id.
+     *
+     * @return int number of routes.
+     */
+    public int getOutgoingRoutes(int id) {
+        int result = -1;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE source_airport_id = ?");
+            stmt.setObject(1, id);
+
+            result = stmt.executeQuery().getInt(1);
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to retrieve number of routes.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
 
     /**
      * Gets the number of incoming routes that contain the airport.
@@ -382,7 +405,6 @@ public class AirportAccessor implements Accessor {
             stmt.setObject(1, id);
 
             result = stmt.executeQuery().getInt(1);
-            System.out.println(result);
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
