@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class AirportServiceTest extends BaseDatabaseTest {
 
     private AirportService airportService;
@@ -37,8 +39,8 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
         stmt.executeUpdate();
 
-        Assert.assertEquals(0, airportService.update(10, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
-        Assert.assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        assertEquals(0, airportService.update(10, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
+        assertEquals(1, airportService.update(1, "Namey", "Cityy", "Countryy", "IAC", "ICAA", 1.0, 2.0, 3, 4.0f, "E", "Sometime/Someplace"));
     }
 
 
@@ -94,7 +96,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                             if (cell instanceof Float) {
                                 cell = (double)((Float)cell);
                             }
-                            Assert.assertEquals(combination, cell, resultSet.getObject(2 + i));
+                            assertEquals(combination, cell, resultSet.getObject(2 + i));
                         }
                     }
                     Assert.assertFalse(combination, resultSet.next());
@@ -125,7 +127,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
             // Executes the insert operation, sets the result to the airport_id of the new airport
             int changes = stmt.executeUpdate();
-            Assert.assertEquals(1, changes);
+            assertEquals(1, changes);
 
             // Gets the airport ID
             ResultSet rs = stmt.getGeneratedKeys();
@@ -143,7 +145,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
             Assert.assertTrue(resultSet.next());
 
             // Check name
-            Assert.assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
+            assertEquals(testData.get(0) + String.valueOf(i), resultSet.getObject(2));
 
             // Check rest of the entry
             for (int j = 1; j<testData.size(); j++) {
@@ -151,7 +153,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 if (cell instanceof Float) {
                     cell = (double)((Float)cell);
                 }
-                Assert.assertEquals(cell, resultSet.getObject(2 + j));
+                assertEquals(cell, resultSet.getObject(2 + j));
             }
 
             // Check there are no more than 1 result
@@ -201,7 +203,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 if (cell instanceof Float) {
                     cell = (double)((Float)cell);
                 }
-                Assert.assertEquals(cell, resultSet.getObject(2 + i));
+                assertEquals(cell, resultSet.getObject(2 + i));
             }
 
             // Check there are no more than 1 result
@@ -267,7 +269,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
             stmt.executeUpdate();
 
             // Checks maximum ID against expected value
-            Assert.assertEquals(i + 1, airportService.getMaxID());
+            assertEquals(i + 1, airportService.getMaxID());
         }
     }
 
@@ -309,7 +311,100 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Assert.assertFalse(airportService.dataExists("IAT"));
         Assert.assertFalse(airportService.dataExists("ICAO"));
 
-        Assert.assertEquals(0, flightService.getMaxID());
+        assertEquals(0, flightService.getMaxID());
     }
+
+
+    @Test
+    public void testGetIncRouteCount() throws SQLException {
+
+        Connection dbHandler = DBConnection.getConnection();
+        RouteService routeService = new RouteService();
+        AirlineService airlineService = new AirlineService();
+
+        // Adding a couple airports in order to be able to test routes between them
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < testData.size(); j++) {
+            stmt.setObject(j + 1, testData.get(j));
+        }
+        stmt.executeUpdate();
+
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        List<Object> testData2 = List.of("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "CHCH", 43.5321, 172.6396, 20, 12, "Z", "Pacific/Auckland");
+        for (int i = 0; i < testData2.size(); i++) {
+            stmt2.setObject(i+1, testData2.get(i));
+        }
+        stmt2.executeUpdate();
+
+
+        // Adding an airline for the routes to use
+        airlineService.save("Air New Zealand", "ANZ", "NZ", "ANZ", "AIRNEWZEALAND", "New Zealand", "Y");
+        // Adding routes between the two airports
+        routeService.save("NZ", "IAT", "CHC", "Y", 3, "GPS");
+        routeService.save("NZ", "IAT", "CHC", "N", 0, "GPS CK2");
+
+
+        int incomingRoutesCount1 = airportService.getIncRouteCount(2);
+        int incomingRoutesCount2 = airportService.getIncRouteCount(1);
+        int nonExistingData = airportService.getIncRouteCount(5);
+        assertEquals(2, incomingRoutesCount1);
+        assertEquals(0, incomingRoutesCount2);
+        assertEquals(-1, nonExistingData);
+    }
+
+    @Test
+    public void testGetOutRouteCount() throws SQLException {
+
+        Connection dbHandler = DBConnection.getConnection();
+        RouteService routeService = new RouteService();
+        AirlineService airlineService = new AirlineService();
+
+        // Adding a couple airports in order to be able to test routes between them
+        PreparedStatement stmt = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        for (int j = 0; j < testData.size(); j++) {
+            stmt.setObject(j + 1, testData.get(j));
+        }
+        stmt.executeUpdate();
+
+        PreparedStatement stmt2 = dbHandler.prepareStatement(
+                "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                        + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        List<Object> testData2 = List.of("Christchurch Intl", "Christchurch", "New Zealand", "CHC", "CHCH", 43.5321, 172.6396, 20, 12, "Z", "Pacific/Auckland");
+        for (int i = 0; i < testData2.size(); i++) {
+            stmt2.setObject(i+1, testData2.get(i));
+        }
+        stmt2.executeUpdate();
+
+
+        // Adding an airline for the routes to use
+        airlineService.save("Air New Zealand", "ANZ", "NZ", "ANZ", "AIRNEWZEALAND", "New Zealand", "Y");
+        // Adding routes between the two airports
+        routeService.save("NZ", "IAT", "CHC", "Y", 3, "GPS");
+        routeService.save("NZ", "IAT", "CHC", "N", 0, "GPS CK2");
+
+
+        int outgoingRoutesCount1 = airportService.getOutRouteCount(2);
+        int outgoingRoutesCount2 = airportService.getOutRouteCount(1);
+        int nonExistingData = airportService.getOutRouteCount(5);
+        assertEquals(0, outgoingRoutesCount1);
+        assertEquals(2, outgoingRoutesCount2);
+        assertEquals(-1, nonExistingData);
+
+
+    }
+
+
+
+
 
 }

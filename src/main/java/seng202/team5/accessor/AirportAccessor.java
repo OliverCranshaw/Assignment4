@@ -355,8 +355,8 @@ public class AirportAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement("SELECT MAX(airport_id) FROM AIRPORT_DATA");
             // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
             ResultSet result = stmt.executeQuery();
-            id = result.getInt(1);
 
+            id = result.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
             System.out.println("Unable to get maximum id.");
@@ -364,5 +364,53 @@ public class AirportAccessor implements Accessor {
         }
 
         return id;
+    }
+
+    /**
+     * Gets the number of outgoing routes that contain the airport.
+     *
+     * @param id int airport_id.
+     *
+     * @return int number of routes.
+     */
+    public int getOutgoingRoutes(int id) {
+        int result = -1;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE source_airport_id = ?");
+            stmt.setObject(1, id);
+
+            result = stmt.executeQuery().getInt(1);
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to retrieve number of routes.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
+     * Gets the number of incoming routes that contain the airport.
+     *
+     * @param id int airport_id.
+     *
+     * @return int number of routes.
+     */
+    public int getIncomingRoutes(int id) {
+        int result = -1;
+
+        try {
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE destination_airport_id = ?");
+            stmt.setObject(1, id);
+
+            result = stmt.executeQuery().getInt(1);
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to retrieve number of routes.");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
     }
 }

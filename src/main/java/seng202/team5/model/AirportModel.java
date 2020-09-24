@@ -1,9 +1,11 @@
 package seng202.team5.model;
 
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import seng202.team5.service.AirportService;
 
-
+import java.sql.SQLException;
 
 
 public class AirportModel {
@@ -12,6 +14,9 @@ public class AirportModel {
     private SimpleStringProperty airportCity;
     private SimpleStringProperty airportCountry;
     private Integer id;
+    private SimpleIntegerProperty noIncRoutes;
+    private SimpleIntegerProperty noOutRoutes;
+    AirportService airportService;
 
 
     public AirportModel(String name, String city, String country, Integer id) {
@@ -19,6 +24,30 @@ public class AirportModel {
         this.airportCity = new SimpleStringProperty(city);
         this.airportCountry = new SimpleStringProperty(country);
         this.id = id;
+        airportService = new AirportService();
+        try {
+            int incRoutes = airportService.getIncRouteCount(id);
+            int outRoutes = airportService.getOutRouteCount(id);
+            noIncRoutes = new SimpleIntegerProperty((incRoutes == -1) ? 0 : incRoutes);
+            noOutRoutes = new SimpleIntegerProperty((outRoutes == -1) ? 0 : outRoutes);
+        } catch (SQLException e) { }
+    }
+
+    public int getNoIncRoutes() {
+        return noIncRoutes.get();
+    }
+
+
+    public void setNoIncRoutes(int noIncRoutes) {
+        this.noIncRoutes.set(noIncRoutes);
+    }
+
+    public int getNoOutRoutes() {
+        return noOutRoutes.get();
+    }
+
+    public void setNoOutRoutes(int noOutRoutes) {
+        this.noOutRoutes.set(noOutRoutes);
     }
 
     public String getAirportCity() {
