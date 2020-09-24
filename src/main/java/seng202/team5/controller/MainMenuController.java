@@ -8,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -28,11 +31,13 @@ import seng202.team5.table.AirportTable;
 import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -633,6 +638,9 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private TableColumn airportOutRoutesCol;
+
+    @FXML
+    private Button graphRouteBtn;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
@@ -2765,4 +2773,18 @@ public class MainMenuController implements Initializable {
         }
         updateAirportTable();
     }
+
+
+    @FXML
+    public void onGraphRouteBtnPressed(ActionEvent event) throws Exception {
+
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes");
+        controller.inflateChart(routeTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+
+
+
 }

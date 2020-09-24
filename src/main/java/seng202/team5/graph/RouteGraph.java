@@ -1,7 +1,10 @@
 package seng202.team5.graph;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
+
+import java.util.*;
 
 public class RouteGraph implements GraphBuilder { // pie chart
 
@@ -12,14 +15,16 @@ public class RouteGraph implements GraphBuilder { // pie chart
         this.data = data;
     }
 
-    public void buildGraph() {
+    public ObservableList<PieChart.Data> buildGraph(String selection) {
+        this.selection = selection;
         switch (selection) {
-            case "":
-                break;
+            case "RouteEquipment":
+                return routeEquipmentGraph();
         }
+        return null;
     }
 
-    public void routeEquipmentGraph() {
+    public ObservableList<PieChart.Data> routeEquipmentGraph() {
         Hashtable<String, Integer> equipmentCounts = new Hashtable<String, Integer>();
         for (ArrayList<Object> route : data) {
             ArrayList<String> equipment = (ArrayList<String>) route.get(9);
@@ -31,11 +36,30 @@ public class RouteGraph implements GraphBuilder { // pie chart
                 }
             }
         }
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (String equip : equipmentCounts.keySet()) {
+            pieChartData.add(new PieChart.Data(equip, equipmentCounts.get(equip)));
+        }
 
 
+        Comparator<PieChart.Data> pieChartDataComparator = Comparator.comparing(PieChart.Data::getPieValue);
+
+        pieChartData.sort(pieChartDataComparator.reversed());
+        ObservableList<PieChart.Data> toReturn = FXCollections.observableArrayList(pieChartData.subList(0, 15));
+        List<PieChart.Data> other = pieChartData.subList(15, pieChartData.size() - 1);
+        double count = 0;
+        for (PieChart.Data data : other) {
+            count = count + data.getPieValue();
+        }
+        toReturn.add(new PieChart.Data("Other", count));
+
+
+        return toReturn;
     }
 
     public void setSelection(String selection) {
         this.selection = selection;
     }
+
+
 }
