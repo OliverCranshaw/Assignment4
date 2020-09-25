@@ -20,7 +20,13 @@ public class RouteGraph implements GraphBuilder { // pie chart
         switch (selection) {
             case "RouteEquipment":
                 return routeEquipmentGraph();
+            case "RouteAirline":
+                return routeAirlineGraph();
         }
+        return null;
+    }
+
+    private ObservableList<PieChart.Data> routeAirlineGraph() {
         return null;
     }
 
@@ -58,6 +64,12 @@ public class RouteGraph implements GraphBuilder { // pie chart
 
         return toReturn;
     }
+
+
+
+
+
+
 
     public void setSelection(String selection) {
         this.selection = selection;

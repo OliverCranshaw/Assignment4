@@ -227,4 +227,19 @@ public class RouteService implements Service {
     public int getMaxID() {
         return accessor.getMaxID();
     }
+
+
+    public ArrayList<Integer> getAirlinesCoveringRoute(Integer srcId, Integer dstId, Boolean includeInactive) throws SQLException {
+        ArrayList<Integer> current = accessor.getAirlinesCovering(srcId, dstId);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer airlineId : current) {
+            ResultSet airlineInfo = airlineAccessor.getData(airlineId);
+            if (airlineInfo.getString(8).equals("Y") || includeInactive) {
+                result.add(airlineId);
+            }
+        }
+        return result;
+    }
+
+
 }

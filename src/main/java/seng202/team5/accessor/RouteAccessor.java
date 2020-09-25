@@ -2,6 +2,7 @@ package seng202.team5.accessor;
 
 import seng202.team5.database.DBConnection;
 
+import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -345,4 +346,34 @@ public class RouteAccessor implements Accessor {
 
         return id;
     }
+
+
+    /**
+     * Gets the ids of all airlines that cover the given route id
+     * @param srcId - Id of a source airport
+     * @param dstId - Id or a destination airport
+     * @return ArrayList of Integer - Id's of airlines that cover the given route
+     */
+    public ArrayList<Integer> getAirlinesCovering(Integer srcId, Integer dstId) {
+        ArrayList<Integer> result = new ArrayList<>();
+        try {
+            String query = "SELECT airline_id FROM ROUTE_DATA WHERE source_airport_id = ? and destination_airport_id = ?";
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            stmt.setObject(1, srcId);
+            stmt.setObject(2, dstId);
+            ResultSet data = stmt.executeQuery();
+            while (data.next()) {
+                Integer id = data.getInt(1);
+                result.add(id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to retrieve airlines covering route with srcID: " + srcId + ", dstID: " + dstId);
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+
+
+
 }

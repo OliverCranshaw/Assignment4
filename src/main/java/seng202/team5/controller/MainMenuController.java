@@ -639,8 +639,6 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn airportOutRoutesCol;
 
-    @FXML
-    private Button graphRouteBtn;
 
     private DataExporter dataExporter;
     private AirlineService airlineService;
@@ -2784,6 +2782,11 @@ public class MainMenuController implements Initializable {
         controller.start(new Stage(StageStyle.DECORATED));
     }
 
+
+    @FXML
+    public void onGraphRouteAirlineBtnPressed(ActionEvent event) throws SQLException {
+        ArrayList<Integer> result = routeService.getAirlinesCoveringRoute(10, 11, true);
+    }
 
 
 
