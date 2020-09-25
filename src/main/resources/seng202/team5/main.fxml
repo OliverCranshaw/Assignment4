@@ -1280,7 +1280,7 @@
                                        <FlowPane.margin>
                                           <Insets left="2.0" />
                                        </FlowPane.margin></Button>
-                                    <Button mnemonicParsing="false" styleClass="main-row-button" text="Download Flight">
+                                    <Button fx:id="flightDownloadBtn" mnemonicParsing="false" onAction="#onDownloadFlightPressed" styleClass="main-row-button" text="Download Flight">
                                        <FlowPane.margin>
                                           <Insets left="2.0" />
                                        </FlowPane.margin>
