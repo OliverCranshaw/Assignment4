@@ -18,13 +18,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
-import seng202.team5.data.ConcreteDeleteData;
-import seng202.team5.data.ConcreteUpdateData;
+import seng202.team5.data.*;
+import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
 import seng202.team5.model.*;
 import seng202.team5.table.Search;
-import seng202.team5.data.DataExporter;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
@@ -39,6 +38,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+import java.util.function.Function;
 
 import static java.lang.Math.abs;
 
@@ -646,6 +646,12 @@ public class MainMenuController implements Initializable {
     @FXML
     private  MapView airlineMapView;
 
+    @FXML
+    private MapView routeMapView;
+
+    @FXML
+    private MapView flightMapView;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -664,6 +670,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<FlightEntryModel> flightEntries;
     private ObservableList<FlightEntryModel> flightEntriesSearch;
 
+    private int flightMapPath = -1;
 
     /**
      * Initializer for MainMenuController
@@ -987,6 +994,9 @@ public class MainMenuController implements Initializable {
             flightEntries = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
             ResultSet flightData = flightService.getData(flightID);
+
+            List<Coord> coordinates = new ArrayList<>();
+
             while (flightData.next()) {
                 Integer id = flightData.getInt(1);
                 Integer flightId = flightData.getInt(2);
@@ -997,8 +1007,16 @@ public class MainMenuController implements Initializable {
                 Double longitude = flightData.getDouble(7);
                 FlightEntryModel newEntry = new FlightEntryModel(id, flightId, locationType, location, altitude, latitude, longitude);
                 flightEntries.add(newEntry);
+
+                coordinates.add(new Coord(latitude, longitude));
             }
             flightSingleRecordTableView.setItems(flightEntries);
+
+            if (flightMapPath != -1) {
+                flightMapView.removePath(flightMapPath);
+            }
+            flightMapPath = flightMapView.addPath(coordinates);
+            flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
         }
     }
 

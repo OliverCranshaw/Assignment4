@@ -1221,7 +1221,7 @@
                                                    </children>
                                                 </GridPane>
                                              </children></AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                                         <MapView fx:id="routeMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
                                       </items>
                                        <FlowPane.margin>
                                           <Insets left="40.0" />
@@ -1337,7 +1337,7 @@
                                                    </contextMenu>
                                                 </TableView>
                                              </children></AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="38.0" prefWidth="575.0" styleClass="map" />
+                                          <MapView fx:id="flightMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
                                       </items>
                                        <FlowPane.margin>
                                           <Insets left="40.0" />
