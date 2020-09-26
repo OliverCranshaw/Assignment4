@@ -58,10 +58,8 @@
             options.icon = iconName + ".png";
         }
 
-        bridge.log(options);
-        let markerID = currentMarkerID++;
+        let markerID =  currentMarkerID++;
         let marker = new google.maps.Marker(options);
-        bridge.log("Ayyy" + iconName);
 
         marker.addListener("click", () => bridge.notifyMarkerClicked(markerID));
 
