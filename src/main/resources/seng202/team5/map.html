@@ -47,12 +47,18 @@
     }
 
     function addMarker(latitude, longitude, title) {
-        markers[currentMarkerID] = new google.maps.Marker({
+        let markerID = currentMarkerID++;
+        let marker = new google.maps.Marker({
             position: {lat: latitude, lng: longitude},
             map: map,
-            title: title
+            title: title,
+            clickable: true
         });
-        return currentMarkerID++;
+
+        marker.addListener("click", () => bridge.notifyMarkerClicked(markerID));
+
+        markers[markerID] = marker;
+        return markerID;
     }
 
     function removeMarker(markerID) {

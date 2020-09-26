@@ -5,15 +5,16 @@ import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import jdk.jshell.spi.ExecutionControl;
+import netscape.javascript.JSObject;
 import seng202.team5.App;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A widget that shows an interactive map.
@@ -25,6 +26,8 @@ import java.util.List;
  */
 public class MapView extends VBox {
     private WebView webView;
+    private Bridge bridge = new Bridge();
+
     /**
      * The MapView constructor
      *
@@ -32,6 +35,16 @@ public class MapView extends VBox {
      */
     public MapView() throws IOException {
         webView = new WebView();
+
+
+        addLoadListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                // new page has loaded, process:
+
+                JSObject window = (JSObject) webView.getEngine().executeScript("window");
+                window.setMember("bridge", bridge);
+            }
+        });
 
         try {
             String content = Files.readString(Paths.get(App.class.getResource("map.html").toURI()));
@@ -133,6 +146,17 @@ public class MapView extends VBox {
     }
 
     /**
+     * Sets the listener for when the given marker is clicked.
+     * If listener is null then the marker listener is removed.
+     *
+     * @param markerID Marker to listen for
+     * @param listener new listener for the given marker
+     */
+    public void setMarkerListener(int markerID, Consumer<Integer> listener) {
+        bridge.markerListeners.put(markerID, listener);
+    }
+
+    /**
      * Creates a line on the map representing a path through the given points
      *
      * @param points The list of points for the new path
@@ -188,5 +212,21 @@ public class MapView extends VBox {
             stringified.add(convertToJSRepresentation(argument));
         }
         return webView.getEngine().executeScript(functionName + "(" + String.join(",", stringified) + ");");
+    }
+
+    // Inner class has to be public due to javascript being unable to call private inner classes
+    public static class Bridge {
+        private final Map<Integer, Consumer<Integer>> markerListeners = new HashMap<>();
+
+        public void notifyMarkerClicked(int markerID) {
+            Consumer<Integer> listener = markerListeners.get(markerID);
+            if (listener != null) {
+                listener.accept(markerID);
+            }
+        }
+
+        public void log(String text) {
+            System.out.println(text);
+        }
     }
 }
