@@ -163,6 +163,7 @@ public class AirportAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
             stmt.setObject(1, code);
+            stmt.setObject(2, code);
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -181,34 +182,33 @@ public class AirportAccessor implements Accessor {
      * @param country String country an airport, can be null.
      * @return ResultSet of all the airports.
      */
-    public ResultSet getData(String name, String city, String country) {
+    public ResultSet getData(String name, String city, String country) { // NEEDS TO CHANGE
         ResultSet result = null;
 
-        List<String> queryTerms = new ArrayList<>();
+        String query = "SELECT * FROM AIRPORT_DATA";
         List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                queryTerms.add("airport_name = ?");
+                query = query + " WHERE airport_name = ? ";
                 elements.add(name);
             }
-
             if (city != null) {
-                queryTerms.add("city = ?");
+                if (name != null) {
+                    query = query + " and city = ? ";
+                } else {
+                    query = query + " WHERE city = ? ";
+                }
                 elements.add(city);
             }
-
             if (country != null) {
-                queryTerms.add("country = ?");
+                if (name != null || city != null) {
+                    query = query + " and country = ? ";
+                } else {
+                    query = query + " WHERE country = ? ";
+                }
                 elements.add(country);
             }
-
-            String query = "SELECT * FROM AIRPORT_DATA";
-            if (queryTerms.size() != 0) {
-                query += " WHERE ";
-                query += String.join(" and ", queryTerms);
-            }
-
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;

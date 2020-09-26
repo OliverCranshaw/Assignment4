@@ -223,22 +223,23 @@ public class FlightAccessor implements Accessor{
     /**
      * Retrieves all the flights with provided data.
      *
-     * @param location_type String location_type of a flight, can be null.
+     * @param locationType String location_type of a flight, can be null.
      * @param location String location of a flight, can be null.
      * @return ResultSet of all the flights.
      */
-    public ResultSet getData(String location_type, String location) {
+    public ResultSet getData(String locationType, String location) {
         ResultSet result = null;
+
         String query = "SELECT * FROM FLIGHT_DATA";
         ArrayList<String> elements = new ArrayList<>();
 
         try {
-            if (location_type != null) {
+            if (locationType != null) {
                 query = query + " WHERE location_type = ? ";
-                elements.add(location_type);
+                elements.add(locationType);
             }
             if (location != null) {
-                if (location_type != null) {
+                if (locationType != null) {
                     query = query + " and location = ?";
                 } else {
                     query = query + " WHERE location = ?";
