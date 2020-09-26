@@ -3,6 +3,8 @@ package seng202.team5.graph;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import seng202.team5.service.RouteService;
 
 import java.util.*;
 
@@ -10,12 +12,13 @@ public class RouteGraph implements GraphBuilder { // pie chart
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
+    private RouteService routeService;
 
     public RouteGraph(ArrayList<ArrayList<Object>> data) {
         this.data = data;
     }
 
-    public ObservableList<PieChart.Data> buildGraph(String selection) {
+    public ObservableList<PieChart.Data> buildPieGraph(String selection) {
         this.selection = selection;
         switch (selection) {
             case "RouteEquipment":
@@ -25,6 +28,16 @@ public class RouteGraph implements GraphBuilder { // pie chart
         }
         return null;
     }
+
+
+    public XYChart.Series buildBarGraph(String selection) {
+        XYChart.Series toReturn = new XYChart.Series();
+        for (ArrayList<Object> route : data) {
+
+        }
+        return toReturn;
+    }
+
 
     private ObservableList<PieChart.Data> routeAirlineGraph() {
         return null;

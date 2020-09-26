@@ -240,6 +240,4 @@ public class RouteService implements Service {
         }
         return result;
     }
-
-
 }

@@ -2784,8 +2784,12 @@ public class MainMenuController implements Initializable {
 
 
     @FXML
-    public void onGraphRouteAirlineBtnPressed(ActionEvent event) throws SQLException {
+    public void onGraphRouteAirlineBtnPressed(ActionEvent event) throws Exception {
         ArrayList<Integer> result = routeService.getAirlinesCoveringRoute(10, 11, true);
+        List<Object> metaData = List.of("RouteAirline", "Quantities of Airlines covering routes");
+        BarChartController controller = new BarChartController();
+        controller.inflateChart(routeTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
     }
 
 

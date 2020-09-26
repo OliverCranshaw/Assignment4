@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
@@ -32,6 +33,7 @@ public class PieChartController extends Application {
 
 
 
+
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(new Group());
@@ -46,16 +48,13 @@ public class PieChartController extends Application {
 
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) {
         RouteGraph routeGraph = new RouteGraph(data);
-        this.data = routeGraph.buildGraph((String) metaData.get(0));
+        this.data = routeGraph.buildPieGraph((String) metaData.get(0));
         if (this.data.size() > 25) {
             this.data = this.data.sorted();
         }
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
-
-
-
 
         for (final PieChart.Data segment : chart.getData()) {
             applyMouseEvents(segment);
