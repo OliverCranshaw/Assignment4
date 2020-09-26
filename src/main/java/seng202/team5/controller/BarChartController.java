@@ -10,6 +10,7 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import seng202.team5.graph.RouteGraph;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +36,12 @@ public class BarChartController extends Application {
     }
 
 
-    public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) {
+    public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) throws SQLException {
         RouteGraph routeGraph = new RouteGraph(data);
-        this.dataSeries = routeGraph.buildBarGraph((String) metaData.get(0));
-        this.chart = new BarChart<String, Number>(xAxis, yAxis);
-
-
-
+        routeGraph.setSelection((String) metaData.get(0));
+        dataSeries = routeGraph.buildBarGraph();
+        chart = new BarChart<String, Number>(xAxis, yAxis);
+        chart.getData().add(dataSeries);
 
     }
 

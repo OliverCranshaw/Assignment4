@@ -2773,6 +2773,14 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * onGraphRouteBtnPressed
+     *
+     * Calls required functions to create a pieChart for graph - route data,
+     * showing equipment usage percentages
+     * @param event
+     * @throws Exception
+     */
     @FXML
     public void onGraphRouteBtnPressed(ActionEvent event) throws Exception {
 
@@ -2785,6 +2793,7 @@ public class MainMenuController implements Initializable {
 
     @FXML
     public void onGraphRouteAirlineBtnPressed(ActionEvent event) throws Exception {
+        // TO BE DELETED UNLESS FASTER METHOD FOUND
         ArrayList<Integer> result = routeService.getAirlinesCoveringRoute(10, 11, true);
         List<Object> metaData = List.of("RouteAirline", "Quantities of Airlines covering routes");
         BarChartController controller = new BarChartController();
@@ -2793,5 +2802,50 @@ public class MainMenuController implements Initializable {
     }
 
 
+    /**
+     * handleShowOtherAirlinesTrue
+     *
+     * Calls the showOther airlines method passing in the selected route and true
+     * @param actionEvent
+     * @throws SQLException
+     */
+    public void handleShowOtherAirlinesTrue(ActionEvent actionEvent) throws SQLException {
+        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
+        showOtherAirlines(route, true);
+    }
 
+    /**
+     * handleShowOtherAirlinesFalse
+     *
+     * Calls the showOther airlines method passing in the selected route and false
+     * @param actionEvent
+     * @throws SQLException
+     */
+    public void handleShowOtherAirlinesFalse(ActionEvent actionEvent) throws SQLException {
+        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
+        showOtherAirlines(route, false);
+    }
+
+
+    /**
+     * showOtherAirlines
+     *
+     * Shows the other airlines that cover the given route
+     *
+     * @param route RouteModel - the route for which the airlines will be shown
+     * @param bool Boolean - Determines whether or not to include inactive airlines
+     * @throws SQLException
+     */
+    public void showOtherAirlines(RouteModel route, Boolean bool) throws SQLException {
+        String srcIata = route.getRouteSrcAirport();
+        String dstIata = route.getRouteDstAirport();
+        System.out.println(srcIata + " " + dstIata);
+        ResultSet srcData = airlineService.getData(srcIata);
+        ResultSet dstData = airlineService.getData(dstIata);
+        System.out.println(srcData.getInt(1) + " - " + dstData.getInt(1));
+        ArrayList<Integer> airlines = routeService.getAirlinesCoveringRoute(srcData.getInt(1), dstData.getInt(1), bool);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.showAndWait();
+
+    }
 }

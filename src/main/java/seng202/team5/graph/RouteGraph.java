@@ -4,25 +4,33 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import seng202.team5.service.AirlineService;
 import seng202.team5.service.RouteService;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class RouteGraph implements GraphBuilder {
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
-    private RouteService routeService;
 
     public RouteGraph(ArrayList<ArrayList<Object>> data) {
         this.data = data;
     }
 
-    public ObservableList<PieChart.Data> buildPieGraph(String selection) {
-        this.selection = selection;
+    public ObservableList<PieChart.Data> buildPieGraph() {
         switch (selection) {
             case "RouteEquipment":
                 return routeEquipmentGraph();
+        }
+        return null;
+    }
+
+
+    public XYChart.Series<String, Integer> buildBarGraph() throws SQLException {
+        switch (selection) {
             case "RouteAirline":
                 return routeAirlineGraph();
         }
@@ -30,17 +38,19 @@ public class RouteGraph implements GraphBuilder {
     }
 
 
-    public XYChart.Series buildBarGraph(String selection) {
-        XYChart.Series toReturn = new XYChart.Series();
+    private XYChart.Series<String, Integer> routeAirlineGraph() throws SQLException {
+        XYChart.Series<String, Integer> toReturn = new XYChart.Series<String, Integer>();
+        RouteService routeService = new RouteService();
         for (ArrayList<Object> route : data) {
-
+            ArrayList<Integer> counts = routeService.getAirlinesCoveringRoute((Integer) route.get(4), (Integer) route.get(6), true);
+            String srcCode = (String) route.get(3);
+            String dstCode = (String) route.get(5);
+            toReturn.getData().add(new XYChart.Data<String, Integer>(srcCode + " - " + dstCode, counts.size()));
         }
+        toReturn.getData().sort(Comparator.comparingInt(XYChart.Data::getYValue));
+        System.out.println(toReturn);
         return toReturn;
-    }
 
-
-    private ObservableList<PieChart.Data> routeAirlineGraph() {
-        return null;
     }
 
     public ObservableList<PieChart.Data> routeEquipmentGraph() {
