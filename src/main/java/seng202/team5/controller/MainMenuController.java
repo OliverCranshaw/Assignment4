@@ -2791,61 +2791,51 @@ public class MainMenuController implements Initializable {
     }
 
 
-    @FXML
-    public void onGraphRouteAirlineBtnPressed(ActionEvent event) throws Exception {
-        // TO BE DELETED UNLESS FASTER METHOD FOUND
-        ArrayList<Integer> result = routeService.getAirlinesCoveringRoute(10, 11, true);
-        List<Object> metaData = List.of("RouteAirline", "Quantities of Airlines covering routes");
-        BarChartController controller = new BarChartController();
-        controller.inflateChart(routeTable.getData(), metaData);
-        controller.start(new Stage(StageStyle.DECORATED));
-    }
-
-
-    /**
-     * handleShowOtherAirlinesTrue
-     *
-     * Calls the showOther airlines method passing in the selected route and true
-     * @param actionEvent
-     * @throws SQLException
-     */
-    public void handleShowOtherAirlinesTrue(ActionEvent actionEvent) throws SQLException {
-        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
-        showOtherAirlines(route, true);
-    }
-
-    /**
-     * handleShowOtherAirlinesFalse
-     *
-     * Calls the showOther airlines method passing in the selected route and false
-     * @param actionEvent
-     * @throws SQLException
-     */
-    public void handleShowOtherAirlinesFalse(ActionEvent actionEvent) throws SQLException {
-        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
-        showOtherAirlines(route, false);
-    }
-
 
     /**
      * showOtherAirlines
      *
      * Shows the other airlines that cover the given route
      *
-     * @param route RouteModel - the route for which the airlines will be shown
-     * @param bool Boolean - Determines whether or not to include inactive airlines
      * @throws SQLException
      */
-    public void showOtherAirlines(RouteModel route, Boolean bool) throws SQLException {
+    public void handleShowOtherAirlines(ActionEvent event) throws SQLException {
+        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
         String srcIata = route.getRouteSrcAirport();
         String dstIata = route.getRouteDstAirport();
         System.out.println(srcIata + " " + dstIata);
-        ResultSet srcData = airlineService.getData(srcIata);
-        ResultSet dstData = airlineService.getData(dstIata);
-        System.out.println(srcData.getInt(1) + " - " + dstData.getInt(1));
-        ArrayList<Integer> airlines = routeService.getAirlinesCoveringRoute(srcData.getInt(1), dstData.getInt(1), bool);
+        ResultSet srcData = airportService.getData(srcIata);
+        ResultSet dstData = airportService.getData(dstIata);
+        ArrayList<Integer> airlines = routeService.getAirlinesCoveringRoute(srcData.getInt(1), dstData.getInt(1), true);
+        String toShow = "";
+        ArrayList<Integer> airlinesCleaned = new ArrayList<>();
+        for (Integer airline: airlines) {
+            if (!airlinesCleaned.contains(airline)) {
+                airlinesCleaned.add(airline);
+            }
+        }
+        int i = 0;
+        for (Integer airlineID : airlinesCleaned) {
+            ResultSet data = airlineService.getData(airlineID);
+            String name = data.getString(2);
+            toShow = toShow + name;
+            if (data.getString(8).equals("N")) {
+                toShow = toShow + " - Inactive";
+            } else {
+                toShow = toShow + " - Active";
+            }
+            if (i++ == 0) {
+                toShow = toShow + " (Selected) ";
+            }
+
+            toShow = toShow  + "\n";
+        }
+        System.out.println(airlines);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Airlines that cover the " + srcIata + " - " + dstIata + " Route:");
+        alert.setContentText(toShow);
         alert.showAndWait();
 
     }
+
 }

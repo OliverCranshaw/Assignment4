@@ -42,7 +42,8 @@ public class PieChartController extends Application {
 
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) {
         RouteGraphChart routeGraph = new RouteGraphChart(data);
-        this.data = routeGraph.buildGraph((String) metaData.get(0));
+        routeGraph.setSelection((String) metaData.get(0));
+        this.data = routeGraph.buildPieGraph();
         if (this.data.size() > 25) {
             this.data = this.data.sorted();
         }

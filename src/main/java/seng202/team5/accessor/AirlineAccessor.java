@@ -161,6 +161,7 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(1, code);
             stmt.setObject(2, code);
 
+
             result = stmt.executeQuery();
         } catch (SQLException e) {
             System.out.println("Failed to retrieve airline data");
