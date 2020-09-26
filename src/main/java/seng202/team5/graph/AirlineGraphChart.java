@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class AirlineGraphChart implements GraphChartBuilder {
 
-    private ArrayList<ArrayList<Object>> data;
+    private final ArrayList<ArrayList<Object>> data;
     private String selection;
 
     /**

@@ -23,19 +23,18 @@ public class Search {
     private ResultSet result = null;
 
 
-    private AirlineService airlineService;
-    private AirportService airportService;
-    private FlightService flightService;
-    private RouteService routeService;
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final FlightService flightService;
+    private final RouteService routeService;
 
 
-    /** Constructor for the Search class.
+    /**
+     * Constructor for the Search class.
      * Creates an instance of each service class and
      * an empty ArrayList of search data.
      */
     public Search() {
-
-        //searchInstance = new Search();
         searchData = new ArrayList<>();
 
         airlineService = new AirlineService();
@@ -53,7 +52,8 @@ public class Search {
         return searchData;
     }
 
-    /** Setter for the search data.
+    /**
+     * Setter for the search data.
      *
      * @param data A list of data input by the user to specify what they are searching for.
      */
@@ -127,7 +127,6 @@ public class Search {
         String destAirport = searchData.get(1) == null ? null : searchData.get(1).toString();
         int numStops = (int) searchData.get(2);
         String equipment = searchData.get(3) == null ? null : searchData.get(3).toString();
-
 
         result = routeService.getData(sourceAirport, destAirport, numStops, equipment);
 

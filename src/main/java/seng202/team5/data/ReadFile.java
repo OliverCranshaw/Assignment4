@@ -60,7 +60,7 @@ public class ReadFile {
      * Splits a given string into multiple strings wherever there is a comma, then removes any quotation marks from each of them.
      *
      * @param line The line that is to be split into separate parts.
-     * @return ArrayList<String> splitline The list of strings from the line that has been split and have had any quotation marks removed from them.
+     * @return ArrayList splitline The list of strings from the line that has been split and have had any quotation marks removed from them.
      */
     public ArrayList<String> getEntries(String line) {
         // Splits the given line at every comma into an ArrayList of strings
@@ -265,7 +265,7 @@ public class ReadFile {
      * and then passes the data from each line into the addFlightEntry method of ConcreteAddData.
      *
      * @param file The input file to be read.
-     * @return ArrayList<Integer> ids An ArrayList containing the flight_id and the unique id of the new flight entry created by ConcreteAddData.
+     * @return ArrayList ids An ArrayList containing the flight_id and the unique id of the new flight entry created by ConcreteAddData.
      */
     public ArrayList<Object> readFlightData(File file) {
         int flightID = -1;

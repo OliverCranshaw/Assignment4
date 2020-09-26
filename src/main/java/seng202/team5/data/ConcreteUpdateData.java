@@ -6,8 +6,6 @@ import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * ConcreteUpdateData
@@ -17,10 +15,21 @@ import java.util.List;
  */
 public class ConcreteUpdateData extends UpdateData {
 
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
-    private FlightService flightService = new FlightService();
-    private RouteService routeService = new RouteService();
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final FlightService flightService;
+    private final RouteService routeService;
+
+    /**
+     * Constructor for ConcreteUpdateData.
+     * Initializes all of the necessary Services.
+     */
+    public ConcreteUpdateData() {
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
+    }
 
     /**
      * Implements the updateAirline method of UpdateData

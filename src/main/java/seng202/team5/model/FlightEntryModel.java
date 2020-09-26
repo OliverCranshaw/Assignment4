@@ -6,13 +6,13 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class FlightEntryModel {
 
-    private SimpleIntegerProperty ID;
-    private SimpleIntegerProperty flightID;
-    private SimpleStringProperty locationType;
-    private SimpleStringProperty location;
-    private SimpleIntegerProperty altitude;
-    private SimpleDoubleProperty latitude;
-    private SimpleDoubleProperty longitude;
+    private final SimpleIntegerProperty ID;
+    private final SimpleIntegerProperty flightID;
+    private final SimpleStringProperty locationType;
+    private final SimpleStringProperty location;
+    private final SimpleIntegerProperty altitude;
+    private final SimpleDoubleProperty latitude;
+    private final SimpleDoubleProperty longitude;
 
     public FlightEntryModel(Integer id, Integer flightID, String locationType, String location, Integer altitude, double latitude, double longitude) {
         this.ID = new SimpleIntegerProperty(id);
@@ -23,7 +23,6 @@ public class FlightEntryModel {
         this.latitude = new SimpleDoubleProperty(latitude);
         this.longitude = new SimpleDoubleProperty(longitude);
     }
-
 
     public int getID() {
         return ID.get();
@@ -80,8 +79,4 @@ public class FlightEntryModel {
     public void setLongitude(double longitude) {
         this.longitude.set(longitude);
     }
-
-
-
-
 }

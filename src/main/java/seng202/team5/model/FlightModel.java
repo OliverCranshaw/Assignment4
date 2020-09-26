@@ -1,20 +1,17 @@
 package seng202.team5.model;
 
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
 
-
 public class FlightModel {
 
-
-    private SimpleIntegerProperty flightId;
-    private SimpleStringProperty sourceLocation;
-    private SimpleStringProperty sourceAirport;
-    private SimpleStringProperty destinationLocation;
-    private SimpleStringProperty destinationAirport;
+    private final SimpleIntegerProperty flightId;
+    private final SimpleStringProperty sourceLocation;
+    private final SimpleStringProperty sourceAirport;
+    private final SimpleStringProperty destinationLocation;
+    private final SimpleStringProperty destinationAirport;
     private ArrayList<Integer> IdRange;
 
     public FlightModel(Integer id, String srcLocation, String srcAirport, String dstLocation, String dstAirport, ArrayList<Integer> ids) {
@@ -73,9 +70,4 @@ public class FlightModel {
     public void setIdRange(ArrayList<Integer> idRange) {
         IdRange = idRange;
     }
-
-
-
-
-
 }

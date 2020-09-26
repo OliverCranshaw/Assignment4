@@ -73,6 +73,8 @@ public class AirlineService implements Service {
      * @param newCountry The new country of the airline, may be null if not to be updated.
      * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
                       String newCallsign, String newCountry, String newActive) throws SQLException {
@@ -212,6 +214,7 @@ public class AirlineService implements Service {
      *
      * @param newCode String, new airport IATA/ICAO code.
      * @param oldCode String, old airport IATA/ICAO code.
+     *
      * @throws SQLException Caused by the ResultSet interactions
      */
     public void updateRoutes(String newCode, String oldCode) throws SQLException {

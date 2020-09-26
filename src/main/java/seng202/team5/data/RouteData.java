@@ -3,12 +3,11 @@ package seng202.team5.data;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * RouteData
  *
  * A class used to represent Route data for use in the modify data factory patterns.
- * Overrides checkValues() and convertBlanksToNull() from Data interface.
+ * Implements Data interface.
  */
 public class RouteData implements Data {
 
@@ -105,19 +104,19 @@ public class RouteData implements Data {
      */
     @Override
     public int checkValues() {
-        if (this.airline == null || (this.airline.length() != 2 && this.airline.length() != 3)) {
+        if (airline == null || (airline.length() != 2 && airline.length() != 3)) {
             // Ensures the airline is not null and is either an appropriate iata or icao length (2,3)
             return -2;
-        } else if (this.sourceAirport == null || (this.sourceAirport.length() != 3 && this.sourceAirport.length() != 4)) {
+        } else if (sourceAirport == null || (sourceAirport.length() != 3 && sourceAirport.length() != 4)) {
             // Ensures the sourceAirport is not null and is either an appropriate iata or icao length (3,4)
             return -3;
-        } else if (this.destinationAirport == null || (this.destinationAirport.length() != 3 && this.destinationAirport.length() != 4)) {
+        } else if (destinationAirport == null || (destinationAirport.length() != 3 && destinationAirport.length() != 4)) {
             // Ensures the destinationAirport is not null and is either an appropriate iata or icao length (3,4)
             return -4;
-        } else if (!(this.codeshare == null || this.codeshare.equals("Y"))) {
+        } else if (!(codeshare == null || codeshare.equals("Y"))) {
             // Ensures the codeshare is either null or is within an appropriate domain
             return -5;
-        } else if (this.stops == null || this.stops < 0) {
+        } else if (stops == null || stops < 0) {
             // Ensures the stops is not null
             return -6;
         } else if (equipment == null || !equipment.matches("[A-Z0-9]{3}(\\s{1}[A-Z0-9]{3})*")) {
@@ -139,20 +138,20 @@ public class RouteData implements Data {
         // List of possible null representations
         List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
 
-        if (nullRepr.contains(this.airline)) {
-            this.airline = null;
+        if (nullRepr.contains(airline)) {
+            airline = null;
         }
-        if (nullRepr.contains(this.sourceAirport)) {
-            this.sourceAirport = null;
+        if (nullRepr.contains(sourceAirport)) {
+            sourceAirport = null;
         }
-        if (nullRepr.contains(this.destinationAirport)) {
-            this.destinationAirport = null;
+        if (nullRepr.contains(destinationAirport)) {
+            destinationAirport = null;
         }
-        if (nullRepr.contains(this.codeshare)) {
-            this.codeshare = null;
+        if (nullRepr.contains(codeshare)) {
+            codeshare = null;
         }
-        if (nullRepr.contains(this.equipment)) {
-            this.equipment = null;
+        if (nullRepr.contains(equipment)) {
+            equipment = null;
         }
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class FlightAccessor implements Accessor{
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
 
     /**
      * Constructor for FlightAccessor.
@@ -279,7 +279,7 @@ public class FlightAccessor implements Accessor{
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with flight id " + id);
@@ -306,7 +306,7 @@ public class FlightAccessor implements Accessor{
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with id " + id);
@@ -391,7 +391,7 @@ public class FlightAccessor implements Accessor{
             stmt.setDouble(6, longitude);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with id " + id);

@@ -87,13 +87,15 @@ public class RouteService implements Service {
      * @param newStops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param newEquipment The new equipment for the route, may be null if not to be updated.
      * @return int result The route_id of the route that was just updated by the RouteAccessor.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newAirline, String newSourceAirport, String newDestAirport,
                       String newCodeshare, Integer newStops, String newEquipment) throws SQLException {
 
-        int newAirlineID = -1;
-        int newSourceAirportID = -1;
-        int newDestAirportID = -1;
+        int newAirlineID;
+        int newSourceAirportID;
+        int newDestAirportID;
 
         ResultSet data = getData(id);
         // Check for whether there exists an entry for this route id in the database
@@ -103,11 +105,11 @@ public class RouteService implements Service {
 
 
         String currAirline = data.getString(2);
-        Integer currAirlineID = data.getInt(3);
+        int currAirlineID = data.getInt(3);
         String currSrcAirport = data.getString(4);
-        Integer currSrcAirportID = data.getInt(5);
+        int currSrcAirportID = data.getInt(5);
         String currDstAIrport = data.getString(6);
-        Integer currDstAirportID = data.getInt(7);
+        int currDstAirportID = data.getInt(7);
 
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
@@ -198,20 +200,18 @@ public class RouteService implements Service {
      * @return ResultSet of routes.
      */
     public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
-        ArrayList airportSourceIataIcao = null;
-        ArrayList airportDestIataIcao = null;
+        ArrayList<String> airportSourceIataIcao = null;
+        ArrayList<String> airportDestIataIcao = null;
 
         if (source_airport != null) {
             airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
             if (airportSourceIataIcao.isEmpty()) {
-                airportSourceIataIcao = new ArrayList();
                 airportSourceIataIcao.add("N/A");
             }
         }
         if (dest_airport != null) {
             airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
             if (airportDestIataIcao.isEmpty()) {
-                airportDestIataIcao = new ArrayList();
                 airportDestIataIcao.add("N/A");
             }
         }

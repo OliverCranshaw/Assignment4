@@ -4,23 +4,18 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
-
 
 /**
  * DataTable class
  * Used as a skeleton class for all of the different data tables
- *
- * @author Jack Ryan
  */
 public abstract class DataTable {
 
     // Storing the original data table (usually all data for a certain table),
-    // as well as the filtered data (the data intended to be diplayed).
+    // as well as the filtered data (the data intended to be displayed).
     protected final ResultSet orgData;
     protected ArrayList<ArrayList<Object>> originalDataArrayList;
     protected ArrayList<ArrayList<Object>> filteredData;
-
 
     /**
      * Constructor for dataTable
@@ -31,11 +26,11 @@ public abstract class DataTable {
         orgData = newOrgData;
     }
 
-
     /**
      * A method used to transform the original data of any type of original data
      * into a array list of arraylists which is the stored in the filtered data
-     * @throws SQLException
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
@@ -45,7 +40,7 @@ public abstract class DataTable {
             // Gets the number of columns (ie the number of variables)
             int columns = md.getColumnCount();
             // Initializing an arraylist of arraylists to store the extracted data in
-            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
             // Iterates through the result set
             while(orgData.next()) {
                 // An arraylist of each instance of the data type
@@ -61,19 +56,17 @@ public abstract class DataTable {
             filteredData = new ArrayList<>(list);
             originalDataArrayList = new ArrayList<>(list);
         } else {
-            filteredData = new ArrayList<ArrayList<Object>>();
-            originalDataArrayList = new ArrayList<ArrayList<Object>>();
+            filteredData = new ArrayList<>();
+            originalDataArrayList = new ArrayList<>();
         }
-
     }
 
-
     /**
-     * Getter for the filtered data
-     * @return ArrayList<ArrayList<Object>>
+     * Getter for the filtered data.
+     *
+     * @return ArrayList of filtered data.
      */
     public ArrayList<ArrayList<Object>> getData() {
         return filteredData;
     }
-
 }

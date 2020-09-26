@@ -9,8 +9,6 @@ import java.util.ArrayList;
  * A class that extends DataTable and is used to store airline data to be used for display
  * in the GUI, as well as providing methods that use th filtering tables to filter for a desired
  * subset of data
- *
- * @author Jack Ryan
  */
 public class AirlineTable extends DataTable {
 

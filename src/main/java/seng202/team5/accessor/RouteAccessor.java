@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class RouteAccessor implements Accessor {
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
 
     /**
      * Constructor for RouteAccessor.
@@ -191,7 +191,7 @@ public class RouteAccessor implements Accessor {
         ResultSet result = null;
 
         boolean check = true;
-        String addString = "";
+        String addString;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
@@ -202,7 +202,7 @@ public class RouteAccessor implements Accessor {
                 for (String value:sourceAirport) {
                     if (value != null) {
                         addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
-                        query = query + addString;
+                        query = query.concat(addString);
                         elements.add(value);
                     }
                 }
@@ -218,7 +218,7 @@ public class RouteAccessor implements Accessor {
                 for (String value:destAirport) {
                     if (value != null) {
                         addString = check ? " (destination_airport = ? " : " or destination_airport = ? ";
-                        query = query + addString;
+                        query = query.concat(addString);
                         elements.add(value);
                         check = false;
                     }
@@ -275,7 +275,7 @@ public class RouteAccessor implements Accessor {
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data with id " + id);
@@ -313,7 +313,7 @@ public class RouteAccessor implements Accessor {
             stmt.setString(6, equipment);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data.");

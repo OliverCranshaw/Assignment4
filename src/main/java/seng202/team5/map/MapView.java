@@ -4,7 +4,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import jdk.jshell.spi.ExecutionControl;
 import seng202.team5.App;
 
 import java.io.IOException;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author Nathan Smithies
  */
 public class MapView extends VBox {
-    private WebView webView;
+    private final WebView webView;
 
     /**
      * The MapView constructor

@@ -3,15 +3,12 @@ package seng202.team5.table;
 import java.sql.*;
 import java.util.ArrayList;
 
-
 /**
  * AirportTable
  *
  * A class that extends DataTable and is used to store airport data to be used for display
  * in the GUI, as well as providing methods that use the filtering tables to filter for a desired
  * subset of the data.
- *
- * @author Jack Ryan
  */
 public class AirportTable extends DataTable {
 
@@ -41,6 +38,4 @@ public class AirportTable extends DataTable {
         // Filtering the table, modifying the filteredData arraylist
         filter.filterTable();
     }
-
-
 }
