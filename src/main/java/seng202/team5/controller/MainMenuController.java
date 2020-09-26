@@ -634,6 +634,9 @@ public class MainMenuController implements Initializable {
     private Button flightDeleteBtn;
 
     @FXML
+    private Button flightDownloadBtn;
+
+    @FXML
     private TableColumn airportIncRoutesCol;
 
     @FXML
@@ -768,6 +771,7 @@ public class MainMenuController implements Initializable {
                 try {
                     setFlightSingleRecord(selected);
                     flightDeleteBtn.setDisable(false);
+                    flightDownloadBtn.setDisable(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -914,6 +918,7 @@ public class MainMenuController implements Initializable {
         routeCancelBtn.setVisible(false);
         routeDeleteBtn.setVisible(false);
         flightDeleteBtn.setDisable(true);
+        flightDownloadBtn.setDisable(true);
 
         // Lists of elements and label elements which need visibility toggled
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
@@ -1376,6 +1381,29 @@ public class MainMenuController implements Initializable {
 
         if (file != null) {
             dataExporter.exportFlights(file);
+        }
+    }
+
+
+    /**
+     * onDownloadFlightPressed
+     *
+     * Starts the download flight window
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    public void onDownloadFlightPressed(ActionEvent event) throws IOException {
+        if (flightTableView.getSelectionModel().getSelectedItem() != null) {
+            File file = selectFolder(event);
+
+            FlightModel flightModel = (FlightModel)flightTableView.getSelectionModel().getSelectedItem();
+
+            int id = flightModel.getFlightId();
+
+            if (file != null) {
+                dataExporter.exportFlight(id, file);
+            }
         }
     }
 

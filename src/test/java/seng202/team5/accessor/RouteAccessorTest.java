@@ -49,6 +49,8 @@ public class RouteAccessorTest extends BaseDatabaseTest {
                 for (int i = 0; i < airportData.size(); i++) {
                     stmt.setObject(i + 1, airportData.get(i));
                 }
+                stmt.executeUpdate();
+
             }
             {
                 // Add a destination airport to the DB
@@ -60,6 +62,8 @@ public class RouteAccessorTest extends BaseDatabaseTest {
                 for (int i = 0; i < airportData.size(); i++) {
                     stmt.setObject(i + 1, airportData.get(i));
                 }
+                stmt.executeUpdate();
+
             }
         } catch (SQLException e) {
             // Really shouldn't happen

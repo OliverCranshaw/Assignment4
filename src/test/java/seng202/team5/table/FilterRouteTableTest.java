@@ -36,20 +36,80 @@ public class FilterRouteTableTest {
         String query = "INSERT INTO ROUTE_DATA(route_id, airline, airline_id, source_airport, source_airport_id, destination_airport, destination_airport_id, "
                 + "codeshare, stops, equipment) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        // SQLite query used to populate database with the required data to run the routeService saveRoute() method
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the required data to run the RouteService saveRoute() method
+        String airlineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         // Creating a query to retrieve all data from the database
         String retrieveQuery = "SELECT * FROM ROUTE_DATA";
 
         // Creating the statements to populate the database
+        PreparedStatement testAirline = dbHandler.prepareStatement(airlineQuery);
+        ArrayList<String> airline1 = new ArrayList<>(Arrays.asList("Airline", "", "airline1", "", "", "Country", "Y"));
+        ArrayList<String> airline2 = new ArrayList<>(Arrays.asList("Airline", "", "airline2", "", "", "Country", "Y"));
+        ArrayList<String> airline3 = new ArrayList<>(Arrays.asList("Airline", "", "airline3", "", "", "Country", "Y"));
+
+        PreparedStatement testAirport = dbHandler.prepareStatement(airportQuery);
+        ArrayList<Object> airport1 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "srcAirport1", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+        ArrayList<Object> airport2 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "dstAirport1", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+        ArrayList<Object> airport3 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "srcAirport2", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+        ArrayList<Object> airport4 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "dstAirport2", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+        ArrayList<Object> airport5 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "srcAirport3", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+        ArrayList<Object> airport6 = new ArrayList<>(Arrays.asList("Airport", "City", "Country", "dstAirport3", "", 89, 123.2, 5000, 43, "JFI", "TZ"));
+
         PreparedStatement testData1 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList(1, "airline1", 1, "srcAirport1", 1, "dstAirport1", 1, "Y", 6, "GPS"));
+        ArrayList<Object> testDataList1 = new ArrayList<>(Arrays.asList(1, "airline1", 1, "srcAirport1", 1, "dstAirport1", 2, "Y", 6, "GPS"));
 
         PreparedStatement testData2 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList2 = new ArrayList<>(Arrays.asList(2, "airline2", 2, "srcAirport2", 2, "dstAirport2", 2, "Y", 7, "GPS"));
+        ArrayList<Object> testDataList2 = new ArrayList<>(Arrays.asList(2, "airline2", 2, "srcAirport2", 3, "dstAirport2", 4, "Y", 7, "GPS"));
 
         PreparedStatement testData3 = dbHandler.prepareStatement(query);
-        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList(3, "airline3", 3, "srcAirport3", 3, "dstAirport3", 3, "Y", 0, "GPS ADL"));
+        ArrayList<Object> testDataList3 = new ArrayList<>(Arrays.asList(3, "airline3", 3, "srcAirport3", 5, "dstAirport3", 6, "Y", 0, "GPS ADL"));
 
         // Filling in the blanks for the database populating statements
+        for (int i=1; i < 8; i++) {
+            testAirline.setObject(i, airline1.get(i-1));
+        }
+        testAirline.executeUpdate();
+        for (int i=1; i < 8; i++) {
+            testAirline.setObject(i, airline2.get(i-1));
+        }
+        testAirline.executeUpdate();
+        for (int i=1; i < 8; i++) {
+            testAirline.setObject(i, airline3.get(i-1));
+        }
+        testAirline.executeUpdate();
+
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport1.get(i-1));
+        }
+        testAirport.executeUpdate();
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport2.get(i-1));
+        }
+        testAirport.executeUpdate();
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport3.get(i-1));
+        }
+        testAirport.executeUpdate();
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport4.get(i-1));
+        }
+        testAirport.executeUpdate();
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport5.get(i-1));
+        }
+        testAirport.executeUpdate();
+        for (int i=1; i < 12; i++) {
+            testAirport.setObject(i, airport6.get(i-1));
+        }
+        testAirport.executeUpdate();
+
         for (int i = 1; i < 11; i++) {
             testData1.setObject(i, testDataList1.get(i-1));
             testData2.setObject(i, testDataList2.get(i-1));

@@ -34,7 +34,7 @@ public class AddDataScenario {
     private RouteService routeService;
     private ConcreteAddData concreteAddData;
 
-    @Before
+    @Before("@Add")
     public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
