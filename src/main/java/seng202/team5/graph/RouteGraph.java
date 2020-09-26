@@ -6,7 +6,7 @@ import javafx.scene.chart.PieChart;
 
 import java.util.*;
 
-public class RouteGraph implements GraphBuilder { // pie chart
+public class RouteGraph implements GraphBuilder {
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
@@ -64,12 +64,6 @@ public class RouteGraph implements GraphBuilder { // pie chart
 
         return toReturn;
     }
-
-
-
-
-
-
 
     public void setSelection(String selection) {
         this.selection = selection;
