@@ -12,8 +12,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import seng202.team5.graph.AirlineGraphChart;
+import seng202.team5.graph.AirportGraphChart;
 import seng202.team5.graph.RouteGraphChart;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class PieChartController extends Application {
 
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
     private PieChart chart;
+    private String selection;
     private PieChart.Data selectedData;
     private final Integer MIN = 0;
     private final Integer MAX = 16777215;
@@ -40,10 +44,24 @@ public class PieChartController extends Application {
     }
 
 
-    public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) {
-        RouteGraphChart routeGraph = new RouteGraphChart(data);
-        routeGraph.setSelection((String) metaData.get(0));
-        this.data = routeGraph.buildPieGraph();
+    public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) throws SQLException {
+
+        selection = (String) metaData.get(0);
+
+        if (selection.startsWith("Route")) {
+            RouteGraphChart routeGraph = new RouteGraphChart(data);
+            routeGraph.setSelection(selection);
+            this.data = routeGraph.buildPieGraph();
+        } else if (selection.startsWith("Airport")) {
+            AirportGraphChart airportGraph = new AirportGraphChart(data);
+            airportGraph.setSelection(selection);
+            this.data = airportGraph.buildChart();
+        } else if (selection.startsWith("Airline")) {
+            AirlineGraphChart airlineGraphChart = new AirlineGraphChart(data);
+            airlineGraphChart.setSelection(selection);
+            this.data = airlineGraphChart.buildChart();
+        }
+
         if (this.data.size() > 25) {
             this.data = this.data.sorted();
         }
@@ -64,7 +82,18 @@ public class PieChartController extends Application {
         final Node node = data.getNode();
 
         node.setOnMouseEntered(arg0 -> {
-            Tooltip currTip = new Tooltip("Equipment: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+            Tooltip currTip;
+            if (this.selection.equals("RouteEquipment")) {
+                currTip = new Tooltip("Equipment: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+            } else if (this.selection.equals("AirportRoute")) {
+                currTip = new Tooltip("Airport: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+            } else if (this.selection.equals("AirportCountry")) {
+                currTip = new Tooltip("Airport: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+            } else if (this.selection.equals("AirlineCountry")) {
+                currTip = new Tooltip("Airline: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+            } else {
+                currTip = null;
+            }
             currTip.setStyle("-fx-font: 14 arial;  -fx-font-smoothing-type: lcd;");// -fx-text-fill:black; -fx-background-color: linear-gradient(#e2ecfe, #99bcfd);");
             Tooltip.install(node, currTip);
             node.setEffect(new Glow());

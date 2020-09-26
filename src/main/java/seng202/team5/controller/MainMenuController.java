@@ -2838,4 +2838,28 @@ public class MainMenuController implements Initializable {
 
     }
 
+
+    public void onGraphAirportCountryBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirportCountry", "Airports per Country");
+        controller.inflateChart(airportTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+
+    }
+
+    public void onGraphAirportRouteBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirportRoute", "Routes per Airport");
+        controller.inflateChart(airportTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+    public void onGraphAirlineCountryBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirlineCountry", "Airlines per Country");
+        controller.inflateChart(airlineTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+
 }

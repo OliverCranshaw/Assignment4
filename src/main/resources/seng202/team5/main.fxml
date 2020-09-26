@@ -526,6 +526,8 @@
                                           <String fx:value="main-button" />
                                        </styleClass>
                                     </Button>
+                                    <Button mnemonicParsing="false" onAction="#onGraphAirportCountryBtnPressed" text="Graph - Country" />
+                                    <Button mnemonicParsing="false" onAction="#onGraphAirportRouteBtnPressed" text="Graph - Route" />
                                     <Button alignment="CENTER" mnemonicParsing="false" onAction="#onDownloadAirportDataPressed" prefHeight="25.0" prefWidth="76.0" styleClass="general-button" text="Download">
                                        <properties helpText="Press to download all the airport data currently in the database to a CSV file" />
                                        <FlowPane.margin>
@@ -801,6 +803,7 @@
                                        </FlowPane.margin>
                                        <properties helpText="Press to download all the airline data currently in the database to a CSV file" />
                                        </Button>
+                                    <Button mnemonicParsing="false" onAction="#onGraphAirlineCountryBtnPressed" text="Graph - Country" />
                                     <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" styleClass="main-row-button" text="Add Airline">
                                        <FlowPane.margin>
                                           <Insets left="157.0" />

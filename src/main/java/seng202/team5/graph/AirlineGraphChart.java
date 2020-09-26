@@ -50,7 +50,7 @@ public class AirlineGraphChart implements GraphChartBuilder {
     public ObservableList<PieChart.Data> airlineCountryChart() {
         Hashtable<String, Integer> countryCounts = new Hashtable<String, Integer>();
         for (ArrayList<Object> airline : data) {
-            String country = (String) airline.get(6);
+            String country = ((String) airline.get(6) == null) ? "null" : (String) airline.get(6);
             if (countryCounts.containsKey(country)) {
                 countryCounts.put(country, countryCounts.get(country) + 1);
             } else {
