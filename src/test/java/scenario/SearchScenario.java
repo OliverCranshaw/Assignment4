@@ -31,7 +31,7 @@ public class SearchScenario {
     private ResultSet searchResult;
 
 
-    @Before
+    @Before("@Search")
     public void setUp() {
 
         String filename = "test.db";
@@ -516,7 +516,7 @@ public class SearchScenario {
     }
 
     @When("user searches for the route source airport {string} which isn't present in the database")
-    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) throws SQLException {
+    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) {
         data.add(sourceAirport);
         data.add(null);
         data.add(-1);

@@ -1,5 +1,6 @@
 # new feature
 # Tags: optional
+@Search
 
 Feature: Testing Search
 

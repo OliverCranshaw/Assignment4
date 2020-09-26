@@ -1,7 +1,7 @@
-AEROETTA
+AEROETTE
 =========
 
-**AEROETTA** is a flight data analysis app for customers that are looking for a simple yet powerful flight, route, airport and airline data analysis tool. 
+**AEROETTE** is a flight data analysis app for customers that are looking for a simple yet powerful flight, route, airport and airline data analysis tool. 
 
 Features
 ---------

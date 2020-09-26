@@ -1,4 +1,6 @@
 
+@ReadFile
+
 Feature: Reading files
 
   # Reading Airline Data

@@ -37,7 +37,7 @@ public class ReadFileScenario {
     private FlightService flightService;
     private RouteService routeService;
 
-    @Before
+    @Before("@ReadFile")
     public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
