@@ -6,12 +6,12 @@ import javafx.scene.chart.PieChart;
 
 import java.util.*;
 
-public class RouteGraph implements GraphBuilder {
+public class RouteGraphChart implements GraphChartBuilder {
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
 
-    public RouteGraph(ArrayList<ArrayList<Object>> data) {
+    public RouteGraphChart(ArrayList<ArrayList<Object>> data) {
         this.data = data;
     }
 

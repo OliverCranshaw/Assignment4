@@ -2,12 +2,12 @@ package seng202.team5.graph;
 
 import java.util.ArrayList;
 
-public class FlightGraph implements GraphBuilder {
+public class FlightGraphChart implements GraphChartBuilder {
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
 
-    public FlightGraph(ArrayList<ArrayList<Object>> data) {
+    public FlightGraphChart(ArrayList<ArrayList<Object>> data) {
         this.data = data;
     }
 
