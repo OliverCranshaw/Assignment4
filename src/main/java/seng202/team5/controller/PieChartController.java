@@ -3,21 +3,16 @@ package seng202.team5.controller;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import seng202.team5.graph.RouteGraph;
+import seng202.team5.graph.RouteGraphChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +25,6 @@ public class PieChartController extends Application {
     private PieChart.Data selectedData;
     private final Integer MIN = 0;
     private final Integer MAX = 16777215;
-
 
 
 
@@ -47,15 +41,17 @@ public class PieChartController extends Application {
 
 
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) {
-        RouteGraph routeGraph = new RouteGraph(data);
-        routeGraph.setSelection((String) metaData.get(0));
-        this.data = routeGraph.buildPieGraph();
+        RouteGraphChart routeGraph = new RouteGraphChart(data);
+        this.data = routeGraph.buildGraph((String) metaData.get(0));
         if (this.data.size() > 25) {
             this.data = this.data.sorted();
         }
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
+
+
+
 
         for (final PieChart.Data segment : chart.getData()) {
             applyMouseEvents(segment);

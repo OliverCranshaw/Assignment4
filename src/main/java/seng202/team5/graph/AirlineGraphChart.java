@@ -9,23 +9,45 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
-public class AirlineGraph implements GraphBuilder {
+/**
+ * AirlineGraphChart
+ *
+ * Builds graph/chart depending on the selection.
+ * Contains the functions buildChart, airlineCountryChart.
+ * Implements the GraphChartBuilder interface.
+ */
+public class AirlineGraphChart implements GraphChartBuilder {
 
     private ArrayList<ArrayList<Object>> data;
     private String selection;
 
-    public AirlineGraph(ArrayList<ArrayList<Object>> data) {
+    /**
+     * Constructor for AirlineGraphChart.
+     * Sets the value of the current data.
+     */
+    public AirlineGraphChart(ArrayList<ArrayList<Object>> data) {
         this.data = data;
     }
 
-    public void buildChart() {
+    /**
+     * Calls the selected chart and returns it.
+     *
+     * @return ObservableList that contains all the data for a chart or null if there was nothing selected.
+     */
+    public ObservableList<PieChart.Data> buildChart() {
         switch (selection) {
             case "AirlineCountry":
-                break;
+                return airlineCountryChart();
         }
+        return null;
     }
 
-    public ObservableList<PieChart.Data> airlineCountryGraph() {
+    /**
+     * Builds and creates an observable list with number of airlines per country.
+     *
+     * @return ObservableList that contains all the data for a chart.
+     */
+    public ObservableList<PieChart.Data> airlineCountryChart() {
         Hashtable<String, Integer> countryCounts = new Hashtable<String, Integer>();
         for (ArrayList<Object> airline : data) {
             String country = (String) airline.get(6);
@@ -41,10 +63,16 @@ public class AirlineGraph implements GraphBuilder {
             pieChartData.add(new PieChart.Data(country, countryCounts.get(country)));
         }
 
-        return sortList(pieChartData);
+        return sortChartList(pieChartData);
     }
 
-    public ObservableList<PieChart.Data> sortList(ObservableList<PieChart.Data> pieChartData) {
+    /**
+     * Sorts and iterates through pie chart data and returns it.
+     *
+     * @param pieChartData ObservableList that contains all the pie chart data.
+     * @return ObservableList that contains all the data for a chart.
+     */
+    public ObservableList<PieChart.Data> sortChartList(ObservableList<PieChart.Data> pieChartData) {
         Comparator<PieChart.Data> pieChartDataComparator = Comparator.comparing(PieChart.Data::getPieValue);
 
         pieChartData.sort(pieChartDataComparator.reversed());
@@ -60,6 +88,11 @@ public class AirlineGraph implements GraphBuilder {
         return toReturn;
     }
 
+    /**
+     * Sets the value of the selection.
+     *
+     * @param selection String value that is the selection.
+     */
     public void setSelection(String selection) {
         this.selection = selection;
     }
