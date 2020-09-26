@@ -31,6 +31,12 @@ public class MapTest extends Application {
                 int path0 = mapView.addPath(path);
 
                 mapView.fitBounds(Bounds.fromCoordinateList(path), 0.0);
+
+
+                int marker0 = mapView.addMarker(new Coord(40.0, 20.0), "Hello world", "airport_icon");
+                mapView.setMarkerListener(marker0, (Integer markerID) -> {
+                    System.out.println("Marker " + markerID + " clicked!");
+                });
             }
         });
 

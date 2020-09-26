@@ -1090,7 +1090,7 @@ public class MainMenuController implements Initializable {
             setLabels(airportData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
 
-            airportMapView.addMarker(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), airportName.getText());
+            airportMapView.addMarker(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), airportName.getText(), null);
             airportMapView.setCentre(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()));
             airportMapView.setZoom(11);
         }
@@ -1200,7 +1200,7 @@ public class MainMenuController implements Initializable {
             setLabelsEmpty(lblElementsVisible, true);
 
 
-            searchMapView.addMarker(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()), airportNameS.getText());
+            searchMapView.addMarker(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()), airportNameS.getText(), null);
             searchMapView.setCentre(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()));
             searchMapView.setZoom(11);
         }

@@ -46,13 +46,25 @@
         map.fitBounds(bounds, padding);
     }
 
-    function addMarker(latitude, longitude, title) {
-        markers[currentMarkerID] = new google.maps.Marker({
+    function addMarker(latitude, longitude, title, iconName) {
+        let options = {
             position: {lat: latitude, lng: longitude},
             map: map,
-            title: title
-        });
-        return currentMarkerID++;
+            title: title,
+            clickable: true
+        };
+
+        if (iconName !== null) {
+            options.icon = iconName + ".png";
+        }
+
+        let markerID =  currentMarkerID++;
+        let marker = new google.maps.Marker(options);
+
+        marker.addListener("click", () => bridge.notifyMarkerClicked(markerID));
+
+        markers[markerID] = marker;
+        return markerID;
     }
 
     function removeMarker(markerID) {
