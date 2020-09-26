@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
 
@@ -25,11 +26,17 @@ public class MapTest extends Application {
                 mapView.setCentre(5, 0);
                 mapView.setZoom(4);
 
-                int marker0 = mapView.addMarker(0, 0, "Test thingy");
-                int marker1 = mapView.addMarker(10, 0, "Test thingy2");
+                List<Coord> path = List.of(new Coord(0, 0), new Coord(20, 20), new Coord(-10, 100));
 
-                int path0 = mapView.addPath(List.of(new Coord(0, 0), new Coord(20, 20), new Coord(-10, 100)));
-                int path1 = mapView.addPath(List.of(new Coord(-10, -10), new Coord(-10, 5)));
+                int path0 = mapView.addPath(path);
+
+                mapView.fitBounds(Bounds.fromCoordinateList(path), 0.0);
+
+
+                int marker0 = mapView.addMarker(new Coord(40.0, 20.0), "Hello world", "airport_icon");
+                mapView.setMarkerListener(marker0, (Integer markerID) -> {
+                    System.out.println("Marker " + markerID + " clicked!");
+                });
             }
         });
 
