@@ -73,18 +73,25 @@ public class AirlineGraphChart implements GraphChartBuilder {
      * @return ObservableList that contains all the data for a chart.
      */
     public ObservableList<PieChart.Data> sortChartList(ObservableList<PieChart.Data> pieChartData) {
+        ObservableList<PieChart.Data> toReturn;
         Comparator<PieChart.Data> pieChartDataComparator = Comparator.comparing(PieChart.Data::getPieValue);
 
         pieChartData.sort(pieChartDataComparator.reversed());
-        ObservableList<PieChart.Data> toReturn = FXCollections.observableArrayList(pieChartData.subList(0, 15));
-        List<PieChart.Data> other = pieChartData.subList(15, pieChartData.size() - 1);
-        Integer num = 0;
-        double count = 0;
-        for (PieChart.Data data : other) {
-            count = count + data.getPieValue();
-            num++;
+
+        if (pieChartData.size() > 15) {
+            toReturn = FXCollections.observableArrayList(pieChartData.subList(0, 15));
+            List<PieChart.Data> other = pieChartData.subList(15, pieChartData.size() - 1);
+            Integer num = 0;
+            double count = 0;
+            for (PieChart.Data data : other) {
+                count = count + data.getPieValue();
+                num++;
+            }
+            toReturn.add(new PieChart.Data("Other (" + num.toString() + ")", count));
+        } else {
+            toReturn = pieChartData;
         }
-        toReturn.add(new PieChart.Data("Other (" + num.toString() + ")", count));
+
         return toReturn;
     }
 
