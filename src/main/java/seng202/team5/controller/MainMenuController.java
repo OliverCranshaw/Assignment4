@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
 import seng202.team5.data.*;
+import seng202.team5.map.AirportCompare;
 import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
@@ -652,6 +653,19 @@ public class MainMenuController implements Initializable {
     @FXML
     private MapView flightMapView;
 
+    private AirportCompare rawAirportCompare = new AirportCompare();
+
+    private int airportMarkerId;
+
+    private int airportPathId;
+
+    private int airportPrevMarkerId;
+
+    private AirportCompare searchAirportCompare;
+
+    @FXML
+    private Label distanceLabel;
+
     private DataExporter dataExporter;
     private AirlineService airlineService;
     private AirportService airportService;
@@ -765,6 +779,7 @@ public class MainMenuController implements Initializable {
         // Adding Listeners to all five tables so that the selected Items can be displayed in the single record viewer
         airportTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+
                 AirportModel selected = (AirportModel) newSelection;
                 try {
                     setAirportSingleRecord(selected);
@@ -1089,9 +1104,19 @@ public class MainMenuController implements Initializable {
             ResultSet airportData = airportService.getData(airportModel.getId());
             setLabels(airportData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
+            Coord airportCoord = new Coord(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()));
 
-            airportMapView.addMarker(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()), airportName.getText(), null);
-            airportMapView.setCentre(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()));
+            try {
+                airportMapView.removeMarker(airportMarkerId);
+                airportMapView.removeMarker(airportPrevMarkerId);
+                airportMapView.removePath(airportPathId);
+            } catch (Exception e) {
+
+            }
+
+            rawAirportCompare.setLocations(airportCoord);
+            airportMarkerId = airportMapView.addMarker(airportCoord, airportName.getText(), null);
+            airportMapView.setCentre(airportCoord);
             airportMapView.setZoom(11);
         }
     }
@@ -1253,6 +1278,33 @@ public class MainMenuController implements Initializable {
         for (int i = 0; i < elementsVisible.size(); i++) {
             elementsVisible.get(i).setText(elementData.getString(i+1));
         }
+    }
+
+    /**
+     * onCalculateDistancePressed
+     *
+     * Sets the distance label on the gui to the calculated distance between the currently viewed
+     * airport and the previously viewed airport. If no previous airport has been viewed, the distance
+     * label will display an error message.
+     */
+    public void onCalculateDistancePressed() {
+
+        if (rawAirportCompare.getLocation1() == null | rawAirportCompare.getLocation2() == null) {
+            distanceLabel.setText("No airport previously selected to calculate distance from.");
+        } else {
+
+            double distance = rawAirportCompare.calculateDistance();
+
+            distanceLabel.setText(Double.toString(distance) + "km");
+
+            ArrayList airportCoords = new ArrayList(Arrays.asList(rawAirportCompare.getLocation1(), rawAirportCompare.getLocation2()));
+
+            airportMapView.fitBounds(Bounds.fromCoordinateList(airportCoords), 0);
+
+            airportPathId = airportMapView.addPath(airportCoords);
+            airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
+        }
+
     }
 
 
