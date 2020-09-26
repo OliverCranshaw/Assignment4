@@ -20,7 +20,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -80,15 +82,34 @@ public class DataExporterScenario {
     @Given("there are airlines in the database")
     public void thereAreAirlinesInTheDatabase() throws SQLException {
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        int id = (int)readFile.readAirlineData(airlineFile).get(0);
+        readFile.readAirlineData(airlineFile);
 
         Assert.assertTrue(airlineService.getData(null, null, null).next());
     }
 
     @When("exporting airline data to file {string}")
-    public void exportingAirlineDataToFile(String filename) {
+    public void exportingAirlineDataToFile(String filename) throws SQLException {
         File file = new File(filename);
-        dataExporter.exportAirlines(file);
+
+        ResultSet airlines = airlineService.getData(null, null, null);
+        ResultSetMetaData md = airlines.getMetaData();
+        // Gets the number of columns (ie the number of variables)
+        int columns = md.getColumnCount();
+        // Initializing an arraylist of arraylists to store the extracted data in
+        ArrayList<ArrayList<Object>> list = new ArrayList<>();
+        // Iterates through the result set
+        while(airlines.next()) {
+            // An arraylist of each instance of the data type
+            ArrayList<Object> row = new ArrayList<>(columns);
+            // Iterates through the data, storing it in the arraylist
+            for (int i=1; i<=columns; ++i) {
+                row.add(airlines.getObject(i));
+            }
+            // Adds the extracted data to the overall arraylist of data
+            list.add(row);
+        }
+
+        dataExporter.exportAirlines(file, list);
 
         Assert.assertTrue(file.exists());
     }
@@ -160,9 +181,28 @@ public class DataExporterScenario {
     }
 
     @When("exporting airport data to file {string}")
-    public void exportingAirportDataToFile(String filename) {
+    public void exportingAirportDataToFile(String filename) throws SQLException {
         File file = new File(filename);
-        dataExporter.exportAirports(file);
+
+        ResultSet airports = airportService.getData(null, null, null);
+        ResultSetMetaData md = airports.getMetaData();
+        // Gets the number of columns (ie the number of variables)
+        int columns = md.getColumnCount();
+        // Initializing an arraylist of arraylists to store the extracted data in
+        ArrayList<ArrayList<Object>> list = new ArrayList<>();
+        // Iterates through the result set
+        while(airports.next()) {
+            // An arraylist of each instance of the data type
+            ArrayList<Object> row = new ArrayList<>(columns);
+            // Iterates through the data, storing it in the arraylist
+            for (int i=1; i<=columns; ++i) {
+                row.add(airports.getObject(i));
+            }
+            // Adds the extracted data to the overall arraylist of data
+            list.add(row);
+        }
+
+        dataExporter.exportAirports(file, list);
 
         Assert.assertTrue(file.exists());
     }
@@ -337,9 +377,28 @@ public class DataExporterScenario {
     }
 
     @When("exporting route data to file {string}")
-    public void exportingRouteDataToFile(String filename) {
+    public void exportingRouteDataToFile(String filename) throws SQLException {
         File file = new File(filename);
-        dataExporter.exportRoutes(file);
+
+        ResultSet routes = routeService.getData(null, null, -1, null);
+        ResultSetMetaData md = routes.getMetaData();
+        // Gets the number of columns (ie the number of variables)
+        int columns = md.getColumnCount();
+        // Initializing an arraylist of arraylists to store the extracted data in
+        ArrayList<ArrayList<Object>> list = new ArrayList<>();
+        // Iterates through the result set
+        while(routes.next()) {
+            // An arraylist of each instance of the data type
+            ArrayList<Object> row = new ArrayList<>(columns);
+            // Iterates through the data, storing it in the arraylist
+            for (int i=1; i<=columns; ++i) {
+                row.add(routes.getObject(i));
+            }
+            // Adds the extracted data to the overall arraylist of data
+            list.add(row);
+        }
+
+        dataExporter.exportRoutes(file, list);
 
         Assert.assertTrue(file.exists());
     }

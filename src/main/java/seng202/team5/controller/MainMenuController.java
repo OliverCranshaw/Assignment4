@@ -667,6 +667,10 @@ public class MainMenuController implements Initializable {
     private AirportTable airportTable;
     private RouteTable routeTable;
     private FlightTable flightTable;
+    private AirlineTable airlineSearchTable;
+    private AirportTable airportSearchTable;
+    private RouteTable routeSearchTable;
+    private FlightTable flightSearchTable;
 
 
     private ObservableList<AirlineModel> airlineModels;
@@ -1352,7 +1356,7 @@ public class MainMenuController implements Initializable {
         File file = selectFolder(event);
 
         if (file != null) {
-            dataExporter.exportAirports(file);
+            dataExporter.exportAirports(file, airportTable.getData());
         }
     }
 
@@ -1407,7 +1411,7 @@ public class MainMenuController implements Initializable {
         File file = selectFolder(event);
 
         if (file != null) {
-            dataExporter.exportAirlines(file);
+            dataExporter.exportAirlines(file, airlineTable.getData());
         }
     }
 
@@ -1519,7 +1523,40 @@ public class MainMenuController implements Initializable {
         File file = selectFolder(event);
 
         if (file != null) {
-            dataExporter.exportRoutes(file);
+            dataExporter.exportRoutes(file, routeTable.getData());
+        }
+    }
+
+    /**
+     * onDownloadSearchDataPressed
+     *
+     * Starts the download window, allowing the user to download the data displayed in the search table.
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    public void onDownloadSearchDataPressed(ActionEvent event) throws SQLException {
+        File file = selectFolder(event);
+
+        if (file != null) {
+            if (flightsRadioButton.isSelected()) {
+                //dataExporter.exportFlights();
+            }
+            else if (airportsRadioButton.isSelected()) {
+                if (airportSearchTable != null) {
+                    dataExporter.exportAirports(file, airportSearchTable.getData());
+                }
+            }
+            else if (airlinesRadioButton.isSelected()) {
+                if (airlineSearchTable != null) {
+                    dataExporter.exportAirlines(file, airlineSearchTable.getData());
+                }
+            }
+            else if (routesRadioButton.isSelected()) {
+                if (routeSearchTable != null) {
+                    dataExporter.exportRoutes(file, routeSearchTable.getData());
+                }
+            }
         }
     }
 
@@ -1787,7 +1824,7 @@ public class MainMenuController implements Initializable {
             }
 
             result = searchInstance.searchFlight();
-            FlightTable flightSearchTable = new FlightTable(result);
+            flightSearchTable = new FlightTable(result);
             flightSearchTable.createTable();
             populateFlightTable(searchTableView, flightSearchTable.getData());
 
@@ -1808,7 +1845,7 @@ public class MainMenuController implements Initializable {
             }
 
             result = searchInstance.searchAirport();
-            AirportTable airportSearchTable = new AirportTable(result);
+            airportSearchTable = new AirportTable(result);
             airportSearchTable.createTable();
             populateAirportTable(searchTableView, airportSearchTable.getData());
 
@@ -1833,7 +1870,7 @@ public class MainMenuController implements Initializable {
             }
 
             result = searchInstance.searchAirline();
-            AirlineTable airlineSearchTable = new AirlineTable(result);
+            airlineSearchTable = new AirlineTable(result);
             airlineSearchTable.createTable();
             populateAirlineTable(searchTableView, airlineSearchTable.getData());
 
@@ -1858,7 +1895,7 @@ public class MainMenuController implements Initializable {
                 }
 
                 result = searchInstance.searchRoute();
-                RouteTable routeSearchTable = new RouteTable(result);
+                routeSearchTable = new RouteTable(result);
                 routeSearchTable.createTable();
                 populateRouteTable(searchTableView, routeSearchTable.getData());
 

@@ -184,7 +184,7 @@
                                        <FlowPane.margin>
                                           <Insets left="463.0" />
                                        </FlowPane.margin></Button>
-                                    <Button mnemonicParsing="false" styleClass="general-button" text="Download">
+                                    <Button mnemonicParsing="false" onAction="#onDownloadSearchDataPressed" styleClass="general-button" text="Download">
                                        <FlowPane.margin>
                                           <Insets />
                                        </FlowPane.margin></Button>
@@ -260,12 +260,12 @@
                                                             <Insets right="10.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="lblRouteDesAirportS" text="Desitination Airport IATA/ICAO:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                      <Label fx:id="lblRouteDesAirportS" text="Destination Airport IATA/ICAO:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                          <GridPane.margin>
                                                             <Insets right="10.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <Label fx:id="lblRouteDesAirportIDS" text="Destination Aiport ID:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                                      <Label fx:id="lblRouteDesAirportIDS" text="Destination Airport ID:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                                          <GridPane.margin>
                                                             <Insets right="10.0" />
                                                          </GridPane.margin>
