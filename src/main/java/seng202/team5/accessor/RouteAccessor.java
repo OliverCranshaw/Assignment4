@@ -2,7 +2,6 @@ package seng202.team5.accessor;
 
 import seng202.team5.database.DBConnection;
 
-import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -189,9 +188,10 @@ public class RouteAccessor implements Accessor {
      * @return ResultSet of all the routes.
      */
     public ResultSet getData(ArrayList<String> sourceAirport, ArrayList<String> destAirport, int stops, String equipment) {
+        ResultSet result = null;
+
         boolean check = true;
         String addString = "";
-        ResultSet result = null;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
@@ -289,14 +289,14 @@ public class RouteAccessor implements Accessor {
      * Checks if an identical route exists.
      *
      * @param airline A string, an airline IATA/ICAO code.
-     * @param source_airport A string, an airport IATA/ICAO code.
-     * @param dest_airport A string, an airport IATA/ICAO code.
+     * @param sourceAirport A string, an airport IATA/ICAO code.
+     * @param destAirport A string, an airport IATA/ICAO code.
      * @param codeshare A string, "Y" if the route is run by a different airline.
      * @param stops An integer, the number of stops, 0 for direct.
      * @param equipment A string, a list of equipment codes separated by spaces.
      * @return boolean result True if an identical route exists, False otherwise.
      */
-    public boolean dataExists(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+    public boolean dataExists(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
         boolean result = false;
 
         try {
@@ -306,8 +306,8 @@ public class RouteAccessor implements Accessor {
                             "and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?");
             // Adds the given parameters to the search query
             stmt.setString(1, airline);
-            stmt.setString(2, source_airport);
-            stmt.setString(3, dest_airport);
+            stmt.setString(2, sourceAirport);
+            stmt.setString(3, destAirport);
             stmt.setString(4, codeshare);
             stmt.setInt(5, stops);
             stmt.setString(6, equipment);
@@ -372,8 +372,4 @@ public class RouteAccessor implements Accessor {
         }
         return result;
     }
-
-
-
-
 }
