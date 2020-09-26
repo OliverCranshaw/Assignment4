@@ -10,7 +10,9 @@ import seng202.team5.App;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Consumer;
@@ -46,13 +48,8 @@ public class MapView extends VBox {
             }
         });
 
-        try {
-            String content = Files.readString(Paths.get(App.class.getResource("map.html").toURI()));
-            webView.getEngine().loadContent(content);
-        } catch (URISyntaxException e) {
-            // Really shouldn't be possible
-            assert false;
-        }
+        URL path = App.class.getResource("map.html");
+        webView.getEngine().load(path.toString());
 
         webView.prefHeightProperty().bind(this.heightProperty());
         webView.prefWidthProperty().bind(this.widthProperty());
@@ -120,20 +117,21 @@ public class MapView extends VBox {
      * @param name New marker name
      * @return The created marker ID
      */
-    public int addMarker(Coord coord, String name) {
-        return addMarker(coord.latitude, coord.longitude, name);
+    public int addMarker(Coord coord, String name, String iconName) {
+        return addMarker(coord.latitude, coord.longitude, name, iconName);
     }
 
     /**
-     * Adds a marker to the map with the given name and coordinate
+     * Adds a marker to the map with the given name, icon and coordinate
      *
      * @param latitude New marker latitude
      * @param longitude New marker longitude
      * @param name New marker name
+     * @param iconName Icon name to use, null for default
      * @return The created marker ID
      */
-    public int addMarker(double latitude, double longitude, String name) {
-        return (int) callFunction("addMarker", latitude, longitude, name);
+    public int addMarker(double latitude, double longitude, String name, String iconName) {
+        return (int) callFunction("addMarker", latitude, longitude, name, iconName);
     }
 
     /**
@@ -178,18 +176,16 @@ public class MapView extends VBox {
         callFunction("removePath", pathID);
     }
 
-    private Object callFunction(String functionName, Object... arguments) {
-        return callFunction(functionName, List.of(arguments));
-    }
-
     private String convertToJSRepresentation(Object object) throws RuntimeException {
         if (object instanceof Coord) {
             Coord coord = (Coord)object;
             return String.format("{lat:%f,lng:%f}", coord.latitude, coord.longitude);
-        } if (object instanceof Bounds) {
+        } else if (object instanceof Bounds) {
             Bounds bounds = (Bounds) object;
             return String.format("{south:%f,west:%f,north:%f,east:%f}", bounds.southwest.latitude, bounds.southwest.longitude, bounds.northeast.latitude, bounds.northeast.longitude);
-        } if (object instanceof String) {
+        } if (object == null) {
+            return "null";
+        } else if (object instanceof String) {
             // Removes special characters
             String cleaned = ((String) object).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");
             return "\"" + cleaned + "\"";
@@ -206,7 +202,7 @@ public class MapView extends VBox {
         }
     }
 
-    private Object callFunction(String functionName, List<Object> arguments) {
+    private Object callFunction(String functionName, Object... arguments) {
         List<String> stringified = new ArrayList<>();
         for (Object argument : arguments) {
             stringified.add(convertToJSRepresentation(argument));
