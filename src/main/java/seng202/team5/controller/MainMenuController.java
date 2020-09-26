@@ -2866,7 +2866,14 @@ public class MainMenuController implements Initializable {
 
     }
 
-
+    /**
+     * onGraphAirportCountryBtnPressed
+     *
+     * Handles the pressing of the Airport Country Graph Button.
+     * Creates a Pie Chart showing the number of airports per country from the filtered data of the table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
     public void onGraphAirportCountryBtnPressed(ActionEvent actionEvent) throws Exception {
         PieChartController controller = new PieChartController();
         List<Object> metaData = List.of("AirportCountry", "Airports per Country");
@@ -2875,6 +2882,14 @@ public class MainMenuController implements Initializable {
 
     }
 
+    /**
+     * onGraphAirportRouteBtnPressed
+     *
+     * Handles the pressing of the Airport Route Graph Button.
+     * Creates a Pie Chart showing the number of routes per airport from the filtered data of the airport table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
     public void onGraphAirportRouteBtnPressed(ActionEvent actionEvent) throws Exception {
         PieChartController controller = new PieChartController();
         List<Object> metaData = List.of("AirportRoute", "Routes per Airport");
@@ -2882,6 +2897,14 @@ public class MainMenuController implements Initializable {
         controller.start(new Stage(StageStyle.DECORATED));
     }
 
+    /**
+     * onGraphAirlineCountryBtnPressed
+     *
+     * Handles the pressing of the Airline Country Graph Button.
+     * Creates a Pie Chart showing the number of airlines per country from the filtered data from the airline table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
     public void onGraphAirlineCountryBtnPressed(ActionEvent actionEvent) throws Exception {
         PieChartController controller = new PieChartController();
         List<Object> metaData = List.of("AirlineCountry", "Airlines per Country");
