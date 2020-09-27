@@ -711,7 +711,7 @@
                                              <children>
                                                 <HBox prefHeight="35.0" prefWidth="545.0">
                                                    <children>
-                                                      <Button mnemonicParsing="false" onAction="#onCalculateDistancePressed" text="Calculate Distance From Previous Airport" />
+                                                      <Button fx:id="calculateDistanceButton" disable="true" mnemonicParsing="false" onAction="#onCalculateDistancePressed" text="Calculate Distance From Previous Airport" />
                                                       <Label fx:id="distanceLabel" prefHeight="25.0" textFill="WHITE">
                                                          <HBox.margin>
                                                             <Insets left="6.0" />

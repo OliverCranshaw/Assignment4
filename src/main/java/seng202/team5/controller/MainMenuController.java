@@ -653,6 +653,11 @@ public class MainMenuController implements Initializable {
     @FXML
     private MapView flightMapView;
 
+    @FXML
+    private Button calculateDistanceButton;
+
+    private String prevAirportName = "";
+
     private AirportCompare rawAirportCompare = new AirportCompare();
 
     private int airportMarkerId;
@@ -1114,6 +1119,14 @@ public class MainMenuController implements Initializable {
 
             }
 
+            if (prevAirportName == "") {
+                calculateDistanceButton.setText("Calculate Distance From Previous Airport");
+            } else {
+                calculateDistanceButton.setDisable(false);
+                calculateDistanceButton.setText("Calculate Distance From Previous Airport (" + prevAirportName + ")");
+            }
+
+            prevAirportName = airportName.getText();
             distanceLabel.setText("");
             rawAirportCompare.setLocations(airportCoord);
             airportMarkerId = airportMapView.addMarker(airportCoord, airportName.getText(), null);
@@ -1290,21 +1303,17 @@ public class MainMenuController implements Initializable {
      */
     public void onCalculateDistancePressed() {
 
-        if (rawAirportCompare.getLocation1() == null | rawAirportCompare.getLocation2() == null) {
-            distanceLabel.setText("No airport previously selected to calculate distance from.");
-        } else {
+        double distance = rawAirportCompare.calculateDistance();
 
-            double distance = rawAirportCompare.calculateDistance();
+        distanceLabel.setText(Double.toString(distance) + "km");
 
-            distanceLabel.setText(Double.toString(distance) + "km");
+        ArrayList airportCoords = new ArrayList(Arrays.asList(rawAirportCompare.getLocation1(), rawAirportCompare.getLocation2()));
 
-            ArrayList airportCoords = new ArrayList(Arrays.asList(rawAirportCompare.getLocation1(), rawAirportCompare.getLocation2()));
+        airportMapView.fitBounds(Bounds.fromCoordinateList(airportCoords), 2);
 
-            airportMapView.fitBounds(Bounds.fromCoordinateList(airportCoords), 0);
+        airportPathId = airportMapView.addPath(airportCoords);
+        airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
 
-            airportPathId = airportMapView.addPath(airportCoords);
-            airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
-        }
 
     }
 
