@@ -689,6 +689,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<FlightEntryModel> flightEntries;
     private ObservableList<FlightEntryModel> flightEntriesSearch;
 
+    private List<Integer> airlinePaths = new ArrayList<>();
     private int flightMapPath = -1;
 
     /**
@@ -1084,6 +1085,48 @@ public class MainMenuController implements Initializable {
             ResultSet airlineData = airlineService.getData(airlineModel.getId());
             setLabels(airlineData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
+
+            AirlineData airline = new AirlineData(airlineService.getData(airlineModel.getId()));
+
+            // Remove pre-existing paths
+            for (int pathID : airlinePaths) {
+                airlineMapView.removePath(pathID);
+            }
+            airlinePaths.clear();
+
+
+            // Hopefully makes this fast, also keeps track of the bounds we need to fit to
+            Map<Integer, Coord> airportCache = new HashMap<>();
+
+            // Converts a AirportID to the coordinate of the airport
+            Function<Integer, Coord> getAirportCoordinates = (airportCode) -> {
+                try {
+                    AirportData airport = new AirportData(airportService.getData(airportCode));
+                    return new Coord(airport.getLatitude(), airport.getLongitude());
+                } catch (SQLException ignored) {
+                    return null;
+                }
+            };
+
+            // Find all the routes from the given airline
+            ResultSet routeSet = routeService.getData(airline.getIATA());
+            while (routeSet.next()) {
+                Coord source = airportCache.computeIfAbsent(routeSet.getInt(5), getAirportCoordinates);
+                Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
+
+                //System.out.println("Adding route: " + source + " -> " + destination);
+
+                if (source != null && destination != null) {
+                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination)));
+                }
+            }
+
+            // Sets the correct map bounds, if there are any routes
+            List<Coord> airportCoordinates = List.copyOf(airportCache.values());
+            if (airportCoordinates.size() >= 2) {
+                airlineMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 0.0);
+            }
+
         }
     }
 
