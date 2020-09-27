@@ -3,6 +3,7 @@ package seng202.team5.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -74,12 +75,21 @@ public class AddRouteMenuController {
                 System.out.println(airline.getIATA());
                 if (airline.getName() == null) {
                     System.out.println("Please ensure the given airline is in the database");
-                } else if(airline.getIATA() == null && airline.getICAO() == null) {
+                } else if (airline.getIATA() == null && airline.getICAO() == null) {
                     System.out.println("Please ensure the selected Airline has an associated IATA or ICAO value");
                 } else {
                     airlineCode = (airline.getIATA() == null) ? airline.getICAO() : airline.getIATA();
                 }
             }
+        } catch (SQLException e) {
+            errorMessage.setText("Failed to find corresponding Airline");
+            errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            errorMessage.setFill(Color.RED);
+            errorMessage.setVisible(true);
+            addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
+            return;
+        }
+        try {
             {
                 ResultSet resultSet = airportService.getData(sourceName, null, null);
                 AirportData srcAirport = new AirportData(resultSet);
@@ -91,6 +101,15 @@ public class AddRouteMenuController {
                     sourceCode = (srcAirport.getIATA() == null) ? srcAirport.getICAO() : srcAirport.getIATA();
                 }
             }
+        } catch (SQLException e) {
+            errorMessage.setText("Failed to find corresponding Source Airport");
+            errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            errorMessage.setFill(Color.RED);
+            errorMessage.setVisible(true);
+            addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
+            return;
+        }
+        try {
             {
                 ResultSet resultSet = airportService.getData(destName, null, null);
                 AirportData dstAirport = new AirportData(resultSet);
@@ -103,11 +122,11 @@ public class AddRouteMenuController {
                 }
             }
         } catch (SQLException e) {
-            errorMessage.setText("Failed to find corresponding Airport/Airline with the given names");
+            errorMessage.setText("Failed to find corresponding Destination Airport");
             errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
             errorMessage.setFill(Color.RED);
             errorMessage.setVisible(true);
-            System.out.println("Failed to find corresponding Airport/Airline with the given names");
+            addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
             return;
         }
 
@@ -130,27 +149,41 @@ public class AddRouteMenuController {
         int outcome = concreteAddData.addRoute(airlineCode, sourceCode, destCode, codeShare, stopsField.getText(), equipSpaceSeparated);
         setDefaults();
         if (outcome < 0) {
+            errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            errorMessage.setFill(Color.RED);
+            errorMessage.setVisible(true);
             if (outcome == -1) {
                 System.out.println("Service Error");
+                addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
+                addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
+                addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure the input source and/or destination exist within the database");
-                errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
-                errorMessage.setFill(Color.RED);
-                errorMessage.setVisible(true);
             } else if (outcome == -2) {
                 addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure a valid airline code has been entered");
             } else if (outcome == -3) {
                 addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure a valid source airport code has been entered");
             } else if (outcome == -4) {
                 addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure a valid destination airport code has been entered");
             } else if (outcome == -5) {
                 codeshareField.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure a valid codeshare has been entered");
             } else if (outcome == -6) {
                 stopsField.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure stops is a positive value");
             } else if (outcome == -7) {
                 equipmentField.setStyle("-fx-border-color: #ff0000;");
+                errorMessage.setText("Please ensure the equipment field has valid input");
             }
         } else {
             setDefaults();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Successfully added Route");
+            errorMessage.setVisible(false);
+            alert.showAndWait();
             Window window = ((Node)event.getSource()).getScene().getWindow();
             window.hide();
         }
