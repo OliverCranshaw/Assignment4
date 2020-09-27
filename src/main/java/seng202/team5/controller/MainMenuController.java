@@ -690,6 +690,7 @@ public class MainMenuController implements Initializable {
     private ObservableList<FlightEntryModel> flightEntriesSearch;
 
     private List<Integer> airlinePaths = new ArrayList<>();
+    private int routePath = -1;
     private int flightMapPath = -1;
 
     /**
@@ -1059,9 +1060,27 @@ public class MainMenuController implements Initializable {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
         } else {
-            ResultSet routeData = routeService.getData(routeModel.getRouteId());
-            setLabels(routeData, elementsVisible);
-            setLabelsEmpty(lblElementsVisible, true);
+            {
+                ResultSet routeData = routeService.getData(routeModel.getRouteId());
+                setLabels(routeData, elementsVisible);
+                setLabelsEmpty(lblElementsVisible, true);
+            }
+
+            {
+                ResultSet routeData = routeService.getData(routeModel.getRouteId());
+
+                AirportData source = new AirportData(airportService.getData(routeData.getInt(5)));
+                AirportData destination = new AirportData(airportService.getData(routeData.getInt(7)));
+
+                List<Coord> coordinates = List.of(new Coord(source.getLatitude(), source.getLongitude()), new Coord(destination.getLatitude(), destination.getLongitude()));
+
+                if (routePath != -1) {
+                    routeMapView.removePath(routePath);
+                }
+                routePath = routeMapView.addPath(coordinates);
+                routeMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
+            }
+
         }
     }
 
