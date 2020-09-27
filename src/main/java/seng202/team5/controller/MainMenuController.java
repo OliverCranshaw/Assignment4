@@ -1114,6 +1114,7 @@ public class MainMenuController implements Initializable {
 
             }
 
+            distanceLabel.setText("");
             rawAirportCompare.setLocations(airportCoord);
             airportMarkerId = airportMapView.addMarker(airportCoord, airportName.getText(), null);
             airportMapView.setCentre(airportCoord);
