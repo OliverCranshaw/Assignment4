@@ -1540,7 +1540,8 @@ public class MainMenuController implements Initializable {
 
         if (file != null) {
             if (flightsRadioButton.isSelected()) {
-                //dataExporter.exportFlights();
+                ArrayList<ArrayList<Object>> flightSearchData = flightSearchTable.getData();
+                dataExporter.exportFlights(file, flightSearchData);
             }
             else if (airportsRadioButton.isSelected()) {
                 if (airportSearchTable != null) {

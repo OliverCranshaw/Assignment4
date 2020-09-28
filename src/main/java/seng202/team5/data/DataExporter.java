@@ -229,6 +229,51 @@ public class DataExporter {
         }
     }
 
+    public void exportFlights(File file, ArrayList<ArrayList<Object>> flights) {
+        // Retrieves all the flight entries from the database
+        //ResultSet flight = flightService.getData(flightID);
+
+        try {
+            // Creates the FileWriter with the filename "flights.csv"
+            fileWriter = new BufferedWriter(new FileWriter(file));
+
+            // Loops through all the flight entries in the ResultSet
+            for (ArrayList<Object> flight : flights) {
+                int flightID = (int) flight.get(1);
+                ResultSet flightEntries = flightService.getData(flightID);
+
+                // Loops through all the flight entries in the ResultSet
+                while (flightEntries.next()) {
+                    // Gets the data from each column of the row
+                    int id = flightEntries.getInt("id");
+                    String locationType = flightEntries.getString("location_type");
+                    String location = flightEntries.getString("location");
+                    int altitude = flightEntries.getInt("altitude");
+                    double latitude = flightEntries.getDouble("latitude");
+                    double longitude = flightEntries.getDouble("longitude");
+
+                    // Creates a formatted line with the values
+                    line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, locationType, location, altitude, latitude, longitude);
+
+                    // Creates a new line in the file, and then writes the formatted line into it
+                    fileWriter.write(line);
+                    fileWriter.newLine();
+                }
+            }
+
+            // Closes the FileWriter when everything is done
+            fileWriter.close();
+        } catch (SQLException e) {
+            // If anything goes wrong when extracting data from the ResultSet, outputs an error message
+            System.out.println("Error reading results from database.");
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
+            System.out.println("Error writing to file.");
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * Exports all the routes contained in the database to a csv file called routes.csv.
      *
