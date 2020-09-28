@@ -30,7 +30,7 @@
             <String fx:value="main-button" />
             <String fx:value="general-button" />
          </styleClass></Button>
-      <Text fx:id="errorMessage" layoutX="116.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="317.0" />
+      <Text fx:id="errorMessage" layoutX="116.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="317.0" />
       <GridPane layoutY="59.0" prefHeight="209.0" prefWidth="483.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="107.0" minWidth="10.0" prefWidth="71.0" />

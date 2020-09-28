@@ -228,6 +228,15 @@ public class RouteService implements Service {
     }
 
 
+    /**
+     * Return all airline IDS that cover the given route (from src to dst). If the given boolean if false, it doesn't
+     * return any inactive airlines.
+     * @param srcId - Integer source airport ID.
+     * @param dstId - Integer destination airport ID.
+     * @param includeInactive - Boolean determines if the result should include inactive airlines.
+     * @return - Arraylist of Integers of airline IDs.
+     * @throws SQLException Caused by ResultSet interactions.
+     */
     public ArrayList<Integer> getAirlinesCoveringRoute(Integer srcId, Integer dstId, Boolean includeInactive) throws SQLException {
         ArrayList<Integer> current = accessor.getAirlinesCovering(srcId, dstId);
         ArrayList<Integer> result = new ArrayList<>();
