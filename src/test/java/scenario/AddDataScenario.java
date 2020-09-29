@@ -379,6 +379,7 @@ public class AddDataScenario {
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string}, {string}")
     public void validFlightEntryParameters(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
+        // Adds the airport needed for the flight entry to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
         flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
@@ -446,6 +447,7 @@ public class AddDataScenario {
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid altitude {string}")
     public void flightEntryInvalidAltitude(int flightID, String locationType, String location, String latitude, String longitude, String altitude) {
+        // Adds the airport needed for the flight entry to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
         flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
@@ -498,6 +500,7 @@ public class AddDataScenario {
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string}, {string}")
     public void validRouteParameters(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
+        // Adds the airports and airline needed for the route to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
         concreteAddData.addAirport("Mount Hagen", "Mount Hagen", "Papua New Guinea", "HGU", "AYMH", "-5.826789", "144.295861", "5388", "10", "U", "Pacific/Port_Moresby");
         concreteAddData.addAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");

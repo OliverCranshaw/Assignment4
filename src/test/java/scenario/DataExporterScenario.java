@@ -123,6 +123,8 @@ public class DataExporterScenario {
             bufferedReader = new BufferedReader(fileReader);
             resultSet = airlineService.getData(null, null, null);
 
+            // Compares the airline data returned from the database with the lines in the file
+            // For this the airline data must be converted into a string in the correct format
             while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                 expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
                         resultSet.getInt("airline_id"), resultSet.getString("airline_name"),
@@ -216,6 +218,8 @@ public class DataExporterScenario {
             bufferedReader = new BufferedReader(fileReader);
             resultSet = airportService.getData(null, null, null);
 
+            // Compares the airport data returned from the database with the lines in the file
+            // For this the airport data must be converted into a string in the correct format
             while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                 expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%f,%f,%d,%.1f,\"%s\",\"%s\"",
                         resultSet.getInt("airport_id"), resultSet.getString("airport_name"),
@@ -250,9 +254,7 @@ public class DataExporterScenario {
 
     @Given("there are multiple flights in the database")
     public void thereAreMultipleFlightsInTheDatabase() {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
-
+        // Adds the airports needed for the flights to be created
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
@@ -282,6 +284,8 @@ public class DataExporterScenario {
             bufferedReader = new BufferedReader(fileReader);
             resultSet = flightService.getData(null, null);
 
+            // Compares the flight data returned from the database with the lines in the file
+            // For this the flight data must be converted into a string in the correct format
             while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                 expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                         resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -303,9 +307,7 @@ public class DataExporterScenario {
 
     @Given("there is one flight in the database")
     public void thereIsOneFlightInTheDatabase() throws SQLException {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
-
+        // Adds the airports needed to create the flight
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
@@ -340,6 +342,8 @@ public class DataExporterScenario {
             bufferedReader = new BufferedReader(fileReader);
             resultSet = flightService.getData(1);
 
+            // Compares the flight data returned from the database with the lines in the file
+            // For this the flight data must be converted into a string in the correct format
             while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                 expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                         resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -364,6 +368,7 @@ public class DataExporterScenario {
 
     @Given("there are routes in the database")
     public void thereAreRoutesInTheDatabase() throws SQLException {
+        // Adds the airline and airports needed to create the routes
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
 
@@ -412,6 +417,8 @@ public class DataExporterScenario {
             bufferedReader = new BufferedReader(fileReader);
             resultSet = routeService.getData(null, null, -1, null);
 
+            // Compares the route data returned from the database with the lines in the file
+            // For this the route data must be converted into a string in the correct format
             while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                 expectedLine = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s",
                         resultSet.getInt("route_id"), resultSet.getString("airline"),

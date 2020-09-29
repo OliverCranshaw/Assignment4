@@ -74,6 +74,7 @@ public class DataExporterTest {
 
     @Test
     public void exportAirlinesTest() {
+        // Adds airlines to the database
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
 
@@ -107,6 +108,8 @@ public class DataExporterTest {
                 bufferedReader = new BufferedReader(fileReader);
                 resultSet = airlineService.getData(null, null, null);
 
+                // Compares the airline data returned from the database with the lines in the file
+                // For this the airline data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
                             resultSet.getInt("airline_id"), resultSet.getString("airline_name"),
@@ -131,6 +134,7 @@ public class DataExporterTest {
 
     @Test
     public void exportAirportsTest() {
+        // Adds airports to the database
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
@@ -164,6 +168,8 @@ public class DataExporterTest {
                 bufferedReader = new BufferedReader(fileReader);
                 resultSet = airportService.getData(null, null, null);
 
+                // Compares the airport data returned from the database with the lines in the file
+                // For this the airport data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%f,%f,%d,%.1f,\"%s\",\"%s\"",
                             resultSet.getInt("airport_id"), resultSet.getString("airport_name"),
@@ -190,11 +196,11 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightTest() {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
+        // Adds the airports necessary to add the flights
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds flights
         File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
@@ -212,6 +218,8 @@ public class DataExporterTest {
                 bufferedReader = new BufferedReader(fileReader);
                 resultSet = flightService.getData(1);
 
+                // Compares the flight data returned from the database with the lines in the file
+                // For this the flight data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                             resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -235,11 +243,11 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightsTest() {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
+        // Adds the airports necessary to add the flights
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds flights
         File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
@@ -257,6 +265,8 @@ public class DataExporterTest {
                 bufferedReader = new BufferedReader(fileReader);
                 resultSet = flightService.getData(null, null);
 
+                // Compares the flight data returned from the database with the lines in the file
+                // For this the flight data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                             resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -280,11 +290,13 @@ public class DataExporterTest {
 
     @Test
     public void exportRoutesTest() {
+        // Adds the airlines and airports necessary to add the routes
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds routes
         File routeFile = new File("src/test/java/seng202/team5/data/testfiles/normal_routes_multiple.txt");
         readFile.readRouteData(routeFile);
 
@@ -318,6 +330,8 @@ public class DataExporterTest {
                 bufferedReader = new BufferedReader(fileReader);
                 resultSet = routeService.getData(null, null, -1, null);
 
+                // Compares the route data returned from the database with the lines in the file
+                // For this the route data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s",
                             resultSet.getInt("route_id"), resultSet.getString("airline"),

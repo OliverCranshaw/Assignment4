@@ -4,6 +4,7 @@
 Feature: Updating Data
 
   # Updating airline data
+
   Scenario: Updating an airline with valid parameters
     Given valid airline parameters "Airfix", "AirFx", "AS", "FTX", "AIRFX", "Sweden", "N" and an existing airline with id 1
     When updating an airline with id 1 with valid parameters "Airfix", "AirFx", "AS", "FTX", "AIRFX", "Sweden", "N"
@@ -28,6 +29,7 @@ Feature: Updating Data
     Given an invalid active "" and an existing airline with id 1
     When updating an airline with id 1 with an invalid active ""
     Then the airline with id 1 is not updated
+
 
   # Updating airport data
 
@@ -71,6 +73,7 @@ Feature: Updating Data
     When updating an airport with id 1 with an invalid tz ""
     Then the airport with id 1 is not updated
 
+
   # Updating flight entry data
 
   Scenario: Updating a flight entry with valid parameters
@@ -87,6 +90,7 @@ Feature: Updating Data
     Given an invalid location "" and an existing flight entry with id 1
     When updating a flight entry with id 1 with invalid location ""
     Then the flight entry with id 1 is not updated
+
 
   # Updating route data
 

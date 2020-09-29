@@ -15,6 +15,7 @@ Feature: Exporting data
     When exporting airline data to file "airlines.csv"
     Then there is an empty file "airlines.csv"
 
+
   # Exporting airport data
 
   Scenario: Exporting airport data with airports in the database
@@ -26,6 +27,7 @@ Feature: Exporting data
     Given there are no airports in the database
     When exporting airport data to file "airports.csv"
     Then there is an empty file "airports.csv"
+
 
   # Exporting all flight data
 
@@ -44,6 +46,7 @@ Feature: Exporting data
     When exporting all flight data to file "flights.csv"
     Then there is an empty file "flights.csv"
 
+
   # Exporting flight data
 
   Scenario: Exporting flight data with multiple flights in the database
@@ -60,6 +63,7 @@ Feature: Exporting data
     Given there are no flights in the database
     When exporting flight data to file "flight.csv"
     Then there is an empty file "flight.csv"
+
 
   # Exporting route data
 
