@@ -5,14 +5,11 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * AirportData
  *
  * A class used to represent Airport data for use in the modify data factory patterns.
- * Overrides checkValues() and convertBlanksToNull() from Data interface.
- *
- * @author Jack Ryan
+ * Implements from Data interface.
  */
 public class AirportData implements Data {
 
@@ -28,52 +25,6 @@ public class AirportData implements Data {
     private Float timezone;
     private String dst;
     private String tzDatabaseTimezone;
-
-    // Getters for all of the variables of AirportData
-    public String getAirportName() {
-        return airportName;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getIATA() {
-        return iata;
-    }
-
-    public String getICAO() {
-        return icao;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public Integer getAltitude() {
-        return altitude;
-    }
-
-    public Float getTimezone() {
-        return timezone;
-    }
-
-    public String getDST() {
-        return dst;
-    }
-
-    public String getTZDatabaseTimezone() {
-        return tzDatabaseTimezone;
-    }
-
 
     /**
      * Constructor for AirportData that takes in all parameters as their native types (types that
@@ -104,7 +55,6 @@ public class AirportData implements Data {
         this.dst = dst;
         this.tzDatabaseTimezone = tzDatabaseTimezone;
     }
-
 
     /**
      * Constructor for AirportData that takes in all parameters as strings and attempts to parse certain variables
@@ -190,42 +140,41 @@ public class AirportData implements Data {
      *
      * @return int 1 if the check passes, otherwise a negative value that corresponds to a certain variable.
      */
-    @Override
     public int checkValues() {
         // List of domain of valid dst values
         List<String> dstValues = Arrays.asList("E", "A", "S", "O", "Z", "N", "U");
 
-        if (this.airportName == null) {
+        if (airportName == null) {
             // Ensures the name of the airport is not null
             return -2;
-        } else if (this.city == null) {
+        } else if (city == null) {
             // Ensures the city of the airport is not null
             return -3;
-        } else if (this.country == null) {
+        } else if (country == null) {
             // Ensures the country of the airport is not null
             return -4;
-        } else if (!((this.iata == null) || (this.iata.matches("^[A-Z0-9]{3}$")))) {
+        } else if (!((iata == null) || (iata.matches("^[A-Z0-9]{3}$")))) {
             // Ensures the iata of the airport is not null and is of the correct length (3)
             return -5;
-        } else if (!((this.icao == null) || (this.icao.matches("^[A-Z0-9]{4}$")))) {
+        } else if (!((icao == null) || (icao.matches("^[A-Z0-9]{4}$")))) {
             // Ensures the icao of the airport is not null and is of the correct length (4)
             return -6;
-        } else if (this.latitude == null) {
+        } else if (latitude == null) {
             // Ensures the latitude of the airport is not null
             return -7;
-        } else if (this.longitude == null) {
+        } else if (longitude == null) {
             // Ensures the longitude of the airport is not null
             return -8;
-        } else if (this.altitude == null) {
+        } else if (altitude == null) {
             // Ensures the altitude of the airport is not null
             return -9;
-        } else if (this.timezone == null) {
+        } else if (timezone == null) {
             // Ensures the timezone of the airport is not null
             return -10;
-        } else if (this.dst == null || !(dstValues.contains(this.dst)) ) {
+        } else if (dst == null || !(dstValues.contains(dst)) ) {
             // Ensures the dst of the airport is not null and that the dst is within the expected domain
             return -11;
-        } else if (this.tzDatabaseTimezone == null || !(this.tzDatabaseTimezone.matches("^[A-Za-z]+((\\s|_)?[A-Za-z]+)+/[A-Za-z]+((\\s|_)?[A-Za-z]+)*$"))) {
+        } else if (tzDatabaseTimezone == null || !(tzDatabaseTimezone.matches("^[A-Za-z]+((\\s|_)?[A-Za-z]+)+/[A-Za-z]+((\\s|_)?[A-Za-z]+)*$"))) {
             // Ensures the tzDatabaseTimezone of the airport is not null
             return -12;
         } else {
@@ -238,32 +187,75 @@ public class AirportData implements Data {
      * Checks every variable of AirportData against a list of possible null representations potentially used
      * in files, or returned by a gui empty field. If a null representation is found, replaces that value with null,
      */
-    @Override
     public void convertBlanksToNull() {
         // List of possible null representations
         List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
 
-        if (nullRepr.contains(this.airportName)) {
-            this.airportName = null;
+        if (nullRepr.contains(airportName)) {
+            airportName = null;
         }
-        if (nullRepr.contains(this.city)) {
-            this.city = null;
+        if (nullRepr.contains(city)) {
+            city = null;
         }
-        if (nullRepr.contains(this.country)) {
-            this.country = null;
+        if (nullRepr.contains(country)) {
+            country = null;
         }
-        if (nullRepr.contains(this.iata)) {
-            this.iata = null;
+        if (nullRepr.contains(iata)) {
+            iata = null;
         }
-        if (nullRepr.contains(this.icao)) {
-            this.icao = null;
+        if (nullRepr.contains(icao)) {
+            icao = null;
         }
-        if (nullRepr.contains(this.dst)) {
-            this.dst = null;
+        if (nullRepr.contains(dst)) {
+            dst = null;
         }
-        if (nullRepr.contains(this.tzDatabaseTimezone)) {
-            this.tzDatabaseTimezone = null;
+        if (nullRepr.contains(tzDatabaseTimezone)) {
+            tzDatabaseTimezone = null;
         }
     }
 
+    // Getters for all of the variables of AirportData
+    public String getAirportName() {
+        return airportName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getIATA() {
+        return iata;
+    }
+
+    public String getICAO() {
+        return icao;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Integer getAltitude() {
+        return altitude;
+    }
+
+    public Float getTimezone() {
+        return timezone;
+    }
+
+    public String getDST() {
+        return dst;
+    }
+
+    public String getTZDatabaseTimezone() {
+        return tzDatabaseTimezone;
+    }
 }

@@ -9,6 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -28,11 +31,13 @@ import seng202.team5.table.AirportTable;
 import seng202.team5.table.FlightTable;
 import seng202.team5.table.RouteTable;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 import static java.lang.Math.abs;
@@ -3144,4 +3149,118 @@ public class MainMenuController implements Initializable {
         }
         updateAirportTable();
     }
+
+
+    /**
+     * onGraphRouteBtnPressed
+     *
+     * Calls required functions to create a pieChart for graph - route data,
+     * showing equipment usage percentages
+     * @param event
+     * @throws Exception
+     */
+    @FXML
+    public void onGraphRouteBtnPressed(ActionEvent event) throws Exception {
+
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes (Top 16)");
+        controller.inflateChart(routeTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+
+
+    /**
+     * showOtherAirlines
+     *
+     * Shows the other airlines that cover the given route
+     *
+     * @throws SQLException
+     */
+    public void handleShowOtherAirlines(ActionEvent event) throws SQLException {
+        RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
+        String srcIata = route.getRouteSrcAirport();
+        String dstIata = route.getRouteDstAirport();
+        System.out.println(srcIata + " " + dstIata);
+        ResultSet srcData = airportService.getData(srcIata);
+        ResultSet dstData = airportService.getData(dstIata);
+        ArrayList<Integer> airlines = routeService.getAirlinesCoveringRoute(srcData.getInt(1), dstData.getInt(1), true);
+        String toShow = "";
+        ArrayList<Integer> airlinesCleaned = new ArrayList<>();
+        for (Integer airline: airlines) {
+            if (!airlinesCleaned.contains(airline)) {
+                airlinesCleaned.add(airline);
+            }
+        }
+        int i = 0;
+        for (Integer airlineID : airlinesCleaned) {
+            ResultSet data = airlineService.getData(airlineID);
+            String name = data.getString(2);
+            toShow = toShow + name;
+            if (data.getString(8).equals("N")) {
+                toShow = toShow + " - Inactive";
+            } else {
+                toShow = toShow + " - Active";
+            }
+            if (i++ == 0) {
+                toShow = toShow + " (Selected) ";
+            }
+
+            toShow = toShow  + "\n";
+        }
+        System.out.println(airlines);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Airlines that cover the " + srcIata + " - " + dstIata + " Route:");
+        alert.setContentText(toShow);
+        alert.showAndWait();
+
+    }
+
+    /**
+     * onGraphAirportCountryBtnPressed
+     *
+     * Handles the pressing of the Airport Country Graph Button.
+     * Creates a Pie Chart showing the number of airports per country from the filtered data of the table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
+    public void onGraphAirportCountryBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirportCountry", "Airports per Country");
+        controller.inflateChart(airportTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+
+    }
+
+    /**
+     * onGraphAirportRouteBtnPressed
+     *
+     * Handles the pressing of the Airport Route Graph Button.
+     * Creates a Pie Chart showing the number of routes per airport from the filtered data of the airport table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
+    public void onGraphAirportRouteBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirportRoute", "Routes per Airport");
+        controller.inflateChart(airportTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+    /**
+     * onGraphAirlineCountryBtnPressed
+     *
+     * Handles the pressing of the Airline Country Graph Button.
+     * Creates a Pie Chart showing the number of airlines per country from the filtered data from the airline table.
+     * @param actionEvent - Button press.
+     * @throws Exception Caused by ResultSet interactions.
+     */
+    public void onGraphAirlineCountryBtnPressed(ActionEvent actionEvent) throws Exception {
+        PieChartController controller = new PieChartController();
+        List<Object> metaData = List.of("AirlineCountry", "Airlines per Country");
+        controller.inflateChart(airlineTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+
 }

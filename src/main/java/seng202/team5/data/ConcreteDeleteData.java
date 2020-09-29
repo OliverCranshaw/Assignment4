@@ -5,7 +5,6 @@ import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 
-
 /**
  * ConcreteDeleteData
  *
@@ -13,11 +12,22 @@ import seng202.team5.service.RouteService;
  * of the DeleteData abstract class.
  */
 public class ConcreteDeleteData extends DeleteData{
-    // Initializes the necessary service classes
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
-    private FlightService flightService = new FlightService();
-    private RouteService routeService = new RouteService();
+
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+    private final FlightService flightService;
+    private final RouteService routeService;
+
+    /**
+     * Constructor for ConcreteDeleteData.
+     * Initializes all of the necessary Services.
+     */
+    public ConcreteDeleteData() {
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
+    }
 
     /**
      * Overrides the deleteAirline() abstract method.
@@ -31,7 +41,6 @@ public class ConcreteDeleteData extends DeleteData{
         return airlineService.delete(id);
     }
 
-
     /**
      * Overrides the deleteAirport() abstract method.
      * passes the given id parameter into the airportService's deleteAirport method
@@ -43,7 +52,6 @@ public class ConcreteDeleteData extends DeleteData{
         // Call to the deleteAirport method of the airportService
         return airportService.delete(id);
     }
-
 
     /**
      * Overrides the deleteFlightEntry() abstract method.
@@ -57,7 +65,6 @@ public class ConcreteDeleteData extends DeleteData{
         return flightService.deleteEntry(id);
     }
 
-
     /**
      * Overrides the deleteFlight() abstract method.
      * Passes the given flight_id parameter into flightServices's deleteEntry method
@@ -69,7 +76,6 @@ public class ConcreteDeleteData extends DeleteData{
         // Call to the deleteFlight method of the flightService
         return flightService.delete(flight_id);
     }
-
 
     /**
      * Overrides the deleteRoute() abstract method.

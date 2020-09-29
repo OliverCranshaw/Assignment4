@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class AirportAccessor implements Accessor {
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
 
     /**
      * Constructor for AirportAccessor.
@@ -82,6 +82,8 @@ public class AirportAccessor implements Accessor {
      * @param newDST The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be null if not to be updated.
      * @param newTZ The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
      * @return int result The number of rows modified or -1 for error.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newName, String newCity, String newCountry, String newIATA, String newICAO,
                       Double newLatitude, Double newLongitude, Integer newAltitude, Float newTimezone, String newDST, String newTZ) throws SQLException {
@@ -163,6 +165,7 @@ public class AirportAccessor implements Accessor {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
             stmt.setObject(1, code);
+            stmt.setObject(2, code);
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -184,31 +187,30 @@ public class AirportAccessor implements Accessor {
     public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
 
-        List<String> queryTerms = new ArrayList<>();
+        String query = "SELECT * FROM AIRPORT_DATA";
         List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                queryTerms.add("airport_name = ?");
+                query = query + " WHERE airport_name = ? ";
                 elements.add(name);
             }
-
             if (city != null) {
-                queryTerms.add("city = ?");
+                if (name != null) {
+                    query = query + " and city = ? ";
+                } else {
+                    query = query + " WHERE city = ? ";
+                }
                 elements.add(city);
             }
-
             if (country != null) {
-                queryTerms.add("country = ?");
+                if (name != null || city != null) {
+                    query = query + " and country = ? ";
+                } else {
+                    query = query + " WHERE country = ? ";
+                }
                 elements.add(country);
             }
-
-            String query = "SELECT * FROM AIRPORT_DATA";
-            if (queryTerms.size() != 0) {
-                query += " WHERE ";
-                query += String.join(" and ", queryTerms);
-            }
-
 
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
@@ -259,7 +261,7 @@ public class AirportAccessor implements Accessor {
      * @param name The name of the airline.
      * @return iata result The iata of the airport with the name.
      */
-    public ArrayList getAirportIataIcao(String name) {
+    public ArrayList<String> getAirportIataIcao(String name) {
         ArrayList<String> result = new ArrayList<>();
 
         try {
@@ -304,7 +306,7 @@ public class AirportAccessor implements Accessor {
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airport data with id " + id);
@@ -332,7 +334,7 @@ public class AirportAccessor implements Accessor {
             stmt.setObject(2, code);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);

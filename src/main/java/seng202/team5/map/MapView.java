@@ -15,9 +15,7 @@ import java.util.function.Consumer;
  * A widget that shows an interactive map.
  *
  * Note that before using methods such as "setCentre", "setZoom", "addMarker", etc the
- * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method
- *
- * @author Nathan Smithies
+ * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method.
  */
 public class MapView extends VBox {
     private WebView webView = new WebView();

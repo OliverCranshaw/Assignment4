@@ -1,19 +1,14 @@
 package seng202.team5.model;
 
-
 import javafx.beans.property.SimpleStringProperty;
-
 
 public class AirlineModel {
 
-
-
-    private SimpleStringProperty airlineName;
-    private SimpleStringProperty airlineAlias;
-    private SimpleStringProperty airlineCountry;
-    private SimpleStringProperty airlineActive;
+    private final SimpleStringProperty airlineName;
+    private final SimpleStringProperty airlineAlias;
+    private final SimpleStringProperty airlineCountry;
+    private final SimpleStringProperty airlineActive;
     private Integer id;
-
 
     public AirlineModel(String name, String alias, String country, String active, Integer id) {
         this.airlineName = new SimpleStringProperty(name);

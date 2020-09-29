@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class RouteAccessor implements Accessor {
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
 
     /**
      * Constructor for RouteAccessor.
@@ -188,9 +188,10 @@ public class RouteAccessor implements Accessor {
      * @return ResultSet of all the routes.
      */
     public ResultSet getData(ArrayList<String> sourceAirport, ArrayList<String> destAirport, int stops, String equipment) {
-        boolean check = true;
-        String addString = "";
         ResultSet result = null;
+
+        boolean check = true;
+        String addString;
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
@@ -201,7 +202,7 @@ public class RouteAccessor implements Accessor {
                 for (String value:sourceAirport) {
                     if (value != null) {
                         addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
-                        query = query + addString;
+                        query = query.concat(addString);
                         elements.add(value);
                     }
                 }
@@ -217,7 +218,7 @@ public class RouteAccessor implements Accessor {
                 for (String value:destAirport) {
                     if (value != null) {
                         addString = check ? " (destination_airport = ? " : " or destination_airport = ? ";
-                        query = query + addString;
+                        query = query.concat(addString);
                         elements.add(value);
                         check = false;
                     }
@@ -274,7 +275,7 @@ public class RouteAccessor implements Accessor {
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data with id " + id);
@@ -288,14 +289,14 @@ public class RouteAccessor implements Accessor {
      * Checks if an identical route exists.
      *
      * @param airline A string, an airline IATA/ICAO code.
-     * @param source_airport A string, an airport IATA/ICAO code.
-     * @param dest_airport A string, an airport IATA/ICAO code.
+     * @param sourceAirport A string, an airport IATA/ICAO code.
+     * @param destAirport A string, an airport IATA/ICAO code.
      * @param codeshare A string, "Y" if the route is run by a different airline.
      * @param stops An integer, the number of stops, 0 for direct.
      * @param equipment A string, a list of equipment codes separated by spaces.
      * @return boolean result True if an identical route exists, False otherwise.
      */
-    public boolean dataExists(String airline, String source_airport, String dest_airport, String codeshare, int stops, String equipment) {
+    public boolean dataExists(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
         boolean result = false;
 
         try {
@@ -305,14 +306,14 @@ public class RouteAccessor implements Accessor {
                             "and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?");
             // Adds the given parameters to the search query
             stmt.setString(1, airline);
-            stmt.setString(2, source_airport);
-            stmt.setString(3, dest_airport);
+            stmt.setString(2, sourceAirport);
+            stmt.setString(3, destAirport);
             stmt.setString(4, codeshare);
             stmt.setInt(5, stops);
             stmt.setString(6, equipment);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve route data.");
@@ -344,5 +345,31 @@ public class RouteAccessor implements Accessor {
         }
 
         return id;
+    }
+
+
+    /**
+     * Gets the ids of all airlines that cover the given route id
+     * @param srcId - Id of a source airport
+     * @param dstId - Id or a destination airport
+     * @return ArrayList of Integer - Id's of airlines that cover the given route
+     */
+    public ArrayList<Integer> getAirlinesCovering(Integer srcId, Integer dstId) {
+        ArrayList<Integer> result = new ArrayList<>();
+        try {
+            String query = "SELECT airline_id FROM ROUTE_DATA WHERE source_airport_id = ? and destination_airport_id = ?";
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            stmt.setObject(1, srcId);
+            stmt.setObject(2, dstId);
+            ResultSet data = stmt.executeQuery();
+            while (data.next()) {
+                Integer id = data.getInt(1);
+                result.add(id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to retrieve airlines covering route with srcID: " + srcId + ", dstID: " + dstId);
+            System.out.println(e.getMessage());
+        }
+        return result;
     }
 }

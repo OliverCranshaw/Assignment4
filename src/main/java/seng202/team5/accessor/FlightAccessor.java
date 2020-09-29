@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class FlightAccessor implements Accessor{
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
 
     /**
      * Constructor for FlightAccessor.
@@ -223,22 +223,23 @@ public class FlightAccessor implements Accessor{
     /**
      * Retrieves all the flights with provided data.
      *
-     * @param location_type String location_type of a flight, can be null.
+     * @param locationType String location_type of a flight, can be null.
      * @param location String location of a flight, can be null.
      * @return ResultSet of all the flights.
      */
-    public ResultSet getData(String location_type, String location) {
+    public ResultSet getData(String locationType, String location) {
         ResultSet result = null;
+
         String query = "SELECT * FROM FLIGHT_DATA";
         ArrayList<String> elements = new ArrayList<>();
 
         try {
-            if (location_type != null) {
+            if (locationType != null) {
                 query = query + " WHERE location_type = ? ";
-                elements.add(location_type);
+                elements.add(locationType);
             }
             if (location != null) {
-                if (location_type != null) {
+                if (locationType != null) {
                     query = query + " and location = ?";
                 } else {
                     query = query + " WHERE location = ?";
@@ -278,7 +279,7 @@ public class FlightAccessor implements Accessor{
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with flight id " + id);
@@ -305,7 +306,7 @@ public class FlightAccessor implements Accessor{
             stmt.setInt(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with id " + id);
@@ -390,7 +391,7 @@ public class FlightAccessor implements Accessor{
             stmt.setDouble(6, longitude);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve flight data with id " + id);
