@@ -4,46 +4,41 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 import seng202.team5.App;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * A widget that shows an interactive map.
  *
  * Note that before using methods such as "setCentre", "setZoom", "addMarker", etc the
- * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method
- *
- * @author Nathan Smithies
+ * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method.
  */
 public class MapView extends VBox {
-    private final WebView webView;
+    private WebView webView = new WebView();
+    private Bridge bridge = new Bridge();
 
     /**
      * The MapView constructor
-     *
-     * @throws IOException If the "map.html" file is not found
      */
-    public MapView() throws IOException {
-        webView = new WebView();
+    public MapView() {
+        addLoadListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                // New page has loaded, process:
 
-        try {
-            String content = Files.readString(Paths.get(App.class.getResource("map.html").toURI()));
-            webView.getEngine().loadContent(content);
-        } catch (URISyntaxException e) {
-            // Really shouldn't be possible
-            assert false;
-        }
+                JSObject window = (JSObject) webView.getEngine().executeScript("window");
+                window.setMember("bridge", bridge);
+            }
+        });
 
+        URL path = App.class.getResource("map.html");
+        webView.getEngine().load(path.toString());
 
-        webView.setMaxHeight(Double.POSITIVE_INFINITY);
-        webView.setMaxWidth(Double.POSITIVE_INFINITY);
+        webView.prefHeightProperty().bind(this.heightProperty());
+        webView.prefWidthProperty().bind(this.widthProperty());
 
         this.getChildren().add(webView);
     }
@@ -94,26 +89,36 @@ public class MapView extends VBox {
     }
 
     /**
-     * Adds a marker to the map with the given name and coordinate
+     * Ensures that this map view will fit the given bounds
      *
-     * @param coord New marker coordinate
-     * @param name New marker name
-     * @return The created marker ID
+     * @param bounds Bounds to fit to
+     * @param padding Extra padding to the given bounds
      */
-    public int addMarker(Coord coord, String name) {
-        return addMarker(coord.latitude, coord.longitude, name);
-    }
+    public void fitBounds(Bounds bounds, double padding) { callFunction("fitBounds", bounds, padding); }
 
     /**
      * Adds a marker to the map with the given name and coordinate
      *
+     * @param coord New marker coordinate
+     * @param name New marker name
+     * @param icon Icon to use, null for default
+     * @return The created marker ID
+     */
+    public int addMarker(Coord coord, String name, MarkerIcon icon) {
+        return addMarker(coord.latitude, coord.longitude, name, icon);
+    }
+
+    /**
+     * Adds a marker to the map with the given name, icon and coordinate
+     *
      * @param latitude New marker latitude
      * @param longitude New marker longitude
      * @param name New marker name
+     * @param icon Icon to use, null for default
      * @return The created marker ID
      */
-    public int addMarker(double latitude, double longitude, String name) {
-        return (int) callFunction("addMarker", latitude, longitude, name);
+    public int addMarker(double latitude, double longitude, String name, MarkerIcon icon) {
+        return (int) callFunction("addMarker", latitude, longitude, name, icon);
     }
 
     /**
@@ -123,6 +128,18 @@ public class MapView extends VBox {
      */
     public void removeMarker(int markerID) {
         callFunction("removeMarker", markerID);
+        setMarkerListener(markerID, null);
+    }
+
+    /**
+     * Sets the listener for when the given marker is clicked.
+     * If listener is null then the marker listener is removed.
+     *
+     * @param markerID Marker to listen for
+     * @param listener new listener for the given marker
+     */
+    public void setMarkerListener(int markerID, Consumer<Integer> listener) {
+        bridge.markerListeners.put(markerID, listener);
     }
 
     /**
@@ -147,15 +164,19 @@ public class MapView extends VBox {
         callFunction("removePath", pathID);
     }
 
-    private Object callFunction(String functionName, Object... arguments) {
-        return callFunction(functionName, List.of(arguments));
-    }
-
     private String convertToJSRepresentation(Object object) throws RuntimeException {
         if (object instanceof Coord) {
             Coord coord = (Coord)object;
             return String.format("{lat:%f,lng:%f}", coord.latitude, coord.longitude);
-        } if (object instanceof String) {
+        } else if (object instanceof Bounds) {
+            Bounds bounds = (Bounds) object;
+            return String.format("{south:%f,west:%f,north:%f,east:%f}", bounds.southwest.latitude, bounds.southwest.longitude, bounds.northeast.latitude, bounds.northeast.longitude);
+        } else if (object instanceof MarkerIcon) {
+            MarkerIcon icon = (MarkerIcon) object;
+            return String.format("{url:%s,anchor:{x:%f,y:%f}}", convertToJSRepresentation(icon.imageURL), icon.anchorX, icon.anchorY);
+        } else if (object == null) {
+            return "null";
+        } else if (object instanceof String) {
             // Removes special characters
             String cleaned = ((String) object).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");
             return "\"" + cleaned + "\"";
@@ -172,11 +193,27 @@ public class MapView extends VBox {
         }
     }
 
-    private Object callFunction(String functionName, List<Object> arguments) {
+    private Object callFunction(String functionName, Object... arguments) {
         List<String> stringified = new ArrayList<>();
         for (Object argument : arguments) {
             stringified.add(convertToJSRepresentation(argument));
         }
         return webView.getEngine().executeScript(functionName + "(" + String.join(",", stringified) + ");");
+    }
+
+    // Inner class has to be public due to javascript being unable to call private inner classes
+    public static class Bridge {
+        private final Map<Integer, Consumer<Integer>> markerListeners = new HashMap<>();
+
+        public void notifyMarkerClicked(int markerID) {
+            Consumer<Integer> listener = markerListeners.get(markerID);
+            if (listener != null) {
+                listener.accept(markerID);
+            }
+        }
+
+        public void log(String text) {
+            System.out.println(text);
+        }
     }
 }
