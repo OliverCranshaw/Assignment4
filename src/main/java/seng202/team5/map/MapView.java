@@ -27,21 +27,16 @@ import java.util.function.Function;
  * @author Nathan Smithies
  */
 public class MapView extends VBox {
-    private WebView webView;
+    private WebView webView = new WebView();
     private Bridge bridge = new Bridge();
 
     /**
      * The MapView constructor
-     *
-     * @throws IOException If the "map.html" file is not found
      */
-    public MapView() throws IOException {
-        webView = new WebView();
-
-
+    public MapView() {
         addLoadListener((obs, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                // new page has loaded, process:
+                // New page has loaded, process:
 
                 JSObject window = (JSObject) webView.getEngine().executeScript("window");
                 window.setMember("bridge", bridge);
@@ -141,6 +136,7 @@ public class MapView extends VBox {
      */
     public void removeMarker(int markerID) {
         callFunction("removeMarker", markerID);
+        setMarkerListener(markerID, null);
     }
 
     /**
