@@ -4,19 +4,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import jdk.jshell.spi.ExecutionControl;
 import netscape.javascript.JSObject;
 import seng202.team5.App;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * A widget that shows an interactive map.
@@ -110,10 +103,11 @@ public class MapView extends VBox {
      *
      * @param coord New marker coordinate
      * @param name New marker name
+     * @param icon Icon to use, null for default
      * @return The created marker ID
      */
-    public int addMarker(Coord coord, String name, String iconName) {
-        return addMarker(coord.latitude, coord.longitude, name, iconName);
+    public int addMarker(Coord coord, String name, MarkerIcon icon) {
+        return addMarker(coord.latitude, coord.longitude, name, icon);
     }
 
     /**
@@ -122,11 +116,11 @@ public class MapView extends VBox {
      * @param latitude New marker latitude
      * @param longitude New marker longitude
      * @param name New marker name
-     * @param iconName Icon name to use, null for default
+     * @param icon Icon to use, null for default
      * @return The created marker ID
      */
-    public int addMarker(double latitude, double longitude, String name, String iconName) {
-        return (int) callFunction("addMarker", latitude, longitude, name, iconName);
+    public int addMarker(double latitude, double longitude, String name, MarkerIcon icon) {
+        return (int) callFunction("addMarker", latitude, longitude, name, icon);
     }
 
     /**
@@ -179,7 +173,10 @@ public class MapView extends VBox {
         } else if (object instanceof Bounds) {
             Bounds bounds = (Bounds) object;
             return String.format("{south:%f,west:%f,north:%f,east:%f}", bounds.southwest.latitude, bounds.southwest.longitude, bounds.northeast.latitude, bounds.northeast.longitude);
-        } if (object == null) {
+        } else if (object instanceof MarkerIcon) {
+            MarkerIcon icon = (MarkerIcon) object;
+            return String.format("{url:%s,anchor:{x:%f,y:%f}}", convertToJSRepresentation(icon.imageURL), icon.anchorX, icon.anchorY);
+        } else if (object == null) {
             return "null";
         } else if (object instanceof String) {
             // Removes special characters

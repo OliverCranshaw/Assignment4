@@ -10,19 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
 import seng202.team5.data.*;
-import seng202.team5.map.AirportCompare;
-import seng202.team5.map.Bounds;
-import seng202.team5.map.Coord;
-import seng202.team5.map.MapView;
+import seng202.team5.map.*;
 import seng202.team5.model.*;
 import seng202.team5.table.Search;
 import seng202.team5.service.AirlineService;
@@ -692,7 +686,7 @@ public class MainMenuController implements Initializable {
     private List<Integer> airlinePaths = new ArrayList<>();
     private int routePath = -1;
     private int flightMapPath = -1;
-
+    private int flightMapMarker = -1;
     /**
      * Initializer for MainMenuController
      * Sets up all tables, buttons, listeners, services, etc
@@ -830,6 +824,13 @@ public class MainMenuController implements Initializable {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+            }
+        });
+        flightSingleRecordTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            try {
+                onFlightEntrySelected((FlightEntryModel) newSelection);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         });
         routeTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -1036,9 +1037,34 @@ public class MainMenuController implements Initializable {
 
             if (flightMapPath != -1) {
                 flightMapView.removePath(flightMapPath);
+                flightMapPath = -1;
             }
-            flightMapPath = flightMapView.addPath(coordinates);
-            flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
+            if (flightMapMarker != -1) {
+                flightMapView.removeMarker(flightMapMarker);
+                flightMapMarker = -1;
+            }
+            if (coordinates.size() >= 2) {
+                flightMapPath = flightMapView.addPath(coordinates);
+                flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
+            }
+        }
+    }
+
+    /**
+     * onFlightEntrySelected
+     *
+     * Called when the currently selected flight entry changes
+     *
+     * @throws SQLException
+     */
+    private void onFlightEntrySelected(FlightEntryModel flightEntryModel) throws SQLException {
+        if (flightMapMarker != -1) {
+            flightMapView.removeMarker(flightMapMarker);
+            flightMapMarker = -1;
+        }
+        if (flightEntryModel != null) {
+            Coord coord = new Coord(flightEntryModel.getLatitude(), flightEntryModel.getLongitude());
+           flightMapMarker = flightMapView.addMarker(coord, null, MarkerIcon.PLANE_ICON);
         }
     }
 
@@ -1143,9 +1169,8 @@ public class MainMenuController implements Initializable {
             // Sets the correct map bounds, if there are any routes
             List<Coord> airportCoordinates = List.copyOf(airportCache.values());
             if (airportCoordinates.size() >= 2) {
-                airlineMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 0.0);
+                airlineMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 5.0);
             }
-
         }
     }
 
@@ -1273,6 +1298,8 @@ public class MainMenuController implements Initializable {
             ResultSet airlineData = airlineService.getData(airlineModel.getId());
             setLabels(airlineData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
+
+
         }
     }
 

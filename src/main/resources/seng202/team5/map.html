@@ -46,7 +46,7 @@
         map.fitBounds(bounds, padding);
     }
 
-    function addMarker(latitude, longitude, title, iconName) {
+    function addMarker(latitude, longitude, title, icon) {
         let options = {
             position: {lat: latitude, lng: longitude},
             map: map,
@@ -54,8 +54,8 @@
             clickable: true
         };
 
-        if (iconName !== null) {
-            options.icon = iconName + ".png";
+        if (icon !== null) {
+            options.icon = icon;
         }
 
         let markerID =  currentMarkerID++;
