@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
+import seng202.team5.map.MarkerIcon;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class MapTest extends Application {
                 mapView.fitBounds(Bounds.fromCoordinateList(path), 0.0);
 
 
-                int marker0 = mapView.addMarker(new Coord(40.0, 20.0), "Hello world", "airport_icon");
+                int marker0 = mapView.addMarker(new Coord(40.0, 20.0), "Hello world", MarkerIcon.PLANE_ICON);
                 mapView.setMarkerListener(marker0, (Integer markerID) -> {
                     System.out.println("Marker " + markerID + " clicked!");
                 });
