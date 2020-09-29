@@ -687,6 +687,12 @@ public class MainMenuController implements Initializable {
     private int routePath = -1;
     private int flightMapPath = -1;
     private int flightMapMarker = -1;
+
+    private int searchAirportMarker = -1;
+    private List<Integer> searchAirlinePaths = new ArrayList<>();
+    private int searchRoutePath = -1;
+    private int searchFlightPath = -1;
+
     /**
      * Initializer for MainMenuController
      * Sets up all tables, buttons, listeners, services, etc
@@ -1110,7 +1116,6 @@ public class MainMenuController implements Initializable {
         }
     }
 
-
     /**
      * setAirlineSingleRecord
      *
@@ -1222,6 +1227,32 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    private void clearSearchMap() {
+        // Remove airport marker
+        if (searchAirportMarker != -1) {
+            searchMapView.removeMarker(searchAirportMarker);
+            searchAirportMarker = -1;
+        }
+
+        // Remove airline paths
+        for (int pathID : searchAirlinePaths) {
+            searchMapView.removePath(pathID);
+        }
+        searchAirlinePaths.clear();
+
+        // Remove route path
+        if (searchRoutePath != -1) {
+            searchMapView.removePath(searchRoutePath);
+            searchRoutePath = -1;
+        }
+
+        // Remove flight path
+        if (searchFlightPath != -1) {
+            searchMapView.removePath(searchFlightPath);
+            searchFlightPath = -1;
+        }
+    }
+
 
     /**
      * setSearchFlightSingleRecord
@@ -1231,12 +1262,17 @@ public class MainMenuController implements Initializable {
      * @throws SQLException
      */
     private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
+        clearSearchMap();
+
         if (flightModel == null) {
             searchFlightSingleRecordTableView.getItems().clear();
         } else {
             flightEntriesSearch = FXCollections.observableArrayList();
             Integer flightID = flightModel.getFlightId();
             ResultSet flightData = flightService.getData(flightID);
+
+            List<Coord> coordinates = new ArrayList<>();
+
             while (flightData.next()) {
                 Integer id = flightData.getInt(1);
                 Integer flightId = flightData.getInt(2);
@@ -1247,10 +1283,15 @@ public class MainMenuController implements Initializable {
                 Double longitude = flightData.getDouble(7);
                 FlightEntryModel newEntry = new FlightEntryModel(id, flightId, locationType, location, altitude, latitude, longitude);
                 flightEntriesSearch.add(newEntry);
+
+                coordinates.add(new Coord(latitude, longitude));
             }
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
 
-
+            if (coordinates.size() >= 2) {
+                searchFlightPath = searchMapView.addPath(coordinates);
+                searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
+            }
         }
 
     }
@@ -1269,13 +1310,30 @@ public class MainMenuController implements Initializable {
         List<Label> lblElements = Arrays.asList(lblRouteIDS, lblRouteAirlineS, lblRouteAirlineIDS, lblRouteDepAirportS, lblRouteDepAirportIDS,
                 lblRouteDesAirportS, lblRouteDesAirportIDS, lblRouteCodeshareS, lblRouteStopsS, lblRouteEquipS);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
+
+        clearSearchMap();
+
         if (routeModel == null) {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
         } else {
-            ResultSet routeData = routeService.getData(routeModel.getRouteId());
-            setLabels(routeData, elementsVisible);
-            setLabelsEmpty(lblElementsVisible, true);
+            {
+                ResultSet routeData = routeService.getData(routeModel.getRouteId());
+                setLabels(routeData, elementsVisible);
+                setLabelsEmpty(lblElementsVisible, true);
+            }
+
+            {
+                ResultSet routeData = routeService.getData(routeModel.getRouteId());
+
+                AirportData source = new AirportData(airportService.getData(routeData.getInt(5)));
+                AirportData destination = new AirportData(airportService.getData(routeData.getInt(7)));
+
+                List<Coord> coordinates = List.of(new Coord(source.getLatitude(), source.getLongitude()), new Coord(destination.getLatitude(), destination.getLongitude()));
+
+                searchRoutePath = searchMapView.addPath(coordinates);
+                searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
+            }
         }
     }
 
@@ -1291,6 +1349,9 @@ public class MainMenuController implements Initializable {
         ArrayList<TextField> elementsVisible = new ArrayList<TextField>(elements);
         List<Label> lblElements = Arrays.asList(lblAirlineIDS, lblAirlineNameS, lblAirlineAliasS, lblAirlineIATAS, lblAirlineICAOS, lblAirlineCallsignS, lblAirlineCountryS, lblAirlineActiveS);
         ArrayList<Label> lblElementsVisible = new ArrayList<>(lblElements);
+
+        clearSearchMap();
+
         if (airlineModel == null) {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
@@ -1299,7 +1360,39 @@ public class MainMenuController implements Initializable {
             setLabels(airlineData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
 
+            AirlineData airline = new AirlineData(airlineService.getData(airlineModel.getId()));
 
+            // Hopefully makes this fast, also keeps track of the bounds we need to fit to
+            Map<Integer, Coord> airportCache = new HashMap<>();
+
+            // Converts a AirportID to the coordinate of the airport
+            Function<Integer, Coord> getAirportCoordinates = (airportCode) -> {
+                try {
+                    AirportData airport = new AirportData(airportService.getData(airportCode));
+                    return new Coord(airport.getLatitude(), airport.getLongitude());
+                } catch (SQLException ignored) {
+                    return null;
+                }
+            };
+
+            // Find all the routes from the given airline
+            ResultSet routeSet = routeService.getData(airline.getIATA());
+            while (routeSet.next()) {
+                Coord source = airportCache.computeIfAbsent(routeSet.getInt(5), getAirportCoordinates);
+                Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
+
+                //System.out.println("Adding route: " + source + " -> " + destination);
+
+                if (source != null && destination != null) {
+                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination)));
+                }
+            }
+
+            // Sets the correct map bounds, if there are any routes
+            List<Coord> airportCoordinates = List.copyOf(airportCache.values());
+            if (airportCoordinates.size() >= 2) {
+                searchMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 5.0);
+            }
         }
     }
 
@@ -1318,6 +1411,8 @@ public class MainMenuController implements Initializable {
                 lblAirportAltitudeS, lblAirportTimezoneS, lblAirportDSTS, lblAirportTZS);
         ArrayList<Label> lblElementsVisible = new ArrayList<Label>(lblElements);
 
+        clearSearchMap();
+
         if (airportModel == null) {
             setFieldsEmpty(elementsVisible);
             setLabelsEmpty(lblElementsVisible, false);
@@ -1327,8 +1422,7 @@ public class MainMenuController implements Initializable {
             setLabels(airportData, elementsVisible);
             setLabelsEmpty(lblElementsVisible, true);
 
-
-            searchMapView.addMarker(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()), airportNameS.getText(), null);
+            searchAirportMarker = searchMapView.addMarker(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()), airportNameS.getText(), null);
             searchMapView.setCentre(Double.parseDouble(airportLatitudeS.getText()), Double.parseDouble(airportLongitudeS.getText()));
             searchMapView.setZoom(11);
         }
