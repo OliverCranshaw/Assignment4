@@ -392,15 +392,15 @@ public class AirportAccessor implements Accessor {
      *
      * @param id int airport_id.
      *
-     * @return int number of routes.
+     * @return ResultSet number of routes.
      */
-    public int getOutgoingRoutes(int id) {
-        int result = -1;
+    public ResultSet getOutgoingRoutes(int id) {
+        ResultSet result = null;
 
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("SELECT source_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY source_airport_id");
 
-            result = stmt.executeQuery().getInt(1);
+            result = stmt.executeQuery();
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
@@ -415,15 +415,15 @@ public class AirportAccessor implements Accessor {
      *
      * @param id int airport_id.
      *
-     * @return int number of routes.
+     * @return ResultSet number of routes.
      */
-    public int getIncomingRoutes(int id) {
-        int result = -1;
+    public ResultSet getIncomingRoutes(int id) {
+        ResultSet result = null;
 
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("SELECT destination_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY destination_airport_id");
 
-            result = stmt.executeQuery().getInt(1);
+            result = stmt.executeQuery();
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
