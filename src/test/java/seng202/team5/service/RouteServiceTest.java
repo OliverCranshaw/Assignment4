@@ -181,7 +181,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Running the saveRoute() of the routeService. This is the method being tested.
         int res = routeService.save(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
-        Assert.assertEquals(-1, res);
+        Assert.assertEquals(-3, res);
 
 
         // Creating a statement that will retrieve that route data from the database, and the executing it

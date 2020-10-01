@@ -31,17 +31,17 @@ public class DataExporter {
     }
 
     /**
-     * Exports all the airlines contained in the database to a csv file called airlines.csv.
+     * Exports all the airlines passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      * @param airlines An ArrayList of airlines.
      */
     public void exportAirlines(File file, ArrayList<ArrayList<Object>> airlines) {
         try {
-            // Creates the FileWriter with the filename "airlines.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the airlines in the ResultSet
+            // Loops through all the airlines in the ArrayList
             for (ArrayList<Object> airline : airlines) {
                 // Gets the data from each column of the row
                 int airlineID = (int) airline.get(0);
@@ -88,17 +88,17 @@ public class DataExporter {
     }
 
     /**
-     * Exports all the airports contained in the database to a csv file called airports.csv.
+     * Exports all the airports passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      * @param airports An ArrayList of airports.
      */
     public void exportAirports(File file, ArrayList<ArrayList<Object>> airports) {
         try {
-            // Creates the FileWriter with the filename "airports.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the airports in the ResultSet
+            // Loops through all the airports in the ArrayList
             for (ArrayList<Object> airport : airports) {
                 // Gets the data from each column of the row
                 int airportID = (int) airport.get(0);
@@ -140,17 +140,17 @@ public class DataExporter {
     }
 
     /**
-     * Exports all the entries of a particular flight in the database to a csv file called flight-[source]-[destination].csv.
+     * Exports all the entries of a particular flight in the database to a given csv file.
      *
      * @param flightID int The flightID of a given flight that you want to export.
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      */
     public void exportFlight(int flightID, File file) {
         // Retrieves all the flight entries with a given flightID from the database
         ResultSet flight = flightService.getData(flightID);
 
         try {
-            // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
@@ -185,16 +185,16 @@ public class DataExporter {
     }
 
     /**
-     * Exports all the flight entries contained in the database to a csv file called flights.csv.
+     * Exports all the flight entries contained in the database to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      */
     public void exportFlights(File file) {
         // Retrieves all the flight entries from the database
         ResultSet flights = flightService.getData(null, null);
 
         try {
-            // Creates the FileWriter with the filename "flights.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
@@ -229,15 +229,18 @@ public class DataExporter {
         }
     }
 
+    /**
+     * Exports all the flight entries passed into the function to a given csv file.
+     *
+     * @param file File that the data will be exported into.
+     * @param flights An ArrayList of flight entries.
+     */
     public void exportFlights(File file, ArrayList<ArrayList<Object>> flights) {
-        // Retrieves all the flight entries from the database
-        //ResultSet flight = flightService.getData(flightID);
-
         try {
-            // Creates the FileWriter with the filename "flights.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the flight entries in the ResultSet
+            // Loops through all the flight entries in the ArrayList
             for (ArrayList<Object> flight : flights) {
                 int flightID = (int) flight.get(1);
                 ResultSet flightEntries = flightService.getData(flightID);
@@ -275,17 +278,17 @@ public class DataExporter {
     }
 
     /**
-     * Exports all the routes contained in the database to a csv file called routes.csv.
+     * Exports all the routes passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      * @param routes An ArrayList of routes.
      */
     public void exportRoutes(File file, ArrayList<ArrayList<Object>> routes) {
         try {
-            // Creates the FileWriter with the filename "routes.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the routes in the ResultSet
+            // Loops through all the routes in the ArrayList
             for (ArrayList<Object> route : routes) {
                 // Gets the data from each column of the row
                 int routeID = (int) route.get(0);
