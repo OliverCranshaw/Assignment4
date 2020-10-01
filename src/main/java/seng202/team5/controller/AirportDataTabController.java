@@ -371,7 +371,6 @@ public class AirportDataTabController implements Initializable {
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Upload Airport Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
 

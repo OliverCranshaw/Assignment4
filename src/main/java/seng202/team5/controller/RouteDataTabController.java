@@ -319,7 +319,6 @@ public class RouteDataTabController implements Initializable {
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Upload Route Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
 

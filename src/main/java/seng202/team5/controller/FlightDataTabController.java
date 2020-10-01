@@ -262,7 +262,6 @@ public class FlightDataTabController implements Initializable {
 
         stage.setScene(scene);
         stage.setTitle("Upload Flight");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
 
