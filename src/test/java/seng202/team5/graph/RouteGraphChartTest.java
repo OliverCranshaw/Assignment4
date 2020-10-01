@@ -1,12 +1,10 @@
 package seng202.team5.graph;
 
-import io.cucumber.java.bs.A;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import org.junit.Assert;
 import org.junit.Test;
-import seng202.team5.controller.PieChartController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ public class RouteGraphChartTest {
         // Creating test graph
         RouteGraphChart testGraph = new RouteGraphChart(exampleData);
         testGraph.setSelection("RouteEquipment");
-        ObservableList<PieChart.Data> resultActual = testGraph.buildPieGraph();
+        ObservableList<PieChart.Data> resultActual = testGraph.buildChart();
 
         // Creating expected results
         ObservableList<PieChart.Data> resultExpected = FXCollections.observableArrayList();
@@ -62,7 +60,7 @@ public class RouteGraphChartTest {
         // Creating test graph
         RouteGraphChart testGraph2 = new RouteGraphChart(exampleData);
         testGraph.setSelection("RouteEquipment");
-        ObservableList<PieChart.Data> resultActual2 = testGraph.buildPieGraph();
+        ObservableList<PieChart.Data> resultActual2 = testGraph.buildChart();
 
 
         // Creating expected results
@@ -90,13 +88,5 @@ public class RouteGraphChartTest {
             Assert.assertEquals(resultActual2.get(i).getPieValue(), resultExpected2.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(resultActual2.get(i).getName(), resultActual2.get(i).getName());
         }
-
-
     }
-
-
-
-
-
-
 }

@@ -51,7 +51,7 @@ public class PieChartController extends Application {
         if (selection.startsWith("Route")) {
             RouteGraphChart routeGraph = new RouteGraphChart(data);
             routeGraph.setSelection(selection);
-            this.data = routeGraph.buildPieGraph();
+            this.data = routeGraph.buildChart();
         } else if (selection.startsWith("Airport")) {
             AirportGraphChart airportGraph = new AirportGraphChart(data);
             airportGraph.setSelection(selection);

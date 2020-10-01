@@ -22,8 +22,6 @@ public class App extends Application {
         dbInitializer = new DBInitializer();
         dbInitializer.createNewDatabase("flightdata.db");
 
-        setUserAgentStylesheet(STYLESHEET_MODENA);
-
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         mainStage.setTitle("Flight Data Manager");
         mainStage.setScene(new Scene(root, 1280, 720));

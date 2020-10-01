@@ -3,14 +3,8 @@ package seng202.team5.graph;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
-import seng202.team5.service.AirlineService;
-import seng202.team5.service.RouteService;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
-
 
 /**
  * RouteGraphChart
@@ -26,7 +20,8 @@ public class RouteGraphChart implements GraphChartBuilder {
     private String selection;
 
     /**
-     * Constructor for RouteGraphChart
+     * Constructor for RouteGraphChart.
+     *
      * @param data - ArrayList of ArrayList of Objects.
      */
     public RouteGraphChart(ArrayList<ArrayList<Object>> data) {
@@ -36,24 +31,27 @@ public class RouteGraphChart implements GraphChartBuilder {
     /**
      * Calls the appropriate graph build function depending on the selection,
      * returning the data required to build a pie chart from it.
-     * @return ObservableList of PieChart.Data objects
+     *
+     * @return ObservableList of PieChart.Data objects.
      */
-    public ObservableList<PieChart.Data> buildPieGraph() {
+    public ObservableList<PieChart.Data> buildChart() {
+        ObservableList<PieChart.Data> result = FXCollections.observableArrayList();
+
         // Switch statement to choose what type of graph is built
         switch (selection) {
             case "RouteEquipment":
-                return routeEquipmentGraph();
+                result = routeEquipmentGraph();
+                break;
         }
-        return null;
+
+        return result;
     }
 
-
     /**
-     * routeEquipmentGraph
-     *
      * Converts the ArrayList of ArrayList of Objects data to an Observable List of PieChart.Data.
      * Also condenses the data down to 16 entries, 15 of which are the 15 largest, and the 16th is the sum of the
      * rest.
+     *
      * @return ObservableList of PieChart.Data objects
      */
     public ObservableList<PieChart.Data> routeEquipmentGraph() {
@@ -75,9 +73,20 @@ public class RouteGraphChart implements GraphChartBuilder {
             pieChartData.add(new PieChart.Data(equip, equipmentCounts.get(equip)));
         }
 
+        return sortChartList(pieChartData);
+    }
+
+    /**
+     * Sorts and iterates through pie chart data and returns it.
+     *
+     * @param pieChartData ObservableList that contains all the pie chart data.
+     * @return ObservableList that contains all the data for a chart.
+     */
+    public ObservableList<PieChart.Data> sortChartList(ObservableList<PieChart.Data> pieChartData) {
         // Sorting the observable list by count
         ObservableList<PieChart.Data> toReturn;
         Comparator<PieChart.Data> pieChartDataComparator = Comparator.comparing(PieChart.Data::getPieValue);
+
         pieChartData.sort(pieChartDataComparator.reversed());
 
         // Trimming the size of the observable list if it is too big
@@ -98,16 +107,12 @@ public class RouteGraphChart implements GraphChartBuilder {
         return toReturn;
     }
 
-
     /**
-     * setSelection
-     *
      * Setter for selection.
-     * @param selection String
+     *
+     * @param selection String.
      */
     public void setSelection(String selection) {
         this.selection = selection;
     }
-
-
 }
