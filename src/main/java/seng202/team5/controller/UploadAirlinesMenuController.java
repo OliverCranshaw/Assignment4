@@ -1,7 +1,9 @@
 package seng202.team5.controller;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -15,6 +17,10 @@ public class UploadAirlinesMenuController {
     @FXML
     private Text errorList;
 
+    private ArrayList<String> errors;
+
+    private String errorString = "";
+
     @FXML
     public void onSelectFilePressed(ActionEvent event) {
         ReadFile readFile = new ReadFile();
@@ -27,26 +33,29 @@ public class UploadAirlinesMenuController {
         File file = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 
         if (file != null) {
+            ((Node)event.getSource()).getScene().setCursor(Cursor.WAIT);
+            Task<Void> task = new Task<>() {
+                @Override
+                public Void call() {
+                    // Gets the list of errors returned from reading the file and concatenates them to a string which is then displayed to the user
+                    errors = (ArrayList<String>)(readFile.readAirlineData(file).get(1));
+                    if (!errors.isEmpty()) {
+                        for (String error : errors) {
+                            errorString += error + "\n";
+                        }
+                        errorString += "Any other airlines added successfully";
+                    } else {
+                        errorString = "All airlines added successfully";
+                    }
 
-
-            readFile.setLineChangeListener((bytesRead) -> {
-
-            });
-
-            // Gets the list of errors returned from reading the file and concatenates them to a string which is then displayed to the user
-            ArrayList<String> errors = (ArrayList<String>)(readFile.readAirlineData(file).get(1));
-            String errorString = "";
-
-            if (!errors.isEmpty()) {
-                for (String error : errors) {
-                    errorString += error + "\n";
+                    return null;
                 }
-                errorString += "Any other airlines added successfully";
-            } else {
-                errorString = "All airlines added successfully";
-            }
-
-            errorList.setText(errorString);
+            };
+            task.setOnSucceeded(e -> {
+                ((Node)event.getSource()).getScene().setCursor(Cursor.DEFAULT);
+                errorList.setText(errorString);
+            });
+            new Thread(task).start();
         }
     }
 }

@@ -49,7 +49,7 @@
       </GridPane>
       <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="82.0" prefWidth="382.0" text="Upload Airlines From File" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="57.0" prefWidth="382.0" text="Upload Airlines From File" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
@@ -74,6 +74,11 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
+            <Label layoutX="183.0" layoutY="227.0" prefHeight="42.0" prefWidth="528.0" text="Large files may take some time to upload, and will continue uploading in the background. Do not close this window if you wish to view error or success messages." textAlignment="CENTER" textFill="RED" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
    </children>

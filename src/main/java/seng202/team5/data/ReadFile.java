@@ -5,7 +5,6 @@ import seng202.team5.service.FlightService;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 /**
  * ReadFile
@@ -20,10 +19,6 @@ public class ReadFile {
     private final ConcreteAddData concreteAddData;
     private final ConcreteDeleteData concreteDeleteData;
     private final FlightService flightService;
-    private long bytesRead = 0;
-    private long totalBytes;
-
-    private Consumer<Long> lineChangeListener;
 
     /**
      * Constructor for ReadFile.
@@ -33,10 +28,6 @@ public class ReadFile {
         concreteAddData = new ConcreteAddData();
         concreteDeleteData = new ConcreteDeleteData();
         flightService = new FlightService();
-    }
-
-    public void setLineChangeListener(Consumer<Long> lineChangeListener) {
-        this.lineChangeListener = lineChangeListener;
     }
 
     /**
@@ -49,7 +40,6 @@ public class ReadFile {
         try {
             FileReader fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
-            totalBytes = file.length();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to get file.");
             System.out.println(e.getMessage());
@@ -102,12 +92,6 @@ public class ReadFile {
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
-                bytesRead += line.getBytes().length;
-
-                if (lineChangeListener != null) {
-                    lineChangeListener.accept(bytesRead);
-                }
-
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the airline data has the right amount of entries
@@ -186,12 +170,6 @@ public class ReadFile {
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
-                bytesRead += line.getBytes().length;
-
-                if (lineChangeListener != null) {
-                    lineChangeListener.accept(bytesRead);
-                }
-
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the airport data has the right amount of entries
@@ -304,12 +282,6 @@ public class ReadFile {
 
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
-                bytesRead += line.getBytes().length;
-
-                if (lineChangeListener != null) {
-                    lineChangeListener.accept(bytesRead);
-                }
-
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the flight entry has the right number of entries
@@ -397,12 +369,6 @@ public class ReadFile {
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
-                bytesRead += line.getBytes().length;
-
-                if (lineChangeListener != null) {
-                    lineChangeListener.accept(bytesRead);
-                }
-
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the route data has the right number of entries
