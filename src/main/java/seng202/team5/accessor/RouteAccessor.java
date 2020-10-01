@@ -198,7 +198,6 @@ public class RouteAccessor implements Accessor {
         try {
             if (sourceAirport != null) {
                 query = query + " WHERE ";
-
                 for (String value:sourceAirport) {
                     if (value != null) {
                         addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";

@@ -8,9 +8,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import seng202.team5.graph.AirlineGraphChart;
 import seng202.team5.graph.AirportGraphChart;
@@ -62,20 +66,42 @@ public class PieChartController extends Application {
             this.data = airlineGraphChart.buildChart();
         }
 
-        if (this.data.size() > 25) {
-            this.data = this.data.sorted();
-        }
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
-
-
+        chart.resize(500.0, 500.0);
 
 
         for (final PieChart.Data segment : chart.getData()) {
+            if (segment.getName().startsWith("Other")) {
+                applyRemoveOtherOption(segment);
+            }
             applyMouseEvents(segment);
         }
     }
+
+
+
+    public void applyRemoveOtherOption(PieChart.Data segment) {
+        final Node node = segment.getNode();
+        node.setOnContextMenuRequested(arg0 -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem menuItem = new MenuItem();
+            menuItem.setText("Hide 'Other'");
+            menuItem.setOnAction(arg1 -> {
+                chart.getData().remove(segment);
+            });
+            contextMenu.getItems().add(menuItem);
+
+            Window window = ((Node)arg0.getSource()).getScene().getWindow();
+
+            //contextMenu.show(window);
+            contextMenu.show(node, arg0.getSceneX(), arg0.getSceneY());
+        });
+    }
+
+
+
 
     public void applyMouseEvents(final PieChart.Data data) {
 

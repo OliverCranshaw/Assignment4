@@ -335,7 +335,6 @@ public class AirportService implements Service {
             incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
         }
 
-        System.out.println(incAirportRouteCounts);
         return incAirportRouteCounts;
     }
 

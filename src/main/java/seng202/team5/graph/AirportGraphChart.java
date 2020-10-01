@@ -62,12 +62,18 @@ public class AirportGraphChart implements GraphChartBuilder {
      */
     public ObservableList<PieChart.Data> airportRouteChart() throws SQLException {
         Hashtable<String, Integer> routeCounts = new Hashtable<String, Integer>();
+        Hashtable<Integer, Integer> incCounts = service.getIncRouteCount();
+        Hashtable<Integer, Integer> outCounts = service.getOutRouteCount();
         for (ArrayList<Object> airport : data) {
             String airportName = (String) airport.get(1);
             int airportID = (int) airport.get(0);
-//            int routeCount = service.getIncRouteCount(airportID) + service.getOutRouteCount(airportID);
-//
-//            routeCounts.put(airportName, routeCount);
+
+            int incCount = (incCounts.get(airportID) != null) ? incCounts.get(airportID) : 0;
+            int outCount = (outCounts.get(airportID) != null) ? outCounts.get(airportID) : 0;
+
+            int routeCount = incCount + outCount;
+
+            routeCounts.put(airportName, routeCount);
         }
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();

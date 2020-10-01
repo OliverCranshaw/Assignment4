@@ -411,7 +411,7 @@ public class AirportAccessor implements Accessor {
             System.out.println("Unable to retrieve number of routes.");
             System.out.println(e.getMessage());
         }
-        System.out.println(result);
+
         return result;
     }
 
