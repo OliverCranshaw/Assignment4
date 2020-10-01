@@ -1,5 +1,6 @@
 package seng202.team5.controller;
 
+import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -226,7 +227,7 @@ public class FlightDataTabController implements Initializable {
                 flightMapMarker = -1;
             }
             if (coordinates.size() >= 2) {
-                flightMapPath = flightMapView.addPath(coordinates, List.of(new Pair<>(0.0, "FORWARD_OPEN_ARROW"), new Pair<>(0.5, "FORWARD_OPEN_ARROW"), new Pair<>(1.0, "FORWARD_OPEN_ARROW")), null);
+                flightMapPath = flightMapView.addPath(coordinates, MainMenuController.DEFAULT_ROUTE_SYMBOLS, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
                 flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }

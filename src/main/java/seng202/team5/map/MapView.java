@@ -157,9 +157,10 @@ public class MapView extends VBox {
      * @param points The list of points for the new path
      * @param symbols List of symbols along the path, null is interpreted as no symbols
      * @param colour Valid CSS3 colour string (except named colours) for the path, null for default colour
+     * @param strokeWeight Width of the path and symbols
      * @return The created path ID
      */
-    public int addPath(List<Coord> points, List<Pair<Double, String>> symbols, String colour) {
+    public int addPath(List<Coord> points, List<Pair<Double, String>> symbols, String colour, double strokeWeight) {
         if (points.size() < 2) {
             throw new RuntimeException("Too few points to define a path");
         }
@@ -179,7 +180,7 @@ public class MapView extends VBox {
             }
         }
 
-        return (int) callFunction("addPath", points, symbols, colour);
+        return (int) callFunction("addPath", points, symbols, colour, strokeWeight);
     }
 
     /**

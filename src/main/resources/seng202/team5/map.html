@@ -73,9 +73,11 @@
         marker.setMap(null);
     }
 
-    function addPath(points, symbols, colour) {
+    function addPath(points, symbols, colour, weight) {
         // Convert symbol format
-        symbols = symbols.map((pair) => { return {offset: 100*pair.first + '%', icon: {path: google.maps.SymbolPath[pair.second]}}; });
+        symbols = symbols.map((pair) => {
+            return {offset: 100*pair.first + '%', icon: {path: google.maps.SymbolPath[pair.second], scale: 2.0, strokeWeight: weight}};
+        });
 
         paths[currentPathID] = new google.maps.Polyline({
             path: points,
@@ -84,7 +86,7 @@
             map: map,
             strokeColor: colour,
             strokeOpacity: 1.0,
-            strokeWeight: 2
+            strokeWeight: weight
         });
         return currentPathID++;
     }
