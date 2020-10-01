@@ -77,6 +77,7 @@ public class AirportGraphChartTest {
 
     @Test
     public void testBuildChart() throws SQLException {
+
         // Creating expected results 1
         ObservableList<PieChart.Data> resultExpected1 = FXCollections.observableArrayList();
         resultExpected1.add(new PieChart.Data("airport2", 3));
@@ -87,7 +88,7 @@ public class AirportGraphChartTest {
         ObservableList<PieChart.Data> result1 = instance.buildChart();
 
         // Comparing actual to expected results
-        for (int i = 0; i < resultExpected1.size() - 1; i++) {
+        for (int i = 0; i < resultExpected1.size(); i++) {
             Assert.assertEquals(result1.get(i).getPieValue(), resultExpected1.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(result1.get(i).getName(), resultExpected1.get(i).getName());
         }
@@ -95,32 +96,38 @@ public class AirportGraphChartTest {
         // Creating expected results 2
         ObservableList<PieChart.Data> resultExpected2 = FXCollections.observableArrayList();
         resultExpected2.add(new PieChart.Data("country1", 2));
-        resultExpected2.add(new PieChart.Data("country1", 1));
+        resultExpected2.add(new PieChart.Data("country2", 1));
 
         instance.setSelection("AirportCountry");
         ObservableList<PieChart.Data> result2 = instance.buildChart();
 
         // Comparing actual to expected results
-        for (int i = 0; i < resultExpected2.size() - 1; i++) {
+        for (int i = 0; i < resultExpected2.size(); i++) {
             Assert.assertEquals(result2.get(i).getPieValue(), resultExpected2.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(result2.get(i).getName(), resultExpected2.get(i).getName());
         }
+
+        // Testing invalid selection
+        instance.setSelection("n/a");
+        ObservableList<PieChart.Data> result3 = instance.buildChart();
+
+        Assert.assertEquals(0, result3.size());
     }
 
 
     @Test
     public void testAirportRouteChart() throws SQLException {
+
         // Creating expected results
         ObservableList<PieChart.Data> resultExpected = FXCollections.observableArrayList();
         resultExpected.add(new PieChart.Data("airport2", 3));
         resultExpected.add(new PieChart.Data("airport1", 2));
         resultExpected.add(new PieChart.Data("airport3", 1));
 
-        instance.setSelection("AirportRoute");
         ObservableList<PieChart.Data> result = instance.airportRouteChart();
 
         // Comparing actual to expected results
-        for (int i = 0; i < resultExpected.size() - 1; i++) {
+        for (int i = 0; i < resultExpected.size(); i++) {
             Assert.assertEquals(result.get(i).getPieValue(), resultExpected.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(result.get(i).getName(), resultExpected.get(i).getName());
         }
@@ -129,16 +136,16 @@ public class AirportGraphChartTest {
 
     @Test
     public void testAirportCountryChart() {
+
         // Creating expected results
         ObservableList<PieChart.Data> resultExpected = FXCollections.observableArrayList();
         resultExpected.add(new PieChart.Data("country1", 2));
-        resultExpected.add(new PieChart.Data("country1", 1));
+        resultExpected.add(new PieChart.Data("country2", 1));
 
-        instance.setSelection("AirportCountry");
         ObservableList<PieChart.Data> result = instance.airportCountryChart();
 
         // Comparing actual to expected results
-        for (int i = 0; i < resultExpected.size() - 1; i++) {
+        for (int i = 0; i < resultExpected.size(); i++) {
             Assert.assertEquals(result.get(i).getPieValue(), resultExpected.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(result.get(i).getName(), resultExpected.get(i).getName());
         }
@@ -162,7 +169,7 @@ public class AirportGraphChartTest {
         ObservableList<PieChart.Data> result = instance.sortChartList(unSorted);
 
         // Comparing actual to expected results
-        for (int i = 0; i < sorted.size() - 1; i++) {
+        for (int i = 0; i < sorted.size(); i++) {
             Assert.assertEquals(result.get(i).getPieValue(), sorted.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(result.get(i).getName(), sorted.get(i).getName());
         }
