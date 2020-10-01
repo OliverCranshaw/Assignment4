@@ -36,7 +36,9 @@ public class RouteGraphChart implements GraphChartBuilder {
      */
     public ObservableList<PieChart.Data> buildChart() {
         ObservableList<PieChart.Data> result = FXCollections.observableArrayList();
-
+        if (selection == null) {
+            return result;
+        }
         // Switch statement to choose what type of graph is built
         switch (selection) {
             case "RouteEquipment":
