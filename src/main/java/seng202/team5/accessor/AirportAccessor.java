@@ -390,11 +390,10 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of outgoing routes that contain the airport.
      *
-     * @param id int airport_id.
      *
      * @return ResultSet number of routes.
      */
-    public ResultSet getOutgoingRoutes(int id) {
+    public ResultSet getOutgoingRoutes() {
         ResultSet result = null;
 
         try {
@@ -413,11 +412,10 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of incoming routes that contain the airport.
      *
-     * @param id int airport_id.
      *
      * @return ResultSet number of routes.
      */
-    public ResultSet getIncomingRoutes(int id) {
+    public ResultSet getIncomingRoutes() {
         ResultSet result = null;
 
         try {

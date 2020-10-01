@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -320,34 +321,34 @@ public class AirportService implements Service {
     }
 
     /**
-     * Gets the count of incoming routes for the given airport ID
+     * Gets the count of incoming routes for the all airports
      *
-     * @param id int id of the airport being queried
-     * @return Integer - The count of how many incoming routes the given airport has
+     * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their incoming route counts.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
-    public int getIncRouteCount(int id) throws SQLException {
-        int result = -1;
-        if (getData(id).next()) {
-            result = accessor.getIncomingRoutes(id);
+    public Hashtable<Integer, Integer> getIncRouteCount() throws SQLException {
+        Hashtable<Integer, Integer> incAirportRouteCounts = new Hashtable<>();
+        ResultSet data = accessor.getIncomingRoutes();
+        if (data.next()) {
+            incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
         }
-        return result;
+        return incAirportRouteCounts;
     }
 
     /**
-     * Gets the count of outgoing routes for the given airport ID
+     * Gets the count of outgoing routes for all airports
      *
-     * @param id int id of the airport being queried
-     * @return Integer - The count of how many outgoing routes the given airport has
+     * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their outgoing route counts.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
-    public int getOutRouteCount(int id) throws SQLException {
-        int result = -1;
-        if (getData(id).next()) {
-            result = accessor.getOutgoingRoutes(id);
+    public Hashtable<Integer, Integer> getOutRouteCount() throws SQLException {
+        Hashtable<Integer, Integer> outAirportRouteCounts = new Hashtable<>();
+        ResultSet data = accessor.getOutgoingRoutes();
+        if (data.next()) {
+            outAirportRouteCounts.put(data.getInt(1), data.getInt(2));
         }
-        return result;
+        return outAirportRouteCounts;
     }
 }

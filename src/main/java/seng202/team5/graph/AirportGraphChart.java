@@ -59,9 +59,9 @@ public class AirportGraphChart implements GraphChartBuilder {
         for (ArrayList<Object> airport : data) {
             String airportName = (String) airport.get(1);
             int airportID = (int) airport.get(0);
-            int routeCount = service.getIncRouteCount(airportID) + service.getOutRouteCount(airportID);
-
-            routeCounts.put(airportName, routeCount);
+//            int routeCount = service.getIncRouteCount(airportID) + service.getOutRouteCount(airportID);
+//
+//            routeCounts.put(airportName, routeCount);
         }
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
