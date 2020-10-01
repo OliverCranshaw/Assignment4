@@ -157,13 +157,16 @@ public class AirlineAccessor implements Accessor {
      */
     public ResultSet getData(String code) {
         ResultSet result = null;
+        String query;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRLINE_DATA WHERE iata = ? or icao = ?");
+            if (code.length() == 2) {
+                query = "SELECT * FROM AIRLINE_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT * FROM AIRLINE_DATA WHERE icao = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
-
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
