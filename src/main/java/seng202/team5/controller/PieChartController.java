@@ -81,9 +81,7 @@ public class PieChartController extends Application {
             if (segment.getName().startsWith("Other")) {
                 applyRemoveOtherOption(segment);
             } else {
-                if (Other != null) {
-                    applyReturnOtherOption(segment);
-                }
+                applyReturnOtherOption(segment);
             }
             applyMouseEvents(segment);
         }
@@ -110,17 +108,19 @@ public class PieChartController extends Application {
     public void applyReturnOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
         node.setOnContextMenuRequested(arg0 -> {
-            addContextMenu = new ContextMenu();
-            addContextMenu.hide();
-            MenuItem menuItem = new MenuItem();
-            menuItem.setText("Return 'Other'");
-            menuItem.setOnAction(arg1 -> {
-                chart.getData().add(Other);
-                Other = null;
-            });
-            addContextMenu.getItems().add(menuItem);
-            Robot robot = new Robot();
-            addContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
+            if (Other != null) {
+                addContextMenu = new ContextMenu();
+                addContextMenu.hide();
+                MenuItem menuItem = new MenuItem();
+                menuItem.setText("Return 'Other'");
+                menuItem.setOnAction(arg1 -> {
+                    chart.getData().add(Other);
+                    Other = null;
+                });
+                addContextMenu.getItems().add(menuItem);
+                Robot robot = new Robot();
+                addContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
+            }
         });
     }
 
