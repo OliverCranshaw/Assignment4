@@ -13,6 +13,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -30,9 +31,13 @@ public class PieChartController extends Application {
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
     private PieChart chart;
     private String selection;
-    private PieChart.Data selectedData;
+    private PieChart.Data Other = null;
     private final Integer MIN = 0;
     private final Integer MAX = 16777215;
+    private ContextMenu removeContextMenu;
+    private ContextMenu addContextMenu;
+
+
 
 
 
@@ -75,28 +80,47 @@ public class PieChartController extends Application {
         for (final PieChart.Data segment : chart.getData()) {
             if (segment.getName().startsWith("Other")) {
                 applyRemoveOtherOption(segment);
+            } else {
+                if (Other != null) {
+                    applyReturnOtherOption(segment);
+                }
             }
             applyMouseEvents(segment);
         }
     }
 
-
-
-    public void applyRemoveOtherOption(PieChart.Data segment) {
+    private void applyRemoveOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
         node.setOnContextMenuRequested(arg0 -> {
-            ContextMenu contextMenu = new ContextMenu();
+            removeContextMenu = new ContextMenu();
+            removeContextMenu.hide();
             MenuItem menuItem = new MenuItem();
             menuItem.setText("Hide 'Other'");
             menuItem.setOnAction(arg1 -> {
+                Other = segment;
                 chart.getData().remove(segment);
             });
-            contextMenu.getItems().add(menuItem);
+            removeContextMenu.getItems().add(menuItem);
+            Robot robot = new Robot();
+            removeContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
+        });
+    }
 
-            Window window = ((Node)arg0.getSource()).getScene().getWindow();
 
-            //contextMenu.show(window);
-            contextMenu.show(node, arg0.getSceneX(), arg0.getSceneY());
+    public void applyReturnOtherOption(PieChart.Data segment) {
+        final Node node = segment.getNode();
+        node.setOnContextMenuRequested(arg0 -> {
+            addContextMenu = new ContextMenu();
+            addContextMenu.hide();
+            MenuItem menuItem = new MenuItem();
+            menuItem.setText("Return 'Other'");
+            menuItem.setOnAction(arg1 -> {
+                chart.getData().add(Other);
+                Other = null;
+            });
+            addContextMenu.getItems().add(menuItem);
+            Robot robot = new Robot();
+            addContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
         });
     }
 

@@ -42,7 +42,7 @@ public class RouteGraphChartTest {
         // Comparing actual to expected results
         for (int i = 0; i < resultExpected.size() - 1; i++) {
             Assert.assertEquals(resultActual.get(i).getPieValue(), resultExpected.get(i).getPieValue(), 0.0000001);
-            Assert.assertEquals(resultActual.get(i).getName(), resultActual.get(i).getName());
+            Assert.assertEquals(resultActual.get(i).getName(), resultExpected.get(i).getName());
         }
 
 
@@ -86,7 +86,7 @@ public class RouteGraphChartTest {
         // Comparing actual to expected results
         for (int i = 0; i < resultExpected2.size() - 1; i++) {
             Assert.assertEquals(resultActual2.get(i).getPieValue(), resultExpected2.get(i).getPieValue(), 0.0000001);
-            Assert.assertEquals(resultActual2.get(i).getName(), resultActual2.get(i).getName());
+            Assert.assertEquals(resultActual2.get(i).getName(), resultExpected2.get(i).getName());
         }
     }
 }
