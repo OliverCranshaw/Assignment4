@@ -27,6 +27,12 @@ public class UploadAirlinesMenuController {
         File file = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 
         if (file != null) {
+
+
+            readFile.setLineChangeListener((bytesRead) -> {
+
+            });
+
             // Gets the list of errors returned from reading the file and concatenates them to a string which is then displayed to the user
             ArrayList<String> errors = (ArrayList<String>)(readFile.readAirlineData(file).get(1));
             String errorString = "";
