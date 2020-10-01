@@ -346,7 +346,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
 
         Hashtable<Integer, Integer> incomingRoutesCount = airportService.getIncRouteCount();
-        Assert.assertNull(incomingRoutesCount);
+        assertEquals(0, incomingRoutesCount.size());
 
 
 
@@ -393,7 +393,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
 
         Hashtable<Integer, Integer> outgoingRoutesCount = airportService.getOutRouteCount();
-        Assert.assertNull(outgoingRoutesCount);
+        assertEquals(0, outgoingRoutesCount.size());
 
 
         // Adding an airline for the routes to use
@@ -406,13 +406,5 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Hashtable<Integer, Integer> outgoingRoutesCount2 = airportService.getOutRouteCount();
         Assert.assertFalse(outgoingRoutesCount2.containsKey(2));
         assertEquals(2, (int) outgoingRoutesCount2.get(1));
-
-
-
     }
-
-
-
-
-
 }
