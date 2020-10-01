@@ -331,7 +331,7 @@ public class AirportDataTabController implements Initializable {
 
         airportMapView.fitBounds(Bounds.fromCoordinateList(airportCoords), 2);
 
-        airportPathId = airportMapView.addPath(airportCoords);
+        airportPathId = airportMapView.addPath(airportCoords, null, null);
         airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
 
 

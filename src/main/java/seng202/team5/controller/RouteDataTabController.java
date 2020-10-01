@@ -279,7 +279,7 @@ public class RouteDataTabController implements Initializable {
                 if (routePath != -1) {
                     routeMapView.removePath(routePath);
                 }
-                routePath = routeMapView.addPath(coordinates);
+                routePath = routeMapView.addPath(coordinates, null, null);
                 routeMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
 

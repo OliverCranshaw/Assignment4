@@ -301,7 +301,7 @@ public class SearchTabController implements Initializable {
     private ObservableList<RouteModel> routeModels;
 
     private int searchAirportMarker = -1;
-    private List<Integer> searchAirlinePaths = new ArrayList<>();
+    private final List<Integer> searchAirlinePaths = new ArrayList<>();
     private int searchRoutePath = -1;
     private int searchFlightPath = -1;
 
@@ -485,7 +485,7 @@ public class SearchTabController implements Initializable {
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
 
             if (coordinates.size() >= 2) {
-                searchFlightPath = searchMapView.addPath(coordinates);
+                searchFlightPath = searchMapView.addPath(coordinates, null, null);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }
@@ -527,7 +527,7 @@ public class SearchTabController implements Initializable {
 
                 List<Coord> coordinates = List.of(new Coord(source.getLatitude(), source.getLongitude()), new Coord(destination.getLatitude(), destination.getLongitude()));
 
-                searchRoutePath = searchMapView.addPath(coordinates);
+                searchRoutePath = searchMapView.addPath(coordinates, null, null);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
         }
@@ -580,7 +580,7 @@ public class SearchTabController implements Initializable {
                 //System.out.println("Adding route: " + source + " -> " + destination);
 
                 if (source != null && destination != null) {
-                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination)));
+                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination), null, null));
                 }
             }
 

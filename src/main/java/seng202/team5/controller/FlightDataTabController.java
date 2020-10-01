@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import seng202.team5.App;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.DataExporter;
@@ -225,7 +226,7 @@ public class FlightDataTabController implements Initializable {
                 flightMapMarker = -1;
             }
             if (coordinates.size() >= 2) {
-                flightMapPath = flightMapView.addPath(coordinates);
+                flightMapPath = flightMapView.addPath(coordinates, List.of(new Pair<>(0.0, "FORWARD_OPEN_ARROW"), new Pair<>(0.5, "FORWARD_OPEN_ARROW"), new Pair<>(1.0, "FORWARD_OPEN_ARROW")), null);
                 flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }

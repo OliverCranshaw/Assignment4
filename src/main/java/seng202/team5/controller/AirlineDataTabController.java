@@ -274,7 +274,7 @@ public class AirlineDataTabController implements Initializable {
                 Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
 
                 if (source != null && destination != null) {
-                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination)));
+                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination), null, null));
                 }
             }
 
