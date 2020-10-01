@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -399,12 +396,24 @@ public class AirportDataTabController implements Initializable {
      */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
+        Hashtable<Integer, Integer> incRouteCounts = new Hashtable<>();
+        Hashtable<Integer, Integer> outRouteCounts = new Hashtable<>();
+        try {
+            incRouteCounts = airportService.getIncRouteCount();
+            outRouteCounts = airportService.getOutRouteCount();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         for (ArrayList<Object> datum : data) {
             Integer id = (Integer) datum.get(0);
             String name = (String) datum.get(1);
             String city = (String) datum.get(2);
             String country = (String) datum.get(3);
-            list.add(new AirportModel(name, city, country, id));
+            if (incRouteCounts.size() != 0) {
+
+            }
+            //list.add(new AirportModel(name, city, country, id));
         }
         airportModels = FXCollections.observableArrayList(list);
         tableView.setItems(airportModels);

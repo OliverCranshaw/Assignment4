@@ -328,11 +328,16 @@ public class AirportService implements Service {
      * @throws SQLException Caused by ResultSet interactions.
      */
     public Hashtable<Integer, Integer> getIncRouteCount() throws SQLException {
-        Hashtable<Integer, Integer> incAirportRouteCounts = new Hashtable<>();
+        Hashtable<Integer, Integer> incAirportRouteCounts = null;
         ResultSet data = accessor.getIncomingRoutes();
-        if (data.next()) {
-            incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
+        if (data != null) {
+            incAirportRouteCounts = new Hashtable<>();
+            while (data.next()) {
+                incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
+            }
         }
+
+        System.out.println(incAirportRouteCounts);
         return incAirportRouteCounts;
     }
 
@@ -344,11 +349,15 @@ public class AirportService implements Service {
      * @throws SQLException Caused by ResultSet interactions.
      */
     public Hashtable<Integer, Integer> getOutRouteCount() throws SQLException {
-        Hashtable<Integer, Integer> outAirportRouteCounts = new Hashtable<>();
+        Hashtable<Integer, Integer> outAirportRouteCounts = null;
         ResultSet data = accessor.getOutgoingRoutes();
-        if (data.next()) {
-            outAirportRouteCounts.put(data.getInt(1), data.getInt(2));
+        if (data != null) {
+            outAirportRouteCounts = new Hashtable<>();
+            while (data.next()) {
+                outAirportRouteCounts.put(data.getInt(1), data.getInt(2));
+            }
         }
+
         return outAirportRouteCounts;
     }
 }

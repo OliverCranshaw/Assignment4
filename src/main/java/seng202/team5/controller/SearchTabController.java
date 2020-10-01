@@ -1138,7 +1138,7 @@ public class SearchTabController implements Initializable {
             String name = (String) datum.get(1);
             String city = (String) datum.get(2);
             String country = (String) datum.get(3);
-            list.add(new AirportModel(name, city, country, id));
+            //list.add(new AirportModel(name, city, country, id));
         }
         airportModels = FXCollections.observableArrayList(list);
         tableView.setItems(airportModels);

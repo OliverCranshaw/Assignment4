@@ -399,18 +399,19 @@ public class AirportAccessor implements Accessor {
      * @return ResultSet number of routes.
      */
     public ResultSet getOutgoingRoutes() {
-        ResultSet result = null;
+        ResultSet result;
 
         try {
             PreparedStatement stmt = dbHandler.prepareStatement("SELECT source_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY source_airport_id");
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
+            result = null;
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
             System.out.println(e.getMessage());
         }
-
+        System.out.println(result);
         return result;
     }
 

@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AirportServiceTest extends BaseDatabaseTest {
 
@@ -345,7 +346,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
 
         Hashtable<Integer, Integer> incomingRoutesCount = airportService.getIncRouteCount();
-        assertEquals(0, incomingRoutesCount.size());
+        Assert.assertNull(incomingRoutesCount);
 
 
 
@@ -392,7 +393,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
 
 
         Hashtable<Integer, Integer> outgoingRoutesCount = airportService.getOutRouteCount();
-        assertEquals(0, outgoingRoutesCount.size());
+        Assert.assertNull(outgoingRoutesCount);
 
 
         // Adding an airline for the routes to use
