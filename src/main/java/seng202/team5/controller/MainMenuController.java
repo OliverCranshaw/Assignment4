@@ -1064,7 +1064,7 @@ public class MainMenuController implements Initializable {
                 flightMapMarker = -1;
             }
             if (coordinates.size() >= 2) {
-                flightMapPath = flightMapView.addPath(coordinates);
+                flightMapPath = flightMapView.addPath(coordinates, null);
                 flightMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }
@@ -1121,7 +1121,7 @@ public class MainMenuController implements Initializable {
                 if (routePath != -1) {
                     routeMapView.removePath(routePath);
                 }
-                routePath = routeMapView.addPath(coordinates);
+                routePath = routeMapView.addPath(coordinates, null);
                 routeMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
 
@@ -1177,7 +1177,7 @@ public class MainMenuController implements Initializable {
                 Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
 
                 if (source != null && destination != null) {
-                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination)));
+                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination), null));
                 }
             }
 
@@ -1299,7 +1299,7 @@ public class MainMenuController implements Initializable {
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
 
             if (coordinates.size() >= 2) {
-                searchFlightPath = searchMapView.addPath(coordinates);
+                searchFlightPath = searchMapView.addPath(coordinates, null);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }
@@ -1341,7 +1341,7 @@ public class MainMenuController implements Initializable {
 
                 List<Coord> coordinates = List.of(new Coord(source.getLatitude(), source.getLongitude()), new Coord(destination.getLatitude(), destination.getLongitude()));
 
-                searchRoutePath = searchMapView.addPath(coordinates);
+                searchRoutePath = searchMapView.addPath(coordinates, null);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
         }
@@ -1394,7 +1394,7 @@ public class MainMenuController implements Initializable {
                 //System.out.println("Adding route: " + source + " -> " + destination);
 
                 if (source != null && destination != null) {
-                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination)));
+                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination), null));
                 }
             }
 
@@ -1504,7 +1504,7 @@ public class MainMenuController implements Initializable {
 
         airportMapView.fitBounds(Bounds.fromCoordinateList(airportCoords), 2);
 
-        airportPathId = airportMapView.addPath(airportCoords);
+        airportPathId = airportMapView.addPath(airportCoords, null);
         airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
 
 
