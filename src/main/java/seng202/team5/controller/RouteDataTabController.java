@@ -318,7 +318,6 @@ public class RouteDataTabController implements Initializable {
         Parent root = FXMLLoader.load(App.class.getResource("upload_routes.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Upload Route Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }

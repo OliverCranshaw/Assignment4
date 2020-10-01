@@ -318,7 +318,6 @@ public class AirlineDataTabController implements Initializable {
         Parent root = FXMLLoader.load(App.class.getResource("upload_airlines.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Upload Airline Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }

@@ -370,7 +370,6 @@ public class AirportDataTabController implements Initializable {
         Parent root = FXMLLoader.load(App.class.getResource("upload_airports.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Upload Airport Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }

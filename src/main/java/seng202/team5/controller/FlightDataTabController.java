@@ -260,7 +260,6 @@ public class FlightDataTabController implements Initializable {
         Parent root = FXMLLoader.load(App.class.getResource("upload_flight.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Upload Flight");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
