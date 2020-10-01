@@ -73,7 +73,7 @@
         marker.setMap(null);
     }
 
-    function addPath(points, symbols) {
+    function addPath(points, symbols, colour) {
         // Convert symbol format
         symbols = symbols.map((pair) => { return {offset: 100*pair.first + '%', icon: {path: google.maps.SymbolPath[pair.second]}}; });
 
@@ -82,7 +82,7 @@
             icons: symbols,
             geodesic: true,
             map: map,
-            strokeColor: '#FF0000',
+            strokeColor: colour,
             strokeOpacity: 1.0,
             strokeWeight: 2
         });
