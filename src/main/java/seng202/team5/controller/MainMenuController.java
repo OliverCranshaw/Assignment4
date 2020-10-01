@@ -1576,12 +1576,16 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_airports.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airports.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Airport Data");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
     /**
@@ -1629,12 +1633,16 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onUploadAirlineDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_airlines.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airlines.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Airline Data");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
 
@@ -1664,12 +1672,17 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onUploadFlightPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_flight.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_flight.fxml"));
+        Scene scene = new Scene(loader.load());
+
+        stage.setScene(scene);
         stage.setTitle("Upload Flight");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
     /**
@@ -1739,12 +1752,16 @@ public class MainMenuController implements Initializable {
     @FXML
     public void onUploadRouteDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_routes.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_routes.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Route Data");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
     /**
