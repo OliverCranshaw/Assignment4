@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane prefHeight="720.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirlineDataTabController">
+<StackPane prefHeight="730.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirlineDataTabController">
    <stylesheets>
       <URL value="@style.css" />
    </stylesheets>
