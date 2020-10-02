@@ -62,6 +62,11 @@ public class DeleteDataScenario {
         }
     }
 
+
+    // Deleting airlines
+
+    // Deleting an airline that exists
+
     @Given("there is an airline in the database with id {int}")
     public void thereIsAnAirlineInTheDatabase(int id) throws SQLException {
         airlineService.save("AirNZ", null, "AB", "ABC", "NZ123", "New Zealand", "Y");
@@ -81,6 +86,8 @@ public class DeleteDataScenario {
         Assert.assertFalse(airlineService.getData(id).next());
     }
 
+    // Deleting an airline that does not exist
+
     @Given("there is no airline with id {int}")
     public void thereIsNoAirlineWithId(int id) throws SQLException {
         Assert.assertFalse(airlineService.getData(id).next());
@@ -97,6 +104,11 @@ public class DeleteDataScenario {
     public void anAirlineWithIdStillDoesNotExist(int id) throws SQLException {
         Assert.assertFalse(airlineService.getData(id).next());
     }
+
+
+    // Deleting airports
+
+    // Deleting an airport that exists
 
     @Given("there is an airport in the database with id {int}")
     public void thereIsAnAirportInTheDatabaseWithId(int id) throws SQLException {
@@ -118,6 +130,8 @@ public class DeleteDataScenario {
         Assert.assertFalse(airportService.getData(id).next());
     }
 
+    // Deleting an airport that does not exist
+
     @Given("there is no airport with id {int}")
     public void thereIsNoAirportWithId(int id) throws SQLException {
         Assert.assertFalse(airportService.getData(id).next());
@@ -134,6 +148,11 @@ public class DeleteDataScenario {
     public void anAirportWithIdStillDoesNotExist(int id) throws SQLException {
         Assert.assertFalse(airportService.getData(id).next());
     }
+
+
+    // Deleting a flight entry
+
+    // Deleting a flight entry that exists
 
     @Given("there is a flight entry in the database with id {int}")
     public void thereIsAFlightEntryInTheDatabaseWithId(int id) throws SQLException {
@@ -154,6 +173,8 @@ public class DeleteDataScenario {
         Assert.assertFalse(flightService.getData(id).next());
     }
 
+    // Deleting a flight entry that does not exist
+
     @Given("there is no flight entry with id {int}")
     public void thereIsNoFlightEntryWithId(int id) throws SQLException {
         Assert.assertFalse(flightService.getData(id).next());
@@ -171,9 +192,14 @@ public class DeleteDataScenario {
         Assert.assertFalse(flightService.getData(id).next());
     }
 
+
+    // Deleting a flight
+
+    // Deleting a flight that exists
+
     @Given("there is a flight in the database with flight id {int}")
     public void thereIsAFlightInTheDatabaseWithFlightId(int id) throws SQLException {
-        readFile.readAirlineData(new File("src/test/java/seng202/team5/data/testfiles/airlines.txt"));
+        // Adds the airports to the database that may be needed to create the flight
         readFile.readAirportData(new File("src/test/java/seng202/team5/data/testfiles/airports.txt"));
         readFile.readFlightData(new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt"));
 
@@ -192,6 +218,8 @@ public class DeleteDataScenario {
         Assert.assertFalse(flightService.getData(id).next());
     }
 
+    // Deleting a flight that does not exist
+
     @Given("there is no flight with flight id {int}")
     public void thereIsNoFlightWithFlightId(int id) throws SQLException {
         Assert.assertFalse(flightService.getData(id).next());
@@ -209,8 +237,14 @@ public class DeleteDataScenario {
         Assert.assertFalse(flightService.getData(id).next());
     }
 
+
+    // Deleting a route
+
+    // Deleting a route that exists
+
     @Given("there is a route in the database with id {int}")
     public void thereIsARouteInTheDatabaseWithId(int id) throws SQLException {
+        // Adds the airline and airports needed to be able to create the route
         airlineService.save("AirNZ", null, "AB", "ABC", "NZ123", "New Zealand", "Y");
         airportService.save("Christchurch Airport", "Christchurch", "New Zealand", "ABC", "ABCD", 0,
                 0, 0, 0, "E", "Pacific/Auckland");
@@ -233,6 +267,8 @@ public class DeleteDataScenario {
     public void theRouteWithIdNoLongerExists(int id) throws SQLException {
         Assert.assertFalse(routeService.getData(id).next());
     }
+
+    // Deleting a route that does not exist
 
     @Given("there is no route with id {int}")
     public void thereIsNoRouteWithId(int id) throws SQLException {

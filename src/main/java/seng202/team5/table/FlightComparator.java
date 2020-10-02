@@ -19,6 +19,5 @@ public class FlightComparator implements Comparator<ArrayList<Object>> {
         } else {
             return (int) o1.get(0) - (int) o2.get(0);
         }
-
     }
 }

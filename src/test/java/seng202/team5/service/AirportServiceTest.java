@@ -8,9 +8,11 @@ import seng202.team5.database.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AirportServiceTest extends BaseDatabaseTest {
 
@@ -343,6 +345,12 @@ public class AirportServiceTest extends BaseDatabaseTest {
         stmt2.executeUpdate();
 
 
+        Hashtable<Integer, Integer> incomingRoutesCount = airportService.getIncRouteCount();
+        assertEquals(0, incomingRoutesCount.size());
+
+
+
+
         // Adding an airline for the routes to use
         airlineService.save("Air New Zealand", "ANZ", "NZ", "ANZ", "AIRNEWZEALAND", "New Zealand", "Y");
         // Adding routes between the two airports
@@ -350,16 +358,14 @@ public class AirportServiceTest extends BaseDatabaseTest {
         routeService.save("NZ", "IAT", "CHC", "N", 0, "GPS CK2");
 
 
-        int incomingRoutesCount1 = airportService.getIncRouteCount(2);
-        int incomingRoutesCount2 = airportService.getIncRouteCount(1);
-        int nonExistingData = airportService.getIncRouteCount(5);
-        assertEquals(2, incomingRoutesCount1);
-        assertEquals(0, incomingRoutesCount2);
-        assertEquals(-1, nonExistingData);
+        Hashtable<Integer, Integer> incomingRoutesCount2 = airportService.getIncRouteCount();
+        assertEquals(2, (int) incomingRoutesCount2.get(2));
+        Assert.assertFalse(incomingRoutesCount2.containsKey(1));
     }
 
     @Test
     public void testGetOutRouteCount() throws SQLException {
+
 
         Connection dbHandler = DBConnection.getConnection();
         RouteService routeService = new RouteService();
@@ -386,6 +392,10 @@ public class AirportServiceTest extends BaseDatabaseTest {
         stmt2.executeUpdate();
 
 
+        Hashtable<Integer, Integer> outgoingRoutesCount = airportService.getOutRouteCount();
+        assertEquals(0, outgoingRoutesCount.size());
+
+
         // Adding an airline for the routes to use
         airlineService.save("Air New Zealand", "ANZ", "NZ", "ANZ", "AIRNEWZEALAND", "New Zealand", "Y");
         // Adding routes between the two airports
@@ -393,18 +403,8 @@ public class AirportServiceTest extends BaseDatabaseTest {
         routeService.save("NZ", "IAT", "CHC", "N", 0, "GPS CK2");
 
 
-        int outgoingRoutesCount1 = airportService.getOutRouteCount(2);
-        int outgoingRoutesCount2 = airportService.getOutRouteCount(1);
-        int nonExistingData = airportService.getOutRouteCount(5);
-        assertEquals(0, outgoingRoutesCount1);
-        assertEquals(2, outgoingRoutesCount2);
-        assertEquals(-1, nonExistingData);
-
-
+        Hashtable<Integer, Integer> outgoingRoutesCount2 = airportService.getOutRouteCount();
+        Assert.assertFalse(outgoingRoutesCount2.containsKey(2));
+        assertEquals(2, (int) outgoingRoutesCount2.get(1));
     }
-
-
-
-
-
 }

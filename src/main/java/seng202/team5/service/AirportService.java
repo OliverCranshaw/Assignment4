@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -88,6 +89,8 @@ public class AirportService implements Service {
      * @param newDST The new dst of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown). May be null if not to be updated.
      * @param newTZ The new tz_database_timezone of the airport, timezone in "tz" (Olson) format. May be null if not to be updated.
      * @return int result The airport_id of the airport that was just updated by the AirportAccessor.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newName, String newCity, String newCountry, String newIATA,
                       String newICAO, Double newLatitude, Double newLongitude, Integer newAltitude,
@@ -238,32 +241,35 @@ public class AirportService implements Service {
      *
      * @param newCode String, new airport IATA/ICAO code.
      * @param oldCode String, old airport IATA/ICAO code.
+     *
      * @throws SQLException Caused by the ResultSet interactions
      */
-    public void updateRoutes(String newCode, String oldCode) throws SQLException {
+    public int updateRoutes(String newCode, String oldCode) throws SQLException {
         ResultSet result;
+        int res = -1;
 
-        ArrayList code = new ArrayList();
+        ArrayList<String> code = new ArrayList<>();
         code.add(oldCode);
 
         // Checks if any routes contain the old code and updates them if it does
         if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
             while (result.next()) {
-                int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
+                res = routeService.update(result.getInt("route_id"), result.getString("airline"),
                         newCode, result.getString("destination_airport"), result.getString("codeshare"),
                         result.getInt("stops"), result.getString("equipment"));
-                System.out.println(res);
             }
         }
 
         // Checks if any routes contain the old code and updates them if it does
         if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
             while (result.next()) {
-                int res = routeService.update(result.getInt("route_id"), result.getString("airline"),
+                res = routeService.update(result.getInt("route_id"), result.getString("airline"),
                         result.getString("source_airport"), newCode, result.getString("codeshare"),
                         result.getInt("stops"), result.getString("equipment"));
+
             }
         }
+        return res;
     }
 
     /**
@@ -271,6 +277,7 @@ public class AirportService implements Service {
      *
      * @param newCode String, new airport IATA/ICAO code.
      * @param oldCode String, old airport IATA/ICAO code.
+     *
      * @throws SQLException Caused by the ResultSet interactions
      */
     public void updateFlightEntries(String newCode, String oldCode) throws SQLException {
@@ -289,6 +296,7 @@ public class AirportService implements Service {
      * Deletes any flights that contain an IATA/ICAO code of an airport to be deleted
      *
      * @param id int id of the airport being deleted
+     *
      * @throws SQLException Caused by the ResultSet interactions
      */
     public void deleteFlight(int id) throws SQLException {
@@ -313,33 +321,38 @@ public class AirportService implements Service {
     }
 
     /**
-     * Gets the count of incoming routes for the given airport ID
+     * Gets the count of incoming routes for the all airports
      *
-     * @param id int id of the airport being queried
-     * @return Integer - The count of how many incoming routes the given airport has
+     * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their incoming route counts.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
-    public int getIncRouteCount(int id) throws SQLException {
-        int result = -1;
-        if (getData(id).next()) {
-            result = accessor.getIncomingRoutes(id);
-        }
-        return result;
-    }
+    public Hashtable<Integer, Integer> getIncRouteCount() throws SQLException {
+        Hashtable<Integer, Integer> incAirportRouteCounts = new Hashtable<>();
+        ResultSet data = accessor.getIncomingRoutes();
 
+        while (data.next()) {
+            incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
+        }
+
+        return incAirportRouteCounts;
+    }
 
     /**
-     * Gets the count of outgoing routes for the given airport ID
+     * Gets the count of outgoing routes for all airports
      *
-     * @param id int id of the airport being queried
-     * @return Integer - The count of how many outgoing routes the given airport has
+     * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their outgoing route counts.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
-    public int getOutRouteCount(int id) throws SQLException {
-        Integer result = -1;
-        if (getData(id).next()) {
-            result = accessor.getOutgoingRoutes(id);
+    public Hashtable<Integer, Integer> getOutRouteCount() throws SQLException {
+        Hashtable<Integer, Integer> outAirportRouteCounts = new Hashtable<>();
+        ResultSet data = accessor.getOutgoingRoutes();
+
+        while (data.next()) {
+            outAirportRouteCounts.put(data.getInt(1), data.getInt(2));
         }
-        return result;
+
+        return outAirportRouteCounts;
     }
-
-
 }

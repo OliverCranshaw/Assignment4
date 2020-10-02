@@ -4,12 +4,11 @@ package seng202.team5.data;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * FlightData
  *
  * A class used to represent Flight data for use in the modify data factory patterns.
- * Overrides checkValues() and convertBlanksToNull() from Data interface.
+ * Implements Data interface.
  */
 public class FlightData implements Data {
 
@@ -107,24 +106,23 @@ public class FlightData implements Data {
      *
      * @return int 1 if the check passes, otherwise a negative value that corresponds to a certain variable.
      */
-    @Override
     public int checkValues() {
-        if (this.flightID == null || this.flightID < 0) {
+        if (flightID == null || flightID < 0) {
             // Ensures flightID cannot by negative or null
             return -2;
-        } else if (this.locationType == null || !Arrays.asList("APT", "VOR", "FIX").contains(this.locationType)) {
+        } else if (locationType == null || !Arrays.asList("APT", "VOR", "FIX").contains(locationType)) {
             // Ensures locationType cannot be null and is one of "APT", "VOR", or "FIX"
             return -3;
-        } else if (this.location == null || !(this.location.matches("^[A-Z]+$"))) {
+        } else if (location == null || !(location.matches("^[A-Z]+$"))) {
             // Ensures that the airport exists if the location type is APT, or otherwise just isn't null
             return -4;
-        } else if (this.altitude == null) {
+        } else if (altitude == null) {
             // Ensures altitude is not null
             return -5;
-        } else if (this.latitude == null) {
+        } else if (latitude == null) {
             // Ensures latitude is not null
             return -6;
-        } else if (this.longitude == null) {
+        } else if (longitude == null) {
             // Ensures longitude is not null
             return -7;
         } else {
@@ -138,16 +136,15 @@ public class FlightData implements Data {
      * Checks every variable of FlightData against a list of possible null representations potentially used
      * in files, or returned by a gui empty field. If a null representation is found, replaces that value with null,
      */
-    @Override
     public void convertBlanksToNull() {
         // List of null representations
         List<String> nullRepr = Arrays.asList("", "-", "\\N", "N/A");
 
-        if (nullRepr.contains(this.locationType)) {
-            this.locationType = null;
+        if (nullRepr.contains(locationType)) {
+            locationType = null;
         }
-        if (nullRepr.contains(this.location)) {
-            this.location = null;
+        if (nullRepr.contains(location)) {
+            location = null;
         }
     }
 }

@@ -63,7 +63,7 @@ public class FilterAirportTable extends ConcreteFilterTable {
     /**
      * Gets elements and returns it.
      *
-     * @return ArrayList<ArrayList<Object>> of the elements.
+     * @return ArrayList of the elements.
      */
     public ArrayList<ArrayList<Object>> getElements() {
         return elements;

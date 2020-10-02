@@ -1,42 +1,28 @@
 package seng202.team5.model;
 
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import seng202.team5.service.AirportService;
 
 import java.sql.SQLException;
 
-
 public class AirportModel {
 
-    private SimpleStringProperty airportName;
-    private SimpleStringProperty airportCity;
-    private SimpleStringProperty airportCountry;
+    private final SimpleStringProperty airportName;
+    private final SimpleStringProperty airportCity;
+    private final SimpleStringProperty airportCountry;
     private Integer id;
     private SimpleIntegerProperty noIncRoutes;
     private SimpleIntegerProperty noOutRoutes;
-    AirportService airportService;
 
-
-    public AirportModel(String name, String city, String country, Integer id) {
+    public AirportModel(String name, String city, String country, Integer id, Integer incCount, Integer outCount) {
         this.airportName = new SimpleStringProperty(name);
         this.airportCity = new SimpleStringProperty(city);
         this.airportCountry = new SimpleStringProperty(country);
         this.id = id;
-        airportService = new AirportService();
-        try {
-            int incRoutes = airportService.getIncRouteCount(id);
-            int outRoutes = airportService.getOutRouteCount(id);
-            noIncRoutes = new SimpleIntegerProperty((incRoutes == -1) ? 0 : incRoutes);
-            noOutRoutes = new SimpleIntegerProperty((outRoutes == -1) ? 0 : outRoutes);
-        } catch (SQLException e) { }
+        this.noIncRoutes = new SimpleIntegerProperty(incCount);
+        this.noOutRoutes = new SimpleIntegerProperty(outCount);
     }
-
-    public int getNoIncRoutes() {
-        return noIncRoutes.get();
-    }
-
 
     public void setNoIncRoutes(int noIncRoutes) {
         this.noIncRoutes.set(noIncRoutes);
@@ -50,18 +36,19 @@ public class AirportModel {
         this.noOutRoutes.set(noOutRoutes);
     }
 
-    public String getAirportCity() {
-        return airportCity.get();
+    public int getNoIncRoutes() {
+        return noIncRoutes.get();
     }
 
     public void setAirportCity(String airportCity) {
         this.airportCity.set(airportCity);
     }
 
+    public String getAirportCity() { return airportCity.get(); }
+
     public String getAirportName() {
         return airportName.get();
     }
-
 
     public void setAirportName(String airportName) {
         this.airportName.set(airportName);
@@ -78,6 +65,4 @@ public class AirportModel {
     public Integer getId() { return id; }
 
     public void setId(Integer id) { this.id = id; }
-
-
 }

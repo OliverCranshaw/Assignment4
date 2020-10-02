@@ -36,7 +36,7 @@ public class HelpHandler implements EventHandler<MouseEvent> {
      * @param scene The window where the help is requested
      */
     public static void startHelp(Scene scene) {
-        scene.setCursor(new ImageCursor(CURSOR_IMAGE, CURSOR_IMAGE.getWidth() * (1.0/3.0), CURSOR_IMAGE.getHeight() * (1.0/3.0)));
+        scene.setCursor(new ImageCursor(CURSOR_IMAGE, 13, 7));
 
         HelpHandler helpHandler = new HelpHandler(scene);
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, helpHandler);

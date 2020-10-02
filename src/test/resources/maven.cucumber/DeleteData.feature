@@ -15,6 +15,7 @@ Feature: Deleting Data
     When deleting the non-existing airline with id 1
     Then an airline with id 1 still does not exist
 
+
   # Deleting an airport
 
   Scenario: Deleting an existing airport
@@ -26,6 +27,7 @@ Feature: Deleting Data
     Given there is no airport with id 1
     When deleting the non-existing airport with id 1
     Then an airport with id 1 still does not exist
+
 
   # Deleting a flight entry
 
@@ -39,6 +41,7 @@ Feature: Deleting Data
     When deleting the non-existing flight entry with id 1
     Then a flight entry with id 1 still does not exist
 
+
   # Deleting a flight
 
   Scenario: Deleting an existing flight
@@ -50,6 +53,7 @@ Feature: Deleting Data
     Given there is no flight with flight id 1
     When deleting the non-existing flight with flight id 1
     Then a flight with flight id 1 still does not exist
+
 
   # Deleting a route
 

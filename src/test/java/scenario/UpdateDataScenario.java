@@ -73,6 +73,10 @@ public class UpdateDataScenario {
     }
 
 
+    // Updating airline data
+
+    // Updating an airline with valid parameters
+
     @Given("valid airline parameters {string}, {string}, {string}, {string}, {string}, {string}, {string} and an existing airline with id {int}")
     public void validAirlineParametersNullAndAnExistingAirlineWithId(String name, String alias, String iata, String icao, String callsign, String country, String active, int id) throws SQLException {
         airlineData = new AirlineData(name, alias, iata, icao, callsign, country, active);
@@ -101,6 +105,8 @@ public class UpdateDataScenario {
         Assert.assertEquals(country, airline.getString("country"));
         Assert.assertEquals(active, airline.getString("active"));
     }
+
+    // Updating an airline with invalid parameters
 
     @Given("an invalid name {string} and an existing airline with id {int}")
     public void anInvalidNameAndAnExistingAirlineWithId(String name, int id) throws SQLException {
@@ -176,6 +182,11 @@ public class UpdateDataScenario {
         Assert.assertEquals(-5, res);
     }
 
+
+    // Updating airport data
+
+    // Updating an airport with valid parameters
+
     @Given("valid airport parameters {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string}, {string} and an existing aiport with id {int}")
     public void validAirportParametersAndAnExistingAirportWithId(String name, String city, String country, String iata, String icao, String latitude, String longitude, String altitude, String timezone, String dst, String tz, int id) throws SQLException{
         airportData = new AirportData(name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz);
@@ -208,6 +219,8 @@ public class UpdateDataScenario {
         Assert.assertEquals(dst, airport.getString("dst"));
         Assert.assertEquals(tz, airport.getString("tz_database_timezone"));
     }
+
+    // Updating an airport with invalid parameters
 
     @Given("an invalid name {string} and an existing airport with id {int}")
     public void anInvalidNameAndAnExistingAirportWithId(String name, int id) throws SQLException {
@@ -334,6 +347,11 @@ public class UpdateDataScenario {
         Assert.assertEquals(-12, res);
     }
 
+
+    // Updating flight data
+
+    // Updating a flight entry with valid parameters
+
     @Given("valid flight entry parameters {string}, {string}, {string}, {string}, {string} and an existing flight entry with id {int}")
     public void validFlightEntryParametersAndAnExistingFlightEntryWithId(String locationType, String location, String altitude, String latitude, String longitude, int id) throws SQLException {
         flightData = new FlightData(flightService.getNextFlightID(), locationType, location, altitude, latitude, longitude);
@@ -360,6 +378,8 @@ public class UpdateDataScenario {
         Assert.assertEquals(latitude, flightEntry.getDouble("latitude"), 0.01);
         Assert.assertEquals(longitude, flightEntry.getDouble("longitude"), 0.01);
     }
+
+    // Updating a flight entry with invalid parameters
 
     @Given("an invalid location type {string} and an existing flight entry with id {int}")
     public void anInvalidLocationTypeAndAnExistingFlightEntryWithId(String locationType, int id) throws SQLException {
@@ -401,10 +421,13 @@ public class UpdateDataScenario {
         Assert.assertEquals(-4, res);
     }
 
+
+    // Updating route data
+
+    // Updating a route with valid parameters
+
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string}, {string} and an existing route with id {int}")
     public void validRouteParametersAndAnExistingRouteWithId(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment, int id) throws SQLException {
-        // routeService.save("AB", "ABC", "DBS", "Y", 2, "GPS");
-
         routeData = new RouteData(airline, sourceAirport, destAirport, codeshare, stops, equipment);
         routeData.convertBlanksToNull();
         Assert.assertEquals(1, routeData.checkValues());
@@ -434,6 +457,8 @@ public class UpdateDataScenario {
         Assert.assertEquals(stops, route.getInt("stops"));
         Assert.assertEquals(equipment, route.getString("equipment"));
     }
+
+    // Updating a route with invalid parameters
 
     @Given("an invalid airline code {string} and an existing route with id {int}")
     public void anInvalidAirlineCodeAndAnExistingRouteWithId(String airline, int id) throws SQLException {

@@ -3,10 +3,10 @@ package seng202.team5.data;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import seng202.team5.accessor.AirlineAccessor;
-import seng202.team5.accessor.AirportAccessor;
-import seng202.team5.accessor.FlightAccessor;
-import seng202.team5.accessor.RouteAccessor;
+import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.FlightService;
+import seng202.team5.service.RouteService;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 
@@ -16,7 +16,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,10 +29,10 @@ public class DataExporterTest {
     private ReadFile readFile;
     private FileReader fileReader;
     private BufferedReader bufferedReader;
-    private AirlineAccessor airlineAccessor;
-    private AirportAccessor airportAccessor;
-    private FlightAccessor flightAccessor;
-    private RouteAccessor routeAccessor;
+    private AirlineService airlineService;
+    private AirportService airportService;
+    private FlightService flightService;
+    private RouteService routeService;
     private ResultSet resultSet;
     private String line;
     private String expectedLine;
@@ -46,10 +48,10 @@ public class DataExporterTest {
 
         dataExporter = new DataExporter();
         readFile = new ReadFile();
-        airlineAccessor = new AirlineAccessor();
-        airportAccessor = new AirportAccessor();
-        flightAccessor = new FlightAccessor();
-        routeAccessor = new RouteAccessor();
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+        flightService = new FlightService();
+        routeService = new RouteService();
     }
 
     @After
@@ -72,21 +74,42 @@ public class DataExporterTest {
 
     @Test
     public void exportAirlinesTest() {
+        // Adds airlines to the database
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
 
-        dataExporter.exportAirlines(new File ("src/test/java/seng202/team5/data/airlines.csv"));
-
-        airlineFile = new File("src/test/java/seng202/team5/data/airlines.csv");
-
-        assertTrue(airlineFile.exists());
-
         try {
+            ResultSet airlines = airlineService.getData(null, null, null);
+            ResultSetMetaData md = airlines.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
+            // Iterates through the result set
+            while(airlines.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    row.add(airlines.getObject(i));
+                }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
+            }
+
+            dataExporter.exportAirlines(new File ("src/test/java/seng202/team5/data/airlines.csv"), list);
+
+            airlineFile = new File("src/test/java/seng202/team5/data/airlines.csv");
+
+            assertTrue(airlineFile.exists());
+
             if (airlineFile.exists()) {
                 fileReader = new FileReader(airlineFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = airlineAccessor.getData(null, null, null);
+                resultSet = airlineService.getData(null, null, null);
 
+                // Compares the airline data returned from the database with the lines in the file
+                // For this the airline data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
                             resultSet.getInt("airline_id"), resultSet.getString("airline_name"),
@@ -111,21 +134,42 @@ public class DataExporterTest {
 
     @Test
     public void exportAirportsTest() {
+        // Adds airports to the database
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
-        dataExporter.exportAirports(new File("src/test/java/seng202/team5/data/airports.csv"));
-
-        airportFile = new File("src/test/java/seng202/team5/data/airports.csv");
-
-        assertTrue(airportFile.exists());
-
         try {
+            ResultSet airports = airportService.getData(null, null, null);
+            ResultSetMetaData md = airports.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
+            // Iterates through the result set
+            while(airports.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    row.add(airports.getObject(i));
+                }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
+            }
+
+            dataExporter.exportAirports(new File("src/test/java/seng202/team5/data/airports.csv"), list);
+
+            airportFile = new File("src/test/java/seng202/team5/data/airports.csv");
+
+            assertTrue(airportFile.exists());
+
             if (airportFile.exists()) {
                 fileReader = new FileReader(airportFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = airportAccessor.getData(null, null, null);
+                resultSet = airportService.getData(null, null, null);
 
+                // Compares the airport data returned from the database with the lines in the file
+                // For this the airport data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%f,%f,%d,%.1f,\"%s\",\"%s\"",
                             resultSet.getInt("airport_id"), resultSet.getString("airport_name"),
@@ -152,11 +196,11 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightTest() {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
+        // Adds the airports necessary to add the flights
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds flights
         File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
@@ -172,8 +216,10 @@ public class DataExporterTest {
             if (flightFile.exists()) {
                 fileReader = new FileReader(flightFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = flightAccessor.getData(1);
+                resultSet = flightService.getData(1);
 
+                // Compares the flight data returned from the database with the lines in the file
+                // For this the flight data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                             resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -197,11 +243,11 @@ public class DataExporterTest {
 
     @Test
     public void exportFlightsTest() {
-        File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
-        readFile.readAirlineData(airlineFile);
+        // Adds the airports necessary to add the flights
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds flights
         File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
         readFile.readFlightData(flightFile);
         flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
@@ -217,8 +263,10 @@ public class DataExporterTest {
             if (flightFile.exists()) {
                 fileReader = new FileReader(flightFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = flightAccessor.getData(null, null);
+                resultSet = flightService.getData(null, null);
 
+                // Compares the flight data returned from the database with the lines in the file
+                // For this the flight data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
                             resultSet.getInt("id"), resultSet.getInt("flight_id"),
@@ -242,26 +290,48 @@ public class DataExporterTest {
 
     @Test
     public void exportRoutesTest() {
+        // Adds the airlines and airports necessary to add the routes
         File airlineFile = new File("src/test/java/seng202/team5/data/testfiles/airlines.txt");
         readFile.readAirlineData(airlineFile);
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
 
+        // Adds routes
         File routeFile = new File("src/test/java/seng202/team5/data/testfiles/normal_routes_multiple.txt");
         readFile.readRouteData(routeFile);
 
-        dataExporter.exportRoutes(new File("src/test/java/seng202/team5/data/routes.csv"));
-
-        routeFile = new File("src/test/java/seng202/team5/data/routes.csv");
-
-        assertTrue(routeFile.exists());
-
         try {
+            ResultSet routes = routeService.getData(null, null, -1, null);
+            ResultSetMetaData md = routes.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
+            // Iterates through the result set
+            while(routes.next()) {
+                // An arraylist of each instance of the data type
+                ArrayList<Object> row = new ArrayList<>(columns);
+                // Iterates through the data, storing it in the arraylist
+                for (int i=1; i<=columns; ++i) {
+                    row.add(routes.getObject(i));
+                }
+                // Adds the extracted data to the overall arraylist of data
+                list.add(row);
+            }
+
+            dataExporter.exportRoutes(new File("src/test/java/seng202/team5/data/routes.csv"), list);
+
+            routeFile = new File("src/test/java/seng202/team5/data/routes.csv");
+
+            assertTrue(routeFile.exists());
+
             if (routeFile.exists()) {
                 fileReader = new FileReader(routeFile);
                 bufferedReader = new BufferedReader(fileReader);
-                resultSet = routeAccessor.getData(null, null, -1, null);
+                resultSet = routeService.getData(null, null, -1, null);
 
+                // Compares the route data returned from the database with the lines in the file
+                // For this the route data must be converted into a string in the correct format
                 while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
                     expectedLine = String.format("%d,%s,%d,%s,%d,%s,%d,%s,%d,%s",
                             resultSet.getInt("route_id"), resultSet.getString("airline"),

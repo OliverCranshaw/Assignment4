@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -18,7 +19,9 @@ import java.util.List;
  */
 public class AirlineAccessor implements Accessor {
 
-    private Connection dbHandler;
+    private final Connection dbHandler;
+
+    static Hashtable<String, Integer> cachedIds = new Hashtable<>();
 
     /**
      * Constructor for AirlineAccessor.
@@ -76,6 +79,8 @@ public class AirlineAccessor implements Accessor {
      * @param newCountry The new country of the airline, may be null if not to be updated.
      * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
      * @return int result The number of rows edited or -1 for error.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
                       String newCallsign, String newCountry, String newActive) throws SQLException {
@@ -145,6 +150,34 @@ public class AirlineAccessor implements Accessor {
     }
 
     /**
+     * Returns all airlines with the given code.
+     *
+     * @param code IATA or ICAO code of airline.
+     * @return ResultSet containing relevant airline data.
+     */
+    public ResultSet getData(String code) {
+        ResultSet result = null;
+        String query;
+
+        try {
+            if (code.length() == 2) {
+                query = "SELECT * FROM AIRLINE_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT * FROM AIRLINE_DATA WHERE icao = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            stmt.setObject(1, code);
+
+            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve airline data");
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    /**
      * Retrieves all the airlines with provided data.
      *
      * @param name String name of an ariline, can be null.
@@ -155,29 +188,31 @@ public class AirlineAccessor implements Accessor {
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
 
-        List<String> queryTerms = new ArrayList<>();
+        String query = "SELECT * FROM AIRLINE_DATA";
         List<String> elements = new ArrayList<>();
 
         try {
             if (name != null) {
-                queryTerms.add("airline_name = ?");
+                query = query + " WHERE airline_name = ? ";
                 elements.add(name);
             }
             if (country != null) {
-                queryTerms.add("country = ?");
+                if (name != null) {
+                    query = query + " and country = ? ";
+                } else {
+                    query = query + " WHERE country = ? ";
+                }
                 elements.add(country);
             }
             if (callsign != null) {
-                queryTerms.add("callsign = ?");
+                if (name != null || country != null) {
+                    query = query + " and callsign = ? ";
+                } else {
+                    query = query + " WHERE callsign = ? ";
+                }
                 elements.add(callsign);
             }
 
-            String query = "SELECT * FROM AIRLINE_DATA";
-            if (queryTerms.size() != 0) {
-                query += " WHERE ";
-                query += String.join(" and ", queryTerms);
-            }
-
             PreparedStatement stmt = dbHandler.prepareStatement(query);
             int index = 1;
             for (String element: elements) {
@@ -194,46 +229,16 @@ public class AirlineAccessor implements Accessor {
         return result;
     }
 
-    /**
-     * Returns all airlines with the given code
-     * @param code IATA or ICAO code of airline
-     * @return ResultSet containing relevant airline data
-     */
-    public ResultSet getData(String code) {
-        ResultSet result = null;
-
-        List<String> queryTerms = new ArrayList<>();
-        List<String> elements = new ArrayList<>();
-
-        try {
-            if (code != null) {
-                queryTerms.add("iata = ? or icao = ?");
-                elements.add(code);
-            }
-
-            String query = "SELECT * FROM AIRLINE_DATA";
-            if (queryTerms.size() != 0) {
-                query += " WHERE ";
-                query += String.join(" and ", queryTerms);
-            }
-
-            PreparedStatement stmt = dbHandler.prepareStatement(query);
-            int index = 1;
-            for (String element: elements) {
-                stmt.setObject(index, element);
-                index++;
-            }
-
-            result = stmt.executeQuery();
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline data");
-            System.out.println(e.getMessage());
+    public int lookupCode(String code) {
+        int result;
+        if (cachedIds.containsKey(code)) {
+            return cachedIds.get(code);
+        } else {
+            result = getAirlineId(code);
+            cachedIds.put(code, result);
+            return result;
         }
-
-        return result;
     }
-
-
 
     /**
      * Gets the airline_id of an airline with a given IATA or ICAO code if one exists.
@@ -243,13 +248,18 @@ public class AirlineAccessor implements Accessor {
      */
     public int getAirlineId(String code) {
         int result;
+        String query;
 
         try {
+            if (code.length() == 2) {
+                query = "SELECT airline_id FROM AIRLINE_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT airline_id FROM AIRLINE_DATA WHERE icao = ?";
+            }
             // The SQL search query - finds the airline_id of an airline with the given IATA or ICAO code if one exists
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             // Adds the given code to the search query
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
             // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
             result = stmt.executeQuery().getInt(1);
         } catch (SQLException e) {
@@ -268,7 +278,7 @@ public class AirlineAccessor implements Accessor {
      * @param name The name of the airline.
      * @return iata result The iata of the airline with the name.
      */
-    public ArrayList getAirlineIataIcao(String name) {
+    public ArrayList<String> getAirlineIataIcao(String name) {
         ArrayList<String> result = new ArrayList<>();
 
         try {
@@ -313,7 +323,7 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(1, id);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airline data with id " + id);
@@ -340,7 +350,7 @@ public class AirlineAccessor implements Accessor {
             stmt.setObject(2, code);
 
             Object data = stmt.executeQuery().getObject(1);
-            result = (int) data == 0 ? false : true;
+            result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
