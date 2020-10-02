@@ -367,11 +367,16 @@ public class AirportDataTabController implements Initializable {
     @FXML
     public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_airports.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airports.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Airport Data");
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
     /**
