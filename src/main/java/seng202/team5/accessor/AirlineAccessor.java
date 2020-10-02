@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ import java.util.List;
 public class AirlineAccessor implements Accessor {
 
     private final Connection dbHandler;
+
+    static Hashtable<String, Integer> cachedIds = new Hashtable<>();
 
     /**
      * Constructor for AirlineAccessor.
@@ -154,13 +157,16 @@ public class AirlineAccessor implements Accessor {
      */
     public ResultSet getData(String code) {
         ResultSet result = null;
+        String query;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRLINE_DATA WHERE iata = ? or icao = ?");
+            if (code.length() == 2) {
+                query = "SELECT * FROM AIRLINE_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT * FROM AIRLINE_DATA WHERE icao = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
-
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -223,6 +229,17 @@ public class AirlineAccessor implements Accessor {
         return result;
     }
 
+    public int lookupCode(String code) {
+        int result;
+        if (cachedIds.containsKey(code)) {
+            return cachedIds.get(code);
+        } else {
+            result = getAirlineId(code);
+            cachedIds.put(code, result);
+            return result;
+        }
+    }
+
     /**
      * Gets the airline_id of an airline with a given IATA or ICAO code if one exists.
      *
@@ -231,13 +248,18 @@ public class AirlineAccessor implements Accessor {
      */
     public int getAirlineId(String code) {
         int result;
+        String query;
 
         try {
+            if (code.length() == 2) {
+                query = "SELECT airline_id FROM AIRLINE_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT airline_id FROM AIRLINE_DATA WHERE icao = ?";
+            }
             // The SQL search query - finds the airline_id of an airline with the given IATA or ICAO code if one exists
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airline_id FROM AIRLINE_DATA WHERE iata = ? OR icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             // Adds the given code to the search query
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
             // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
             result = stmt.executeQuery().getInt(1);
         } catch (SQLException e) {

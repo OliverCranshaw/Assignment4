@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -30,16 +31,21 @@ public class AirlineGraphChart implements GraphChartBuilder {
     }
 
     /**
-     * Calls the selected chart and returns it.
+     * Calls the appropriate graph build function depending on the selection,
+     * returning the data required to build a pie chart from it.
      *
-     * @return ObservableList that contains all the data for a chart or null if there was nothing selected.
+     * @return ObservableList of PieChart.Data objects.
      */
-    public ObservableList<PieChart.Data> buildChart() {
+    public ObservableList<PieChart.Data> buildChart() throws SQLException {
+        ObservableList<PieChart.Data> result = FXCollections.observableArrayList();
+
         switch (selection) {
             case "AirlineCountry":
-                return airlineCountryChart();
+                result = airlineCountryChart();
+                break;
         }
-        return null;
+
+        return result;
     }
 
     /**
@@ -73,11 +79,13 @@ public class AirlineGraphChart implements GraphChartBuilder {
      * @return ObservableList that contains all the data for a chart.
      */
     public ObservableList<PieChart.Data> sortChartList(ObservableList<PieChart.Data> pieChartData) {
+        // Sorting the observable list by count
         ObservableList<PieChart.Data> toReturn;
         Comparator<PieChart.Data> pieChartDataComparator = Comparator.comparing(PieChart.Data::getPieValue);
 
         pieChartData.sort(pieChartDataComparator.reversed());
 
+        // Trimming the size of the observable list if it is too big
         if (pieChartData.size() > 15) {
             toReturn = FXCollections.observableArrayList(pieChartData.subList(0, 15));
             List<PieChart.Data> other = pieChartData.subList(15, pieChartData.size() - 1);
