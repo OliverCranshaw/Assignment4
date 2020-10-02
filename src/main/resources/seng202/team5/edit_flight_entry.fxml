@@ -20,7 +20,7 @@
          <children>
             <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Label alignment="TOP_LEFT" layoutX="168.0" layoutY="4.0" prefHeight="38.0" prefWidth="173.0" text="Editing Flight" textFill="WHITE">
+                  <Label alignment="TOP_LEFT" layoutX="150.0" layoutY="10.0" prefHeight="38.0" prefWidth="209.0" text="Editing Flight" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
@@ -29,7 +29,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="flightIDsLabel" alignment="TOP_LEFT" layoutX="186.0" layoutY="10.0" text="ID: 6    FlightID: 2" textFill="WHITE">
+                  <Label fx:id="flightIDsLabel" alignment="TOP_LEFT" layoutX="175.0" layoutY="14.0" text="ID: 6    FlightID: 2" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -55,7 +55,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <TextField fx:id="locationField">
+                  <TextField fx:id="locationField" prefHeight="26.0" prefWidth="133.0">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -68,7 +68,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="altitudeField">
+                  <TextField fx:id="altitudeField" prefHeight="26.0" prefWidth="133.0">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -77,29 +77,29 @@
             </HBox>
             <AnchorPane prefHeight="19.0" prefWidth="508.0">
                <children>
-                  <Label layoutX="21.0" layoutY="9.0" text="Latitude:" textFill="WHITE">
+                  <Label layoutX="26.0" layoutY="9.0" text="Latitude:" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="latitudeField" layoutX="82.0" layoutY="7.0" />
+                  <TextField fx:id="latitudeField" layoutX="100.0" layoutY="6.0" prefHeight="26.0" prefWidth="133.0" />
                   <Label layoutX="269.0" layoutY="9.0" text="Longitude:" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="longitudeField" layoutX="345.0" layoutY="7.0" />
+                  <TextField fx:id="longitudeField" layoutX="352.0" layoutY="7.0" maxWidth="133.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#cancelBtnPressed" text="Cancel">
+                  <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#cancelBtnPressed" text="Cancel">
                      <styleClass>
                         <String fx:value="general-button" />
                         <String fx:value="main-button" />
                      </styleClass>
                   </Button>
-                  <Button layoutX="451.0" layoutY="12.0" mnemonicParsing="false" onAction="#submitBtnPressed" text="Save">
+                  <Button layoutX="437.0" layoutY="13.0" mnemonicParsing="false" onAction="#submitBtnPressed" text="Save">
                      <styleClass>
                         <String fx:value="save-button" />
                         <String fx:value="main-button" />
