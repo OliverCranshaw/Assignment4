@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import seng202.team5.App;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.ConcreteDeleteData;
@@ -279,7 +280,7 @@ public class RouteDataTabController implements Initializable {
                 if (routePath != -1) {
                     routeMapView.removePath(routePath);
                 }
-                routePath = routeMapView.addPath(coordinates);
+                routePath = routeMapView.addPath(coordinates, MainMenuController.DEFAULT_ROUTE_SYMBOLS, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
                 routeMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
 

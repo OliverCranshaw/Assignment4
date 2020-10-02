@@ -20,7 +20,6 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirlineDataTabController">
    <properties helpText="Viewer for raw airline data" />
    <children>
@@ -230,7 +229,12 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                      <MapView fx:id="airlineMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                        <StackPane>
+                           <children>
+                              <MapView fx:id="airlineMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                              <Label text="Routes Flown" StackPane.alignment="TOP_CENTER"/>
+                           </children>
+                        </StackPane>
                     </items>
                      <FlowPane.margin>
                         <Insets left="40.0" />

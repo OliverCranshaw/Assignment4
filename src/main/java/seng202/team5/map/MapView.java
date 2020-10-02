@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import javafx.util.Pair;
 import netscape.javascript.JSObject;
 import seng202.team5.App;
 
@@ -143,16 +144,43 @@ public class MapView extends VBox {
     }
 
     /**
-     * Creates a line on the map representing a path through the given points
+     * Creates a line on the map representing a path through the given points with symbols along it.
+     *
+     * Symbols are represent as a proportion between 0 and 1 and a symbol name.
+     * Valid symbol names are:
+     *  - BACKWARD_CLOSED_ARROW
+     *  - BACKWARD_OPEN_ARROW
+     *  - CIRCLE
+     *  - FORWARD_CLOSED_ARROW
+     *  - FORWARD_OPEN_ARROW
      *
      * @param points The list of points for the new path
-     * @return The create path ID
+     * @param symbols List of symbols along the path, null is interpreted as no symbols
+     * @param colour Valid CSS3 colour string (except named colours) for the path, null for default colour
+     * @param strokeWeight Width of the path and symbols
+     * @return The created path ID
      */
-    public int addPath(List<Coord> points) {
+    public int addPath(List<Coord> points, List<Pair<Double, String>> symbols, String colour, double strokeWeight) {
         if (points.size() < 2) {
             throw new RuntimeException("Too few points to define a path");
         }
-        return (int) callFunction("addPath", points);
+        if (symbols == null) symbols = List.of();
+        if (colour == null) colour = "#FF0000";
+
+        Set<String> validSymbols = new HashSet<>(List.of(
+                "BACKWARD_CLOSED_ARROW",
+                "BACKWARD_OPEN_ARROW",
+                "CIRCLE",
+                "FORWARD_CLOSED_ARROW",
+                "FORWARD_OPEN_ARROW"
+        ));
+        for (Pair<Double,String> symbol : symbols) {
+            if (!validSymbols.contains(symbol.getValue())) {
+                throw new RuntimeException("Invalid symbol name" + symbol.getValue());
+            }
+        }
+
+        return (int) callFunction("addPath", points, symbols, colour, strokeWeight);
     }
 
     /**
@@ -174,6 +202,9 @@ public class MapView extends VBox {
         } else if (object instanceof MarkerIcon) {
             MarkerIcon icon = (MarkerIcon) object;
             return String.format("{url:%s,anchor:{x:%f,y:%f}}", convertToJSRepresentation(icon.imageURL), icon.anchorX, icon.anchorY);
+        } else if (object instanceof Pair) {
+            Pair<?,?> pair = (Pair<?,?>) object;
+            return String.format("{first:%s,second:%s}", convertToJSRepresentation(pair.getKey()), convertToJSRepresentation(pair.getValue()));
         } else if (object == null) {
             return "null";
         } else if (object instanceof String) {
