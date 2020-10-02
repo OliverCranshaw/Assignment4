@@ -2,10 +2,9 @@ package seng202.team5;
 
 import javafx.application.Application;
 import javafx.concurrent.Worker;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
@@ -29,7 +28,7 @@ public class MapTest extends Application {
 
                 List<Coord> path = List.of(new Coord(0, 0), new Coord(20, 20), new Coord(-10, 100));
 
-                int path0 = mapView.addPath(path);
+                int path0 = mapView.addPath(path, List.of(new Pair<>(0.0, "FORWARD_OPEN_ARROW"), new Pair<>(1.0, "FORWARD_OPEN_ARROW")), "#00ff00", 2.0);
 
                 mapView.fitBounds(Bounds.fromCoordinateList(path), 0.0);
 

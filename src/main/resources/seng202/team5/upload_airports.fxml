@@ -13,6 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.ProgressBar?>
 <GridPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.UploadAirportsMenuController">
    <stylesheets>
       <URL value="@style.css" />
@@ -21,8 +22,8 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="392.79998779296875" minHeight="10.0" prefHeight="270.3999877929688" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="289.59998168945316" minHeight="10.0" prefHeight="163.20001220703125" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="392.79998779296875" minHeight="10.0" prefHeight="311.2000244140625" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="289.59998168945316" minHeight="10.0" prefHeight="126.39997558593751" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="600.0" GridPane.rowIndex="1">
@@ -32,8 +33,8 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="20.79998779296875" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="107.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.399998092651366" minHeight="10.0" prefHeight="50.399998092651366" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="95.20000190734862" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Button fx:id="selectFileButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onSelectFilePressed" text="Select File" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -41,7 +42,7 @@
                   <String fx:value="general-button" />
                   <String fx:value="main-button" />
                </styleClass></Button>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ScrollPane maxHeight="75.0" prefHeight="74.0" prefWidth="561.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <content>
                   <Text fx:id="errorList" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="551.7366828918457" />
                </content>
@@ -50,7 +51,7 @@
       </GridPane>
       <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="38.0" prefWidth="388.0" text="Upload Airports From File" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="63.0" prefWidth="388.0" text="Upload Airports From File" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
@@ -58,7 +59,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Label>
-            <Label prefHeight="68.0" prefWidth="600.0" text="File must be a .txt file and have lines in the format of &lt;airport name&gt;,&lt;city&gt;,&lt;country&gt;,&lt;IATA code&gt;,&lt;ICAO code&gt;,&lt;latitude&gt;,&lt;longitude&gt;,&lt;altitude&gt;,&lt;timezone&gt;,&lt;daylight savings time&gt;,&lt;tz formatted timezone&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label prefHeight="94.0" prefWidth="600.0" text="File must be a .txt file and have lines in the format of &lt;airport name&gt;,&lt;city&gt;,&lt;country&gt;,&lt;IATA code&gt;,&lt;ICAO code&gt;,&lt;latitude&gt;,&lt;longitude&gt;,&lt;altitude&gt;,&lt;timezone&gt;,&lt;daylight savings time&gt;,&lt;tz formatted timezone&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font size="13.0" />
                </font></Label>
@@ -82,7 +83,7 @@
                <font>
                   <Font size="13.0" />
                </font></Label>
-            <Label layoutX="203.0" layoutY="229.0" prefHeight="56.0" prefWidth="600.0" text="Daylight Savings Time must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label layoutX="203.0" layoutY="229.0" prefHeight="75.0" prefWidth="600.0" text="Daylight Savings Time must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)." textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font size="13.0" />
                </font></Label>
@@ -90,6 +91,7 @@
                <font>
                   <Font size="13.0" />
                </font></Label>
+            <ProgressBar fx:id="progressBar" maxWidth="500.0" minHeight="19.0" visible="false" />
          </children>
       </VBox>
    </children>

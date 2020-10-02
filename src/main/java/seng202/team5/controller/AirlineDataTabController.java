@@ -1,5 +1,6 @@
 package seng202.team5.controller;
 
+import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import seng202.team5.App;
 import seng202.team5.data.*;
 import seng202.team5.map.Bounds;
@@ -245,44 +247,13 @@ public class AirlineDataTabController implements Initializable {
             mainMenuController.setLabels(airlineData, elementsVisible);
             mainMenuController.setLabelsEmpty(lblElementsVisible, true);
 
-            AirlineData airline = new AirlineData(airlineService.getData(airlineModel.getId()));
-
             // Remove pre-existing paths
             for (int pathID : airlinePaths) {
                 airlineMapView.removePath(pathID);
             }
             airlinePaths.clear();
 
-
-            // Hopefully makes this fast, also keeps track of the bounds we need to fit to
-            Map<Integer, Coord> airportCache = new HashMap<>();
-
-            // Converts a AirportID to the coordinate of the airport
-            Function<Integer, Coord> getAirportCoordinates = (airportCode) -> {
-                try {
-                    AirportData airport = new AirportData(airportService.getData(airportCode));
-                    return new Coord(airport.getLatitude(), airport.getLongitude());
-                } catch (SQLException ignored) {
-                    return null;
-                }
-            };
-
-            // Find all the routes from the given airline
-            ResultSet routeSet = routeService.getData(airline.getIATA());
-            while (routeSet.next()) {
-                Coord source = airportCache.computeIfAbsent(routeSet.getInt(5), getAirportCoordinates);
-                Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
-
-                if (source != null && destination != null) {
-                    airlinePaths.add(airlineMapView.addPath(List.of(source, destination)));
-                }
-            }
-
-            // Sets the correct map bounds, if there are any routes
-            List<Coord> airportCoordinates = List.copyOf(airportCache.values());
-            if (airportCoordinates.size() >= 2) {
-                airlineMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 5.0);
-            }
+            airlinePaths.addAll(mainMenuController.showAirline(airlineMapView, airlineModel.getId()));
         }
     }
 
@@ -315,12 +286,16 @@ public class AirlineDataTabController implements Initializable {
     @FXML
     public void onUploadAirlineDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_airlines.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airlines.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Airline Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
+
     }
 
 

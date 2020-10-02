@@ -301,7 +301,7 @@ public class SearchTabController implements Initializable {
     private ObservableList<RouteModel> routeModels;
 
     private int searchAirportMarker = -1;
-    private List<Integer> searchAirlinePaths = new ArrayList<>();
+    private final List<Integer> searchAirlinePaths = new ArrayList<>();
     private int searchRoutePath = -1;
     private int searchFlightPath = -1;
 
@@ -485,7 +485,7 @@ public class SearchTabController implements Initializable {
             searchFlightSingleRecordTableView.setItems(flightEntriesSearch);
 
             if (coordinates.size() >= 2) {
-                searchFlightPath = searchMapView.addPath(coordinates);
+                searchFlightPath = searchMapView.addPath(coordinates, MainMenuController.DEFAULT_ROUTE_SYMBOLS, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 0.0);
             }
         }
@@ -527,7 +527,7 @@ public class SearchTabController implements Initializable {
 
                 List<Coord> coordinates = List.of(new Coord(source.getLatitude(), source.getLongitude()), new Coord(destination.getLatitude(), destination.getLongitude()));
 
-                searchRoutePath = searchMapView.addPath(coordinates);
+                searchRoutePath = searchMapView.addPath(coordinates, MainMenuController.DEFAULT_ROUTE_SYMBOLS, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
                 searchMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
         }
@@ -556,39 +556,7 @@ public class SearchTabController implements Initializable {
             mainMenuController.setLabels(airlineData, elementsVisible);
             mainMenuController.setLabelsEmpty(lblElementsVisible, true);
 
-            AirlineData airline = new AirlineData(airlineService.getData(airlineModel.getId()));
-
-            // Hopefully makes this fast, also keeps track of the bounds we need to fit to
-            Map<Integer, Coord> airportCache = new HashMap<>();
-
-            // Converts a AirportID to the coordinate of the airport
-            Function<Integer, Coord> getAirportCoordinates = (airportCode) -> {
-                try {
-                    AirportData airport = new AirportData(airportService.getData(airportCode));
-                    return new Coord(airport.getLatitude(), airport.getLongitude());
-                } catch (SQLException ignored) {
-                    return null;
-                }
-            };
-
-            // Find all the routes from the given airline
-            ResultSet routeSet = routeService.getData(airline.getIATA());
-            while (routeSet.next()) {
-                Coord source = airportCache.computeIfAbsent(routeSet.getInt(5), getAirportCoordinates);
-                Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
-
-                //System.out.println("Adding route: " + source + " -> " + destination);
-
-                if (source != null && destination != null) {
-                    searchAirlinePaths.add(searchMapView.addPath(List.of(source, destination)));
-                }
-            }
-
-            // Sets the correct map bounds, if there are any routes
-            List<Coord> airportCoordinates = List.copyOf(airportCache.values());
-            if (airportCoordinates.size() >= 2) {
-                searchMapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 5.0);
-            }
+            searchAirlinePaths.addAll(mainMenuController.showAirline(searchMapView, airlineModel.getId()));
         }
     }
 
