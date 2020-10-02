@@ -8,6 +8,7 @@ import seng202.team5.database.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -1074,6 +1075,87 @@ public class RouteServiceTest extends BaseDatabaseTest {
         }
 
     }
+
+
+    @Test
+    public void testGetCountAirlinesCovering() throws SQLException {
+
+        // Initializing connection to test database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Initializing services to populate db with test data
+        AirlineService airlineService = new AirlineService();
+        AirportService airportService = new AirportService();
+
+        // Populating database with test Airlines
+        List<String> airline1Data = List.of("name1", "alias1", "I1", "IC1", "callsign1", "country1", "Y");
+        List<String> airline2Data = List.of("name2", "alias2", "I2", "IC2", "callsign2", "country2", "N");
+        List<String> airline3Data = List.of("name3", "alias3", "I3", "IC3", "callsign3", "country3", "Y");
+
+        airlineService.save(airline1Data.get(0), airline1Data.get(1), airline1Data.get(2), airline1Data.get(3), airline1Data.get(4), airline1Data.get(5), airline1Data.get(6));
+        airlineService.save(airline2Data.get(0), airline2Data.get(1), airline2Data.get(2), airline2Data.get(3), airline2Data.get(4), airline2Data.get(5), airline2Data.get(6));
+        airlineService.save(airline3Data.get(0), airline3Data.get(1), airline3Data.get(2), airline3Data.get(3), airline3Data.get(4), airline3Data.get(5), airline3Data.get(6));
+
+        // Populating database with test airports
+        List<Object> airport1Data = List.of("name1", "city1", "country1", "ia1", "ica1", 1.1, 2.1, 1, 1, "E", "A/B");
+        List<Object> airport2Data = List.of("name2", "city2", "country2", "ia2", "ica2", 1.2, 2.2, 2, 2, "E", "A/B");
+        List<Object> airport3Data = List.of("name3", "city3", "country3", "ia3", "ica3", 1.3, 2.3, 3, 3, "E", "A/B");
+
+        airportService.save((String) airport1Data.get(0), (String) airport1Data.get(1), (String) airport1Data.get(2), (String) airport1Data.get(3),
+                (String)airport1Data.get(4), (Double) airport1Data.get(5), (Double) airport1Data.get(6), (Integer) airport1Data.get(7),
+                (Integer) airport1Data.get(8), (String) airport1Data.get(9), (String) airport1Data.get(10));
+        airportService.save((String) airport2Data.get(0), (String) airport2Data.get(1), (String) airport2Data.get(2), (String) airport2Data.get(3),
+                (String)airport2Data.get(4), (Double) airport2Data.get(5), (Double) airport2Data.get(6), (Integer) airport2Data.get(7),
+                (Integer) airport2Data.get(8), (String) airport2Data.get(9), (String) airport2Data.get(10));
+        airportService.save((String) airport3Data.get(0), (String) airport3Data.get(1), (String) airport3Data.get(2), (String) airport3Data.get(3),
+                (String)airport3Data.get(4), (Double) airport3Data.get(5), (Double) airport3Data.get(6), (Integer) airport3Data.get(7),
+                (Integer) airport3Data.get(8), (String) airport3Data.get(9), (String) airport3Data.get(10));
+
+
+        // Populating database with test routes
+        String query = "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, "
+                + "destination_airport, destination_airport_id, codeshare, stops, equipment) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+        List<Object> route1Data = List.of(airline1Data.get(2), 1,  airport1Data.get(3), 1, airport2Data.get(3), 2, "Y", 1, "GPS");
+        List<Object> route2Data = List.of(airline2Data.get(2), 2,  airport1Data.get(3), 1, airport2Data.get(3), 2, "N", 1, "GPS, CK3");
+        List<Object> route3Data = List.of(airline2Data.get(2), 3,  airport3Data.get(3), 3, airport2Data.get(3), 2, "Y", 1, "GPS, CK3");
+
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+
+        for (int i = 0; i < route1Data.size(); i++) {
+            stmt.setObject(i+1, route1Data.get(i));
+        }
+        stmt.executeUpdate();
+        for (int i = 0; i < route2Data.size() - 1; i++) {
+            stmt.setObject(i+1, route2Data.get(i));
+        }
+        stmt.executeUpdate();
+        for (int i = 0; i < route3Data.size() - 1; i++) {
+            stmt.setObject(i+1, route3Data.get(i));
+        }
+        stmt.executeUpdate();
+
+        ArrayList<Integer> routeIds = new ArrayList<>();
+        routeIds.add(1);
+        routeIds.add(2);
+        routeIds.add(3);
+
+        Hashtable<String, Integer> result = routeService.getCountAirlinesCovering(routeIds);
+        Integer first = result.get("ia1 - ia2");
+        Integer second = result.get("ia3 - ia2");
+        Assert.assertEquals(2, (int) first);
+        Assert.assertEquals(1, (int) second);
+
+
+        Hashtable<String, Integer> result2 = routeService.getCountAirlinesCovering(new ArrayList<Integer>());
+        Assert.assertEquals(0, result2.size());
+
+
+    }
+
+
 
 
 }
