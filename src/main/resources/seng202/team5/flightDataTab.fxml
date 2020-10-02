@@ -16,13 +16,8 @@
 <?import seng202.team5.map.MapView?>
 
 
-<?import java.net.URL?>
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.FlightDataTabController">
-    <stylesheets>
-        <URL value="@style.css" />
-    </stylesheets>
-    <properties helpText="Viewer for the raw flight data" />
+   <properties helpText="Viewer for the raw flight data" />
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
@@ -36,15 +31,15 @@
             </Label>
             <FlowPane prefHeight="19.0" prefWidth="1232.0">
                <children>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onDownloadFlightsPressed" prefHeight="25.0" prefWidth="74.0" styleClass="general-button" text="Download">
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onDownloadFlightsPressed" prefHeight="23.0" prefWidth="84.0" styleClass="general-button" text="Download">
                      <properties helpText="Press to download all the airport data currently in the database to a CSV file" />
                      <FlowPane.margin>
-                        <Insets left="539.0" />
+                        <Insets left="530.0" />
                      </FlowPane.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onFlightRefreshButton" styleClass="main-row-button" text="Refresh Table">
                      <FlowPane.margin>
-                        <Insets left="173.0" />
+                        <Insets left="133.0" />
                      </FlowPane.margin>
                   </Button>
                   <Button fx:id="flightDeleteBtn" mnemonicParsing="false" onAction="#onFlightDeleteBtnPressed" styleClass="main-row-button" text="Delete Flight">
@@ -77,11 +72,11 @@
                   <TableView fx:id="flightTableView" prefHeight="493.0" prefWidth="615.0">
                      <properties helpText="Flight list" />
                      <columns>
-                        <TableColumn fx:id="flightIdCol" prefWidth="75.0" text="Flight ID" />
-                        <TableColumn fx:id="flightSrcLocationCol" prefWidth="118.0" text="Source Location" />
-                        <TableColumn fx:id="flightSrcAirportCol" prefWidth="117.0" text="Source Airport" />
-                        <TableColumn fx:id="flightDstLocationCol" prefWidth="137.0" text="Destination Location" />
-                        <TableColumn fx:id="flightDstAirportCol" prefWidth="166.0" text="Destination Airport" />
+                        <TableColumn fx:id="flightIdCol" prefWidth="75.0" style="-fx-font-size: 11;" text="Flight ID" />
+                        <TableColumn fx:id="flightSrcLocationCol" prefWidth="118.0" style="-fx-font-size: 11;" text="Source Location" />
+                        <TableColumn fx:id="flightSrcAirportCol" prefWidth="117.0" style="-fx-font-size: 11;" text="Source Airport" />
+                        <TableColumn fx:id="flightDstLocationCol" prefWidth="137.0" style="-fx-font-size: 11;" text="Destination Location" />
+                        <TableColumn fx:id="flightDstAirportCol" prefWidth="166.0" style="-fx-font-size: 11;" text="Destination Airport" />
                      </columns>
                      <FlowPane.margin>
                         <Insets />
@@ -94,13 +89,13 @@
                            <children>
                               <TableView fx:id="flightSingleRecordTableView" prefHeight="269.0" prefWidth="578.0">
                                 <columns>
-                                  <TableColumn fx:id="flightDbID" prefWidth="48.0" text="ID" />
-                                  <TableColumn fx:id="flightID" prefWidth="68.0" text="Flight ID" />
-                                    <TableColumn fx:id="flightLocationType" prefWidth="90.0" text="Location Type" />
-                                    <TableColumn fx:id="flightLocation" prefWidth="85.0" text="Location" />
-                                    <TableColumn fx:id="flightAltitude" prefWidth="97.0" text="Altitude" />
-                                    <TableColumn fx:id="flightLatitude" prefWidth="90.0" text="Latitude" />
-                                    <TableColumn fx:id="flightLongitude" prefWidth="97.0" text="Longitude" />
+                                  <TableColumn fx:id="flightDbID" prefWidth="48.0" style="-fx-font-size: 11;" text="ID" />
+                                  <TableColumn fx:id="flightID" prefWidth="68.0" style="-fx-font-size: 11;" text="Flight ID" />
+                                    <TableColumn fx:id="flightLocationType" prefWidth="100.0" style="-fx-font-size: 11;" text="Location Type" />
+                                    <TableColumn fx:id="flightLocation" prefWidth="75.0" style="-fx-font-size: 11;" text="Location" />
+                                    <TableColumn fx:id="flightAltitude" prefWidth="97.0" style="-fx-font-size: 11;" text="Altitude" />
+                                    <TableColumn fx:id="flightLatitude" prefWidth="90.0" style="-fx-font-size: 11;" text="Latitude" />
+                                    <TableColumn fx:id="flightLongitude" prefWidth="97.0" style="-fx-font-size: 11;" text="Longitude" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -119,6 +114,18 @@
                         <Insets left="40.0" />
                      </FlowPane.margin>
                   </SplitPane>
+                  <FlowPane prefHeight="28.0" prefWidth="1232.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                           <FlowPane.margin>
+                              <Insets left="1206.0" />
+                           </FlowPane.margin>
+                        </Button>
+                     </children>
+                     <FlowPane.margin>
+                        <Insets top="5.0" />
+                     </FlowPane.margin>
+                  </FlowPane>
                </children>
             </FlowPane>
          </children>
@@ -126,11 +133,5 @@
             <Insets left="25.0" right="25.0" />
          </padding>
       </VBox>
-      <Button alignment="CENTER" mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?" textAlignment="CENTER" StackPane.alignment="BOTTOM_RIGHT">
-         <properties helpText="A helpful button full of boundless helpful hints" />
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
    </children>
 </StackPane>
