@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -45,19 +42,16 @@ public class AirportDataTabController implements Initializable {
     private TextField airportCountryField;
 
     @FXML
-    private TableView airportTableView;
+    private TableView<AirportModel> airportTableView;
 
     @FXML
-    private TableColumn airportNameCol;
+    private TableColumn<AirportModel, String> airportNameCol;
 
     @FXML
-    private TableColumn airportCityCol;
+    private TableColumn<AirportModel, String> airportCityCol;
 
     @FXML
-    private TableColumn airportCountryCol;
-
-    @FXML
-    private Button airportApplyFilter;
+    private TableColumn<AirportModel, String> airportCountryCol;
 
     @FXML
     private Label lblAirportID;
@@ -147,10 +141,10 @@ public class AirportDataTabController implements Initializable {
     private Button airportDeleteBtn;
 
     @FXML
-    private TableColumn airportIncRoutesCol;
+    private TableColumn<AirportModel, Integer> airportIncRoutesCol;
 
     @FXML
-    private TableColumn airportOutRoutesCol;
+    private TableColumn<AirportModel, Integer> airportOutRoutesCol;
 
     @FXML
     private MapView airportMapView;
@@ -367,12 +361,15 @@ public class AirportDataTabController implements Initializable {
     @FXML
     public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_airports.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airports.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Airport Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
     }
 
     /**
@@ -399,12 +396,27 @@ public class AirportDataTabController implements Initializable {
      */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
+        Hashtable<Integer, Integer> incRouteCounts = new Hashtable<>();
+        Hashtable<Integer, Integer> outRouteCounts = new Hashtable<>();
+        try {
+            incRouteCounts = airportService.getIncRouteCount();
+            outRouteCounts = airportService.getOutRouteCount();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         for (ArrayList<Object> datum : data) {
             Integer id = (Integer) datum.get(0);
             String name = (String) datum.get(1);
             String city = (String) datum.get(2);
             String country = (String) datum.get(3);
-            list.add(new AirportModel(name, city, country, id));
+            int incCounts = 0;
+            int outCounts = 0;
+            if (incRouteCounts.size() != 0) {
+                incCounts = (incRouteCounts.get(id) != null) ? incRouteCounts.get(id) : 0;
+                outCounts = (outRouteCounts.get(id) != null) ? outRouteCounts.get(id) : 0;
+            }
+            list.add(new AirportModel(name, city, country, id, incCounts, outCounts));
         }
         airportModels = FXCollections.observableArrayList(list);
         tableView.setItems(airportModels);
@@ -624,7 +636,6 @@ public class AirportDataTabController implements Initializable {
         List<Object> metaData = List.of("AirportCountry", "Airports per Country");
         controller.inflateChart(airportTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
-
     }
 
     /**

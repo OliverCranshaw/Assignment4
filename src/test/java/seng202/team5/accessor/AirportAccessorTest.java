@@ -498,7 +498,10 @@ public class AirportAccessorTest extends BaseDatabaseTest {
         stmt.setObject(1, 2);
 
         int result = stmt.executeQuery().getInt(1);
-        Assert.assertEquals(result, airportAccessor.getIncomingRoutes(2));
+        ResultSet actualOutput = airportAccessor.getIncomingRoutes();
+        int airportID = actualOutput.getInt(1);
+        int incomingCount = actualOutput.getInt(2);
+        Assert.assertEquals(result, incomingCount);
     }
 
 
@@ -555,6 +558,10 @@ public class AirportAccessorTest extends BaseDatabaseTest {
         stmt.setObject(1, 1);
 
         int result = stmt.executeQuery().getInt(1);
-        Assert.assertEquals(result, airportAccessor.getIncomingRoutes(2));
+        ResultSet actualOutput = airportAccessor.getOutgoingRoutes();
+        int airportID = actualOutput.getInt(1);
+        int incomingCount = actualOutput.getInt(2);
+        Assert.assertEquals(result, incomingCount);
+
     }
 }

@@ -1101,12 +1101,26 @@ public class SearchTabController implements Initializable {
      */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
+        Hashtable<Integer, Integer> incRouteCounts = new Hashtable<>();
+        Hashtable<Integer, Integer> outRouteCounts = new Hashtable<>();
+        try {
+            incRouteCounts = airportService.getIncRouteCount();
+            outRouteCounts = airportService.getOutRouteCount();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         for (ArrayList<Object> datum : data) {
             Integer id = (Integer) datum.get(0);
             String name = (String) datum.get(1);
             String city = (String) datum.get(2);
             String country = (String) datum.get(3);
-            list.add(new AirportModel(name, city, country, id));
+            int incCounts = 0;
+            int outCounts = 0;
+            if (incRouteCounts.size() != 0) {
+                incCounts = (incRouteCounts.get(id) != null) ? incRouteCounts.get(id) : 0;
+                outCounts = (outRouteCounts.get(id) != null) ? outRouteCounts.get(id) : 0;
+            }
+            list.add(new AirportModel(name, city, country, id, incCounts, outCounts));
         }
         airportModels = FXCollections.observableArrayList(list);
         tableView.setItems(airportModels);

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -19,6 +20,8 @@ import java.util.List;
 public class AirportAccessor implements Accessor {
 
     private final Connection dbHandler;
+
+    static Hashtable<String, Integer> cachedIds = new Hashtable<>();
 
     /**
      * Constructor for AirportAccessor.
@@ -161,11 +164,16 @@ public class AirportAccessor implements Accessor {
      */
     public ResultSet getData(String code) {
         ResultSet result = null;
+        String query;
+
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT * FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
+            if (code.length() == 3) {
+                query = "SELECT * FROM AIRPORT_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT * FROM AIRPORT_DATA WHERE icao = ?";
+            }
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -228,21 +236,37 @@ public class AirportAccessor implements Accessor {
         return result;
     }
 
+    public int lookupCode(String code) {
+        int result;
+        if (cachedIds.containsKey(code)) {
+            return cachedIds.get(code);
+        } else {
+            result = getAirportId(code);
+            cachedIds.put(code, result);
+            return result;
+        }
+    }
+
     /**
      * Gets the airport_id of an airport with a given IATA or ICAO code if one exists.
      *
-     * @param code A 2-letter IATA or 3-letter ICAO code.
+     * @param code A 3-letter IATA or 4-letter ICAO code.
      * @return int result The airport_id of the airport with the given IATA or ICAO code if one exists.
      */
     public int getAirportId(String code) {
         int result;
+        String query;
 
         try {
+            if (code.length() == 3) {
+                query = "SELECT airport_id FROM AIRPORT_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT airport_id FROM AIRPORT_DATA WHERE icao = ?";
+            }
             // The SQL search query - finds the airport_id of an airport with the given IATA or ICAO code if one exists
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT airport_id FROM AIRPORT_DATA WHERE iata = ? OR icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             // Adds the given code to the search query
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
             // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
             result = stmt.executeQuery().getInt(1);
         } catch (SQLException e) {
@@ -371,19 +395,18 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of outgoing routes that contain the airport.
      *
-     * @param id int airport_id.
      *
-     * @return int number of routes.
+     * @return ResultSet number of routes.
      */
-    public int getOutgoingRoutes(int id) {
-        int result = -1;
+    public ResultSet getOutgoingRoutes() {
+        ResultSet result;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE source_airport_id = ?");
-            stmt.setObject(1, id);
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT source_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY source_airport_id");
 
-            result = stmt.executeQuery().getInt(1);
+            result = stmt.executeQuery();
         } catch (SQLException e) {
+            result = null;
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
             System.out.println(e.getMessage());
@@ -395,19 +418,18 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of incoming routes that contain the airport.
      *
-     * @param id int airport_id.
      *
-     * @return int number of routes.
+     * @return ResultSet number of routes.
      */
-    public int getIncomingRoutes(int id) {
-        int result = -1;
+    public ResultSet getIncomingRoutes() {
+        ResultSet result;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE destination_airport_id = ?");
-            stmt.setObject(1, id);
+            PreparedStatement stmt = dbHandler.prepareStatement("SELECT destination_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY destination_airport_id");
 
-            result = stmt.executeQuery().getInt(1);
+            result = stmt.executeQuery();
         } catch (SQLException e) {
+            result = null;
             // If any of the above fails, prints an error message
             System.out.println("Unable to retrieve number of routes.");
             System.out.println(e.getMessage());

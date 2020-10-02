@@ -32,7 +32,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
     @Test
     public void testAddValidRoute() throws SQLException {
         // Setting up variables for a test Route
-        String airline = "ITA";
+        String airline = "IT";
         String sourceAirport = "ATA";
         String destinationAirport = "AUS";
         String codeShare = "Y";
@@ -81,7 +81,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Creating a statement that is then given airline data, and then executed, inserting it into the database
         PreparedStatement stmt = dbHandler.prepareStatement(airLineQuery);
-        List<String> tmp = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
+        List<String> tmp = Arrays.asList("testName", "testAlias", airline, "iop", "testCallsign", "Argentina", "Y");
         ArrayList<String> testAirline = new ArrayList<>(tmp);
         for (int i=1; i < 8; i++) {
             stmt.setObject(i, testAirline.get(i-1));
@@ -122,7 +122,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
     @Test
     public void testAddInvalidRoute() throws SQLException {
         // Setting up variables for a test Route
-        String airline = "ITA";
+        String airline = "IT";
         String sourceAirport = "AAA";
         String destinationAirport = "AUS";
         String codeShare = "Y";
@@ -171,7 +171,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         // Creating a statement that is then given airline data, and then executed, inserting it into the database
         PreparedStatement stmt = dbHandler.prepareStatement(airLineQuery);
-        List<String> tmp = Arrays.asList("testName", "testAlias", airline, "iopd", "testCallsign", "Argentina", "Y");
+        List<String> tmp = Arrays.asList("testName", "testAlias", airline, "iop", "testCallsign", "Argentina", "Y");
         ArrayList<String> testAirline = new ArrayList<>(tmp);
         for (int i=1; i < 8; i++) {
             stmt.setObject(i, testAirline.get(i-1));

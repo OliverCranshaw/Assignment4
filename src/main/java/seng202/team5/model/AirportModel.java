@@ -14,25 +14,14 @@ public class AirportModel {
     private Integer id;
     private SimpleIntegerProperty noIncRoutes;
     private SimpleIntegerProperty noOutRoutes;
-    private final AirportService airportService;
 
-    public AirportModel(String name, String city, String country, Integer id) {
+    public AirportModel(String name, String city, String country, Integer id, Integer incCount, Integer outCount) {
         this.airportName = new SimpleStringProperty(name);
         this.airportCity = new SimpleStringProperty(city);
         this.airportCountry = new SimpleStringProperty(country);
         this.id = id;
-
-        airportService = new AirportService();
-
-        try {
-            int incRoutes = airportService.getIncRouteCount(id);
-            int outRoutes = airportService.getOutRouteCount(id);
-            noIncRoutes = new SimpleIntegerProperty((incRoutes == -1) ? 0 : incRoutes);
-            noOutRoutes = new SimpleIntegerProperty((outRoutes == -1) ? 0 : outRoutes);
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve airport data");
-            System.out.println(e.getMessage());
-        }
+        this.noIncRoutes = new SimpleIntegerProperty(incCount);
+        this.noOutRoutes = new SimpleIntegerProperty(outCount);
     }
 
     public void setNoIncRoutes(int noIncRoutes) {

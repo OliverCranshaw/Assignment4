@@ -8,9 +8,11 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import seng202.team5.graph.AirlineGraphChart;
 import seng202.team5.graph.AirportGraphChart;
@@ -26,21 +28,33 @@ public class PieChartController extends Application {
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
     private PieChart chart;
     private String selection;
-    private PieChart.Data selectedData;
+    private PieChart.Data Other = null;
     private final Integer MIN = 0;
     private final Integer MAX = 16777215;
+    private ContextMenu removeContextMenu;
+    private ContextMenu addContextMenu;
+
+
 
 
 
     @Override
     public void start(Stage stage) throws Exception {
-        Scene scene = new Scene(new Group());
-        stage.setTitle("PieChart");
-        stage.setWidth(500);
-        stage.setHeight(500);
-        ((Group) scene.getRoot()).getChildren().add(chart);
-        stage.setScene(scene);
-        stage.show();
+        if (data.size() != 0) {
+            Scene scene = new Scene(new Group());
+            stage.setTitle("PieChart");
+            stage.setWidth(500);
+            stage.setHeight(500);
+            ((Group) scene.getRoot()).getChildren().add(chart);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("Insufficient data to display this graph.");
+            alert.show();
+        }
     }
 
 
@@ -51,7 +65,7 @@ public class PieChartController extends Application {
         if (selection.startsWith("Route")) {
             RouteGraphChart routeGraph = new RouteGraphChart(data);
             routeGraph.setSelection(selection);
-            this.data = routeGraph.buildPieGraph();
+            this.data = routeGraph.buildChart();
         } else if (selection.startsWith("Airport")) {
             AirportGraphChart airportGraph = new AirportGraphChart(data);
             airportGraph.setSelection(selection);
@@ -62,20 +76,61 @@ public class PieChartController extends Application {
             this.data = airlineGraphChart.buildChart();
         }
 
-        if (this.data.size() > 25) {
-            this.data = this.data.sorted();
-        }
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
-
-
+        chart.resize(500.0, 500.0);
 
 
         for (final PieChart.Data segment : chart.getData()) {
+            if (segment.getName().startsWith("Other")) {
+                applyRemoveOtherOption(segment);
+            } else {
+                applyReturnOtherOption(segment);
+            }
             applyMouseEvents(segment);
         }
     }
+
+    private void applyRemoveOtherOption(PieChart.Data segment) {
+        final Node node = segment.getNode();
+        node.setOnContextMenuRequested(arg0 -> {
+            removeContextMenu = new ContextMenu();
+            removeContextMenu.hide();
+            MenuItem menuItem = new MenuItem();
+            menuItem.setText("Hide 'Other'");
+            menuItem.setOnAction(arg1 -> {
+                Other = segment;
+                chart.getData().remove(segment);
+            });
+            removeContextMenu.getItems().add(menuItem);
+            Robot robot = new Robot();
+            removeContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
+        });
+    }
+
+
+    public void applyReturnOtherOption(PieChart.Data segment) {
+        final Node node = segment.getNode();
+        node.setOnContextMenuRequested(arg0 -> {
+            if (Other != null) {
+                addContextMenu = new ContextMenu();
+                addContextMenu.hide();
+                MenuItem menuItem = new MenuItem();
+                menuItem.setText("Return 'Other'");
+                menuItem.setOnAction(arg1 -> {
+                    chart.getData().add(Other);
+                    Other = null;
+                });
+                addContextMenu.getItems().add(menuItem);
+                Robot robot = new Robot();
+                addContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
+            }
+        });
+    }
+
+
+
 
     public void applyMouseEvents(final PieChart.Data data) {
 

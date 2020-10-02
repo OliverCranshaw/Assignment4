@@ -47,24 +47,19 @@ public class RouteService implements Service {
         int airlineID;
         int sourceAirportID;
         int destAirportID;
-
-        // Checks that there is no completely identical route existing in the database
-        if (accessor.dataExists(airline, sourceAirport, destAirport, codeshare, stops, equipment)) {
-            return -1;
-        }
         
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if ((airlineID = airlineAccessor.getAirlineId(airline)) == -1) {
+        if ((airlineID = airlineAccessor.lookupCode(airline)) == -1) {
             return -2;
         }
         
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if ((sourceAirportID = airportAccessor.getAirportId(sourceAirport)) == -1) {
+        if ((sourceAirportID = airportAccessor.lookupCode(sourceAirport)) == -1) {
             return -3;
         }
         
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if ((destAirportID = airportAccessor.getAirportId(destAirport)) == -1) {
+        if ((destAirportID = airportAccessor.lookupCode(destAirport)) == -1) {
             return -4;
         }
 
