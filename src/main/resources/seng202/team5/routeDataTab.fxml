@@ -22,7 +22,6 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.RouteDataTabController">
    <properties helpText="Viewer for route data" />
    <children>
@@ -126,6 +125,7 @@
                      <properties helpText="Press to download all the route data currently in the database to a CSV file" />
                   </Button>
                   <Button fx:id="graphRouteBtn" mnemonicParsing="false" onAction="#onGraphRouteBtnPressed" text="Equipment Graph" />
+                  <Button mnemonicParsing="false" text="Airline Graph" />
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" styleClass="main-row-button" text="Add Route">
                      <properties helpText="Adds a single new route record" />
                      <FlowPane.margin>

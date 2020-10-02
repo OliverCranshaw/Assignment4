@@ -8,10 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
@@ -43,13 +40,21 @@ public class PieChartController extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Scene scene = new Scene(new Group());
-        stage.setTitle("PieChart");
-        stage.setWidth(500);
-        stage.setHeight(500);
-        ((Group) scene.getRoot()).getChildren().add(chart);
-        stage.setScene(scene);
-        stage.show();
+        if (data.size() != 0) {
+            Scene scene = new Scene(new Group());
+            stage.setTitle("PieChart");
+            stage.setWidth(500);
+            stage.setHeight(500);
+            ((Group) scene.getRoot()).getChildren().add(chart);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("Insufficient data to display this graph.");
+            alert.show();
+        }
     }
 
 

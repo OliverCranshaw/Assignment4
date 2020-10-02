@@ -49,6 +49,7 @@ public class RouteGraphChart implements GraphChartBuilder {
         return result;
     }
 
+
     /**
      * Converts the ArrayList of ArrayList of Objects data to an Observable List of PieChart.Data.
      * Also condenses the data down to 16 entries, 15 of which are the 15 largest, and the 16th is the sum of the
@@ -72,11 +73,19 @@ public class RouteGraphChart implements GraphChartBuilder {
         // Adding the results to an Observable List
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String equip : equipmentCounts.keySet()) {
-            pieChartData.add(new PieChart.Data(equip, equipmentCounts.get(equip)));
+            if (equipmentCounts.get(equip) != 0) {
+                pieChartData.add(new PieChart.Data(equip, equipmentCounts.get(equip)));
+            }
         }
 
         return sortChartList(pieChartData);
     }
+
+
+
+
+
+
 
     /**
      * Sorts and iterates through pie chart data and returns it.

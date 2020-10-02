@@ -67,10 +67,8 @@ public class AirportGraphChart implements GraphChartBuilder {
         for (ArrayList<Object> airport : data) {
             String airportName = (String) airport.get(1);
             int airportID = (int) airport.get(0);
-
             int incCount = (incCounts.get(airportID) != null) ? incCounts.get(airportID) : 0;
             int outCount = (outCounts.get(airportID) != null) ? outCounts.get(airportID) : 0;
-
             int routeCount = incCount + outCount;
 
             routeCounts.put(airportName, routeCount);
@@ -78,7 +76,9 @@ public class AirportGraphChart implements GraphChartBuilder {
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String airport : routeCounts.keySet()) {
-            pieChartData.add(new PieChart.Data(airport, routeCounts.get(airport)));
+            if (routeCounts.get(airport) != 0) {
+                pieChartData.add(new PieChart.Data(airport, routeCounts.get(airport)));
+            }
         }
 
         return sortChartList(pieChartData);
@@ -102,7 +102,10 @@ public class AirportGraphChart implements GraphChartBuilder {
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (String country : countryCounts.keySet()) {
-            pieChartData.add(new PieChart.Data(country, countryCounts.get(country)));
+            if (countryCounts.get(country) != 0) {
+                pieChartData.add(new PieChart.Data(country, countryCounts.get(country)));
+
+            }
         }
 
         return sortChartList(pieChartData);

@@ -42,19 +42,16 @@ public class AirportDataTabController implements Initializable {
     private TextField airportCountryField;
 
     @FXML
-    private TableView airportTableView;
+    private TableView<AirportModel> airportTableView;
 
     @FXML
-    private TableColumn airportNameCol;
+    private TableColumn<AirportModel, String> airportNameCol;
 
     @FXML
-    private TableColumn airportCityCol;
+    private TableColumn<AirportModel, String> airportCityCol;
 
     @FXML
-    private TableColumn airportCountryCol;
-
-    @FXML
-    private Button airportApplyFilter;
+    private TableColumn<AirportModel, String> airportCountryCol;
 
     @FXML
     private Label lblAirportID;
@@ -144,10 +141,10 @@ public class AirportDataTabController implements Initializable {
     private Button airportDeleteBtn;
 
     @FXML
-    private TableColumn airportIncRoutesCol;
+    private TableColumn<AirportModel, Integer> airportIncRoutesCol;
 
     @FXML
-    private TableColumn airportOutRoutesCol;
+    private TableColumn<AirportModel, Integer> airportOutRoutesCol;
 
     @FXML
     private MapView airportMapView;
@@ -636,7 +633,6 @@ public class AirportDataTabController implements Initializable {
         List<Object> metaData = List.of("AirportCountry", "Airports per Country");
         controller.inflateChart(airportTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
-
     }
 
     /**
