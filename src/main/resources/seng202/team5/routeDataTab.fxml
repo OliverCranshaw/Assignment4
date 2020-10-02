@@ -125,7 +125,7 @@
                      <properties helpText="Press to download all the route data currently in the database to a CSV file" />
                   </Button>
                   <Button fx:id="graphRouteBtn" mnemonicParsing="false" onAction="#onGraphRouteBtnPressed" text="Equipment Graph" />
-                  <Button mnemonicParsing="false" text="Airline Graph" />
+                  <Button mnemonicParsing="false" onAction="#onGraphRouteAirlineBtnPressed" text="Airline Graph" />
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" styleClass="main-row-button" text="Add Route">
                      <properties helpText="Adds a single new route record" />
                      <FlowPane.margin>

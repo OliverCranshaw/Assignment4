@@ -2,12 +2,10 @@ package seng202.team5.accessor;
 
 import seng202.team5.database.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -371,4 +369,30 @@ public class RouteAccessor implements Accessor {
         }
         return result;
     }
+
+
+    /**
+     * Returns the counts of the number of airlines covering each route
+     *
+     * @return ResultSet - containing source_airport, destination airport and the count of airlines that cover that route
+     */
+    public ResultSet getCountAirlinesCovering(ArrayList<Integer> routeIds) {
+        try {
+            String query = "SELECT distinct airline_id, source_airport, destination_airport, count(*), route_id FROM ROUTE_DATA WHERE route_id IN (";
+            for (int i = 0; i < routeIds.size(); i++) {
+                query = query + routeIds.get(i);
+                if (i != routeIds.size() - 1) {
+                    query = query + ", ";
+                }
+            }
+            query = query + ")";
+            query = query + " GROUP BY source_airport_id, destination_airport_id";
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            return stmt.executeQuery();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -243,4 +244,29 @@ public class RouteService implements Service {
         }
         return result;
     }
+
+
+    /**
+     * Returns a hashtable of route descriptions (source code - destination code) mapped to how
+     * many airlines cover that route.
+     *
+     * @return Hashtable (String, Integer> of route description to count of airlines.
+     */
+    public Hashtable<String, Integer> getCountAirlinesCovering(ArrayList<Integer> routeIds) {
+        ResultSet data = accessor.getCountAirlinesCovering(routeIds);
+        Hashtable<String, Integer> result = new Hashtable<>();
+        try {
+            while (data.next()) {
+                String routeDesc = data.getString(2) + " - " + data.getString(3);
+                Integer count = data.getInt(4);
+                result.put(routeDesc, count);
+            }
+            return result;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+
 }

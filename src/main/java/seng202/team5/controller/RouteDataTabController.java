@@ -19,6 +19,7 @@ import seng202.team5.data.AirportData;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.data.DataExporter;
+import seng202.team5.graph.RouteGraphChart;
 import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
@@ -594,6 +595,19 @@ public class RouteDataTabController implements Initializable {
 
         PieChartController controller = new PieChartController();
         List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes (Top 16)");
+        controller.inflateChart(routeTable.getData(), metaData);
+        controller.start(new Stage(StageStyle.DECORATED));
+    }
+
+
+    /**
+     * Calls required functions to create a barchart for graph - airline data,
+     * showing the least commonly covered routes.
+     */
+    @FXML
+    public void onGraphRouteAirlineBtnPressed() {
+        BarChartController controller = new BarChartController();
+        List<Object> metaData = List.of("RouteAirline", "Routes Covered by the fewest number of airlines");
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }

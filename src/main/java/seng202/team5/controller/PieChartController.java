@@ -36,8 +36,6 @@ public class PieChartController extends Application {
 
 
 
-
-
     @Override
     public void start(Stage stage) throws Exception {
         if (data.size() != 0) {
