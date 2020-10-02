@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="backdrop" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
+<VBox fx:id="backdrop" prefHeight="730.0" prefWidth="1280.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
    <stylesheets>
       <URL value="@style.css" />
    </stylesheets>
@@ -18,31 +18,31 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="241.0" VBox.vgrow="ALWAYS">
+      <TabPane fx:id="mainTabs" maxWidth="1.7976931348623157E308" prefHeight="352.0" prefWidth="601.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="500.0" tabMinWidth="239.0" VBox.vgrow="ALWAYS">
          <tabs>
             <Tab fx:id="searchTab" text="Search Data">
                <content>
-                  <fx:include source="searchTab.fxml"/>
+                  <fx:include source="searchTab.fxml" />
                </content>
             </Tab>
             <Tab text="Airport Data">
                <content>
-                  <fx:include source="airportDataTab.fxml"/>
+                  <fx:include source="airportDataTab.fxml" />
                </content>
             </Tab>
             <Tab fx:id="airlineDataTab" text="Airline Data">
                     <content>
-                       <fx:include source="airlineDataTab.fxml"/>
+                       <fx:include source="airlineDataTab.fxml" />
                     </content>
             </Tab>
             <Tab text="Route Data">
                     <content>
-                       <fx:include source="routeDataTab.fxml"/>
+                       <fx:include source="routeDataTab.fxml" />
                     </content>
             </Tab>
             <Tab text="Flight Data">
                     <content>
-                       <fx:include source="flightDataTab.fxml"/>
+                       <fx:include source="flightDataTab.fxml" />
                     </content>
             </Tab>
          </tabs>

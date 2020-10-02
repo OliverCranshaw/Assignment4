@@ -70,6 +70,7 @@
 }
 
 .general-button {
+    -fx-font-size: 11px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #2F817E;
@@ -102,6 +103,7 @@
 
 .table-view .table-cell {
     -fx-text-fill: white;
+    -fx-text-size: 10px;
 }
 
 .table-row-cell {
