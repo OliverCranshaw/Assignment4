@@ -72,31 +72,18 @@
                                     <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="4">
                                        <properties helpText="Search mode selector" />
                                        <children>
-                                          <RadioButton fx:id="flightsRadioButton" mnemonicParsing="false" onAction="#onFlightsRadioPressed" selected="true" text="Flights" textFill="WHITE">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </RadioButton>
+                                          <RadioButton fx:id="flightsRadioButton" mnemonicParsing="false" onAction="#onFlightsRadioPressed" selected="true" text="Flights" textFill="WHITE" />
                                           <RadioButton fx:id="airportsRadioButton" mnemonicParsing="false" onAction="#onAirportsRadioPressed" text="Airports" textFill="WHITE">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
                                              <HBox.margin>
                                                 <Insets left="40.0" />
                                              </HBox.margin>
                                           </RadioButton>
                                           <RadioButton fx:id="airlinesRadioButton" mnemonicParsing="false" onAction="#onAirlinesRadioPressed" text="Airlines" textFill="WHITE">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
                                              <HBox.margin>
                                                 <Insets left="40.0" />
                                              </HBox.margin>
                                           </RadioButton>
                                           <RadioButton fx:id="routesRadioButton" mnemonicParsing="false" onAction="#onRoutesRadioPressed" text="Routes" textFill="WHITE">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
                                              <HBox.margin>
                                                 <Insets left="40.0" />
                                              </HBox.margin>
@@ -111,17 +98,11 @@
                                        <GridPane.margin>
                                           <Insets right="180.0" />
                                        </GridPane.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
                                     </Label>
                                     <Label fx:id="secondSearchType" text="Location:" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                        <GridPane.margin>
                                           <Insets right="180.0" />
                                        </GridPane.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
                                     </Label>
                                     <TextField fx:id="secondSearchEntry" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                        <GridPane.margin>
@@ -131,17 +112,11 @@
                                        <GridPane.margin>
                                           <Insets left="7.0" />
                                        </GridPane.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
                                     </Label>
                                     <Label fx:id="fourthSearchType" text="Equipment:" textFill="WHITE" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
                                     </Label>
                                     <TextField fx:id="thirdSearchEntry" disable="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                        <GridPane.margin>
@@ -459,7 +434,7 @@
                                           <Insets top="5.0" />
                                        </FlowPane.margin>
                                        <children>
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                                          <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
                                              <FlowPane.margin>
                                                 <Insets left="1205.0" />
                                              </FlowPane.margin>
@@ -737,7 +712,7 @@
                                                 <Insets left="99.0" />
                                              </FlowPane.margin>
                                           </Button>
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                                          <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
                                              <FlowPane.margin>
                                                 <Insets left="228.0" />
                                              </FlowPane.margin>
