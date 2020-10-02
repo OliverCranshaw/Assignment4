@@ -8,21 +8,49 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
+import seng202.team5.data.AirlineData;
+import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;
+import seng202.team5.map.Bounds;
+import seng202.team5.map.Coord;
+import seng202.team5.map.MapView;
+import seng202.team5.service.AirlineService;
+import seng202.team5.service.AirportService;
+import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
+import java.util.function.Function;
 
 public class MainMenuController {
+
+    /**
+     * Default stroke weight to use on MapView paths
+     */
+    public static final double DEFAULT_STROKE_WEIGHT = 2.0;
+
+    /**
+     * List of path symbols to display on route and flight views
+     */
+    public static final List<Pair<Double,String>> DEFAULT_ROUTE_SYMBOLS = List.of(new Pair<>(0.0, "FORWARD_OPEN_ARROW"), new Pair<>(0.5, "FORWARD_OPEN_ARROW"), new Pair<>(1.0, "FORWARD_OPEN_ARROW"));
+
+    /**
+     * List of path symbols to display on airline views
+     */
+    public static final List<Pair<Double,String>> REDUCED_ROUTE_SYMBOLS = List.of(new Pair<>(0.45, "FORWARD_OPEN_ARROW"));
 
 
     @FXML
     public TabPane mainTabs;
 
     private DataExporter dataExporter = new DataExporter();
+
+    private AirlineService airlineService = new AirlineService();
+    private AirportService airportService = new AirportService();
+    private RouteService routeService = new RouteService();
 
     /**
      * setFieldsEmpty
@@ -159,4 +187,64 @@ public class MainMenuController {
         }
     }
 
+    /**
+     * Adds all the routes for a given airline to the provided MapView and sets the bounds to fit
+     *
+     * @param mapView MapView to display the airline routes on
+     * @param airlineID Airline to display
+     * @return List of created path IDs
+     */
+    public List<Integer> showAirline(MapView mapView, int airlineID) throws SQLException {
+        AirlineData airline = new AirlineData(airlineService.getData(airlineID));
+
+        // Hopefully makes this fast, also keeps track of the bounds we need to fit to
+        Map<Integer, Coord> airportCache = new HashMap<>();
+
+        // Converts a AirportID to the coordinate of the airport
+        Function<Integer, Coord> getAirportCoordinates = (airportCode) -> {
+            try {
+                AirportData airport = new AirportData(airportService.getData(airportCode));
+                return new Coord(airport.getLatitude(), airport.getLongitude());
+            } catch (SQLException ignored) {
+                return null;
+            }
+        };
+
+        // Find all the routes from the given airline
+        List<List<Coord>> routes = new ArrayList<>();
+        ResultSet routeSet = routeService.getData(airline.getIATA());
+        while (routeSet.next()) {
+            Coord source = airportCache.computeIfAbsent(routeSet.getInt(5), getAirportCoordinates);
+            Coord destination = airportCache.computeIfAbsent(routeSet.getInt(7), getAirportCoordinates);
+
+            if (source != null && destination != null) {
+                routes.add(List.of(source, destination));
+            }
+        }
+
+        List<Integer> createdPaths = new ArrayList<>();
+        Random random = new Random();
+        for (List<Coord> route : routes) {
+            String colour = "#ff0000";
+            if (routes.size() >= 30) {
+                double red = random.nextDouble() * 0.4 + 0.6;
+                double green = random.nextDouble() * 0.2;
+                double blue = random.nextDouble() * 0.2;
+
+                colour = String.format("rgb(%f,%f,%f)", red * 255, green * 255, blue * 255);
+            }
+
+            createdPaths.add(mapView.addPath(route, REDUCED_ROUTE_SYMBOLS, colour, 1.0));
+        }
+
+
+
+        // Sets the correct map bounds, if there are any routes
+        List<Coord> airportCoordinates = List.copyOf(airportCache.values());
+        if (airportCoordinates.size() >= 2) {
+            mapView.fitBounds(Bounds.fromCoordinateList(airportCoordinates), 5.0);
+        }
+
+        return createdPaths;
+    }
 }

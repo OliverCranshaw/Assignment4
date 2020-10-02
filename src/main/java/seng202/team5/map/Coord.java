@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * Coord is an object that represents single point on the world by its latitude and longitude
- * @author Nathan Smithies
  */
 public final class Coord {
     /**

@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import seng202.team5.App;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.ConcreteDeleteData;
@@ -279,7 +280,7 @@ public class RouteDataTabController implements Initializable {
                 if (routePath != -1) {
                     routeMapView.removePath(routePath);
                 }
-                routePath = routeMapView.addPath(coordinates);
+                routePath = routeMapView.addPath(coordinates, MainMenuController.DEFAULT_ROUTE_SYMBOLS, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
                 routeMapView.fitBounds(Bounds.fromCoordinateList(coordinates), 5.0);
             }
 
@@ -315,12 +316,16 @@ public class RouteDataTabController implements Initializable {
     @FXML
     public void onUploadRouteDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("upload_routes.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_routes.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
         stage.setTitle("Upload Route Data");
-        stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.show();
+
+        BaseUploadMenuController controller = loader.getController();
+        controller.onShown(scene);
+
     }
 
     /**
