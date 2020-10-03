@@ -12,6 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -513,21 +517,37 @@ public class AirportDataTabController implements Initializable {
             latitude = Double.parseDouble(airportLatitude.getText());
         } catch(NumberFormatException e) {
             airportLatitude.setStyle("-fx-border-color: #ff0000;");
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setTextFill(Color.RED);
+            airportInvalidFormatLbl.setText("Invalid Latitude Provided");
+            airportInvalidFormatLbl.setVisible(true);
         }
         try {
             longitude = Double.parseDouble(airportLongitude.getText());
         } catch (NumberFormatException e) {
             airportLongitude.setStyle("-fx-border-color: #ff0000;");
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setTextFill(Color.RED);
+            airportInvalidFormatLbl.setText("Invalid Longitude Provided");
+            airportInvalidFormatLbl.setVisible(true);
         }
         try {
             altitude = Integer.parseInt(airportAltitude.getText());
         } catch (NumberFormatException e) {
             airportAltitude.setStyle("-fx-border-color: #ff0000;");
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setTextFill(Color.RED);
+            airportInvalidFormatLbl.setText("Invalid Altitude Provided");
+            airportInvalidFormatLbl.setVisible(true);
         }
         try {
             timezone = Float.parseFloat(airportTimezone.getText());
         } catch (NumberFormatException e) {
             airportTimezone.setStyle("-fx-border-color: #ff0000;");
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setTextFill(Color.RED);
+            airportInvalidFormatLbl.setText("Invalid Timezone Provided");
+            airportInvalidFormatLbl.setVisible(true);
         }
 
         if (!(latitude == null || longitude == null || altitude == null || timezone == null)) {
@@ -547,8 +567,51 @@ public class AirportDataTabController implements Initializable {
             } else if (result == -1) {
                 setAirportUpdateColour(3);
                 setAirportUpdateColour(4);
+                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                airportInvalidFormatLbl.setTextFill(Color.RED);
+                airportInvalidFormatLbl.setText("Invalid IATA and/or ICAO Provided");
+                airportInvalidFormatLbl.setVisible(true);
             } else {
                 setAirportUpdateColour(abs(result) - 2);
+                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                airportInvalidFormatLbl.setTextFill(Color.RED);
+                airportInvalidFormatLbl.setVisible(true);
+
+                switch(result) {
+                    case -2:
+                        airportInvalidFormatLbl.setText("Invalid Airport Name Provided");
+                        break;
+                    case -3:
+                        airportInvalidFormatLbl.setText("Invalid City Provided");
+                        break;
+                    case -4:
+                        airportInvalidFormatLbl.setText("Invalid Country Provided");
+                        break;
+                    case -5:
+                        airportInvalidFormatLbl.setText("Invalid IATA Provided");
+                        break;
+                    case -6:
+                        airportInvalidFormatLbl.setText("Invalid ICAO Provided");
+                        break;
+                    case -7:
+                        airportInvalidFormatLbl.setText("Invalid Latitude Provided");
+                        break;
+                    case -8:
+                        airportInvalidFormatLbl.setText("Invalid Longitude Provided");
+                        break;
+                    case -9:
+                        airportInvalidFormatLbl.setText("Invalid Altitude Provided");
+                        break;
+                    case -10:
+                        airportInvalidFormatLbl.setText("Invalid Timezone Provided");
+                        break;
+                    case -11:
+                        airportInvalidFormatLbl.setText("Invalid DST Provided");
+                        break;
+                    case -12:
+                        airportInvalidFormatLbl.setText("Invalid TZ Timezone Provided");
+                        break;
+                }
             }
 
         }

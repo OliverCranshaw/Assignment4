@@ -5,10 +5,7 @@ import seng202.team5.accessor.RouteAccessor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 /**
  * AirportService
@@ -130,11 +127,12 @@ public class AirportService implements Service {
 
         // Also updates any flight entries or routes that used the previous IATA/ICAO code
         // Checks that the new code is different from the old code
-        if (!newIATA.equals(currIATA) && newIATA != null) {
+
+        if (newIATA != null && !newIATA.equals(currIATA)) {
             updateFlightEntries(newIATA, currIATA);
             updateRoutes(newIATA, currIATA);
         }
-        if (!newICAO.equals(currICAO) || newIATA == null) {
+        if (newICAO != null && !newICAO.equals(currICAO)) {
             updateFlightEntries(newICAO, currICAO);
             updateRoutes(newICAO, currICAO);
         }

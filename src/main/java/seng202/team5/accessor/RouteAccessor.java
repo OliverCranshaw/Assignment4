@@ -196,6 +196,7 @@ public class RouteAccessor implements Accessor {
         try {
             if (sourceAirport != null) {
                 query = query + " WHERE ";
+                System.out.println(sourceAirport);
                 for (String value:sourceAirport) {
                     if (value != null) {
                         addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
@@ -238,6 +239,7 @@ public class RouteAccessor implements Accessor {
                 }
                 elements.add(equipment);
             }
+            System.out.println(query);
             PreparedStatement stmt = dbHandler.prepareStatement(query);
 
             int index = 1;

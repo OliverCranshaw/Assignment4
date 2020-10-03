@@ -20,7 +20,6 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirportDataTabController">
    <properties helpText="Viewer for the raw airport data" />
    <children>
@@ -125,7 +124,6 @@
                                  </styleClass>
                                  <properties helpText="Cancels the modification of the selected airport" />
                                  </Button>
-                              <Label fx:id="airportInvalidFormatLbl" layoutX="96.0" layoutY="182.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
                               <Button fx:id="airportDeleteBtn" layoutX="130.0" layoutY="211.0" mnemonicParsing="false" onAction="#onAirportDeleteBtnPressed" styleClass="delete-button" text="Delete Airport" textFill="WHITE">
                                  <properties helpText="Deletes the selected airport" />
                               </Button>
@@ -243,6 +241,7 @@
                                       </TextField>
                                  </children>
                               </GridPane>
+                              <Label fx:id="airportInvalidFormatLbl" layoutX="233.0" layoutY="216.0" prefHeight="18.0" prefWidth="253.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
                            </children>
                         </AnchorPane>
                       <MapView fx:id="airportMapView" minHeight="0.0" minWidth="0.0" styleClass="map">
