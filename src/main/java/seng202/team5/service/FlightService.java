@@ -85,8 +85,7 @@ public class FlightService implements Service {
                 if (newLocationType.equals("APT"))  {
                     if (newLocation != null && !airportAccessor.dataExists(newLocation)) {
                         return -1;
-                    }
-                    else if (!airportAccessor.dataExists(location)) {
+                    } else if (!airportAccessor.dataExists(location) && location.equals(newLocation)) {
                         return -1;
                     }
                 }

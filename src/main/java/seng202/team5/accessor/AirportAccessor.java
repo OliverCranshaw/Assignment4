@@ -348,14 +348,18 @@ public class AirportAccessor implements Accessor {
      */
     public boolean dataExists(String code) {
         boolean result = false;
+        String query;
 
         try {
+            if (code.length() == 3) {
+                query = "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE iata = ?";
+            } else {
+                query = "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE icao = ?";
+            }
             // The SQL search query - finds the number of airports with a given IATA or ICAO code
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(airport_id) FROM AIRPORT_DATA WHERE iata = ? or icao = ?");
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
             // Adds the given code into the search query
             stmt.setObject(1, code);
-            stmt.setObject(2, code);
 
             Object data = stmt.executeQuery().getObject(1);
             result = (int) data != 0;

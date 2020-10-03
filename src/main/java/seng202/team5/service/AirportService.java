@@ -278,33 +278,6 @@ public class AirportService implements Service {
             }
         }
     }
-//    public int updateRoutes(String newCode, String oldCode) throws SQLException {
-//        ResultSet result;
-//        int res = -1;
-//
-//        ArrayList<String> code = new ArrayList<>();
-//        code.add(oldCode);
-//
-//        // Checks if any routes contain the old code and updates them if it does
-//        if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
-//            while (result.next()) {
-//                res = routeService.update(result.getInt("route_id"), result.getString("airline"),
-//                        newCode, result.getString("destination_airport"), result.getString("codeshare"),
-//                        result.getInt("stops"), result.getString("equipment"));
-//            }
-//        }
-//
-//        // Checks if any routes contain the old code and updates them if it does
-//        if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
-//            while (result.next()) {
-//                res = routeService.update(result.getInt("route_id"), result.getString("airline"),
-//                        result.getString("source_airport"), newCode, result.getString("codeshare"),
-//                        result.getInt("stops"), result.getString("equipment"));
-//
-//            }
-//        }
-//        return res;
-//    }
 
     /**
      * Updates any flight entries that contain the old airport IATA/ICAO code with the new code.
@@ -319,6 +292,7 @@ public class AirportService implements Service {
 
         // Checks if any flight entries contain the old code and updates them if it does
         if ((result = flightService.getData("APT", oldCode)) != null) {
+            System.out.println("WE IN BOI");
             while (result.next()) {
                 flightService.update(result.getInt("id"), result.getString("location_type"), newCode,
                         result.getInt("altitude"), result.getDouble("latitude"), result.getDouble("longitude"));
