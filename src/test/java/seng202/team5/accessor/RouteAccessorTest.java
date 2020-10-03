@@ -1,8 +1,5 @@
 package seng202.team5.accessor;
 
-import com.sun.jdi.ArrayReference;
-import io.cucumber.java.bs.A;
-import io.cucumber.java.bs.I;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -361,6 +358,8 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
         Assert.assertTrue(routeAccessor.dataExists(key));
         Assert.assertFalse(routeAccessor.dataExists(key + 1));
+        Assert.assertTrue(routeAccessor.dataExists("IT", "IA1", "IA2", "N", 100, "ABC"));
+        Assert.assertFalse(routeAccessor.dataExists("IA", "IA1", "IA2", "N", 100, "ABC"));
     }
 
 
@@ -579,7 +578,7 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         }
 
         // Checking empty case
-        ResultSet test2 = routeAccessor.getCountAirlinesCovering(new ArrayList<Integer>());
+        ResultSet test2 = routeAccessor.getCountAirlinesCovering(new ArrayList<>());
         Assert.assertFalse(test2.next());
 
     }

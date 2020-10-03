@@ -286,6 +286,34 @@ public class AirportAccessorTest extends BaseDatabaseTest {
             }
         }
 
+        ResultSet resultSet = airportAccessor.getData("IAT");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Timezone", resultSet.getString("tz_database_timezone"));
+
+        resultSet = airportAccessor.getData("ICAO");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Timezone", resultSet.getString("tz_database_timezone"));
+
         dbHandler.close();
     }
 

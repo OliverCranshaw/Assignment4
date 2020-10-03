@@ -275,6 +275,26 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             }
         }
 
+        ResultSet resultSet = airlineAccessor.getData("IT");
+
+        Assert.assertEquals("AirlineName", resultSet.getString("airline_name"));
+        Assert.assertEquals("AliasName", resultSet.getString("alias"));
+        Assert.assertEquals("IT", resultSet.getString("iata"));
+        Assert.assertEquals("ICA", resultSet.getString("icao"));
+        Assert.assertEquals("CallsignStuff", resultSet.getString("callsign"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("Y", resultSet.getString("active"));
+
+        resultSet = airlineAccessor.getData("ICA");
+
+        Assert.assertEquals("AirlineName", resultSet.getString("airline_name"));
+        Assert.assertEquals("AliasName", resultSet.getString("alias"));
+        Assert.assertEquals("IT", resultSet.getString("iata"));
+        Assert.assertEquals("ICA", resultSet.getString("icao"));
+        Assert.assertEquals("CallsignStuff", resultSet.getString("callsign"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("Y", resultSet.getString("active"));
+
         dbHandler.close();
     }
 

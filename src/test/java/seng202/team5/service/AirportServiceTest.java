@@ -12,7 +12,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class AirportServiceTest extends BaseDatabaseTest {
 
@@ -105,6 +104,34 @@ public class AirportServiceTest extends BaseDatabaseTest {
                 }
             }
         }
+
+        ResultSet resultSet = airportService.getData("IAT");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Time/Zone", resultSet.getString("tz_database_timezone"));
+
+        resultSet = airportService.getData("ICAO");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Time/Zone", resultSet.getString("tz_database_timezone"));
 
         dbHandler.close();
     }
@@ -314,6 +341,124 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Assert.assertFalse(airportService.dataExists("ICAO"));
 
         assertEquals(0, flightService.getMaxID());
+    }
+
+
+    @Test
+    public void testUpdateRoutes() throws SQLException {
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // SQLite query used to populate the database with the route
+        String routeQuery = "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, " +
+                "destination_airport, destination_airport_id, codeshare, stops, equipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the airport
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate the database with the airline
+        String airlineQuery = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement stmt2 = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp2 = Arrays.asList("Heathrow", "London", "England", "ABC", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testAirport1 = new ArrayList<>(tmp2);
+        for (int i=1; i < 12; i++) {
+            stmt2.setObject(i, testAirport1.get(i-1));
+        }
+        stmt2.executeUpdate();
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement stmt3 = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp3 = Arrays.asList("ChCh", "Christchurch", "New Zealand", "BCD", "NZNZ", 70, 231, 6000, 42, "JFP", "TZF");
+        ArrayList<Object> testAirport2 = new ArrayList<>(tmp3);
+        for (int i=1; i < 12; i++) {
+            stmt3.setObject(i, testAirport2.get(i-1));
+        }
+        stmt3.executeUpdate();
+
+        // Creating a statement that is then given airline data, and then executed, inserting it into the database
+        PreparedStatement stmt = dbHandler.prepareStatement(airlineQuery);
+        ArrayList<String> testAirline = new ArrayList<>(Arrays.asList("testName", "testAlias", "AI", "AIR", "testCallsign", "Argentina", "Y"));
+        for (int i=1; i < 8; i++) {
+            stmt.setObject(i, testAirline.get(i-1));
+        }
+        stmt.executeUpdate();
+
+        // Creating a statement that is then given route data, and then executed, inserting it into the database
+        PreparedStatement stmt4 = dbHandler.prepareStatement(routeQuery);
+        ArrayList<Object> testRoute = new ArrayList<>(Arrays.asList("AIR", 1, "ABC", 1, "NZNZ", 2, "Y", 1, "CR4"));
+        for (int i=1; i < 10; i++) {
+            stmt4.setObject(i, testRoute.get(i-1));
+        }
+        stmt4.executeUpdate();
+
+        // Update the airports with a new IATA/ICAO code
+        Assert.assertEquals(1, airportService.update(1, "Heathrow", "London", "England", "ABB", "FJLJ", 89d, 123.2, 5000, 43f, "JFI", "TZ"));
+        Assert.assertEquals(1, airportService.update(2, "ChCh", "Christchurch", "New Zealand", "BCD", "ABCD", 70d, 231d, 6000, 42f, "JFP", "TZF"));
+
+        // Query to return the route from the database
+        routeQuery = "SELECT * FROM ROUTE_DATA WHERE route_id = ?";
+
+        // Creating a statement that will retrieve that route data from the database, and then executing it
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(routeQuery);
+        stmtRoute.setInt(1, 1);
+        ResultSet result = stmtRoute.executeQuery();
+
+
+        // Check that the route has the new airline ICAO code
+        Assert.assertEquals("ABB", result.getString("source_airport"));
+        Assert.assertEquals("ABCD", result.getString("destination_airport"));
+    }
+
+
+    @Test
+    public void testUpdateFlightEntries() throws SQLException {
+        // Initializing a connection with the database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // SQLite query used to populate the database with the airport
+        String airportQuery = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to populate database with a flight
+        String flightStmt = "INSERT INTO FLIGHT_DATA(flight_id, location_type, location, altitude, latitude, longitude) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        // SQLite query used to retrieve a flight entry from the database
+        String flightQuery = "SELECT * FROM FLIGHT_DATA WHERE id = ?";
+
+        // Creating a statement that is then given airport data,  and then executed, inserting it into the database
+        PreparedStatement stmt = dbHandler.prepareStatement(airportQuery);
+        List<Object> tmp = Arrays.asList("Heathrow", "London", "England", "ABC", "FJLJ", 89, 123.2, 5000, 43, "JFI", "TZ");
+        ArrayList<Object> testAirport = new ArrayList<>(tmp);
+        for (int i=1; i < 12; i++) {
+            stmt.setObject(i, testAirport.get(i-1));
+        }
+        stmt.executeUpdate();
+
+        // Creating a statement that is the given flight data, and then executed, inserting it into the database
+        PreparedStatement stmtFlight = dbHandler.prepareStatement(flightStmt);
+        List<Object> tmpFlightList = Arrays.asList(1, "APT", "ABC", 120, 320.54, 123.125);
+        ArrayList<Object> testFlightArrayList = new ArrayList<>(tmpFlightList);
+        for (int i=1; i < 7; i++) {
+            stmtFlight.setObject(i, testFlightArrayList.get(i-1));
+        }
+        stmtFlight.executeUpdate();
+
+        Assert.assertEquals(1, airportService.update(1, "Heathrow", "London", "England", "ABB", "FJLJ", 89d, 123.2, 5000, 43f, "JFI", "TZ"));
+
+        // Creating a statement that will retrieve that flight data from the database, and then executing it
+        PreparedStatement stmtRoute = dbHandler.prepareStatement(flightQuery);
+        stmtRoute.setInt(1, 1);
+        ResultSet result = stmtRoute.executeQuery();
+
+        Assert.assertEquals("ABB", result.getString("location"));
     }
 
 
