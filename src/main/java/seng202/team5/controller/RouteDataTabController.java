@@ -183,7 +183,6 @@ public class RouteDataTabController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // Setting the cell value factories for the route table
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
         routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));

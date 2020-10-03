@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -20,7 +21,10 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirlineDataTabController">
+<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirlineDataTabController">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
    <properties helpText="Viewer for raw airline data" />
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0">
@@ -110,7 +114,7 @@
             </FlowPane>
             <FlowPane prefHeight="510.0" prefWidth="1232.0">
                <children>
-                  <TableView fx:id="rawAirlineTable" prefHeight="495.0" prefWidth="640.0">
+                  <TableView fx:id="rawAirlineTable" prefHeight="498.0" prefWidth="640.0">
                      <properties helpText="Filtered airline list" />
                      <columns>
                         <TableColumn fx:id="airlineNameCol" prefWidth="75.0" text="Name" />
@@ -247,7 +251,7 @@
                   </FlowPane>
                </children>
                <VBox.margin>
-                  <Insets bottom="20.0" top="5.0" />
+                  <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </FlowPane>
          </children>
