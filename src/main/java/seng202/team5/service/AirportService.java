@@ -128,13 +128,21 @@ public class AirportService implements Service {
         // Also updates any flight entries or routes that used the previous IATA/ICAO code
         // Checks that the new code is different from the old code
 
-        if (newIATA != null && !newIATA.equals(currIATA)) {
+        if (currIATA != null && newIATA != null && !newIATA.equals(currIATA)) {
             updateFlightEntries(newIATA, currIATA);
             updateRoutes(newIATA, currIATA);
         }
-        if (newICAO != null && !newICAO.equals(currICAO)) {
+        if (currICAO != null && newICAO != null && !newICAO.equals(currICAO)) {
             updateFlightEntries(newICAO, currICAO);
             updateRoutes(newICAO, currICAO);
+        }
+        if (newIATA == null && currIATA != null) {
+            updateFlightEntries(newICAO, currIATA);
+            updateRoutes(newICAO, currIATA);
+        }
+        if (newICAO == null && currICAO != null) {
+            updateFlightEntries(newIATA, currICAO);
+            updateRoutes(newIATA, currICAO);
         }
 
         return value;
@@ -245,15 +253,28 @@ public class AirportService implements Service {
     public void updateRoutes(String newCode, String oldCode) throws SQLException {
         ResultSet result;
 
+        System.out.println(oldCode);
+        System.out.println(newCode);
+
+        ArrayList<String> code = new ArrayList<>();
+        code.add(oldCode);
+
         // Checks if any routes contain the old code and updates them if it does
-        if ((result = routeService.getData(oldCode)) != null) {
+        if ((result = routeAccessor.getData(code, null, -1, null)) != null) {
             while (result.next()) {
-                routeService.update(result.getInt("route_id"), result.getString("airline"), newCode,
-                        result.getString("destination_airport"), result.getString("codeshare"),
+                routeService.update(result.getInt("route_id"), result.getString("airline"),
+                        newCode, result.getString("destination_airport"), result.getString("codeshare"),
                         result.getInt("stops"), result.getString("equipment"));
-                routeService.update(result.getInt("route_id"), result.getString("airline"), result.getString("source_airport"),
-                       newCode, result.getString("codeshare"),
+            }
+        }
+
+        // Checks if any routes contain the old code and updates them if it does
+        if ((result = routeAccessor.getData(null, code, -1, null)) != null) {
+            while (result.next()) {
+                routeService.update(result.getInt("route_id"), result.getString("airline"),
+                        result.getString("source_airport"), newCode, result.getString("codeshare"),
                         result.getInt("stops"), result.getString("equipment"));
+
             }
         }
     }

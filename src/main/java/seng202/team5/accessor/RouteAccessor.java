@@ -193,18 +193,21 @@ public class RouteAccessor implements Accessor {
         String query = "SELECT * FROM ROUTE_DATA";
         ArrayList<Object> elements = new ArrayList<>();
 
+        System.out.println(sourceAirport);
+        System.out.println(destAirport);
+
         try {
             if (sourceAirport != null) {
                 query = query + " WHERE ";
                 System.out.println(sourceAirport);
                 for (String value:sourceAirport) {
                     if (value != null) {
-                        addString = elements.size() == 0 ? " (source_airport = ? " : " or source_airport = ? ";
+                        addString = elements.size() == 0 ? " ( source_airport = ? " : " or source_airport = ? ";
                         query = query.concat(addString);
                         elements.add(value);
                     }
                 }
-                query = query + ") ";
+                query = query + " ) ";
             }
             if (destAirport != null) {
                 if (sourceAirport != null) {
@@ -215,13 +218,13 @@ public class RouteAccessor implements Accessor {
 
                 for (String value:destAirport) {
                     if (value != null) {
-                        addString = check ? " (destination_airport = ? " : " or destination_airport = ? ";
+                        addString = check ? " ( destination_airport = ? " : " or destination_airport = ? ";
                         query = query.concat(addString);
                         elements.add(value);
                         check = false;
                     }
                 }
-                query = query + ") ";
+                query = query + " ) ";
             }
             if (stops != -1) {
                 if (sourceAirport != null || destAirport != null) {
