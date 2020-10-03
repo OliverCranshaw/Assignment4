@@ -13,6 +13,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -125,6 +129,9 @@ public class AirlineDataTabController implements Initializable {
     @FXML
     private MapView airlineMapView;
 
+    @FXML
+    private Label airlineInvalidFormatLbl;
+
     private AirlineTable airlineTable;
 
     private ObservableList<AirlineModel> airlineModels;
@@ -183,6 +190,7 @@ public class AirlineDataTabController implements Initializable {
                     airlineDeleteBtn.setVisible(false);
                     setAirlineElementsEditable(false);
                     setAirlineUpdateColour(null);
+                    airlineInvalidFormatLbl.setVisible(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -235,6 +243,7 @@ public class AirlineDataTabController implements Initializable {
      * @throws SQLException occurs when any interactions with the ResultSet fail
      */
     private void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
+        airlineInvalidFormatLbl.setVisible(false);
         List<TextField> elements = Arrays.asList(airlineID, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry, airlineActive);
         ArrayList<TextField> elementsVisible = new ArrayList<>(elements);
         List<Label> lblElements = Arrays.asList(lblAirlineID, lblAirlineName, lblAirlineAlias, lblAirlineIATA, lblAirlineICAO, lblAirlineCallsign, lblAirlineCountry, lblAirlineActive);
@@ -388,6 +397,7 @@ public class AirlineDataTabController implements Initializable {
      * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirlineSingleRecord function
      */
     public void onModifyAirlineBtnPressed() throws SQLException {
+        airlineInvalidFormatLbl.setVisible(false);
         if (rawAirlineTable.getSelectionModel().getSelectedItem() != null) {
             setAirlineUpdateColour(null);
             setAirlineElementsEditable(true);
@@ -421,6 +431,7 @@ public class AirlineDataTabController implements Initializable {
      */
     @FXML
     public void onAirlineSaveBtnPressed() throws SQLException {
+        airlineInvalidFormatLbl.setVisible(false);
         setAirlineUpdateColour(null);
         int id = Integer.parseInt(airlineID.getText());
 
@@ -438,22 +449,30 @@ public class AirlineDataTabController implements Initializable {
             airlineDeleteBtn.setVisible(false);
             airlineCancelBtn.setVisible(false);
         } else {
+            airlineInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airlineInvalidFormatLbl.setTextFill(Color.RED);
+            airlineInvalidFormatLbl.setVisible(true);
             switch (result) {
                 case -1:
                     setAirlineUpdateColour(2);
                     setAirlineUpdateColour(3);
+                    airlineInvalidFormatLbl.setText("Invalid IATA and/or ICAO provided");
                     break;
                 case -2:
                     setAirlineUpdateColour(0);
+                    airlineInvalidFormatLbl.setText("Invalid Airline Name provided");
                     break;
                 case -3:
                     setAirlineUpdateColour(2);
+                    airlineInvalidFormatLbl.setText("Invalid IATA provided");
                     break;
                 case -4:
                     setAirlineUpdateColour(3);
+                    airlineInvalidFormatLbl.setText("Invalid ICAO provided");
                     break;
                 case -5:
                     setAirlineUpdateColour(6);
+                    airlineInvalidFormatLbl.setText("Invalid Active value provided");
                     break;
             }
         }
@@ -487,6 +506,7 @@ public class AirlineDataTabController implements Initializable {
      */
     @FXML
     public void onAirlineCancelBtnPressed() throws SQLException {
+        airlineInvalidFormatLbl.setVisible(false);
         setAirlineElementsEditable(false);
         setAirlineSingleRecord((AirlineModel)rawAirlineTable.getSelectionModel().getSelectedItem());
         airlineCancelBtn.setVisible(false);
@@ -501,6 +521,7 @@ public class AirlineDataTabController implements Initializable {
      * Deletes airline that is currently being modified
      */
     public void onAirlineDeleteBtnPressed() {
+        airlineInvalidFormatLbl.setVisible(false);
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         int id = Integer.parseInt(airlineID.getText());
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

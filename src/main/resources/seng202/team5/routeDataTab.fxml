@@ -305,6 +305,7 @@
                                       </TextField>
                                  </children>
                               </GridPane>
+                              <Label fx:id="routeInvalidFormatLbl" layoutX="228.0" layoutY="196.0" prefHeight="17.0" prefWidth="248.0" />
                            </children>
                         </AnchorPane>
                        <MapView fx:id="routeMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />

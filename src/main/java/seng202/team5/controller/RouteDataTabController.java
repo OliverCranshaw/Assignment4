@@ -11,6 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -153,6 +157,9 @@ public class RouteDataTabController implements Initializable {
     @FXML
     private MapView routeMapView;
 
+    @FXML
+    private Label routeInvalidFormatLbl;
+
     private RouteTable routeTable;
 
     private ObservableList<RouteModel> routeModels;
@@ -202,6 +209,7 @@ public class RouteDataTabController implements Initializable {
                     routeDeleteBtn.setVisible(false);
                     routeCancelBtn.setVisible(false);
                     setRouteElementsEditable(false);
+                    routeInvalidFormatLbl.setVisible(false);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -254,6 +262,7 @@ public class RouteDataTabController implements Initializable {
      * @throws SQLException occurs when any interactions with the ResultSet fail
      */
     private void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
+
         List<TextField> elements = Arrays.asList(routeID, routeAirline, routeAirlineID, routeDepAirport, routeDepAirportID, routeDesAirport, routeDesAirportID,
                 routeCodeshare, routeStops, routeEquip);
         ArrayList<TextField> elementsVisible = new ArrayList<>(elements);
@@ -297,6 +306,7 @@ public class RouteDataTabController implements Initializable {
      */
     @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
+        routeInvalidFormatLbl.setVisible(false);
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(App.class.getResource("add_route.fxml"));
         stage.setScene(new Scene(root));
@@ -436,6 +446,7 @@ public class RouteDataTabController implements Initializable {
      */
     @FXML
     public void onRouteRefreshButton() throws  SQLException {
+        routeInvalidFormatLbl.setVisible(false);
         updateRouteTable();
     }
 
@@ -446,6 +457,7 @@ public class RouteDataTabController implements Initializable {
      * @throws SQLException occurs when any interactions with the ResultSet fail in the setRouteSingleRecord function
      */
     public void onModifyRouteBtnPressed() throws SQLException {
+        routeInvalidFormatLbl.setVisible(false);
         if (routeTableView.getSelectionModel().getSelectedItem() != null) {
             setRouteUpdateColour(null);
             setRouteElementsEditable(true);
@@ -480,14 +492,20 @@ public class RouteDataTabController implements Initializable {
      */
     @FXML
     public void onRouteSaveBtnPressed() throws SQLException {
+        routeInvalidFormatLbl.setVisible(false);
         setRouteUpdateColour(null);
         int id = Integer.parseInt(routeID.getText());
         List<Object> elements;
         Integer stops = null;
         try {
             stops = Integer.parseInt(routeStops.getText());
+
         } catch (NumberFormatException e) {
             setRouteUpdateColour(4);
+            routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            routeInvalidFormatLbl.setTextFill(Color.RED);
+            routeInvalidFormatLbl.setText("Invalid Stops Provided");
+            routeInvalidFormatLbl.setVisible(true);
         }
         if (stops != null) {
             elements = Arrays.asList(routeAirline.getText(), routeDepAirport.getText(), routeDesAirport.getText(), routeCodeshare.getText(),
@@ -513,8 +531,35 @@ public class RouteDataTabController implements Initializable {
                 setRouteUpdateColour(0);
                 setRouteUpdateColour(1);
                 setRouteUpdateColour(2);
+                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                routeInvalidFormatLbl.setTextFill(Color.RED);
+                routeInvalidFormatLbl.setText("Invalid Airline and/or Airports Provided");
+                routeInvalidFormatLbl.setVisible(true);
             } else {
                 setRouteUpdateColour(abs(result) - 2);
+                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                routeInvalidFormatLbl.setTextFill(Color.RED);
+                routeInvalidFormatLbl.setVisible(true);
+                switch (result) {
+                    case -2:
+                        routeInvalidFormatLbl.setText("Invalid Airline Provided");
+                        break;
+                    case -3:
+                        routeInvalidFormatLbl.setText("Invalid Source Airport Provided");
+                        break;
+                    case -4:
+                        routeInvalidFormatLbl.setText("Invalid Destination Airport Provided");
+                        break;
+                    case -5:
+                        routeInvalidFormatLbl.setText("Invalid Codeshare Provided");
+                        break;
+                    case -6:
+                        routeInvalidFormatLbl.setText("Invalid Stops Provided");
+                        break;
+                    case -7:
+                        routeInvalidFormatLbl.setText("Invalid Equipment Provided");
+                        break;
+                }
             }
 
         }
@@ -550,6 +595,7 @@ public class RouteDataTabController implements Initializable {
      */
     @FXML
     public void onRouteCancelBtnPressed() throws SQLException {
+        routeInvalidFormatLbl.setVisible(false);
         setRouteElementsEditable(false);
         setRouteSingleRecord((RouteModel)routeTableView.getSelectionModel().getSelectedItem());
         routeCancelBtn.setVisible(false);
@@ -566,6 +612,7 @@ public class RouteDataTabController implements Initializable {
      */
     @FXML
     public void onRouteDeleteBtnPressed() {
+        routeInvalidFormatLbl.setVisible(false);
         ConcreteDeleteData deleter = new ConcreteDeleteData();
         int id = Integer.parseInt(routeID.getText());
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
