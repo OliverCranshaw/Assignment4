@@ -20,12 +20,12 @@
         <URL value="@style.css" />
     </stylesheets>
     <children>
-      <Button layoutX="451.0" layoutY="282.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add">
+      <Button layoutX="440.0" layoutY="281.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add">
          <styleClass>
             <String fx:value="main-button" />
             <String fx:value="save-button" />
          </styleClass></Button>
-      <Button layoutX="37.0" layoutY="282.0" mnemonicParsing="false" onAction="#onCancelPressed" text="Cancel">
+      <Button layoutX="25.0" layoutY="281.0" mnemonicParsing="false" onAction="#onCancelPressed" text="Cancel">
          <styleClass>
             <String fx:value="main-button" />
             <String fx:value="general-button" />
@@ -143,7 +143,7 @@
             <TextField fx:id="cityField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="altitudeField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <TextField fx:id="timezoneField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <ComboBox fx:id="dstField" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <ComboBox fx:id="dstField" prefHeight="26.0" prefWidth="157.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="E (Europe)" />

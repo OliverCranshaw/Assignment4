@@ -46,36 +46,42 @@
 }
 
 .main-row-button {
+    -fx-font-size: 11px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #591515;
 }
 
 .save-button {
+    -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #3E783C;
 }
 
 .delete-button {
+    -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #B85A3B;
 }
 
 .help-button {
+    -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #AD6E21;
 }
 
 .general-button {
+    -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #2F817E;
 }
 
 .table {
+    -fx-font-size: 11px;
     -fx-text-fill: white;
 }
 
@@ -94,6 +100,7 @@
 .table-view .column-header-background .label {
     -fx-background-color: transparent;
     -fx-text-fill: white;
+    -fx-font-size: 11px;
 }
 
 .table-view .column-header {
@@ -101,6 +108,7 @@
 }
 
 .table-view .table-cell {
+    -fx-font-size: 11px;
     -fx-text-fill: white;
 }
 

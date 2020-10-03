@@ -36,29 +36,29 @@
          <children>
             <Label text="Airline:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <Label text="Source:" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <Label text="Destination:" textFill="WHITE" GridPane.columnIndex="5" GridPane.halignment="RIGHT">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <Label text="Codeshare:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <CheckBox fx:id="codeshareField" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label text="Stops:" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <TextField fx:id="stopsField" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Label text="Equipment:" textFill="WHITE" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <font>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </font></Label>
             <TextField fx:id="equipmentField" GridPane.columnIndex="6" GridPane.rowIndex="1" />
             <TextField fx:id="addRouteAirlineText" GridPane.columnIndex="2" />
