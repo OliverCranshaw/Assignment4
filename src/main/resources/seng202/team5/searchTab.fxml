@@ -20,7 +20,6 @@
 <?import javafx.scene.text.Font?>
 <?import seng202.team5.map.MapView?>
 
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.SearchTabController">
    <properties helpText="Panel for searching the local database for flights, routes, airports and airlines." />
    <children>
@@ -162,17 +161,6 @@
                      <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="199.0" prefWidth="549.0">
                            <children>
-                              <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
-                                 <columns>
-                                    <TableColumn fx:id="flightDbIDS" prefWidth="33.0" text="ID" />
-                                    <TableColumn fx:id="flightIDS" prefWidth="57.0" text="Flight ID" />
-                                    <TableColumn fx:id="flightLocationTypeS" prefWidth="88.0" text="Location Type" />
-                                    <TableColumn fx:id="flightLocationS" prefWidth="87.0" text="Location" />
-                                    <TableColumn fx:id="flightAltitudeS" prefWidth="108.0" text="Altitude" />
-                                    <TableColumn fx:id="flightLatitudeS" prefWidth="113.0" text="Latitude" />
-                                    <TableColumn fx:id="flightLongitudeS" prefWidth="87.0" text="Longitude" />
-                                 </columns>
-                              </TableView>
                               <GridPane prefHeight="174.0" prefWidth="555.0">
                                  <columnConstraints>
                                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="151.5" />
@@ -192,51 +180,81 @@
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteAirlineS" text="Airline IATA/ICAO:" textFill="WHITE" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteAirlineIDS" text="Airline ID:" textFill="WHITE" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteDepAirportS" text="Source Airport IATA/ICAO:" textFill="WHITE" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteDepAirportIDS" text="Source Airport ID:" textFill="WHITE" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteDesAirportS" text="Destination Airport IATA/ICAO:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteDesAirportIDS" text="Destination Airport ID:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteCodeshareS" text="Codeshare:" textFill="WHITE" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteStopsS" text="No. Stops:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <Label fx:id="lblRouteEquipS" text="Equipment:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
                                     </Label>
                                     <TextField fx:id="routeIDS" GridPane.columnIndex="1" />
                                     <TextField fx:id="routeAirlineS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -404,6 +422,17 @@
                                     <TextField fx:id="airportAltitudeS" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>
+                              <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
+                                 <columns>
+                                    <TableColumn fx:id="flightDbIDS" prefWidth="33.0" text="ID" />
+                                    <TableColumn fx:id="flightIDS" prefWidth="78.0" text="Flight ID" />
+                                    <TableColumn fx:id="flightLocationTypeS" prefWidth="129.0" text="Location Type" />
+                                    <TableColumn fx:id="flightLocationS" prefWidth="86.0" text="Location" />
+                                    <TableColumn fx:id="flightAltitudeS" prefWidth="77.0" text="Altitude" />
+                                    <TableColumn fx:id="flightLatitudeS" prefWidth="83.0" text="Latitude" />
+                                    <TableColumn fx:id="flightLongitudeS" prefWidth="87.0" text="Longitude" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </AnchorPane>
                       <MapView fx:id="searchMapView" minHeight="0.0" minWidth="0.0" prefHeight="170.0" prefWidth="574.0" styleClass="map" />

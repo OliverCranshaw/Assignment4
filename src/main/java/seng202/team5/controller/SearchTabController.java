@@ -13,10 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import seng202.team5.data.AirlineData;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;
-import seng202.team5.map.AirportCompare;
-import seng202.team5.map.Bounds;
-import seng202.team5.map.Coord;
-import seng202.team5.map.MapView;
+import seng202.team5.map.*;
 import seng202.team5.model.*;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
@@ -304,6 +301,8 @@ public class SearchTabController implements Initializable {
     private final List<Integer> searchAirlinePaths = new ArrayList<>();
     private int searchRoutePath = -1;
     private int searchFlightPath = -1;
+    private int flightMapPath = -1;
+    private int flightMapMarker = -1;
 
     private DataExporter dataExporter;
 
@@ -382,6 +381,10 @@ public class SearchTabController implements Initializable {
 
                 }
             }
+        });
+
+        searchFlightSingleRecordTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            onFlightEntrySelected((FlightEntryModel) newSelection);
         });
 
         try {
@@ -977,10 +980,15 @@ public class SearchTabController implements Initializable {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<FlightModel, String> flightIdCol = new TableColumn<>("Flight Id");
+        flightIdCol.setMaxWidth(80);
         TableColumn<FlightModel, String> flightSrcLocationCol = new TableColumn<>("Source Location");
+        flightSrcLocationCol.setMaxWidth(150);
         TableColumn<FlightModel, String> flightSrcAirportCol = new TableColumn<>("Source Airport");
+        flightSrcAirportCol.setMaxWidth(140);
         TableColumn<FlightModel, String> flightDstLocationCol = new TableColumn<>("Destination Location");
+        flightDstLocationCol.setMaxWidth(180);
         TableColumn<FlightModel, String> flightDstAirportCol = new TableColumn<>("Destination Airport");
+        flightDstAirportCol.setMaxWidth(200);
 
         flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
         flightSrcLocationCol.setCellValueFactory(new PropertyValueFactory<>("SourceLocation"));
@@ -989,6 +997,7 @@ public class SearchTabController implements Initializable {
         flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
 
         searchTableView.getColumns().addAll(flightIdCol, flightSrcLocationCol, flightSrcAirportCol, flightDstLocationCol, flightDstAirportCol);
+
     }
 
     /**
@@ -1002,8 +1011,8 @@ public class SearchTabController implements Initializable {
         TableColumn<AirportModel, String> airportNameCol = new TableColumn<>("Name");
         TableColumn<AirportModel, String> airportCityCol = new TableColumn<>("City");
         TableColumn<AirportModel, String> airportCountryCol = new TableColumn<>("Country");
-        TableColumn<AirportModel, Integer> airportIncRoutesCol = new TableColumn<>("No. Incoming Routes");
-        TableColumn<AirportModel, Integer> airportOutRoutesCol = new TableColumn<>("No. Outgoing Routes");
+        TableColumn<AirportModel, Integer> airportIncRoutesCol = new TableColumn<>("No. In Routes");
+        TableColumn<AirportModel, Integer> airportOutRoutesCol = new TableColumn<>("No. Out Routes");
 
         airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
@@ -1045,10 +1054,15 @@ public class SearchTabController implements Initializable {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<RouteModel, String> routeAirlineCol = new TableColumn<>("Airline");
+        routeAirlineCol.setMaxWidth(100);
         TableColumn<RouteModel, String> routeSrcAirportCol = new TableColumn<>("Source Airport");
+        routeSrcAirportCol.setMaxWidth(120);
         TableColumn<RouteModel, String> routeDestAirportCol = new TableColumn<>("Destination Airport");
+        routeDestAirportCol.setMaxWidth(180);
         TableColumn<RouteModel, String> routeStopsCol = new TableColumn<>("No. Stops");
+        routeStopsCol.setMaxWidth(80);
         TableColumn<RouteModel, String> routeEquipmentCol = new TableColumn<>("Equipment");
+        routeEquipmentCol.setMaxWidth(150);
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
         routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));
@@ -1173,6 +1187,23 @@ public class SearchTabController implements Initializable {
         }
         routeModels = FXCollections.observableArrayList(list);
         tableView.setItems(routeModels);
+    }
+
+
+    /**
+     * onFlightEntrySelected
+     *
+     * Called when the currently selected flight entry changes.
+     */
+    private void onFlightEntrySelected(FlightEntryModel flightEntryModel) {
+        if (flightMapMarker != -1) {
+            searchMapView.removeMarker(flightMapMarker);
+            flightMapMarker = -1;
+        }
+        if (flightEntryModel != null) {
+            Coord coord = new Coord(flightEntryModel.getLatitude(), flightEntryModel.getLongitude());
+            flightMapMarker = searchMapView.addMarker(coord, null, MarkerIcon.PLANE_ICON);
+        }
     }
 
 
