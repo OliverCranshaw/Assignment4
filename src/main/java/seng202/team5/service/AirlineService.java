@@ -112,11 +112,17 @@ public class AirlineService implements Service {
 
         // Also updates any flight entries or routes that used the previous IATA/ICAO code
         // Checks that the new code is different from the old code
-        if (newIATA != null && !newIATA.equals(currIATA)) {
+        if (currIATA != null && newIATA != null && !newIATA.equals(currIATA)) {
             updateRoutes(newIATA, currIATA);
         }
-        if (newICAO != null && !newICAO.equals(currICAO)) {
+        if (currICAO != null && newICAO != null && !newICAO.equals(currICAO)) {
             updateRoutes(newICAO, currICAO);
+        }
+        if (newIATA == null && currIATA != null) {
+            updateRoutes(newICAO, currIATA);
+        }
+        if (newICAO == null && currICAO != null) {
+            updateRoutes(newIATA, currICAO);
         }
 
         return value;
