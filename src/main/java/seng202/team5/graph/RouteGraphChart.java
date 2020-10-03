@@ -1,9 +1,14 @@
 package seng202.team5.graph;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import seng202.team5.accessor.RouteAccessor;
+import seng202.team5.service.RouteService;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -48,6 +53,85 @@ public class RouteGraphChart implements GraphChartBuilder {
 
         return result;
     }
+
+    /**
+     * Calls the appropriate graph build function depending on the selection,
+     * returning the data to to build a bar chart from it.
+     *
+     * @return XYChart.Series (String, Number).
+     */
+    public XYChart.Series<String, Number> buildBarChart() {
+        XYChart.Series<String, Number> result = new XYChart.Series<>();
+        if (selection == null) {
+            return result;
+        }
+
+        switch (selection) {
+            case "RouteAirline":
+                result = routeAirlineGraph();
+                break;
+        }
+        return result;
+    }
+
+
+    /**
+     * Builds a XYChart.Series mapping strings to Integers of Route Description (Source - Destination)
+     * to the count of airlines that cover them. Returns the 10 least covered routes.
+     *
+     * @return XYChart.Series (String, Integer) of route descriptions to counts of airlines
+     */
+    public XYChart.Series<String, Number> routeAirlineGraph() {
+        ArrayList<XYChart.Data<String, Integer>> tempList = new ArrayList<>();
+        RouteService routeService = new RouteService();
+
+        ArrayList<Integer> routeIds = new ArrayList<>();
+        for (ArrayList<Object> route : this.data) {
+            routeIds.add((Integer) route.get(0));
+        }
+
+        Hashtable<String, Integer> routeCounts = routeService.getCountAirlinesCovering(routeIds);
+
+
+        for (String route : routeCounts.keySet()) {
+            if (routeCounts.get(route) != 0) {
+                tempList.add(new XYChart.Data<>(route, routeCounts.get(route)));
+            }
+        }
+
+        return sortAirlineChart(tempList);
+    }
+
+
+    /**
+     * Sorts the XYChart.Data in the given XYChart.Series, and returning the sorted series
+     *
+     * @param routeAirlineData - ArrayList of XYChart.Data (String, Integer) Routes to airline Counts
+     * @return XYChart.Series (String, Number) - Sorted XYChart.Series
+     */
+    public XYChart.Series<String, Number> sortAirlineChart(ArrayList<XYChart.Data<String, Integer>> routeAirlineData) {
+
+        Comparator<XYChart.Data<String, Integer>> xyChartComparator = Comparator.comparing(XYChart.Data :: getYValue);
+
+        routeAirlineData.sort(xyChartComparator);
+
+        XYChart.Series<String, Number> toReturn = new XYChart.Series<>();
+
+
+        if (routeAirlineData.size() > 16) {
+            for (int i = 0; i < 16; i++) {
+                toReturn.getData().add(new XYChart.Data<String, Number>(routeAirlineData.get(i).getXValue(), (Number) routeAirlineData.get(i).getYValue()));
+            }
+        } else {
+            for (XYChart.Data<String, Integer> stringIntegerData : routeAirlineData) {
+                toReturn.getData().add(new XYChart.Data<String, Number>(stringIntegerData.getXValue(), (Number) stringIntegerData.getYValue()));
+            }
+        }
+
+        return toReturn;
+    }
+
+
 
 
     /**

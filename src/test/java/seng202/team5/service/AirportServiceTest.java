@@ -324,6 +324,12 @@ public class AirportServiceTest extends BaseDatabaseTest {
         RouteService routeService = new RouteService();
         AirlineService airlineService = new AirlineService();
 
+        // Testing empty case
+        Hashtable<Integer, Integer> result = airportService.getIncRouteCount();
+        Assert.assertEquals(0, result.size());
+
+
+
         // Adding a couple airports in order to be able to test routes between them
         PreparedStatement stmt = dbHandler.prepareStatement(
                 "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
@@ -370,6 +376,11 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Connection dbHandler = DBConnection.getConnection();
         RouteService routeService = new RouteService();
         AirlineService airlineService = new AirlineService();
+
+        // Testing empty case
+        Hashtable<Integer, Integer> result = airportService.getOutRouteCount();
+        Assert.assertEquals(0, result.size());
+
 
         // Adding a couple airports in order to be able to test routes between them
         PreparedStatement stmt = dbHandler.prepareStatement(
