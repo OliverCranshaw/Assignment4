@@ -22,7 +22,6 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-
 <StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.RouteDataTabController">
    <properties helpText="Viewer for route data" />
    <children>
@@ -321,7 +320,7 @@
                               <Insets left="67.0" />
                            </FlowPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="general-button" text="View Airline per Route Graph">
+                        <Button mnemonicParsing="false" onAction="#onGraphRouteAirlineBtnPressed" styleClass="general-button" text="View Airline per Route Graph">
                            <FlowPane.margin>
                               <Insets left="50.0" />
                            </FlowPane.margin>
