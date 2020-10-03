@@ -977,10 +977,15 @@ public class SearchTabController implements Initializable {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<FlightModel, String> flightIdCol = new TableColumn<>("Flight Id");
+        flightIdCol.setMaxWidth(80);
         TableColumn<FlightModel, String> flightSrcLocationCol = new TableColumn<>("Source Location");
+        flightSrcLocationCol.setMaxWidth(150);
         TableColumn<FlightModel, String> flightSrcAirportCol = new TableColumn<>("Source Airport");
+        flightSrcAirportCol.setMaxWidth(140);
         TableColumn<FlightModel, String> flightDstLocationCol = new TableColumn<>("Destination Location");
+        flightDstLocationCol.setMaxWidth(180);
         TableColumn<FlightModel, String> flightDstAirportCol = new TableColumn<>("Destination Airport");
+        flightDstAirportCol.setMaxWidth(200);
 
         flightIdCol.setCellValueFactory(new PropertyValueFactory<>("FlightId"));
         flightSrcLocationCol.setCellValueFactory(new PropertyValueFactory<>("SourceLocation"));
@@ -989,6 +994,7 @@ public class SearchTabController implements Initializable {
         flightDstAirportCol.setCellValueFactory(new PropertyValueFactory<>("DestinationAirport"));
 
         searchTableView.getColumns().addAll(flightIdCol, flightSrcLocationCol, flightSrcAirportCol, flightDstLocationCol, flightDstAirportCol);
+
     }
 
     /**
@@ -1002,8 +1008,8 @@ public class SearchTabController implements Initializable {
         TableColumn<AirportModel, String> airportNameCol = new TableColumn<>("Name");
         TableColumn<AirportModel, String> airportCityCol = new TableColumn<>("City");
         TableColumn<AirportModel, String> airportCountryCol = new TableColumn<>("Country");
-        TableColumn<AirportModel, Integer> airportIncRoutesCol = new TableColumn<>("No. Incoming Routes");
-        TableColumn<AirportModel, Integer> airportOutRoutesCol = new TableColumn<>("No. Outgoing Routes");
+        TableColumn<AirportModel, Integer> airportIncRoutesCol = new TableColumn<>("No. In Routes");
+        TableColumn<AirportModel, Integer> airportOutRoutesCol = new TableColumn<>("No. Out Routes");
 
         airportNameCol.setCellValueFactory(new PropertyValueFactory<>("AirportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<>("AirportCity"));
@@ -1045,10 +1051,15 @@ public class SearchTabController implements Initializable {
         searchTableView.getItems().clear();
         searchTableView.getColumns().clear();
         TableColumn<RouteModel, String> routeAirlineCol = new TableColumn<>("Airline");
+        routeAirlineCol.setMaxWidth(100);
         TableColumn<RouteModel, String> routeSrcAirportCol = new TableColumn<>("Source Airport");
+        routeSrcAirportCol.setMaxWidth(120);
         TableColumn<RouteModel, String> routeDestAirportCol = new TableColumn<>("Destination Airport");
+        routeDestAirportCol.setMaxWidth(180);
         TableColumn<RouteModel, String> routeStopsCol = new TableColumn<>("No. Stops");
+        routeStopsCol.setMaxWidth(80);
         TableColumn<RouteModel, String> routeEquipmentCol = new TableColumn<>("Equipment");
+        routeEquipmentCol.setMaxWidth(150);
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<>("RouteAirline"));
         routeSrcAirportCol.setCellValueFactory(new PropertyValueFactory<>("RouteSrcAirport"));
