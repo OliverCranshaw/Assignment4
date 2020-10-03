@@ -13,10 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import seng202.team5.data.AirlineData;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;
-import seng202.team5.map.AirportCompare;
-import seng202.team5.map.Bounds;
-import seng202.team5.map.Coord;
-import seng202.team5.map.MapView;
+import seng202.team5.map.*;
 import seng202.team5.model.*;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
@@ -304,6 +301,8 @@ public class SearchTabController implements Initializable {
     private final List<Integer> searchAirlinePaths = new ArrayList<>();
     private int searchRoutePath = -1;
     private int searchFlightPath = -1;
+    private int flightMapPath = -1;
+    private int flightMapMarker = -1;
 
     private DataExporter dataExporter;
 
@@ -382,6 +381,10 @@ public class SearchTabController implements Initializable {
 
                 }
             }
+        });
+
+        searchFlightSingleRecordTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            onFlightEntrySelected((FlightEntryModel) newSelection);
         });
 
         try {
@@ -1184,6 +1187,23 @@ public class SearchTabController implements Initializable {
         }
         routeModels = FXCollections.observableArrayList(list);
         tableView.setItems(routeModels);
+    }
+
+
+    /**
+     * onFlightEntrySelected
+     *
+     * Called when the currently selected flight entry changes.
+     */
+    private void onFlightEntrySelected(FlightEntryModel flightEntryModel) {
+        if (flightMapMarker != -1) {
+            searchMapView.removeMarker(flightMapMarker);
+            flightMapMarker = -1;
+        }
+        if (flightEntryModel != null) {
+            Coord coord = new Coord(flightEntryModel.getLatitude(), flightEntryModel.getLongitude());
+            flightMapMarker = searchMapView.addMarker(coord, null, MarkerIcon.PLANE_ICON);
+        }
     }
 
 
