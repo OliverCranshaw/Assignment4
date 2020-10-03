@@ -248,8 +248,11 @@ public class AirportService implements Service {
         // Checks if any routes contain the old code and updates them if it does
         if ((result = routeService.getData(oldCode)) != null) {
             while (result.next()) {
-                routeService.update(result.getInt("route_id"), newCode, result.getString("source_airport"),
+                routeService.update(result.getInt("route_id"), result.getString("airline"), newCode,
                         result.getString("destination_airport"), result.getString("codeshare"),
+                        result.getInt("stops"), result.getString("equipment"));
+                routeService.update(result.getInt("route_id"), result.getString("airline"), result.getString("source_airport"),
+                       newCode, result.getString("codeshare"),
                         result.getInt("stops"), result.getString("equipment"));
             }
         }
