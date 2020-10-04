@@ -656,7 +656,7 @@ public class RouteDataTabController implements Initializable {
     public void onGraphRouteBtnPressed() throws Exception {
 
         PieChartController controller = new PieChartController();
-        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes (Top 16)");
+        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes");
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }
@@ -668,7 +668,7 @@ public class RouteDataTabController implements Initializable {
     @FXML
     public void onGraphRouteAirlineBtnPressed() {
         BarChartController controller = new BarChartController();
-        List<Object> metaData = List.of("RouteAirline", "Routes Covered by the fewest number of airlines");
+        List<Object> metaData = List.of("RouteAirline", "Routes Covered by the Fewest Number of Airlines");
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }

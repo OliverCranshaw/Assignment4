@@ -33,6 +33,7 @@ public class BarChartController extends Application {
             ((Group) scene.getRoot()).getChildren().add(chart);
             scene.getStylesheets().add(App.class.getResource("graph_style.css").toExternalForm());
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -44,10 +44,27 @@ public class PieChartController extends Application {
         if (data.size() != 0) {
             // Case where data is present
             Scene scene = new Scene(new Group());
-            stage.setTitle("PieChart");
+            switch (selection) {
+                case "RouteEquipment":
+                    stage.setTitle("Quantities of Equipment used on Routes");
+                    break;
+                case "AirlineCountry":
+                    stage.setTitle("Airlines per Country");
+                    break;
+                case "AirportRoute":
+                    stage.setTitle("Routes per Airport");
+                    break;
+                case "AirportCountry":
+                    stage.setTitle("Airports per Country");
+                    break;
+                default:
+                    stage.setTitle("Pie Chart");
+                    break;
+            }
             ((Group) scene.getRoot()).getChildren().add(chart);
             scene.getStylesheets().add(App.class.getResource("graph_style.css").toExternalForm());
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } else {
             // Case where there is no data present
