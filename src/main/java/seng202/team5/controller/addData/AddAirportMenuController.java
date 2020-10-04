@@ -131,7 +131,8 @@ public class AddAirportMenuController {
 
     @FXML
     public void onCancelPressed(ActionEvent event) {
-
+        Window window = ((Node)event.getSource()).getScene().getWindow();
+        window.hide();
     }
 
     public void setDefaults() {

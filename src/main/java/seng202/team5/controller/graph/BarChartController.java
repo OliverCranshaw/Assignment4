@@ -8,11 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import seng202.team5.App;
 import seng202.team5.graph.RouteGraphChart;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * BarChartController
@@ -25,15 +25,13 @@ public class BarChartController extends Application {
     ObservableList<XYChart.Series<String, Number>> data;
     private BarChart<String, Number> chart;
 
-
     @Override
     public void start(Stage stage) {
         if (data.get(0).getData().size() != 0) {
             Scene scene = new Scene(new Group());
             stage.setTitle("Bar Chart");
-            stage.setWidth(500);
-            stage.setHeight(500);
             ((Group) scene.getRoot()).getChildren().add(chart);
+            scene.getStylesheets().add(App.class.getResource("graph_style.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
         } else {
@@ -48,8 +46,8 @@ public class BarChartController extends Application {
     /**
      * Sets up the chart with the given data.
      *
-     * @param routeIds ArrayList of ArrayList of Objects, ArrayList of route data
-     * @param metaData List of Object, data relating to setup of chart
+     * @param routeIds ArrayList of ArrayList of Objects, ArrayList of route data.
+     * @param metaData List of Object, data relating to setup of chart.
      */
     public void inflateChart(ArrayList<ArrayList<Object>> routeIds, List<Object> metaData) {
         // Setting up data for the chart

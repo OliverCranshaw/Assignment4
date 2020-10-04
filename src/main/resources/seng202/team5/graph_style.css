@@ -1,0 +1,80 @@
+.chart {
+    -fx-fill: white;
+    -fx-background-color: #272727;
+    -fx-foreground-color: #272727;
+}
+
+.chart-bar {
+    -fx-fill: white;
+    -fx-bar-fill: #82B3B1;
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+}
+
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.default-color0.chart-pie { -fx-pie-color: #C0D9D8; }
+.default-color1.chart-pie { -fx-pie-color: #ABCCCB; }
+.default-color2.chart-pie { -fx-pie-color: #97BFBE; }
+.default-color3.chart-pie { -fx-pie-color: #82B3B1; }
+.default-color4.chart-pie { -fx-pie-color: #6DA6A4; }
+.default-color5.chart-pie { -fx-pie-color: #589A97; }
+.default-color6.chart-pie { -fx-pie-color: #438D8A; }
+.default-color7.chart-pie { -fx-pie-color: #2f817e; }
+.default-color8.chart-pie { -fx-pie-color: #2f817e; }
+.default-color9.chart-pie { -fx-pie-color: #2A7471; }
+.default-color10.chart-pie { -fx-pie-color: #256764; }
+.default-color11.chart-pie { -fx-pie-color: #205A58; }
+.default-color12.chart-pie { -fx-pie-color: #1C4D4B; }
+.default-color13.chart-pie { -fx-pie-color: #17403F; }
+.default-color14.chart-pie { -fx-pie-color: #123332; }
+.default-color15.chart-pie { -fx-pie-color: #808080; }
+
+.chart-pie-label-line {
+    -fx-stroke: white;
+    -fx-fill: white;
+}
+
+.chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 1em;
+}
+.chart-legend {
+    -fx-background-color: #F0FFFF;
+    -fx-stroke: black;
+}
+
+.chart-plot-background {
+    -fx-background-color: #272727;
+    -fx-foreground-color: white;
+    -fx-stroke: white;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #898887;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #898887;
+}
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
+
+.axis-label {
+    -fx-text-fill: white;
+}
+
+.axis {
+    -fx-fill: white;
+    -fx-stroke: white;
+    -fx-tick-label-fill: white;
+    -fx-tick-length: 0;
+    -fx-minor-tick-length: 0;
+    -fx-font-size: 14px;
+}
