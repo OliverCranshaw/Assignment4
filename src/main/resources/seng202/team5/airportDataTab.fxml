@@ -256,6 +256,9 @@
                                        <HBox.margin>
                                           <Insets left="6.0" />
                                        </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
                                     </Label>
                                  </children>
                               </HBox>

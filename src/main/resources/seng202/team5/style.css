@@ -52,6 +52,16 @@
     -fx-background-color:  #591515;
 }
 
+.main-row-button:hover {
+    -fx-background-color: #a82828;
+    -fx-border-color: #591515;
+    -fx-border-width: 2;
+    -fx-border-insets: -2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+}
+
 .save-button {
     -fx-font-size: 12px;
     -fx-text-fill: white;
@@ -59,11 +69,30 @@
     -fx-background-color:  #3E783C;
 }
 
+.save-button:hover {
+    -fx-background-color: #458543;
+    -fx-border-color: #3E783C;
+    -fx-border-width: 2;
+    -fx-border-insets: -2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+}
+
 .delete-button {
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #B85A3B;
+}
+.delete-button:hover {
+    -fx-background-color: #c36344;
+    -fx-border-color: #8b442d;
+    -fx-border-width: 2;
+    -fx-border-insets: -2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
 }
 
 .help-button {
@@ -73,11 +102,30 @@
     -fx-background-color:  #AD6E21;
 }
 
+.help-button:hover {
+    -fx-background-color: #bd7824;
+    -fx-border-color: #8c591b;
+    -fx-border-width: 2;
+    -fx-border-insets: -2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
+}
+
 .general-button {
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-color:  #2F817E;
+}
+
+.general-button:hover {
+    -fx-background-color: #348f8c;
+    -fx-border-color: #2a7370;
+    -fx-border-width: 2;
+    -fx-border-insets: -2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 2;
 }
 
 .table {
@@ -124,10 +172,31 @@
     -fx-padding: 0.0em; /* 0 */
 }
 
+.table-view .column-header-background .filler {
+    -fx-background-color: linear-gradient(#400D0D 0%, #922121 100%);
+    -fx-padding: 1em;
+}
+
 .table-row-cell:selected {
     -fx-background-color: #D92E1E;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
+}
+
+.scroll-bar {
+    -fx-background-color: rgba(1, 11, 12, 1);
+}
+
+.scroll-bar .increment-button:hover {
+    -fx-background-color: rgba(1, 11, 12, 1);
+}
+
+.scroll-bar .decrement-button:hover {
+    -fx-background-color: rgba(1, 11, 12, 1);
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(71, 81, 80,0.5);
 }
 
 .table-view .virtual-flow .scroll-bar:vertical,
