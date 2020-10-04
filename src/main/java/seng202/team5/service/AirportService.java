@@ -363,4 +363,34 @@ public class AirportService implements Service {
 
         return outAirportRouteCounts;
     }
+
+
+
+
+    public Hashtable<String, String> getAirportNames(ArrayList<String> airportCodes) {
+        Hashtable<String, String> result = new Hashtable<>();
+        try {
+            ResultSet data = accessor.getAirportNames(airportCodes);
+            if (data != null) {
+                while (data.next()) {
+                    String iata = data.getString(1);
+                    String icao = data.getString(2);
+                    String name = data.getString(3);
+                    if (iata != null) {
+                        result.put(iata, name);
+                    } else {
+                        result.put(icao, name);
+                    }
+                }
+            } else {
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+
+
 }

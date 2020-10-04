@@ -4,7 +4,9 @@ import seng202.team5.accessor.AirlineAccessor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -235,5 +237,38 @@ public class AirlineService implements Service {
             }
         }
     }
+
+
+    /**
+     * Finds all Airline names for the given airline codes (IATA or ICAO) and returns it as a hashtable mapping the
+     * airline code to the name of the airline.
+     *
+     * @param airlineCodes ArrayList of Strings - airlineCodes (IATA or ICAO).
+     * @return Hashtable of String to String - airlineCode to airlineName.
+     */
+    public Hashtable<String, String> getAirlineNames(ArrayList<String> airlineCodes) {
+        Hashtable<String, String> result = new Hashtable<>();
+        try {
+            ResultSet data = accessor.getAirlineNames(airlineCodes);
+            if (data != null) {
+                while (data.next()) {
+                    String iata = data.getString(1);
+                    String icao = data.getString(2);
+                    String name = data.getString(3);
+                    if (iata != null) {
+                        result.put(iata, name);
+                    } else {
+                        result.put(icao, name);
+                    }
+                }
+            } else {
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
 }
 

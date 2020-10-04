@@ -441,4 +441,41 @@ public class AirportAccessor implements Accessor {
 
         return result;
     }
+
+
+    /**
+     * Given an arraylist of airport codes (IATA or ICAO), returns a result set containing
+     *  IATA, ICAO and airport name for the airport codes that were provided.
+     *
+     * @param airportCodes ArrayList String - airportCodes (IATA or ICAO).
+     * @return ResultSet - Containing IATA, ICAO and airport name info.
+     * @throws SQLException Cause by ResultSet interactions.
+     */
+    public ResultSet getAirportNames(ArrayList<String> airportCodes) throws SQLException {
+        String query = "SELECT iata, icao, airport_name FROM airport_data ";
+        ResultSet result = null;
+        if (airportCodes.size() > 0) {
+            query = query + "WHERE";
+            String iataString = " iata IN (";
+            String icaoString = " or icao IN (";
+            for (int i = 0; i < airportCodes.size(); i++) {
+                iataString = iataString + "\"" + airportCodes.get(i) + "\"";
+                icaoString = icaoString + "\"" + airportCodes.get(i) + "\"";
+                if (i != airportCodes.size() - 1) {
+                    iataString = iataString + ", ";
+                    icaoString = icaoString + ", ";
+                }
+            }
+            iataString = iataString + ")";
+            icaoString = icaoString + ")";
+            query = query + iataString + icaoString;
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            result = stmt.executeQuery();
+        }
+        return result;
+    }
+
+
+
+
 }

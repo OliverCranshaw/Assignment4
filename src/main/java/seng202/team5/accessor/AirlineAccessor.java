@@ -382,4 +382,40 @@ public class AirlineAccessor implements Accessor {
 
         return id;
     }
+
+
+    /**
+     * Given an arraylist of airline codes (IATA or ICAO), returns a result set containing
+     * IATA, ICAO and airline Name for the airline codes that were provided.
+     *
+     * @param airlineCodes ArrayList String - airlineCodes (IATA or ICAO).
+     * @return ResultSet - Containting ICAO, IATA and airlineName info.
+     * @throws SQLException Cause by ResultSet interactions.
+     */
+    public ResultSet getAirlineNames(ArrayList<String> airlineCodes) throws SQLException {
+        String query = "SELECT iata, icao, airline_name FROM airline_data ";
+        ResultSet result = null;
+        if (airlineCodes.size() > 0) {
+            query = query + "WHERE";
+            String iataString = " iata IN (";
+            String icaoString = " or icao IN (";
+            for (int i = 0; i < airlineCodes.size(); i++) {
+                iataString = iataString + "\"" + airlineCodes.get(i) + "\"";
+                icaoString = icaoString + "\"" + airlineCodes.get(i) + "\"";
+                if (i != airlineCodes.size() - 1) {
+                    iataString = iataString + ", ";
+                    icaoString = icaoString + ", ";
+                }
+            }
+            iataString = iataString + ")";
+            icaoString = icaoString + ")";
+            query = query + iataString + icaoString;
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            result = stmt.executeQuery();
+        }
+        return result;
+    }
+
+
+
 }

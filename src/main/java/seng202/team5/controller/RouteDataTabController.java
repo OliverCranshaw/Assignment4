@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 import seng202.team5.App;
+import seng202.team5.accessor.AirlineAccessor;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
@@ -40,10 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -361,8 +359,11 @@ public class RouteDataTabController implements Initializable {
      * @param tableView - TableView
      * @param data - ArrayList of ArrayList of Object
      */
-    private void populateRouteTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
+    private void populateRouteTable(TableView<RouteModel> tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
+        ArrayList<String> airlineCodes = new ArrayList<>();
+        ArrayList<String> srcAirportCodes = new ArrayList<>();
+        ArrayList<String> dstAirportCodes = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             String airline = (String) datum.get(1);
             String srcAirport = (String) datum.get(3);
@@ -375,7 +376,22 @@ public class RouteDataTabController implements Initializable {
                 equipmentString.append(", ");
             }
             Integer id = (Integer) datum.get(0);
+            if (!airlineCodes.contains(airline)) {
+                airlineCodes.add(airline);
+            }
+            if (!srcAirportCodes.contains((srcAirport))) {
+                srcAirportCodes.add(srcAirport);
+            }
+            if (!dstAirportCodes.contains(dstAirport)) {
+                dstAirportCodes.add(dstAirport);
+            }
             list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
+        }
+        Hashtable<String, String> airlineNames = airlineService.getAirlineNames(airlineCodes);
+        for (RouteModel route : list) {
+            if (airlineNames.keySet().contains(route.getRouteAirline())) {
+                route.setRouteAirline(airlineNames.get(route.getRouteAirline()));
+            }
         }
         routeModels = FXCollections.observableArrayList(list);
         tableView.setItems(routeModels);
