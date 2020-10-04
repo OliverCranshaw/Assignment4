@@ -1171,19 +1171,49 @@ public class SearchTabController implements Initializable {
      */
     private void populateRouteTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
+        ArrayList<String> airlineCodes = new ArrayList<>();
+        ArrayList<String> srcAirportCodes = new ArrayList<>();
+        ArrayList<String> dstAirportCodes = new ArrayList<>();
         for (ArrayList<Object> datum : data) {
             String airline = (String) datum.get(1);
             String srcAirport = (String) datum.get(3);
+            String srcAirportCode = (String) datum.get(3);
             String dstAirport = (String) datum.get(5);
+            String dstAirportCode = (String) datum.get(5);
             Integer stops = (Integer) datum.get(8);
             ArrayList<String> equipment = (ArrayList<String>) datum.get(9);
             StringBuffer equipmentString = new StringBuffer();
-            for (String s: equipment) {
-                equipmentString.append(s);
-                equipmentString.append(", ");
+            for (int i = 0; i < equipment.size(); i++) {
+                equipmentString.append(equipment.get(i));
+                if (i != equipment.size() - 1) {
+                    equipmentString.append(", ");
+                }
             }
             Integer id = (Integer) datum.get(0);
-            list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
+            if (!airlineCodes.contains(airline)) {
+                airlineCodes.add(airline);
+            }
+            if (!srcAirportCodes.contains((srcAirport))) {
+                srcAirportCodes.add(srcAirport);
+            }
+            if (!dstAirportCodes.contains(dstAirport)) {
+                dstAirportCodes.add(dstAirport);
+            }
+            list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id, srcAirportCode, dstAirportCode));
+        }
+        Hashtable<String, String> airlineNames = airlineService.getAirlineNames(airlineCodes);
+        Hashtable<String, String> srcAirportNames = airportService.getAirportNames(srcAirportCodes);
+        Hashtable<String, String> dstAirportNames = airportService.getAirportNames(dstAirportCodes);
+        for (RouteModel route : list) {
+            if (airlineNames.containsKey(route.getRouteAirline())) {
+                route.setRouteAirline(airlineNames.get(route.getRouteAirline()));
+            }
+            if (srcAirportNames.containsKey(route.getRouteSrcAirport())) {
+                route.setRouteSrcAirport(srcAirportNames.get(route.getRouteSrcAirport()));
+            }
+            if (dstAirportNames.containsKey(route.getRouteDstAirport())) {
+                route.setRouteDstAirport((dstAirportNames.get(route.getRouteDstAirport())));
+            }
         }
         routeModels = FXCollections.observableArrayList(list);
         tableView.setItems(routeModels);

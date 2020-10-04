@@ -366,7 +366,9 @@ public class RouteDataTabController implements Initializable {
         for (ArrayList<Object> datum : data) {
             String airline = (String) datum.get(1);
             String srcAirport = (String) datum.get(3);
+            String srcAirportCode = (String) datum.get(3);
             String dstAirport = (String) datum.get(5);
+            String dstAirportCode = (String) datum.get(5);
             Integer stops = (Integer) datum.get(8);
             ArrayList<String> equipment = (ArrayList<String>) datum.get(9);
             StringBuffer equipmentString = new StringBuffer();
@@ -386,7 +388,7 @@ public class RouteDataTabController implements Initializable {
             if (!dstAirportCodes.contains(dstAirport)) {
                 dstAirportCodes.add(dstAirport);
             }
-            list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
+            list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id, srcAirportCode, dstAirportCode));
         }
         Hashtable<String, String> airlineNames = airlineService.getAirlineNames(airlineCodes);
         Hashtable<String, String> srcAirportNames = airportService.getAirportNames(srcAirportCodes);
@@ -700,8 +702,8 @@ public class RouteDataTabController implements Initializable {
      */
     public void handleShowOtherAirlines() throws SQLException {
         RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
-        String srcIata = route.getRouteSrcAirport();
-        String dstIata = route.getRouteDstAirport();
+        String srcIata = route.getRouteSrcAirportCode();
+        String dstIata = route.getRouteDstAirportCode();
         System.out.println(srcIata + " " + dstIata);
         ResultSet srcData = airportService.getData(srcIata);
         ResultSet dstData = airportService.getData(dstIata);
