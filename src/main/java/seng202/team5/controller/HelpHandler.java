@@ -75,8 +75,6 @@ public class HelpHandler implements EventHandler<MouseEvent> {
         // Prevents the event from being process further. As in it blocks input
         mouseEvent.consume();
 
-        System.out.println("Hello world");
-
         PickResult pickResult = mouseEvent.getPickResult();
 
         // Search the parent chain to find if there exists any help
