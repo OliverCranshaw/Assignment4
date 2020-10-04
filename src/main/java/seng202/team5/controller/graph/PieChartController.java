@@ -21,6 +21,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PieChartController
+ *
+ * Controller for javafx pie charts.
+ * Extends Application, overriding the start method.
+ */
 public class PieChartController extends Application {
 
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
@@ -34,8 +40,8 @@ public class PieChartController extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         if (data.size() != 0) {
+            // Case where data is present
             Scene scene = new Scene(new Group());
             stage.setTitle("PieChart");
             stage.setWidth(500);
@@ -44,6 +50,7 @@ public class PieChartController extends Application {
             stage.setScene(scene);
             stage.show();
         } else {
+            // Case where there is no data present
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error");
@@ -52,10 +59,18 @@ public class PieChartController extends Application {
         }
     }
 
+
+    /**
+     * Inflates the pie chart with the given data
+     *
+     * @param data - ArrayList of ArrayList of Objects, representing an Arraylist of a data type
+     * @param metaData - List of Object, data relating to setup of chart
+     * @throws SQLException Due to ResultSet Interactions.
+     */
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) throws SQLException {
 
         selection = (String) metaData.get(0);
-
+        // Choosing what type of graph to make
         if (selection.startsWith("Route")) {
             RouteGraphChart routeGraph = new RouteGraphChart(data);
             routeGraph.setSelection(selection);
@@ -69,13 +84,13 @@ public class PieChartController extends Application {
             airlineGraphChart.setSelection(selection);
             this.data = airlineGraphChart.buildChart();
         }
-
+        // Creating the chart
         chart = new PieChart(this.data);
         chart.setTitle((String) metaData.get(1));
         chart.setLegendSide(Side.BOTTOM);
         chart.resize(500.0, 500.0);
 
-
+        // Applying the Other options and mouse events (highlighting and showing segment info)
         for (final PieChart.Data segment : chart.getData()) {
             if (segment.getName().startsWith("Other")) {
                 applyRemoveOtherOption(segment);
@@ -86,8 +101,15 @@ public class PieChartController extends Application {
         }
     }
 
+
+    /**
+     * Adds the remove other option to the other segment of the pie chart
+     *
+     * @param segment - PieChart.data, Other segment of pie chart
+     */
     private void applyRemoveOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
+        // Adding node event on right click
         node.setOnContextMenuRequested(arg0 -> {
             removeContextMenu = new ContextMenu();
             removeContextMenu.hide();
@@ -103,8 +125,15 @@ public class PieChartController extends Application {
         });
     }
 
+
+    /**
+     * Adds the return other option to the given segment of data
+     *
+     * @param segment - PieChart.data, A segment of a pie chart
+     */
     public void applyReturnOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
+        // Adding node event on right click
         node.setOnContextMenuRequested(arg0 -> {
             if (Other != null) {
                 addContextMenu = new ContextMenu();
@@ -122,10 +151,17 @@ public class PieChartController extends Application {
         });
     }
 
+
+    /**
+     * Method that sets up the highlighting affect on the pie chart segments,
+     * as well as the popup tool tip showing the segment information.
+     *
+     * @param data - PieChart.data, A segment of a pie chart
+     */
     public void applyMouseEvents(final PieChart.Data data) {
 
         final Node node = data.getNode();
-
+        // Adding node event on mouse entering a segment
         node.setOnMouseEntered(arg0 -> {
             Tooltip currTip;
             if (this.selection.equals("RouteEquipment")) {

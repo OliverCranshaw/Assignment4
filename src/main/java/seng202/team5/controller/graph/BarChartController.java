@@ -13,10 +13,18 @@ import seng202.team5.graph.RouteGraphChart;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * BarChartController
+ *
+ * Controller for javafx bar charts.
+ * Extends Application, overriding the start method.
+ */
 public class BarChartController extends Application {
 
     ObservableList<XYChart.Series<String, Number>> data;
     private BarChart<String, Number> chart;
+
 
     @Override
     public void start(Stage stage) {
@@ -37,7 +45,14 @@ public class BarChartController extends Application {
         }
     }
 
+    /**
+     * Sets up the chart with the given data.
+     *
+     * @param routeIds ArrayList of ArrayList of Objects, ArrayList of route data
+     * @param metaData List of Object, data relating to setup of chart
+     */
     public void inflateChart(ArrayList<ArrayList<Object>> routeIds, List<Object> metaData) {
+        // Setting up data for the chart
         RouteGraphChart routeGraphChart = new RouteGraphChart(routeIds);
         routeGraphChart.setSelection((String) metaData.get(0));
         data = FXCollections.observableArrayList();
@@ -47,6 +62,7 @@ public class BarChartController extends Application {
         xAxis.setLabel("Route");
         yAxis.setLabel("Airline Count");
 
+        // Setting up chart
         chart = new BarChart<String, Number>(xAxis, yAxis);
         chart.setData(data);
         chart.setTitle((String) metaData.get(1));
