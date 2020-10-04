@@ -36,7 +36,7 @@ public class AirlineAccessor implements Accessor {
      * Requires airline_name, alias, IATA code, ICAO code, callsign, country, and active parameters, contained in an ArrayList.
      *
      * @param data An List containing the data to be inserted into an entry in the database.
-     * @return int result The airline_id of the airline that was just created.
+     * @return int result The airline_id of the airline that was just created, -1 if SQL exception occurs.
      */
     public int save(List<Object> data) {
         int result;
@@ -84,21 +84,27 @@ public class AirlineAccessor implements Accessor {
      */
     public int update(int id, String newName, String newAlias, String newIATA, String newICAO,
                       String newCallsign, String newCountry, String newActive) throws SQLException {
-        int result;
+        int result = -1;
 
         List<Object> element = Arrays.asList(newName, newAlias, newIATA, newICAO, newCallsign, newCountry, newActive);
         ArrayList<Object> elements = new ArrayList<>(element);
-        // The SQL update statement
-        String search = "UPDATE AIRLINE_DATA SET airline_name = ?, alias = ?, iata = ?, icao = ?, callsign = ?, " +
-                        "country = ?, active = ? WHERE airline_id = ?";
-        PreparedStatement stmt = dbHandler.prepareStatement(search);
-        // Adds the parameters to the SQL statement
-        for (int i = 0; i < elements.size(); i++) {
-            stmt.setObject(i+1, elements.get(i));
+        try {
+            // The SQL update statement
+            String search = "UPDATE AIRLINE_DATA SET airline_name = ?, alias = ?, iata = ?, icao = ?, callsign = ?, " +
+                    "country = ?, active = ? WHERE airline_id = ?";
+            PreparedStatement stmt = dbHandler.prepareStatement(search);
+            // Adds the parameters to the SQL statement
+            for (int i = 0; i < elements.size(); i++) {
+                stmt.setObject(i+1, elements.get(i));
+            }
+            stmt.setObject(elements.size()+1, id);
+            // Executes the update operation
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
+            // If any of the above fails, prints out an error message
+            System.out.println("Unable to update airline data with id " + id);
+            System.out.println(e.getMessage());
         }
-        stmt.setObject(elements.size()+1, id);
-        // Executes the update operation
-        result = stmt.executeUpdate();
 
         return result;
     }
@@ -118,7 +124,7 @@ public class AirlineAccessor implements Accessor {
             stmt.setInt(1, id); // Adds the airline_id to the delete statement
             // Executes the delete operation, returns True if successful
             result = stmt.executeUpdate() != 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airline data with id " + id);
             System.out.println(e.getMessage());
@@ -131,10 +137,11 @@ public class AirlineAccessor implements Accessor {
      * Retrieves the airline with the provided id.
      *
      * @param id int id of a airline.
-     * @return ResultSet of the route data.
+     * @return ResultSet of the route data, null if SQL exception occurs.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
+
         try {
             PreparedStatement stmt = dbHandler.prepareStatement(
                     "SELECT * FROM AIRLINE_DATA WHERE airline_id = ?");
@@ -153,7 +160,7 @@ public class AirlineAccessor implements Accessor {
      * Returns all airlines with the given code.
      *
      * @param code IATA or ICAO code of airline.
-     * @return ResultSet containing relevant airline data.
+     * @return ResultSet containing relevant airline data, null if SQL exception occurs.
      */
     public ResultSet getData(String code) {
         ResultSet result = null;
@@ -182,8 +189,8 @@ public class AirlineAccessor implements Accessor {
      *
      * @param name String name of an ariline, can be null.
      * @param country String country of an airline, can be null.
-     * @param callsign String callsign of an airline, can be null
-     * @return ResultSet of all the airline.
+     * @param callsign String callsign of an airline, can be null.
+     * @return ResultSet of all the airline, null if SQL exception occurs.
      */
     public ResultSet getData(String name, String country, String callsign) {
         ResultSet result = null;
@@ -229,6 +236,13 @@ public class AirlineAccessor implements Accessor {
         return result;
     }
 
+    /**
+     * Helper function that finds the related airline
+     * id with the provided code.
+     *
+     * @param code String either IATA or ICAO.
+     * @return int airline id.
+     */
     public int lookupCode(String code) {
         int result;
         if (cachedIds.containsKey(code)) {
@@ -244,7 +258,7 @@ public class AirlineAccessor implements Accessor {
      * Gets the airline_id of an airline with a given IATA or ICAO code if one exists.
      *
      * @param code A 2-letter IATA or 3-letter ICAO code.
-     * @return int result The airline_id of the airline with the given IATA or ICAO code if one exists.
+     * @return int result The airline_id of the airline with the given IATA or ICAO code if one exists, -1 if SQL exception occurs.
      */
     public int getAirlineId(String code) {
         int result;
@@ -272,39 +286,6 @@ public class AirlineAccessor implements Accessor {
         return result;
     }
 
-    /**
-     * Gets the airline iata and icao of an airline with a given name.
-     *
-     * @param name The name of the airline.
-     * @return iata result The iata of the airline with the name.
-     */
-    public ArrayList<String> getAirlineIataIcao(String name) {
-        ArrayList<String> result = new ArrayList<>();
-
-        try {
-            // The SQL search query - finds the iata and icao of an airline with the given name
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT iata, icao FROM AIRLINE_DATA WHERE airline_name = ?");
-            // Adds the given code to the search query
-            stmt.setObject(1, name);
-            // Executes the search query, sets result to the first entry in the ResultSet (there will at most be one entry)
-            ResultSet data = stmt.executeQuery();
-
-            while (data.next()) {
-                String iata = data.getString("iata");
-                String icao = data.getString("icao");
-
-                result.add(iata);
-                result.add(icao);
-            }
-        } catch (SQLException e) {
-            // If any of the above fails, sets result to the error code -1 and prints an error message
-            result = null;
-            System.out.println("Unable to retrieve airline data with name " + name);
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
 
     /**
      * Checks if an airline with a given airline_id exists.
@@ -362,7 +343,7 @@ public class AirlineAccessor implements Accessor {
     /**
      * Gets the maximum airline_id contained in the database.
      *
-     * @return int id The maximum airline_id in the database.
+     * @return int id The maximum airline_id in the database, 0 if SQL exception occurs.
      */
     public int getMaxID() {
         int id = 0;
@@ -389,33 +370,41 @@ public class AirlineAccessor implements Accessor {
      * IATA, ICAO and airline Name for the airline codes that were provided.
      *
      * @param airlineCodes ArrayList String - airlineCodes (IATA or ICAO).
-     * @return ResultSet - Containting ICAO, IATA and airlineName info.
+     * @return ResultSet - Containting ICAO, IATA and airlineName info, null if SQL exception occurs.
+     *
      * @throws SQLException Cause by ResultSet interactions.
      */
     public ResultSet getAirlineNames(ArrayList<String> airlineCodes) throws SQLException {
         String query = "SELECT iata, icao, airline_name FROM airline_data ";
         ResultSet result = null;
-        if (airlineCodes.size() > 0) {
-            query = query + "WHERE";
-            String iataString = " iata IN (";
-            String icaoString = " or icao IN (";
-            for (int i = 0; i < airlineCodes.size(); i++) {
-                iataString = iataString + "\"" + airlineCodes.get(i) + "\"";
-                icaoString = icaoString + "\"" + airlineCodes.get(i) + "\"";
-                if (i != airlineCodes.size() - 1) {
-                    iataString = iataString + ", ";
-                    icaoString = icaoString + ", ";
+
+        try {
+            if (airlineCodes.size() > 0) {
+                query = query + "WHERE";
+                String iataString = " iata IN (";
+                String icaoString = " or icao IN (";
+
+                for (int i = 0; i < airlineCodes.size(); i++) {
+                    iataString = iataString + "\"" + airlineCodes.get(i) + "\"";
+                    icaoString = icaoString + "\"" + airlineCodes.get(i) + "\"";
+                    if (i != airlineCodes.size() - 1) {
+                        iataString = iataString + ", ";
+                        icaoString = icaoString + ", ";
+                    }
                 }
+                iataString = iataString + ")";
+                icaoString = icaoString + ")";
+                query = query + iataString + icaoString;
+                PreparedStatement stmt = dbHandler.prepareStatement(query);
+
+                result = stmt.executeQuery();
             }
-            iataString = iataString + ")";
-            icaoString = icaoString + ")";
-            query = query + iataString + icaoString;
-            PreparedStatement stmt = dbHandler.prepareStatement(query);
-            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get airline names with code.");
+            System.out.println(e.getMessage());
         }
+
         return result;
     }
-
-
-
 }

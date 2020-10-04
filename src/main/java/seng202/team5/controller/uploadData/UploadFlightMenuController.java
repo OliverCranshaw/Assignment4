@@ -1,22 +1,15 @@
-package seng202.team5.controller;
+package seng202.team5.controller.uploadData;
 
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import seng202.team5.data.ReadFile;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class UploadRoutesMenuController extends BaseUploadMenuController {
+public class UploadFlightMenuController extends BaseUploadMenuController {
 
     @Override
     protected String doUploadOperation(ReadFile readFile, File file) {
-        ArrayList<Object> readResult = readFile.readRouteData(file);
+        ArrayList<Object> readResult = readFile.readFlightData(file);
 
         if (readResult == null) return null;
 
@@ -27,9 +20,9 @@ public class UploadRoutesMenuController extends BaseUploadMenuController {
             for (String error : errors) {
                 errorString += error + "\n";
             }
-            errorString += "Any other routes added successfully";
+            errorString += "Flight unable to be added to database";
         } else {
-            errorString = "All routes added successfully";
+            errorString = "Flight added successfully";
         }
 
         return errorString;

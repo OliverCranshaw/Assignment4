@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.addData;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,7 +85,6 @@ public class AddAirlineMenuController {
 
         }
     }
-
 
     public void setDefaults() {
         nameField.setStyle("-fx-border-color: #000000;");

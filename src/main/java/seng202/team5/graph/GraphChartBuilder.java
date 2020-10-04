@@ -17,6 +17,8 @@ public interface GraphChartBuilder {
      * returning the data required to build a pie chart from it.
      *
      * @return ObservableList of PieChart.Data objects.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     ObservableList<PieChart.Data> buildChart() throws SQLException;
 

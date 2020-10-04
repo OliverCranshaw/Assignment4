@@ -22,27 +22,27 @@
          <tabs>
             <Tab fx:id="generalTab" text="Search Data">
                <content>
-                  <fx:include source="searchTab.fxml" />
+                  <fx:include source="mainTab/searchTab.fxml" />
                </content>
             </Tab>
             <Tab text="Airport Data">
                <content>
-                  <fx:include source="airportDataTab.fxml" />
+                  <fx:include source="mainTab/airportDataTab.fxml" />
                </content>
             </Tab>
             <Tab fx:id="airlineDataTab" text="Airline Data">
                <content>
-                  <fx:include source="airlineDataTab.fxml" />
+                  <fx:include source="mainTab/airlineDataTab.fxml" />
                </content>
             </Tab>
             <Tab text="Route Data">
                <content>
-                  <fx:include source="routeDataTab.fxml" />
+                  <fx:include source="mainTab/routeDataTab.fxml" />
                </content>
             </Tab>
             <Tab text="Flight Data">
                <content>
-                  <fx:include source="flightDataTab.fxml" />
+                  <fx:include source="mainTab/flightDataTab.fxml" />
                </content>
             </Tab>
          </tabs>

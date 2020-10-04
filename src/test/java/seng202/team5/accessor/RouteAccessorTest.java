@@ -358,8 +358,6 @@ public class RouteAccessorTest extends BaseDatabaseTest {
 
         Assert.assertTrue(routeAccessor.dataExists(key));
         Assert.assertFalse(routeAccessor.dataExists(key + 1));
-        Assert.assertTrue(routeAccessor.dataExists("IT", "IA1", "IA2", "N", 100, "ABC"));
-        Assert.assertFalse(routeAccessor.dataExists("IA", "IA1", "IA2", "N", 100, "ABC"));
     }
 
 

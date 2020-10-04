@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import seng202.team5.data.AirlineData;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;
 import seng202.team5.map.*;
@@ -26,7 +27,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.Function;
 
 public class SearchTabController implements Initializable {
 
@@ -308,13 +308,11 @@ public class SearchTabController implements Initializable {
 
     private MainMenuController mainMenuController = new MainMenuController();
 
-
-
     /**
      * Initializer for SearchTabController
      * Sets up all tables, buttons, listeners, services, etc
-     * @param url
-     * @param resourceBundle
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -326,6 +324,10 @@ public class SearchTabController implements Initializable {
                 searchMapView.setZoom(2);
             }
         });
+
+        // Setup the initial helpText for the flight search
+        firstSearchEntry.getProperties().put("helpText", "Flight location type to search");
+        secondSearchEntry.getProperties().put("helpText", "Flight location to search");
 
         // Setting the cell value factories for the search flight entry table
         flightDbIDS.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -674,6 +676,9 @@ public class SearchTabController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
+        firstSearchEntry.getProperties().put("helpText", "Flight location type to search");
+        secondSearchEntry.getProperties().put("helpText", "Flight location to search");
+
         firstSearchType.setText("Location Type:");
         secondSearchType.setText("Location:");
         thirdSearchType.setVisible(false);
@@ -732,6 +737,10 @@ public class SearchTabController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
+        firstSearchEntry.getProperties().put("helpText", "Airport name to search");
+        secondSearchEntry.getProperties().put("helpText", "Airport city to search");
+        thirdSearchEntry.getProperties().put("helpText", "Airport country to search");
+
         firstSearchType.setText("Name:");
         secondSearchType.setText("City:");
         thirdSearchType.setVisible(true);
@@ -787,6 +796,10 @@ public class SearchTabController implements Initializable {
         secondSearchEntry.setText("");
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
+
+        firstSearchEntry.getProperties().put("helpText", "Airline name to search");
+        secondSearchEntry.getProperties().put("helpText", "Airline country to search");
+        thirdSearchEntry.getProperties().put("helpText", "Airline callsign to search");
 
         firstSearchType.setText("Name:");
         secondSearchType.setText("Country:");
@@ -845,6 +858,11 @@ public class SearchTabController implements Initializable {
         secondSearchEntry.setText("");
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
+
+        firstSearchEntry.getProperties().put("helpText", "Route source airport to search");
+        secondSearchEntry.getProperties().put("helpText", "Route destination airport to search");
+        thirdSearchEntry.getProperties().put("helpText", "Route stops to search");
+        fourthSearchEntry.getProperties().put("helpText", "Route plane types to search");
 
         firstSearchType.setText("Source Airport:");
         secondSearchType.setText("Dest. Airport:");

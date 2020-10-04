@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import seng202.team5.graph.RouteGraphChart;
 

@@ -1,6 +1,5 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
-import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
@@ -20,11 +19,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 import seng202.team5.App;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
+import seng202.team5.controller.graph.PieChartController;
+import seng202.team5.controller.uploadData.BaseUploadMenuController;
 import seng202.team5.data.*;
-import seng202.team5.map.Bounds;
-import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
 import seng202.team5.model.AirlineModel;
 import seng202.team5.service.AirlineService;
@@ -38,7 +38,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.Function;
 
 public class AirlineDataTabController implements Initializable {
 
@@ -145,12 +144,12 @@ public class AirlineDataTabController implements Initializable {
 
     private MainMenuController mainMenuController = new MainMenuController();
 
-
     /**
-     * Initializer for AirlineDataTabController
-     * Sets up all tables, buttons, listeners, services, etc
-     * @param url
-     * @param resourceBundle
+     * Initializer for AirlineDataTabController.
+     * Sets up all tables, buttons, listeners, services, etc.
+     *
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -236,11 +235,11 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * setAirlineSingleRecord
+     * Sets the airline single record labels to contain the relevant entries.
      *
-     * Sets the airline single record labels to contain the relevant entries
-     * @param airlineModel - Airline Model used ot populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param airlineModel - Airline Model used ot populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
         airlineInvalidFormatLbl.setVisible(false);
@@ -267,16 +266,16 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAddAirlinePressed
+     * Starts the add airline window.
      *
-     * Starts the add airline window
-     * @param event user has clicked on the add airline button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the add airline button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onAddAirlinePressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("add_airline.fxml"));
+        Parent root = FXMLLoader.load(App.class.getResource("addData/add_airline.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Add Airline");
         stage.initModality(Modality.WINDOW_MODAL);
@@ -286,16 +285,16 @@ public class AirlineDataTabController implements Initializable {
 
 
     /**
-     * onUploadAirlineDataPressed
+     * Starts the upload airline window.
      *
-     * Starts the upload airline window
-     * @param event user has clicked on the upload airline button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the upload airline button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onUploadAirlineDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airlines.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("uploadData/upload_airlines.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Upload Airline Data");
@@ -309,10 +308,9 @@ public class AirlineDataTabController implements Initializable {
 
 
     /**
-     * onDowloadAirlineDataPressed
+     * Starts the download airline window.
      *
-     * Starts the download airline window
-     * @param event user has clicked on the download button in the airline tab
+     * @param event user has clicked on the download button in the airline tab.
      */
     @FXML
     public void onDownloadAirlineDataPressed(ActionEvent event) {
@@ -324,11 +322,10 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * populateAirlineTable
+     * Populates the given airline tableView with the given data.
      *
-     * Populates the given airline tableView with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateAirlineTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
 
@@ -346,9 +343,7 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAirlineApplyFilterButton
-     *
-     * Applies the selected filters to the airline table
+     * Applies the selected filters to the airline table.
      */
     @FXML
     public void onAirlineApplyFilterButton() {
@@ -368,10 +363,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * updateAirlineTable
+     * Updates the airline table with data from the database.
      *
-     * Updates the airline table with data from the database
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail.
      */
     public void updateAirlineTable() throws SQLException {
         airlineTable = new AirlineTable(airlineService.getData(null, null, null));
@@ -380,10 +374,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAirlineRefreshButton
+     * Updates the airline table from a button press.
      *
-     * Updates the airline table from a button press
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateAirlineTable fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateAirlineTable fail.
      */
     @FXML
     public void onAirlineRefreshButton() throws  SQLException {
@@ -391,10 +384,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onModifyAirlineBtnPressed
+     * Starts the modify airline mode.
      *
-     * Starts the modify airline mode
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirlineSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirlineSingleRecord function.
      */
     public void onModifyAirlineBtnPressed() throws SQLException {
         airlineInvalidFormatLbl.setVisible(false);
@@ -410,10 +402,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * setAirlineElementsEditable
+     * Sets the airline TextFields to be editable or not (depending on given bool).
      *
-     * Sets the airline TextFields to be editable or not (depending on given bool)
-     * @param bool - boolean
+     * @param bool - boolean.
      */
     public void setAirlineElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(airlineName, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
@@ -423,11 +414,10 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAirlineSaveBtnPressed
-     *
      * Saves the airline if the given data if in the right form,
-     * other wise handles errors and prompts user on where they are
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateAirlineTable function
+     * other wise handles errors and prompts user on where they are.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateAirlineTable function.
      */
     @FXML
     public void onAirlineSaveBtnPressed() throws SQLException {
@@ -480,10 +470,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * setAirlineUpdateColour
+     * Updates the colours of the airline TextFields by the given index.
      *
-     * Updates the colours of the airline TextFields by the given index
-     * @param index
+     * @param index Integer the index of the element.
      */
     public void setAirlineUpdateColour(Integer index) {
         List<TextField> elements = Arrays.asList(airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
@@ -499,10 +488,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAirlineCancelBtnPressed
+     * Cancels current airline modify.
      *
-     * Cancels current airline modify
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirlineSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirlineSingleRecord function.
      */
     @FXML
     public void onAirlineCancelBtnPressed() throws SQLException {
@@ -516,9 +504,7 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onAirlineDeleteBtnPressed
-     *
-     * Deletes airline that is currently being modified
+     * Deletes airline that is currently being modified.
      */
     public void onAirlineDeleteBtnPressed() {
         airlineInvalidFormatLbl.setVisible(false);
@@ -546,10 +532,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onGraphAirlineCountryBtnPressed
-     *
      * Handles the pressing of the Airline Country Graph Button.
      * Creates a Pie Chart showing the number of airlines per country from the filtered data from the airline table.
+     *
      * @throws Exception Caused by ResultSet interactions.
      */
     public void onGraphAirlineCountryBtnPressed() throws Exception {
@@ -560,10 +545,9 @@ public class AirlineDataTabController implements Initializable {
     }
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -572,5 +556,4 @@ public class AirlineDataTabController implements Initializable {
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);
     }
-
 }

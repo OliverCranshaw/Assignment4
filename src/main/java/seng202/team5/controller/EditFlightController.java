@@ -13,6 +13,11 @@ import javafx.stage.Window;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.model.FlightEntryModel;
 
+/**
+ * EditFlightController
+ *
+ * Creates new window where the user is able to edit a flight entry.
+ */
 public class EditFlightController {
 
     @FXML
@@ -32,13 +37,11 @@ public class EditFlightController {
 
     private FlightEntryModel currFlightEntryModel;
 
-
     /**
-     * submitBtnPressed
-     *
      * Edits the currently editing flight if the values given are valid, otherwise
-     * given error signs to the user
-     * @param event
+     * given error signs to the user.
+     *
+     * @param event an instance of an action event.
      */
     @FXML
     public void submitBtnPressed(javafx.event.ActionEvent event) {
@@ -122,10 +125,9 @@ public class EditFlightController {
     }
 
     /**
-     * cancelBtnPressed
+     * Closes the current window.
      *
-     * Closes the current window
-     * @param actionEvent
+     * @param actionEvent an instance of an action event.
      */
     @FXML
     public void cancelBtnPressed(javafx.event.ActionEvent actionEvent) {
@@ -135,10 +137,9 @@ public class EditFlightController {
     }
 
     /**
-     * inflateUI
+     * Populates the TextFields with the current values.
      *
-     * Populates the TextFields with the current values
-     * @param flightEntryModel - flightEntry being modified
+     * @param flightEntryModel - flightEntry being modified.
      */
     public void inflateUI(FlightEntryModel flightEntryModel) {
         flightInvalidFormatLbl.setVisible(false);
@@ -157,9 +158,7 @@ public class EditFlightController {
     }
 
     /**
-     * setDefaults
-     *
-     * Sets the colours of the TextFields to black
+     * Sets the colours of the TextFields to black.
      */
     public void setDefaults() {
         flightInvalidFormatLbl.setVisible(false);
@@ -169,6 +168,4 @@ public class EditFlightController {
         latitudeField.setStyle("-fx-border-color: #000000;");
         longitudeField.setStyle("-fx-border-color: #000000;");
     }
-
-
 }

@@ -21,9 +21,9 @@
 <?import javafx.scene.text.Font?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.SearchTabController">
+<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.mainTab.SearchTabController">
    <stylesheets>
-      <URL value="@style.css" />
+      <URL value="@../style.css" />
    </stylesheets>
    <properties helpText="Panel for searching the local database for flights, routes, airports and airlines." />
    <children>

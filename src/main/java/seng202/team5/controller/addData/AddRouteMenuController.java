@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.addData;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,10 +23,13 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class AddRouteMenuController {
-    private AirlineService airlineService = new AirlineService();
-    private AirportService airportService = new AirportService();
+    private AirlineService airlineService;
+    private AirportService airportService;
 
-    public AddRouteMenuController() {}
+    public AddRouteMenuController() {
+        airlineService = new AirlineService();
+        airportService = new AirportService();
+    }
 
     @FXML
     private TextField addRouteAirlineText;
@@ -188,7 +191,6 @@ public class AddRouteMenuController {
             window.hide();
         }
     }
-
 
     public void setDefaults() {
         addRouteAirlineText.setStyle("-fx-border-color: #000000;");

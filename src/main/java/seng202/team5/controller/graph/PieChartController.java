@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.graph;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 import seng202.team5.graph.AirlineGraphChart;
 import seng202.team5.graph.AirportGraphChart;
@@ -24,7 +23,6 @@ import java.util.List;
 
 public class PieChartController extends Application {
 
-
     private ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
     private PieChart chart;
     private String selection;
@@ -33,8 +31,6 @@ public class PieChartController extends Application {
     private final Integer MAX = 16777215;
     private ContextMenu removeContextMenu;
     private ContextMenu addContextMenu;
-
-
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -55,7 +51,6 @@ public class PieChartController extends Application {
             alert.show();
         }
     }
-
 
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) throws SQLException {
 
@@ -108,7 +103,6 @@ public class PieChartController extends Application {
         });
     }
 
-
     public void applyReturnOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
         node.setOnContextMenuRequested(arg0 -> {
@@ -127,9 +121,6 @@ public class PieChartController extends Application {
             }
         });
     }
-
-
-
 
     public void applyMouseEvents(final PieChart.Data data) {
 
@@ -162,6 +153,4 @@ public class PieChartController extends Application {
             node.setStyle("");
         });
     }
-
-
 }

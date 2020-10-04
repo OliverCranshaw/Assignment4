@@ -3,7 +3,6 @@ package seng202.team5.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
 /**
  * RouteModel
  *

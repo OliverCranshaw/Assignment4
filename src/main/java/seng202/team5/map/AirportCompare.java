@@ -51,5 +51,4 @@ public class AirportCompare {
 
         return Math.round(distance * 100.0) / 100.0;
     }
-
 }

@@ -23,9 +23,9 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane prefHeight="645.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.RouteDataTabController">
+<StackPane prefHeight="645.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.mainTab.RouteDataTabController">
    <stylesheets>
-      <URL value="@style.css" />
+      <URL value="@../style.css" />
    </stylesheets>
    <properties helpText="Viewer for route data" />
    <children>

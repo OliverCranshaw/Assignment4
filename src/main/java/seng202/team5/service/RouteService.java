@@ -42,7 +42,7 @@ public class RouteService implements Service {
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. An integer, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
-     * @return int result The route_id of the route that was just created by the RouteAccessor.
+     * @return int result The route_id of the route that was just created by the RouteAccessor, -1 if checks fail or fails to save.
      */
     public int save(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
         int airlineID;
@@ -81,7 +81,7 @@ public class RouteService implements Service {
      * @param newCodeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
      * @param newStops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param newEquipment The new equipment for the route, may be null if not to be updated.
-     * @return int result The route_id of the route that was just updated by the RouteAccessor.
+     * @return int result The route_id of the route that was just updated by the RouteAccessor, -1 if checks fail.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
@@ -97,7 +97,6 @@ public class RouteService implements Service {
         if (!data.next()) {
             return 0; // 0 rows were updated
         }
-
 
         String currAirline = data.getString(2);
         int currAirlineID = data.getInt(3);
@@ -118,7 +117,6 @@ public class RouteService implements Service {
         } else {
             newAirlineID = currAirlineID;
         }
-
 
         // If the source airport is not null, checks that an airport with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
@@ -231,6 +229,7 @@ public class RouteService implements Service {
      * @param dstId - Integer destination airport ID.
      * @param includeInactive - Boolean determines if the result should include inactive airlines.
      * @return - Arraylist of Integers of airline IDs.
+     *
      * @throws SQLException Caused by ResultSet interactions.
      */
     public ArrayList<Integer> getAirlinesCoveringRoute(Integer srcId, Integer dstId, Boolean includeInactive) throws SQLException {
@@ -245,16 +244,16 @@ public class RouteService implements Service {
         return result;
     }
 
-
     /**
      * Returns a hashtable of route descriptions (source code - destination code) mapped to how
      * many airlines cover that route.
      *
-     * @return Hashtable (String, Integer> of route description to count of airlines.
+     * @return Hashtable (String, Integer> of route description to count of airlines, null if SQL exception occurs.
      */
     public Hashtable<String, Integer> getCountAirlinesCovering(ArrayList<Integer> routeIds) {
         ResultSet data = accessor.getCountAirlinesCovering(routeIds);
         Hashtable<String, Integer> result = new Hashtable<>();
+
         try {
             while (data.next()) {
                 String routeDesc = data.getString(2) + " - " + data.getString(3);
@@ -267,6 +266,4 @@ public class RouteService implements Service {
             return null;
         }
     }
-
-
 }

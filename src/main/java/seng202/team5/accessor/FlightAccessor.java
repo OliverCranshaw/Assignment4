@@ -32,7 +32,7 @@ public class FlightAccessor implements Accessor{
      * Requires the flightID, location type, location code, altitude, latitude, and longitude.
      *
      * @param data An List containing the data to be inserted into an entry in the database.
-     * @return int result The unique id of the flight entry that was just created.
+     * @return int result The unique id of the flight entry that was just created, -1 if SQL exception occurs.
      */
     public int save(List<Object> data) {
         int result;
@@ -201,7 +201,7 @@ public class FlightAccessor implements Accessor{
      * Retrieves the flight with the provided id.
      *
      * @param id int id of a flight.
-     * @return ResultSet of the route.
+     * @return ResultSet of the route, null if SQL exception occurs.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -225,7 +225,7 @@ public class FlightAccessor implements Accessor{
      *
      * @param locationType String location_type of a flight, can be null.
      * @param location String location of a flight, can be null.
-     * @return ResultSet of all the flights.
+     * @return ResultSet of all the flights, null if SQL exception occurs.
      */
     public ResultSet getData(String locationType, String location) {
         ResultSet result = null;
@@ -319,7 +319,7 @@ public class FlightAccessor implements Accessor{
     /**
      * Gets the maximum flight_id contained in the database.
      *
-     * @return int id The maximum flight_id in the database.
+     * @return int id The maximum flight_id in the database, 0 if SQL exception occurs.
      */
     public int getMaxFlightID() {
         int id = 0;
@@ -343,7 +343,7 @@ public class FlightAccessor implements Accessor{
     /**
      * Gets the maximum unique id contained in the flight data table.
      *
-     * @return int id The maximum unique id in the flight data table.
+     * @return int id The maximum unique id in the flight data table, 0 if SQL exception occurs.
      */
     public int getMaxID() {
         int id = 0;
@@ -365,7 +365,7 @@ public class FlightAccessor implements Accessor{
     }
 
     /**
-     * Checks if an identical flight entry exists
+     * Checks if an identical flight entry exists.
      *
      * @param id An integer, a flight id.
      * @param locationType A string, a location type.

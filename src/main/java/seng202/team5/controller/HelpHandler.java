@@ -4,12 +4,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
@@ -21,18 +18,20 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
 
-import java.io.IOException;
-
 /**
+ * HelpHandler
+ *
  * Class for initiating help sessions.
  * Its only public interface is the startHelp static method.
  */
 public class HelpHandler implements EventHandler<MouseEvent> {
+
     private static final Image CURSOR_IMAGE = new Image(App.class.getResource("help_cursor.png").toString());
 
     /**
      * Starts the help session on the given scene.
      * This will change the cursor to a question mark and block inputs from being passed into this window.
+     *
      * @param scene The window where the help is requested
      */
     public static void startHelp(Scene scene) {
@@ -74,8 +73,6 @@ public class HelpHandler implements EventHandler<MouseEvent> {
 
         // Prevents the event from being process further. As in it blocks input
         mouseEvent.consume();
-
-        System.out.println("Hello world");
 
         PickResult pickResult = mouseEvent.getPickResult();
 

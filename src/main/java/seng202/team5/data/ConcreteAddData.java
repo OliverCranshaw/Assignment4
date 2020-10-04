@@ -43,7 +43,7 @@ public class ConcreteAddData extends AddData {
      * @param callsign The callsign of the airline.
      * @param country The country of the airline.
      * @param active "Y" if the airline is or has until recently been operational, "N" if it is defunct, cannot be null.
-     * @return int The airline_id of the new airline that has been created by AirlineService.
+     * @return int The airline_id of the new airline that has been created by AirlineService, -1 if fails to add.
      */
     @Override
     public int addAirline(String name, String alias, String iata, String icao,
@@ -61,9 +61,7 @@ public class ConcreteAddData extends AddData {
                     airlineData.getICAO(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
             if (result != -1) {
-                int id = airlineService.getMaxID();
-                System.out.println("Airline added with id " + id);
-                return id;
+                return airlineService.getMaxID();
             }
             else {
                 System.out.println("Failed to add airline.");
@@ -92,7 +90,7 @@ public class ConcreteAddData extends AddData {
      * @param timezone The hours offset from UTC, a string, cannot be null.
      * @param dst The daylight savings time of the airport, one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown), cannot be null.
      * @param tz Timezone in "tz" (Olson) format, i.e. Country/Region. Cannot be null.
-     * @return int The airport_id of the new airport that has been created by AirportService.
+     * @return int The airport_id of the new airport that has been created by AirportService, -1 if fails to add.
      */
     @Override
     public int addAirport(String name, String city, String country, String iata, String icao, String latitude,
@@ -111,9 +109,7 @@ public class ConcreteAddData extends AddData {
                     airportData.getAltitude(), airportData.getTimezone(), airportData.getDST(), airportData.getTZDatabaseTimezone());
 
             if (result != -1) {
-                int id = airportService.getMaxID();
-                System.out.println("Airport added with id " + id);
-                return id;
+                return airportService.getMaxID();
             }
             else {
                 System.out.println("Failed to add airport.");
@@ -137,7 +133,7 @@ public class ConcreteAddData extends AddData {
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. A string, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a string. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a string. Negative is West, positive is East, cannot be null.
-     * @return int The unique id of the new flight entry that has been created by FlightService.
+     * @return int The unique id of the new flight entry that has been created by FlightService, -1 if fails to add.
      */
     @Override
     public int addFlightEntry(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
@@ -154,9 +150,7 @@ public class ConcreteAddData extends AddData {
                                             flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
 
             if (result != -1) {
-                int id = flightService.getMaxID();
-                System.out.println("Flight entry added with id " + id + " and flight id " + flightID);
-                return id;
+                return flightService.getMaxID();
             }
             else {
                 System.out.println("Failed to add flight entry.");
@@ -180,7 +174,7 @@ public class ConcreteAddData extends AddData {
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. A string, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
-     * @return int The route_id of the new route that has been created by RouteService.
+     * @return int The route_id of the new route that has been created by RouteService, -1 if fails to add.
      */
     @Override
     public int addRoute(String airline, String sourceAirport, String destAirport,
@@ -198,9 +192,7 @@ public class ConcreteAddData extends AddData {
                                             routeData.getCodeshare(), routeData.getStops(), routeData.getEquipment());
 
             if (result != -1) {
-                int id = routeService.getMaxID();
-                System.out.println("Route added with id " + id);
-                return id;
+                return routeService.getMaxID();
             }
             else {
                 System.out.println("Failed to add route.");

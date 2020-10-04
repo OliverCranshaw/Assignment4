@@ -39,7 +39,7 @@ public class AirlineService implements Service {
      * @param callsign The callsign of the airline.
      * @param country The country of the airline.
      * @param active "Y" if the airline is or has until recently been operational, "N" if it is defunct, cannot be null.
-     * @return int result The airline_id of the airline that was just created by the AirlineAccessor.
+     * @return int result The airline_id of the airline that was just created by the AirlineAccessor, -1 if checks fail or fails to save.
      */
     public int save(String name, String alias, String iata, String icao, String callsign, String country, String active) {
         // Checks that an airline has a unique code
@@ -74,7 +74,7 @@ public class AirlineService implements Service {
      * @param newCallsign The new callsign of the airline, may be null if not to be updated.
      * @param newCountry The new country of the airline, may be null if not to be updated.
      * @param newActive The new active of the airline, "Y" or "N", may be null if not to be updated.
-     * @return int result The airline_id of the airline that was just updated by the AirlineAccessor.
+     * @return int result The airline_id of the airline that was just updated by the AirlineAccessor, -1 if checks fail.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
@@ -193,7 +193,7 @@ public class AirlineService implements Service {
      * @param iata An airline IATA code.
      * @return boolean True if the IATA code is valid, False otherwise.
      */
-    public boolean iataIsValid(String iata) { //should we also use a regular expression to check what characters iata/icao codes contain
+    public boolean iataIsValid(String iata) {
         return (iata == null || !airlineExists(iata));
     }
 
@@ -223,7 +223,7 @@ public class AirlineService implements Service {
      * @param newCode String, new airport IATA/ICAO code.
      * @param oldCode String, old airport IATA/ICAO code.
      *
-     * @throws SQLException Caused by the ResultSet interactions
+     * @throws SQLException Caused by the ResultSet interactions.
      */
     public void updateRoutes(String newCode, String oldCode) throws SQLException {
         ResultSet result;
@@ -238,16 +238,16 @@ public class AirlineService implements Service {
         }
     }
 
-
     /**
      * Finds all Airline names for the given airline codes (IATA or ICAO) and returns it as a hashtable mapping the
      * airline code to the name of the airline.
      *
      * @param airlineCodes ArrayList of Strings - airlineCodes (IATA or ICAO).
-     * @return Hashtable of String to String - airlineCode to airlineName.
+     * @return Hashtable of String to String - airlineCode to airlineName, empty is an SQL exception occurs.
      */
     public Hashtable<String, String> getAirlineNames(ArrayList<String> airlineCodes) {
         Hashtable<String, String> result = new Hashtable<>();
+
         try {
             ResultSet data = accessor.getAirlineNames(airlineCodes);
             if (data != null) {
@@ -267,8 +267,8 @@ public class AirlineService implements Service {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return result;
     }
-
 }
 

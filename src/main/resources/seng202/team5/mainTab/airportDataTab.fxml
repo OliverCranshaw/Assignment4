@@ -21,9 +21,9 @@
 <?import javafx.scene.text.Text?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane maxHeight="0.0" prefHeight="645.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.AirportDataTabController">
+<StackPane maxHeight="0.0" prefHeight="645.0" prefWidth="1282.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.mainTab.AirportDataTabController">
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@../style.css" />
     </stylesheets>
     <properties helpText="Viewer for the raw airport data" />
    <children>

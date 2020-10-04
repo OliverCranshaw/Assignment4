@@ -1,7 +1,6 @@
 package seng202.team5.map;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -13,10 +12,10 @@ public class Bounds {
     public final Coord northeast;
 
     /**
-     * Creates the smallest bounds object that contains the given coordinates
+     * Creates the smallest bounds object that contains the given coordinates.
      *
-     * @param coordinates A list of at least 2 coordinates
-     * @return Bound that contains all the input coordinates
+     * @param coordinates A list of at least 2 coordinates.
+     * @return Bound that contains all the input coordinates.
      */
     public static Bounds fromCoordinateList(List<Coord> coordinates) {
         if (coordinates.size() < 2) {
@@ -57,10 +56,10 @@ public class Bounds {
     }
 
     /**
-     * The bounds constructor
+     * The bounds constructor.
      *
-     * @param southwest The southwestern most point within this bounds
-     * @param northeast The northeastern most point within this bounds
+     * @param southwest The southwestern most point within this bounds.
+     * @param northeast The northeastern most point within this bounds.
      */
     public Bounds(Coord southwest, Coord northeast) {
         this.southwest = southwest;
@@ -68,12 +67,12 @@ public class Bounds {
     }
 
     /**
-     * The bounds constructor
+     * The bounds constructor.
      *
-     * @param southern Southern most latitude of this bounds
-     * @param western Western most longitude of this bounds
-     * @param northern Northern most latitude of this bounds
-     * @param eastern Eastern most longitude of this bounds
+     * @param southern Southern most latitude of this bounds.
+     * @param western Western most longitude of this bounds.
+     * @param northern Northern most latitude of this bounds.
+     * @param eastern Eastern most longitude of this bounds.
      */
     public Bounds(double southern, double western, double northern, double eastern) {
         this(new Coord(southern, western), new Coord(northern, eastern));
