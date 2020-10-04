@@ -36,6 +36,7 @@ public class Bounds {
         longitudes.sort(Double::compareTo); // Ordered from westernmost to easternmost
         longitudes.add(longitudes.get(0));
 
+        // Finds the largest longitude gap and sets the eastern and western to exclude that longitude range
         double eastern = 0.0;
         double western = 0.0;
         double maximumGap = Double.NEGATIVE_INFINITY;

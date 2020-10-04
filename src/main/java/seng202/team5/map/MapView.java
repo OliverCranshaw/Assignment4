@@ -19,11 +19,12 @@ import java.util.function.Consumer;
  * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method.
  */
 public class MapView extends VBox {
-    private WebView webView = new WebView();
-    private Bridge bridge = new Bridge();
+    private final WebView webView = new WebView();
+    private final Bridge bridge = new Bridge();
 
     /**
      * The MapView constructor.
+     * After it is constructed the page will be in the loading state.
      */
     public MapView() {
         addLoadListener((obs, oldState, newState) -> {
@@ -164,9 +165,11 @@ public class MapView extends VBox {
         if (points.size() < 2) {
             throw new RuntimeException("Too few points to define a path");
         }
+        // Set default values
         if (symbols == null) symbols = List.of();
         if (colour == null) colour = "#FF0000";
 
+        // Check that all the symbols are valid
         Set<String> validSymbols = new HashSet<>(List.of(
                 "BACKWARD_CLOSED_ARROW",
                 "BACKWARD_OPEN_ARROW",
@@ -176,7 +179,7 @@ public class MapView extends VBox {
         ));
         for (Pair<Double,String> symbol : symbols) {
             if (!validSymbols.contains(symbol.getValue())) {
-                throw new RuntimeException("Invalid symbol name" + symbol.getValue());
+                throw new RuntimeException("Invalid symbol name \"" + symbol.getValue() + "\"");
             }
         }
 
@@ -232,9 +235,14 @@ public class MapView extends VBox {
         return webView.getEngine().executeScript(functionName + "(" + String.join(",", stringified) + ");");
     }
 
-    // Inner class has to be public due to javascript being unable to call private inner classes
+    /**
+     * This class isn't intended to be used outside this class.
+     * It has to be public due to javascript being unable to interact with private inner classes.
+     */
     public static class Bridge {
         private final Map<Integer, Consumer<Integer>> markerListeners = new HashMap<>();
+
+        private Bridge() {}
 
         public void notifyMarkerClicked(int markerID) {
             Consumer<Integer> listener = markerListeners.get(markerID);
