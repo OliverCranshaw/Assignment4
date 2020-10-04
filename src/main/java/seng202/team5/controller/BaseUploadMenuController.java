@@ -1,5 +1,6 @@
 package seng202.team5.controller;
 
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -39,11 +40,9 @@ public abstract class BaseUploadMenuController {
                     });
 
                     String resultText = doUploadOperation(readFile, chosenFile);
-                    if (resultText == null) {
-                        return null;
-                    }
 
-                    errorList.setText(resultText);
+                    // Ensures text is set from the application thread
+                    Platform.runLater(() -> errorList.setText(resultText));
                     return null;
                 }
             };
