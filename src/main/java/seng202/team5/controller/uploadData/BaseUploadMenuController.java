@@ -21,6 +21,7 @@ import seng202.team5.data.ReadFile;
 import java.io.File;
 
 public abstract class BaseUploadMenuController {
+
     private Service<Void> service = new Service<>() {
         @Override
         protected Task<Void> createTask() {
@@ -99,8 +100,14 @@ public abstract class BaseUploadMenuController {
         });
     }
 
+    /**
+     * Opens the Open File window, and then begins the file upload when a file has been selected.
+     *
+     * @param event The select file button has been pressed.
+     */
     @FXML
     public void onSelectFilePressed(ActionEvent event) {
+        // Don't proceed if another upload is already in progress
         if (service.isRunning()) return;
 
         FileChooser fileChooser = new FileChooser();
@@ -111,12 +118,19 @@ public abstract class BaseUploadMenuController {
         chosenFile = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
 
         if (chosenFile != null) {
+            // Sets the progress bar to be visible, changes the cursor to a waiting one, and then begins the file upload
             progressBar.setVisible(true);
             ((Node)event.getSource()).getScene().setCursor(Cursor.WAIT);
 
             service.start();
         }
     }
-
+    /**
+     * Reads the given file and returns any error messages.
+     *
+     * @param readFile The file reader.
+     * @param file The file to be read.
+     * @return The string of error messages returned from reading the file.
+     */
     protected abstract String doUploadOperation(ReadFile readFile, File file);
 }
