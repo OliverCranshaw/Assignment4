@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
@@ -15,8 +16,10 @@
 <?import javafx.scene.text.Font?>
 <?import seng202.team5.map.MapView?>
 
-
-<StackPane styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.FlightDataTabController">
+<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.FlightDataTabController">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
    <properties helpText="Viewer for the raw flight data" />
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0">
@@ -64,25 +67,25 @@
                   <Insets top="5.0" />
                </VBox.margin>
             </FlowPane>
-            <FlowPane prefHeight="536.0" prefWidth="1232.0">
+            <FlowPane prefHeight="577.0" prefWidth="1394.0">
                <VBox.margin>
-                  <Insets bottom="20.0" top="5.0" />
+                  <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
                <children>
-                  <TableView fx:id="flightTableView" prefHeight="493.0" prefWidth="615.0">
+                  <TableView fx:id="flightTableView" prefHeight="491.0" prefWidth="618.0">
                      <properties helpText="Flight list" />
                      <columns>
                         <TableColumn fx:id="flightIdCol" prefWidth="75.0" style="-fx-font-size: 11;" text="Flight ID" />
                         <TableColumn fx:id="flightSrcLocationCol" prefWidth="118.0" style="-fx-font-size: 11;" text="Source Location" />
                         <TableColumn fx:id="flightSrcAirportCol" prefWidth="117.0" style="-fx-font-size: 11;" text="Source Airport" />
                         <TableColumn fx:id="flightDstLocationCol" prefWidth="137.0" style="-fx-font-size: 11;" text="Destination Location" />
-                        <TableColumn fx:id="flightDstAirportCol" prefWidth="166.0" style="-fx-font-size: 11;" text="Destination Airport" />
+                        <TableColumn fx:id="flightDstAirportCol" prefWidth="153.0" style="-fx-font-size: 11;" text="Destination Airport" />
                      </columns>
                      <FlowPane.margin>
                         <Insets />
                      </FlowPane.margin>
                   </TableView>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="525.0" prefWidth="577.0">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="535.0" prefWidth="573.0">
                      <properties helpText="Flight status data list" />
                      <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -118,7 +121,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
                            <FlowPane.margin>
-                              <Insets left="1206.0" />
+                              <Insets left="1205.0" />
                            </FlowPane.margin>
                         </Button>
                      </children>

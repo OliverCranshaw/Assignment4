@@ -242,7 +242,7 @@ public class DataExporterTest {
 
 
     @Test
-    public void exportFlightsTest() {
+    public void exportAllFlightsTest() {
         // Adds the airports necessary to add the flights
         File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
         readFile.readAirportData(airportFile);
@@ -260,6 +260,76 @@ public class DataExporterTest {
         assertTrue(flightFile.exists());
 
         try {
+            if (flightFile.exists()) {
+                fileReader = new FileReader(flightFile);
+                bufferedReader = new BufferedReader(fileReader);
+                resultSet = flightService.getData(null, null);
+
+                // Compares the flight data returned from the database with the lines in the file
+                // For this the flight data must be converted into a string in the correct format
+                while ((line = bufferedReader.readLine()) != null && resultSet.next()) {
+                    expectedLine = String.format("%d,%d,%s,%s,%d,%f,%f",
+                            resultSet.getInt("id"), resultSet.getInt("flight_id"),
+                            resultSet.getString("location_type"), resultSet.getString("location"),
+                            resultSet.getInt("altitude"), resultSet.getDouble("latitude"),
+                            resultSet.getDouble("longitude"));
+
+                    assertEquals(expectedLine, line);
+                }
+                bufferedReader.close();
+
+                if (flightFile.delete()) {
+                    System.out.println("File deleted.");
+                }
+            }
+        } catch (SQLException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void exportFlightsTest() {
+        // Adds the airports necessary to add the flights
+        File airportFile = new File("src/test/java/seng202/team5/data/testfiles/airports.txt");
+        readFile.readAirportData(airportFile);
+
+        // Adds flights
+        File flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight.txt");
+        readFile.readFlightData(flightFile);
+        flightFile = new File("src/test/java/seng202/team5/data/testfiles/normal_flight_entry.txt");
+        readFile.readFlightData(flightFile);
+
+        try {
+            ResultSet flights = flightService.getData(null, null);
+            ResultSetMetaData md = flights.getMetaData();
+            // Gets the number of columns (ie the number of variables)
+            int columns = md.getColumnCount();
+            // Initializing an arraylist of arraylists to store the extracted data in
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
+            int entry = 1;
+            // Iterates through the result set
+            while(flights.next()) {
+                // Only adds the row when it's the first entry of the flight as that's how it is displayed in the table
+                if (entry == 1 || entry == 6) {
+                    // An arraylist of each instance of the data type
+                    ArrayList<Object> row = new ArrayList<>(columns);
+                    // Iterates through the data, storing it in the arraylist
+                    for (int i = 1; i <= columns; ++i) {
+                        row.add(flights.getObject(i));
+                    }
+                    // Adds the extracted data to the overall arraylist of data
+                    list.add(row);
+                }
+                entry++;
+            }
+
+            dataExporter.exportFlights(new File("src/test/java/seng202/team5/data/flights.csv"), list);
+
+            flightFile = new File("src/test/java/seng202/team5/data/flights.csv");
+
+            assertTrue(flightFile.exists());
+
             if (flightFile.exists()) {
                 fileReader = new FileReader(flightFile);
                 bufferedReader = new BufferedReader(fileReader);
