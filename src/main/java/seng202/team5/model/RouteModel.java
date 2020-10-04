@@ -5,8 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class RouteModel {
 
-
-
     private SimpleStringProperty routeAirline;
     private SimpleStringProperty routeSrcAirport;
     private SimpleStringProperty routeDstAirport;
@@ -15,8 +13,6 @@ public class RouteModel {
     private SimpleIntegerProperty routeId;
     private SimpleStringProperty routeSrcAirportCode;
     private SimpleStringProperty routeDstAirportCode;
-
-
 
     public RouteModel(String airline, String srcAirport, String dstAirport, Integer stops, String equipment, Integer id, String srcCode, String dstCode) {
         this.routeAirline = new SimpleStringProperty(airline);
@@ -40,7 +36,6 @@ public class RouteModel {
     public String getRouteSrcAirport() {
         return routeSrcAirport.get();
     }
-
 
     public void setRouteSrcAirport(String routeSrcAirport) {
         this.routeSrcAirport.set(routeSrcAirport);
@@ -82,7 +77,6 @@ public class RouteModel {
         return routeSrcAirportCode.get();
     }
 
-
     public void setRouteSrcAirportCode(String routeSrcAirportCode) {
         this.routeSrcAirportCode.set(routeSrcAirportCode);
     }
@@ -91,15 +85,7 @@ public class RouteModel {
         return routeDstAirportCode.get();
     }
 
-
     public void setRouteDstAirportCode(String routeDstAirportCode) {
         this.routeDstAirportCode.set(routeDstAirportCode);
     }
-
-
-
-
-
-
-
 }

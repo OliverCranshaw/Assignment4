@@ -3,24 +3,24 @@ package seng202.team5.map;
 import java.util.List;
 
 /**
- * Coord is an object that represents single point on the world by its latitude and longitude
+ * Coord is an object that represents single point on the world by its latitude and longitude.
  */
 public final class Coord {
     /**
-     * The latitude of this point
+     * The latitude of this point.
      */
     public final double latitude;
     /**
-     * The longitude of this point
+     * The longitude of this point.
      */
     public final double longitude;
 
     /**
-     * Constructor for Coord
-     * Normalises inputs such that there is exactly one Coord representation for every point on Earth
+     * Constructor for Coord.
+     * Normalises inputs such that there is exactly one Coord representation for every point on Earth.
      *
-     * @param latitude The latitude in degrees, will be mapped to between [-90,90]
-     * @param longitude The longitude in degrees, will be mapped to between (-180,180]
+     * @param latitude The latitude in degrees, will be mapped to between [-90,90].
+     * @param longitude The longitude in degrees, will be mapped to between (-180,180].
      */
     public Coord(double latitude, double longitude) {
         // Map latitude to (-180,180]

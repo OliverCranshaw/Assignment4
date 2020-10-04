@@ -1,6 +1,5 @@
 package seng202.team5.data;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class FlightData implements Data {
     private Double latitude;
     private Double longitude;
 
-
     // Getters for all variables of FlightData
     public Integer getFlightId() { return flightID; }
 
@@ -33,7 +31,6 @@ public class FlightData implements Data {
     public Double getLatitude() { return latitude; }
 
     public Double getLongitude() { return longitude; }
-
 
     /**
      * Constructor for FlightData that takes in all parameters as their native types (types that
@@ -56,7 +53,6 @@ public class FlightData implements Data {
         this.longitude = longitude;
 
     }
-
 
     /**
      * Constructor for flightID that attempts to parse variables to their native type (type used in this class) from Strings
@@ -99,7 +95,6 @@ public class FlightData implements Data {
         }
     }
 
-
     /**
      * Checks that the values of the variables of FlightData are in appropriate form,
      * Checking for null variables, size of variables and ensuring vairables are in a valid domain.
@@ -131,10 +126,9 @@ public class FlightData implements Data {
         }
     }
 
-
     /**
      * Checks every variable of FlightData against a list of possible null representations potentially used
-     * in files, or returned by a gui empty field. If a null representation is found, replaces that value with null,
+     * in files, or returned by a gui empty field. If a null representation is found, replaces that value with null.
      */
     public void convertBlanksToNull() {
         // List of null representations

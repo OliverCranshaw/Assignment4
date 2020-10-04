@@ -1,14 +1,11 @@
 package seng202.team5.graph;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import seng202.team5.accessor.RouteAccessor;
 import seng202.team5.service.RouteService;
 
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -65,7 +62,7 @@ public class RouteGraphChart implements GraphChartBuilder {
         if (selection == null) {
             return result;
         }
-
+        // Switch statement to choose what type of chart is built
         switch (selection) {
             case "RouteAirline":
                 result = routeAirlineGraph();
@@ -73,7 +70,6 @@ public class RouteGraphChart implements GraphChartBuilder {
         }
         return result;
     }
-
 
     /**
      * Builds a XYChart.Series mapping strings to Integers of Route Description (Source - Destination)
@@ -102,7 +98,6 @@ public class RouteGraphChart implements GraphChartBuilder {
         return sortAirlineChart(tempList);
     }
 
-
     /**
      * Sorts the XYChart.Data in the given XYChart.Series, and returning the sorted series
      *
@@ -130,9 +125,6 @@ public class RouteGraphChart implements GraphChartBuilder {
 
         return toReturn;
     }
-
-
-
 
     /**
      * Converts the ArrayList of ArrayList of Objects data to an Observable List of PieChart.Data.
@@ -164,12 +156,6 @@ public class RouteGraphChart implements GraphChartBuilder {
 
         return sortChartList(pieChartData);
     }
-
-
-
-
-
-
 
     /**
      * Sorts and iterates through pie chart data and returns it.

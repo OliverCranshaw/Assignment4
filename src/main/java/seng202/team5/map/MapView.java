@@ -23,7 +23,7 @@ public class MapView extends VBox {
     private Bridge bridge = new Bridge();
 
     /**
-     * The MapView constructor
+     * The MapView constructor.
      */
     public MapView() {
         addLoadListener((obs, oldState, newState) -> {
@@ -45,10 +45,10 @@ public class MapView extends VBox {
     }
 
     /**
-     * Add a listener for changes in the underlying WebView load state
+     * Add a listener for changes in the underlying WebView load state.
      * If this widget isn't loaded then "setCentre", "setZoom", "addMarker", etc will not work.
      *
-     * @param listener The event listener to add
+     * @param listener The event listener to add.
      */
     public void addLoadListener(ChangeListener<Worker.State> listener) {
         webView.getEngine().getLoadWorker().stateProperty().addListener(listener);
@@ -57,7 +57,7 @@ public class MapView extends VBox {
     /**
      * Centres the map to the given coordinate.
      *
-     * @param coord New centre coordinate
+     * @param coord New centre coordinate.
      */
     public void setCentre(Coord coord) {
         setCentre(coord.latitude, coord.longitude);
@@ -66,8 +66,8 @@ public class MapView extends VBox {
     /**
      * Centres the map to the given coordinate.
      *
-     * @param latitude New centre latitude
-     * @param longitude New centre longitude
+     * @param latitude New centre latitude.
+     * @param longitude New centre longitude.
      */
     public void setCentre(double latitude, double longitude) {
         callFunction("setCentre", latitude, longitude);
@@ -83,49 +83,49 @@ public class MapView extends VBox {
      * 15: Streets
      * 20: Buildings
      *
-     * @param level New zoom level
+     * @param level New zoom level.
      */
     public void setZoom(int level) {
         callFunction("setZoom", level);
     }
 
     /**
-     * Ensures that this map view will fit the given bounds
+     * Ensures that this map view will fit the given bounds.
      *
-     * @param bounds Bounds to fit to
-     * @param padding Extra padding to the given bounds
+     * @param bounds Bounds to fit to.
+     * @param padding Extra padding to the given bounds.
      */
     public void fitBounds(Bounds bounds, double padding) { callFunction("fitBounds", bounds, padding); }
 
     /**
-     * Adds a marker to the map with the given name and coordinate
+     * Adds a marker to the map with the given name and coordinate.
      *
-     * @param coord New marker coordinate
-     * @param name New marker name
-     * @param icon Icon to use, null for default
-     * @return The created marker ID
+     * @param coord New marker coordinate.
+     * @param name New marker name.
+     * @param icon Icon to use, null for default.
+     * @return The created marker ID.
      */
     public int addMarker(Coord coord, String name, MarkerIcon icon) {
         return addMarker(coord.latitude, coord.longitude, name, icon);
     }
 
     /**
-     * Adds a marker to the map with the given name, icon and coordinate
+     * Adds a marker to the map with the given name, icon and coordinate.
      *
-     * @param latitude New marker latitude
-     * @param longitude New marker longitude
-     * @param name New marker name
-     * @param icon Icon to use, null for default
-     * @return The created marker ID
+     * @param latitude New marker latitude.
+     * @param longitude New marker longitude.
+     * @param name New marker name.
+     * @param icon Icon to use, null for default.
+     * @return The created marker ID.
      */
     public int addMarker(double latitude, double longitude, String name, MarkerIcon icon) {
         return (int) callFunction("addMarker", latitude, longitude, name, icon);
     }
 
     /**
-     * Removes a marker from the map with the given marker ID
+     * Removes a marker from the map with the given marker ID.
      *
-     * @param markerID The marker ID to remove
+     * @param markerID The marker ID to remove.
      */
     public void removeMarker(int markerID) {
         callFunction("removeMarker", markerID);
@@ -136,8 +136,8 @@ public class MapView extends VBox {
      * Sets the listener for when the given marker is clicked.
      * If listener is null then the marker listener is removed.
      *
-     * @param markerID Marker to listen for
-     * @param listener new listener for the given marker
+     * @param markerID Marker to listen for.
+     * @param listener new listener for the given marker.
      */
     public void setMarkerListener(int markerID, Consumer<Integer> listener) {
         bridge.markerListeners.put(markerID, listener);
@@ -154,11 +154,11 @@ public class MapView extends VBox {
      *  - FORWARD_CLOSED_ARROW
      *  - FORWARD_OPEN_ARROW
      *
-     * @param points The list of points for the new path
-     * @param symbols List of symbols along the path, null is interpreted as no symbols
-     * @param colour Valid CSS3 colour string (except named colours) for the path, null for default colour
-     * @param strokeWeight Width of the path and symbols
-     * @return The created path ID
+     * @param points The list of points for the new path.
+     * @param symbols List of symbols along the path, null is interpreted as no symbols.
+     * @param colour Valid CSS3 colour string (except named colours) for the path, null for default colour.
+     * @param strokeWeight Width of the path and symbols.
+     * @return The created path ID.
      */
     public int addPath(List<Coord> points, List<Pair<Double, String>> symbols, String colour, double strokeWeight) {
         if (points.size() < 2) {
@@ -184,9 +184,9 @@ public class MapView extends VBox {
     }
 
     /**
-     * Removes a path on the map with the given path ID
+     * Removes a path on the map with the given path ID.
      *
-     * @param pathID The path ID to remove
+     * @param pathID The path ID to remove.
      */
     public void removePath(int pathID) {
         callFunction("removePath", pathID);

@@ -39,10 +39,12 @@ public class AirportGraphChart implements GraphChartBuilder {
      * returning the data required to build a pie chart from it.
      *
      * @return ObservableList of PieChart.Data objects.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public ObservableList<PieChart.Data> buildChart() throws SQLException {
         ObservableList<PieChart.Data> result = FXCollections.observableArrayList();
-
+        // Switch statement to choose what type of chart is built
         switch (selection) {
             case "AirportRoute":
                 result =  airportRouteChart();
@@ -59,6 +61,8 @@ public class AirportGraphChart implements GraphChartBuilder {
      * Builds and creates an observable list with number of routes in and out per airport.
      *
      * @return ObservableList that contains all the data for a chart.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public ObservableList<PieChart.Data> airportRouteChart() throws SQLException {
         Hashtable<String, Integer> routeCounts = new Hashtable<String, Integer>();
@@ -89,7 +93,7 @@ public class AirportGraphChart implements GraphChartBuilder {
      *
      * @return ObservableList that contains all the data for a chart.
      */
-    public ObservableList<PieChart.Data> airportCountryChart(){
+    public ObservableList<PieChart.Data> airportCountryChart() {
         Hashtable<String, Integer> countryCounts = new Hashtable<String, Integer>();
         for (ArrayList<Object> airport : data) {
             String country = (String) airport.get(3);

@@ -16,7 +16,7 @@ public class DBTableInitializer {
      * Creates the airport, airline, flight, and route tables if they do not already exist.
      * Uses SQLite3.
      *
-     * @param url The url of the database, intended to be passed in from DBInitializer
+     * @param url The url of the database, intended to be passed in from DBInitializer.
      */
     public static void initializeTables(String url) {
 
@@ -81,11 +81,6 @@ public class DBTableInitializer {
                 + "     longitude REAL NOT NULL\n" // Negative is West, positive is East, double
                 + ");";
 
-//        String indexIATAAirportSql = "CREATE INDEX IF NOT EXISTS airport_iata_index ON AIRPORT_DATA(iata)";
-//        String indexICAOAirportSql = "CREATE INDEX IF NOT EXISTS airport_icao_index ON AIRPORT_DATA(icao)";
-//        String indexIATAAirlineSql = "CREATE INDEX IF NOT EXISTS airline_iata_index ON AIRLINE_DATA(iata)";
-//        String indexICAOAirlineSql = "CREATE INDEX IF NOT EXISTS airline_icao_index ON AIRLINE_DATA(icao)";
-
         // Attempts to create a connection to the database with the given url, prints an error message otherwise
         try (Connection con = DriverManager.getConnection(url);
             Statement statement = con.createStatement()) {
@@ -94,10 +89,6 @@ public class DBTableInitializer {
             statement.execute(airportSql);
             statement.execute(routeSql);
             statement.execute(flightSql);
-//            statement.execute(indexIATAAirportSql);
-//            statement.execute(indexICAOAirportSql);
-//            statement.execute(indexIATAAirlineSql);
-//            statement.execute(indexICAOAirlineSql);
 
             System.out.println("Tables created.");
         } catch (SQLException e) {
@@ -105,5 +96,4 @@ public class DBTableInitializer {
             System.out.println(e.getMessage());
         }
     }
-
 }

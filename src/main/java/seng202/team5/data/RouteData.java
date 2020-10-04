@@ -44,7 +44,6 @@ public class RouteData implements Data {
         return equipment;
     }
 
-
     /**
      * Constructor for RouteData that takes in all parameters as their native types (types that
      * are used within this class).
@@ -65,7 +64,6 @@ public class RouteData implements Data {
         this.stops = stops;
         this.equipment = equipment;
     }
-
 
     /**
      * Constructor for RouteData that takes in all parameters as strings and attempts to parse certain variables to
@@ -94,7 +92,6 @@ public class RouteData implements Data {
             System.out.println("Route Data (stops): " + e);
         }
     }
-
 
     /**
      * Checks that the values of the variables of RouteData are in appropriate forms,
@@ -127,7 +124,6 @@ public class RouteData implements Data {
             return 1;
         }
     }
-
 
     /**
      * Checks every variable of RouteData against a list of possible null representations potentially used

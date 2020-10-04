@@ -2,9 +2,6 @@ package seng202.team5.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import seng202.team5.service.AirportService;
-
-import java.sql.SQLException;
 
 public class AirportModel {
 

@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -36,9 +35,9 @@ public class AirlineGraphChart implements GraphChartBuilder {
      *
      * @return ObservableList of PieChart.Data objects.
      */
-    public ObservableList<PieChart.Data> buildChart() throws SQLException {
+    public ObservableList<PieChart.Data> buildChart() {
         ObservableList<PieChart.Data> result = FXCollections.observableArrayList();
-
+        // Switch statement to choose what type of chart is built
         switch (selection) {
             case "AirlineCountry":
                 result = airlineCountryChart();
