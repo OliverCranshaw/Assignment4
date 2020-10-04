@@ -66,6 +66,7 @@ public class FlightServiceTest extends BaseDatabaseTest {
         }
     }
 
+
     @Test
     public void testUpdateFlightValid() throws SQLException {
 

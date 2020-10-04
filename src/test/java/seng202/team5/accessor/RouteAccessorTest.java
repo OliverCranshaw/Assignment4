@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteAccessorTest extends BaseDatabaseTest {
+
     private RouteAccessor routeAccessor;
 
     private final List<Object> testData = List.of("IT", 1, "IA1", 1, "IA2", 2, "N", 100, "ABC");
@@ -578,12 +579,5 @@ public class RouteAccessorTest extends BaseDatabaseTest {
         // Checking empty case
         ResultSet test2 = routeAccessor.getCountAirlinesCovering(new ArrayList<>());
         Assert.assertFalse(test2.next());
-
     }
-
-
-
-
-
-
 }

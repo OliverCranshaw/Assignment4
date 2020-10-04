@@ -1,6 +1,5 @@
 package seng202.team5.service;
 
-import io.cucumber.java.bs.A;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +20,6 @@ public class AirportServiceTest extends BaseDatabaseTest {
     private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Time/Zone");
     private final List<Object> testData2 = List.of("AirportName2", "CityName2", "CountryName2", "ATA", "CAOO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
     private final List<Object> testData3 = List.of("AirportName3", "CityName3", "CountryName3", "FED", "SFBE", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
-
-
 
     @Before
     public void setUp() {
@@ -307,6 +304,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         }
     }
 
+
     @Test
     public void testDeleteFlight() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
@@ -519,6 +517,7 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Assert.assertFalse(incomingRoutesCount2.containsKey(1));
     }
 
+
     @Test
     public void testGetOutRouteCount() throws SQLException {
 
@@ -620,7 +619,5 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Assert.assertEquals(result2.get((String) testData.get(3)), (String) testData.get(0));
         Assert.assertEquals(result2.get((String) testData2.get(3)), (String) testData2.get(0));
         Assert.assertEquals(result2.get((String) testData3.get(4)), (String) testData3.get(0));
-
     }
-
 }

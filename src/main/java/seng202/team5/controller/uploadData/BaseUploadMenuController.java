@@ -19,7 +19,6 @@ import javafx.stage.FileChooser;
 import seng202.team5.data.ReadFile;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public abstract class BaseUploadMenuController {
     private Service<Void> service = new Service<>() {
@@ -63,9 +62,9 @@ public abstract class BaseUploadMenuController {
     }
 
     /**
-     * Must be called after this window is shown
+     * Must be called after this window is shown.
      *
-     * @param scene Scene that the controller is within
+     * @param scene Scene that the controller is within.
      */
     public final void onShown(Scene scene) {
         EventHandler<WorkerStateEvent> onTaskDone = e -> {
@@ -118,7 +117,6 @@ public abstract class BaseUploadMenuController {
             service.start();
         }
     }
-
 
     protected abstract String doUploadOperation(ReadFile readFile, File file);
 }

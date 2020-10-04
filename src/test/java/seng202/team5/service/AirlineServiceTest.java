@@ -1,7 +1,5 @@
 package seng202.team5.service;
 
-import io.cucumber.java.bs.A;
-import io.cucumber.java.hu.Ha;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,6 +48,7 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         Assert.assertEquals(0, airlineService.update(10, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
         Assert.assertEquals(1, airlineService.update(1, "Namey", "Aliasy", "Ia", "Ica", "Callsigny", "Countryy", "Y"));
     }
+
 
     @Test
     public void testGetAirlines() throws SQLException {
@@ -427,14 +426,5 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         Assert.assertEquals(test2.get(testData.get(2)), testData.get(0));
         Assert.assertEquals(test2.get(testData2.get(2)), testData2.get(0));
         Assert.assertEquals(test2.get(testData3.get(3)), testData3.get(0));
-
-
-
-
-
-
     }
-
-
-
 }

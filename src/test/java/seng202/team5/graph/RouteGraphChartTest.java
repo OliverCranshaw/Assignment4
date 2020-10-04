@@ -1,6 +1,5 @@
 package seng202.team5.graph;
 
-import io.cucumber.java.bs.A;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
@@ -18,7 +17,6 @@ import seng202.team5.service.RouteService;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +29,8 @@ public class RouteGraphChartTest {
     private AirlineService airlineService;
     private static final String dbFile = "test.db";
 
-
-
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
         System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
@@ -56,7 +52,6 @@ public class RouteGraphChartTest {
         routeService.save("A1", "ia1", "ia2", "Y", 6, "GPS");
         routeService.save("A1", "ia2", "ia3", "Y", 6, "GPS");
         routeService.save("A2", "ia1", "ia2", "Y", 6, "GPS");
-
     }
 
     @After
@@ -160,11 +155,7 @@ public class RouteGraphChartTest {
         RouteGraphChart testGraph4 = new RouteGraphChart(exampleData);
         ObservableList<PieChart.Data> resultActual4 = testGraph4.buildChart();
         Assert.assertEquals(0, resultActual4.size());
-
-
     }
-
-
 
 
     @Test
@@ -194,11 +185,7 @@ public class RouteGraphChartTest {
             Assert.assertEquals(expectedResult.get(i).getXValue(), test.getData().get(i).getXValue());
             Assert.assertEquals(expectedResult.get(i).getYValue(), test.getData().get(i).getYValue());
         }
-
-
     }
-
-
 
 
     @Test
@@ -250,9 +237,7 @@ public class RouteGraphChartTest {
         XYChart.Series<String, Number> test2 = instance2.buildBarChart();
 
         Assert.assertEquals(0, test2.getData().size());
-
     }
-
 
 
     @Test
@@ -280,10 +265,7 @@ public class RouteGraphChartTest {
             Assert.assertEquals(expectedResult.get(i).getXValue(), test.getData().get(i).getXValue());
             Assert.assertEquals(expectedResult.get(i).getYValue(), test.getData().get(i).getYValue());
         }
-
-
     }
-
 
 
     @Test
@@ -315,9 +297,7 @@ public class RouteGraphChartTest {
             Assert.assertEquals(expectedResult.getData().get(i).getXValue(), testData.get(i).getXValue());
             Assert.assertEquals(expectedResult.getData().get(i).getYValue(), testData.get(i).getYValue());
         }
-
     }
-
 
 
     @Test
@@ -395,8 +375,6 @@ public class RouteGraphChartTest {
             Assert.assertEquals(resultActual2.get(i).getPieValue(), resultExpected2.get(i).getPieValue(), 0.0000001);
             Assert.assertEquals(resultActual2.get(i).getName(), resultExpected2.get(i).getName());
         }
-
-
     }
 
 
@@ -438,8 +416,4 @@ public class RouteGraphChartTest {
             Assert.assertEquals(result.get(i).getName(), sorted.get(i).getName());
         }
     }
-
-
-
-
 }

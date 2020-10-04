@@ -1,6 +1,5 @@
 package seng202.team5.map;
 
-
 import org.junit.Test;
 
 import java.util.Random;
@@ -75,6 +74,7 @@ public class CoordTest {
         }
     }
 
+
     @Test
     public void testEquals() {
         Random random = new Random(42);
@@ -92,6 +92,7 @@ public class CoordTest {
             assertEquals(test, stillTest);
         }
     }
+
 
     @Test
     public void testHashCode() {

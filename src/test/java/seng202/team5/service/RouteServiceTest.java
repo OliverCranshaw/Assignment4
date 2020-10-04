@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
-
 public class RouteServiceTest extends BaseDatabaseTest {
 
     private RouteService routeService;
@@ -657,7 +656,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testInvalidDeleteRoute() throws SQLException {
+    public void testInvalidDeleteRoute() {
 
         // Initializing a connection with the database
         Connection dbHandler = DBConnection.getConnection();
@@ -1073,7 +1072,6 @@ public class RouteServiceTest extends BaseDatabaseTest {
         for (int i = 0; i < result3.size(); i++) {
             Assert.assertEquals(expectedResult3.get(i), result3.get(i));
         }
-
     }
 
 
@@ -1151,11 +1149,5 @@ public class RouteServiceTest extends BaseDatabaseTest {
 
         Hashtable<String, Integer> result2 = routeService.getCountAirlinesCovering(new ArrayList<Integer>());
         Assert.assertEquals(0, result2.size());
-
-
     }
-
-
-
-
 }

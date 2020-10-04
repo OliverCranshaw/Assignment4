@@ -1,6 +1,5 @@
 package seng202.team5.accessor;
 
-import io.cucumber.java.bs.A;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirportAccessorTest extends BaseDatabaseTest {
+
     private AirportAccessor airportAccessor;
 
     private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");

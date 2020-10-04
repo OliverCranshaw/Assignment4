@@ -14,13 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirlineAccessorTest extends BaseDatabaseTest {
+
     private AirlineAccessor airlineAccessor;
 
     private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
     private final List<String> testData2 = List.of("AirlineName2", "AliasName2", "IF", "IGE", "CallsignStuff2", "CountryName2", "Y");
     private final List<String> testData3 = List.of("AirlineName3", "AliasName3", "", "GEE", "CallsignStuff3", "CountryName3", "Y");
-
-
 
     @Before
     public void setUp() {
@@ -478,8 +477,5 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             }
             Assert.assertNotEquals(iata, nonExistentIata);
         }
-
     }
-
-
 }

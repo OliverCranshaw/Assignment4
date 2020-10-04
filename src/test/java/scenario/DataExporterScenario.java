@@ -74,7 +74,6 @@ public class DataExporterScenario {
         }
     }
 
-
     // Exporting airline data
 
     // Exporting airline data with airlines in the database

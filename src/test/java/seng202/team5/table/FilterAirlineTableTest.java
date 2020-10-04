@@ -81,7 +81,6 @@ public class FilterAirlineTableTest {
         testFilter = new FilterAirlineTable(testTable.getData());
     }
 
-
     @After
     public void tearDown() throws SQLException {
         System.out.println("Tear down");
