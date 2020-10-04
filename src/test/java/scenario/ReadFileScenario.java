@@ -70,7 +70,6 @@ public class ReadFileScenario {
         }
     }
 
-
     // Reading Airline Data
 
     // Reading valid airline data

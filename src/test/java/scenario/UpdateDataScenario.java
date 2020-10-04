@@ -72,7 +72,6 @@ public class UpdateDataScenario {
         }
     }
 
-
     // Updating airline data
 
     // Updating an airline with valid parameters

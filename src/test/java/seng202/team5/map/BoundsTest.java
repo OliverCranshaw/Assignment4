@@ -47,6 +47,7 @@ public class BoundsTest {
         }
     }
 
+
     @Test
     public void testFromCoordinateListLongitude() {
         Random random = new Random(42);

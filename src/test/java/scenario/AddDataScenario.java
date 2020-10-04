@@ -23,7 +23,6 @@ import java.util.Arrays;
 public class AddDataScenario {
 
     private int id;
-    //private int flightID;
     private AirlineData airlineData;
     private AirportData airportData;
     private FlightData flightData;
@@ -66,7 +65,6 @@ public class AddDataScenario {
             System.out.println(e.getMessage());
         }
     }
-
 
     // Adding Airlines
 

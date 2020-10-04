@@ -30,7 +30,6 @@ public class SearchScenario {
     private ArrayList<Object> data;
     private ResultSet searchResult;
 
-
     @Before("@Search")
     public void setUp() {
 

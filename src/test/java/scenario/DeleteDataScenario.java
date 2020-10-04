@@ -62,7 +62,6 @@ public class DeleteDataScenario {
         }
     }
 
-
     // Deleting airlines
 
     // Deleting an airline that exists
