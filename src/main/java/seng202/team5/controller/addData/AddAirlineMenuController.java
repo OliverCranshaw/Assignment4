@@ -86,7 +86,6 @@ public class AddAirlineMenuController {
         }
     }
 
-
     public void setDefaults() {
         nameField.setStyle("-fx-border-color: #000000;");
         iataField.setStyle("-fx-border-color: #000000;");

@@ -184,12 +184,12 @@ public class AirportDataTabController implements Initializable {
 
     private MainMenuController mainMenuController = new MainMenuController();
 
-
     /**
      * Initializer for AirportDataTabController
      * Sets up all tables, buttons, listeners, services, etc
-     * @param url
-     * @param resourceBundle
+     *
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -272,11 +272,11 @@ public class AirportDataTabController implements Initializable {
 
 
     /**
-     * setAirportSingleRecord
+     * Sets the airport single record labels to contain relevant entries.
      *
-     * Sets the airport single record labels to contain relevant entries
-     * @param airportModel - airport Model used to populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param airportModel - airport Model used to populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setAirportSingleRecord(AirportModel airportModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airportID, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
@@ -319,8 +319,6 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onCalculateDistancePressed
-     *
      * Sets the distance label on the gui to the calculated distance between the currently viewed
      * airport and the previously viewed airport. If no previous airport has been viewed, the distance
      * label will display an error message.
@@ -337,22 +335,20 @@ public class AirportDataTabController implements Initializable {
 
         airportPathId = airportMapView.addPath(airportCoords, null, null, MainMenuController.DEFAULT_STROKE_WEIGHT);
         airportPrevMarkerId = airportMapView.addMarker(rawAirportCompare.getLocation2(), "Previous Airport", null);
-
-
     }
 
     /**
-     * onAddAirportPressed
-     *
      * Handles add airport button pressing by showing new window which contains
-     * UI to add new airport
-     * @param event user has clicked on the add airport button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * UI to add new airport.
+     *
+     * @param event user has clicked on the add airport button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onAddAirportPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("add_airport.fxml"));
+        Parent root = FXMLLoader.load(App.class.getResource("addData/add_airport.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Add Airport");
         stage.initModality(Modality.WINDOW_MODAL);
@@ -360,18 +356,17 @@ public class AirportDataTabController implements Initializable {
         stage.show();
     }
 
-
     /**
-     * onUploadAirportDataPressed
+     * Starts the upload airport data window.
      *
-     * Starts the upload airport data window
-     * @param event user has clicked on the upload airport button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the upload airport button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onUploadAirportDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_airports.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("uploadData/upload_airports.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Upload Airport Data");
@@ -383,10 +378,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onDownloadAirportDataPressed
+     * Starts the download airport data window.
      *
-     * Starts the download airport data window
-     * @param event user has clicked on the download button in the airport tab
+     * @param event user has clicked on the download button in the airport tab.
      */
     @FXML
     public void onDownloadAirportDataPressed(ActionEvent event) {
@@ -398,11 +392,10 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * populateAirportTable
+     * Populates the given airport table with the given data.
      *
-     * Populates the given airport table with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
@@ -433,8 +426,6 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onAirportApplyFilterButton
-     *
      * Applies the selected filters to the airline table
      */
     @FXML
@@ -447,10 +438,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * updateAirportTable
+     * Updates the airport table with data from the database.
      *
-     * Updates the airport table with data from the database
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail.
      */
     public void updateAirportTable() throws SQLException {
         airportTable = new AirportTable(airportService.getData(null, null, null));
@@ -459,10 +449,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onAirportRefreshButton
+     * Updates the airport table from a button press.
      *
-     * Updates the airport table from a button press
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateAirportTable fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateAirportTable fail.
      */
     @FXML
     public void onAirportRefreshButton() throws SQLException {
@@ -470,10 +459,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onModifyAirportBtnPressed
+     * Starts the modify airport mode.
      *
-     * Starts the modify airport mode
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirportSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirportSingleRecord function.
      */
     public void onModifyAirportBtnPressed() throws SQLException {
         if (airportTableView.getSelectionModel().getSelectedItem() != null) {
@@ -489,10 +477,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * setAirportElementsEditable
+     * Sets the airport TextFields to be editable or not (depending on given bool).
      *
-     * Sets the airport TextFields to be editable or not (depending on given bool)
-     * @param bool - boolean
+     * @param bool - boolean.
      */
     public void setAirportElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude, airportLongitude,
@@ -501,13 +488,11 @@ public class AirportDataTabController implements Initializable {
         mainMenuController.setElementsEditable(elementsEditable, bool);
     }
 
-
     /**
-     * onAirportSaveBtnPressed
-     *
      * Saves the airport if the given data if in the right form,
-     * other wise handles errors and prompts user on where they are
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateAirportTable function
+     * other wise handles errors and prompts user on where they are.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateAirportTable function.
      */
     @FXML
     public void onAirportSaveBtnPressed() throws SQLException {
@@ -624,10 +609,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * setAirportUpdateColour
+     * Updates the colours of the airport TextFields by the given index.
      *
-     * Updates the colours of the airport TextFields by the given index
-     * @param index
+     * @param index Integer the index of the element.
      */
     public void setAirportUpdateColour(Integer index) {
         airportInvalidFormatLbl.setVisible(false);
@@ -645,10 +629,9 @@ public class AirportDataTabController implements Initializable {
 
 
     /**
-     * onAirportCancelBtnPressed
+     * Cancels current airport modify.
      *
-     * Cancels current airport modify
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirportSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setAirportSingleRecord function.
      */
     @FXML
     public void onAirportCancelBtnPressed() throws SQLException {
@@ -663,9 +646,7 @@ public class AirportDataTabController implements Initializable {
 
 
     /**
-     * onAirportDeleteBtnPressed
-     *
-     * Deletes airport that is currently being modified
+     * Deletes airport that is currently being modified.
      */
     @FXML
     public void onAirportDeleteBtnPressed() {
@@ -689,15 +670,12 @@ public class AirportDataTabController implements Initializable {
                 }
             }
         });
-
-
     }
 
     /**
-     * onGraphAirportCountryBtnPressed
-     *
      * Handles the pressing of the Airport Country Graph Button.
      * Creates a Pie Chart showing the number of airports per country from the filtered data of the table.
+     *
      * @throws Exception Caused by ResultSet interactions.
      */
     public void onGraphAirportCountryBtnPressed() throws Exception {
@@ -708,10 +686,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onGraphAirportRouteBtnPressed
-     *
      * Handles the pressing of the Airport Route Graph Button.
      * Creates a Pie Chart showing the number of routes per airport from the filtered data of the airport table.
+     *
      * @throws Exception Caused by ResultSet interactions.
      */
     public void onGraphAirportRouteBtnPressed() throws Exception {
@@ -722,10 +699,9 @@ public class AirportDataTabController implements Initializable {
     }
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -734,5 +710,4 @@ public class AirportDataTabController implements Initializable {
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);
     }
-
 }

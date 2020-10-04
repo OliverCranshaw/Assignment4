@@ -1,6 +1,5 @@
 package seng202.team5.controller.addData;
 
-import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,12 +13,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Window;
 import seng202.team5.data.ConcreteAddData;
-
-import javax.swing.event.ChangeListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class AddAirportMenuController {
     public AddAirportMenuController() {}
@@ -63,7 +56,6 @@ public class AddAirportMenuController {
 
     @FXML
     public void addButtonPressed(ActionEvent event) {
-
 
         try {
 
@@ -137,12 +129,10 @@ public class AddAirportMenuController {
         }
     }
 
-
     @FXML
     public void onCancelPressed(ActionEvent event) {
 
     }
-
 
     public void setDefaults() {
         nameField.setStyle("-fx-border-color: #000000;");
@@ -159,5 +149,4 @@ public class AddAirportMenuController {
         errorMessage.setVisible(false);
 
     }
-
 }

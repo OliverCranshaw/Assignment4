@@ -109,8 +109,8 @@ public class FlightDataTabController implements Initializable {
     /**
      * Initializer for FlightDataTabController
      * Sets up all tables, buttons, listeners, services, etc
-     * @param url
-     * @param resourceBundle
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -180,17 +180,15 @@ public class FlightDataTabController implements Initializable {
         // Setting all modify buttons to invisible
         flightDeleteBtn.setDisable(true);
         flightDownloadBtn.setDisable(true);
-
-
     }
 
     /**
-     * setFlightSingleRecord
+     * Sets the flight single record table to contain the relevant entries.
+     * from the given flight model.
      *
-     * Sets the flight single record table to contain the relevant entries
-     * from the given flight model
-     * @param flightModel - flight model used to populate table
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param flightModel - flight model used to populate table.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setFlightSingleRecord(FlightModel flightModel) throws SQLException {
         if (flightModel == null) {
@@ -233,8 +231,6 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * onFlightEntrySelected
-     *
      * Called when the currently selected flight entry changes.
      */
     private void onFlightEntrySelected(FlightEntryModel flightEntryModel) {
@@ -249,16 +245,16 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * onUploadFlightPressed
+     * Starts the upload flight window.
      *
-     * Starts the upload flight window
-     * @param event user has clicked on the upload flight button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the upload flight button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onUploadFlightPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_flight.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("uploadData/upload_flight.fxml"));
         Scene scene = new Scene(loader.load());
 
         stage.setScene(scene);
@@ -272,10 +268,9 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * onDownloadFlightsPressed
+     * Starts the download flights window.
      *
-     * Starts the download flights window
-     * @param event user has clicked on the download button in the flight tab
+     * @param event user has clicked on the download button in the flight tab.
      */
     @FXML
     public void onDownloadFlightsPressed(ActionEvent event) {
@@ -288,10 +283,9 @@ public class FlightDataTabController implements Initializable {
 
 
     /**
-     * onDownloadFlightPressed
+     * Starts the download flight window.
      *
-     * Starts the download flight window
-     * @param event user has clicked on the download flight button
+     * @param event user has clicked on the download flight button.
      */
     @FXML
     public void onDownloadFlightPressed(ActionEvent event) {
@@ -309,12 +303,12 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * populateFlightTable
+     * Populates the given flight table witht the given data.
      *
-     * Populates the given flight table witht the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of data
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of data.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void populateFlightTable(TableView tableView, ArrayList<ArrayList<Object>> data) throws SQLException {
         ArrayList<FlightModel> list = new ArrayList<>();
@@ -337,15 +331,13 @@ public class FlightDataTabController implements Initializable {
         }
         flightModels = FXCollections.observableArrayList(list);
         tableView.setItems(flightModels);
-
     }
 
 
     /**
-     * updateFlightTable
+     * Updates the flight table with data from the database.
      *
-     * Updates the flight table with data from the database
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail.
      */
     public void updateFlightTable() throws SQLException {
         flightTable = new FlightTable(flightService.getData(null, null));
@@ -353,12 +345,10 @@ public class FlightDataTabController implements Initializable {
         populateFlightTable(flightTableView, flightTable.getData());
     }
 
-
     /**
-     * onFlightRefreshButton
+     * Updates the flight table from a button press.
      *
-     * Updates the flight table from a button press
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateFlightTable fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateFlightTable fail.
      */
     @FXML
     public void onFlightRefreshButton() throws  SQLException {
@@ -366,9 +356,7 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * onFlightDeleteBtnPressed
-     *
-     * Deletes flight that is currently being modified
+     * Deletes flight that is currently being modified.
      */
     @FXML
     public void onFlightDeleteBtnPressed() {
@@ -392,12 +380,10 @@ public class FlightDataTabController implements Initializable {
         });
     }
 
-
     /**
-     * handleFlightDeleteEntry
+     * Handles the delete flight entry by starting delete flight window.
      *
-     * Handles the delete flight entry by starting delete flight window
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateFlightTable function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateFlightTable function.
      */
     @FXML
     public void handleFlightDeleteEntry() throws SQLException {
@@ -424,10 +410,9 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * handleFlightEditOption
+     * Handles the flight edit option by starting the flight edit window.
      *
-     * Handles the flight edit option by starting the flight edit window
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateFlightTable function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateFlightTable function.
      */
     @FXML
     public void handleFlightEditOption() throws SQLException {
@@ -452,10 +437,9 @@ public class FlightDataTabController implements Initializable {
     }
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -464,5 +448,4 @@ public class FlightDataTabController implements Initializable {
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);
     }
-
 }

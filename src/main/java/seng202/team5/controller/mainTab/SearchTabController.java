@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import seng202.team5.controller.HelpHandler;
 import seng202.team5.controller.MainMenuController;
-import seng202.team5.data.AirlineData;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;
 import seng202.team5.map.*;
@@ -28,7 +27,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.Function;
 
 public class SearchTabController implements Initializable {
 
@@ -310,13 +308,11 @@ public class SearchTabController implements Initializable {
 
     private MainMenuController mainMenuController = new MainMenuController();
 
-
-
     /**
      * Initializer for SearchTabController
      * Sets up all tables, buttons, listeners, services, etc
-     * @param url
-     * @param resourceBundle
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

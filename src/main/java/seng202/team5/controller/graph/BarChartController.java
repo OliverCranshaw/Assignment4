@@ -9,16 +9,13 @@ import javafx.scene.chart.*;
 import javafx.stage.Stage;
 import seng202.team5.graph.RouteGraphChart;
 
-import javax.xml.catalog.Catalog;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BarChartController extends Application {
 
-
     private BarChart<String, Number> chart;
     private String selection;
-
 
     @Override
     public void start(Stage stage) {
@@ -30,7 +27,6 @@ public class BarChartController extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void inflateChart(ArrayList<ArrayList<Object>> routeIds, List<Object> metaData) {
         RouteGraphChart routeGraphChart = new RouteGraphChart(routeIds);
@@ -48,8 +44,4 @@ public class BarChartController extends Application {
         chart.setLegendVisible(false);
 
     }
-
-
-
-
 }

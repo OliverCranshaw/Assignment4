@@ -172,13 +172,12 @@ public class RouteDataTabController implements Initializable {
 
     private MainMenuController mainMenuController = new MainMenuController();
 
-
     /**
      * Initializer for RouteDataTabController
      * Sets up all tables, buttons, listeners, services, etc
      *
-     * @param url
-     * @param resourceBundle
+     * @param url URL.
+     * @param resourceBundle ResourceBundle.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -253,11 +252,11 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * setRouteSingleRecord
+     * Sets the route single record labels to contain the relevant entries.
      *
-     * Sets the route single record labels to contain the relevant entries
-     * @param routeModel - Route model used to populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param routeModel - Route model used to populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setRouteSingleRecord(RouteModel routeModel) throws SQLException {
 
@@ -296,17 +295,17 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onAddRoutePressed
+     * Starts the add route window.
      *
-     * Starts the add route window
-     * @param event user has clicked on the add airline button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the add airline button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onAddRoutePressed(ActionEvent event) throws IOException {
         routeInvalidFormatLbl.setVisible(false);
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(App.class.getResource("add_route.fxml"));
+        Parent root = FXMLLoader.load(App.class.getResource("addData/add_route.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Add Route");
         stage.initModality(Modality.WINDOW_MODAL);
@@ -314,18 +313,17 @@ public class RouteDataTabController implements Initializable {
         stage.show();
     }
 
-
     /**
-     * onUploadRouteDataPressed
+     * Starts the upload route data window.
      *
-     * Starts the upload route data window
-     * @param event user has clicked on the upload route button
-     * @throws IOException occurs when there are any errors with JavaFX
+     * @param event user has clicked on the upload route button.
+     *
+     * @throws IOException occurs when there are any errors with JavaFX.
      */
     @FXML
     public void onUploadRouteDataPressed(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("upload_routes.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("uploadData/upload_routes.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Upload Route Data");
@@ -338,10 +336,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onDownloadRouteDataPressed
+     * Starts the download route data window.
      *
-     * Starts the download route data window
-     * @param event user has clicked on the download button in the route tab
+     * @param event user has clicked on the download button in the route tab.
      */
     @FXML
     public void onDownloadRouteDataPressed(ActionEvent event) {
@@ -353,11 +350,10 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * populateRouteTable
+     * Populates the given route table with the given data.
      *
-     * Populates the given route table with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateRouteTable(TableView<RouteModel> tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
@@ -410,10 +406,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onRouteApplyFilterButton
+     * Applies the selected filter to the route table.
      *
-     * Applies the selected filter to the route table
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     @FXML
     public void onRouteApplyFilterButton() throws SQLException {
@@ -455,10 +450,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * updateRouteTable
+     * Updates the route table with data from the database.
      *
-     * Updates the route table with data from the database
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function fail.
      */
     public void updateRouteTable() throws SQLException {
         routeTable = new RouteTable(routeService.getData(null, null, -1, null));
@@ -467,10 +461,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onRouteRefreshButton
+     * Updates the route table from a button press.
      *
-     * Updates the route table from a button press
-     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateRouteTable fail
+     * @throws SQLException occurs when any interactions with the ResultSet returned by the getData function in updateRouteTable fail.
      */
     @FXML
     public void onRouteRefreshButton() throws  SQLException {
@@ -479,10 +472,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onModifyRouteBtnPressed
+     * Starts the modify route mode.
      *
-     * Starts the modify route mode
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setRouteSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setRouteSingleRecord function.
      */
     public void onModifyRouteBtnPressed() throws SQLException {
         routeInvalidFormatLbl.setVisible(false);
@@ -497,12 +489,10 @@ public class RouteDataTabController implements Initializable {
         }
     }
 
-
     /**
-     * setRouteElementsEditable
+     * Sets the route TextFields to be editable or not (depending on given bool).
      *
-     * Sets the route TextFields to be editable or not (depending on given bool)
-     * @param bool - boolean
+     * @param bool - boolean.
      */
     public void setRouteElementsEditable(Boolean bool) {
         List<TextField> elements = Arrays.asList(routeAirline, routeDepAirport, routeDesAirport,
@@ -512,11 +502,10 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onRouteSaveBtnPressed
-     *
      * Saves the route if the given data if in the right form,
-     * other wise handles errors and prompts user on where they are
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateRouteTable function
+     * other wise handles errors and prompts user on where they are.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the updateRouteTable function.
      */
     @FXML
     public void onRouteSaveBtnPressed() throws SQLException {
@@ -594,12 +583,10 @@ public class RouteDataTabController implements Initializable {
 
     }
 
-
     /**
-     * setRouteUpdateColour
+     * Updates the colours of the airline TextFields by the given index.
      *
-     * Updates the colours of the airline TextFields by the given index
-     * @param index
+     * @param index Integer the index of the element.
      */
     public void setRouteUpdateColour(Integer index) {
         List<TextField> elements = Arrays.asList(routeAirline, routeDepAirport, routeDesAirport,
@@ -614,12 +601,10 @@ public class RouteDataTabController implements Initializable {
         }
     }
 
-
     /**
-     * onRouteCancelBtnPressed
+     * Cancels current route modify.
      *
-     * Cancels current route modify
-     * @throws SQLException occurs when any interactions with the ResultSet fail in the setRouteSingleRecord function
+     * @throws SQLException occurs when any interactions with the ResultSet fail in the setRouteSingleRecord function.
      */
     @FXML
     public void onRouteCancelBtnPressed() throws SQLException {
@@ -634,9 +619,7 @@ public class RouteDataTabController implements Initializable {
 
 
     /**
-     * onRouteDeleteBtnPressed
-     *
-     * Deletes route that is currently being modified
+     * Deletes route that is currently being modified.
      */
     @FXML
     public void onRouteDeleteBtnPressed() {
@@ -664,10 +647,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onGraphRouteBtnPressed
-     *
      * Calls required functions to create a pieChart for graph - route data,
-     * showing equipment usage percentages
+     * showing equipment usage percentages.
+     *
      * @throws Exception Caused by ResultSet interactions.
      */
     @FXML
@@ -678,7 +660,6 @@ public class RouteDataTabController implements Initializable {
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }
-
 
     /**
      * Calls required functions to create a barchart for graph - airline data,
@@ -692,14 +673,10 @@ public class RouteDataTabController implements Initializable {
         controller.start(new Stage(StageStyle.DECORATED));
     }
 
-
-
     /**
-     * showOtherAirlines
+     * Shows the other airlines that cover the given route.
      *
-     * Shows the other airlines that cover the given route
-     *
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     public void handleShowOtherAirlines() throws SQLException {
         RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
@@ -741,10 +718,9 @@ public class RouteDataTabController implements Initializable {
     }
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -753,5 +729,4 @@ public class RouteDataTabController implements Initializable {
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);
     }
-
 }
