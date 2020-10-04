@@ -2,7 +2,14 @@ package seng202.team5.map;
 
 public class AirportCompare {
 
+    /**
+     * The first map location to be compared.
+     */
     private static Coord location1;
+
+    /**
+     * The second map location to be compared.
+     */
     private static Coord location2;
 
     /**
@@ -32,10 +39,20 @@ public class AirportCompare {
 
     }
 
+    /**
+     * Getter for the first location to be compared.
+     *
+     * @return the first map location.
+     */
     public Coord getLocation1() {
         return location1;
     }
 
+    /**
+     * Getter for the second location to be compared.
+     *
+     * @return the second map location.
+     */
     public Coord getLocation2() {
         return location2;
     }
