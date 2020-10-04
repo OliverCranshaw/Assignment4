@@ -5,6 +5,12 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
 
+/**
+ * FlightModel
+ *
+ * Model class for flights, used as the object by PropertyValueFactories
+ * in the flight table. Consists of only a constructor, getters and setters.
+ */
 public class FlightModel {
 
     private final SimpleIntegerProperty flightId;
@@ -14,6 +20,16 @@ public class FlightModel {
     private final SimpleStringProperty destinationAirport;
     private ArrayList<Integer> IdRange;
 
+
+    /**
+     * Constructor for FlightModel
+     * @param id - Integer, Database ID of the flight
+     * @param srcLocation - String, Location of source airport
+     * @param srcAirport - String, name of source airport
+     * @param dstLocation - String, Location of destination airport
+     * @param dstAirport - String, name of destination airport
+     * @param ids - ArrayList of Integers, Database IDs of flight entries
+     */
     public FlightModel(Integer id, String srcLocation, String srcAirport, String dstLocation, String dstAirport, ArrayList<Integer> ids) {
         this.flightId = new SimpleIntegerProperty(id);
         this.sourceLocation = new SimpleStringProperty(srcLocation);

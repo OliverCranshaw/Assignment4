@@ -4,6 +4,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+
+/**
+ * FlightEntryModel
+ *
+ * Model class for flight entries, used as the object by PropertyValueFactories
+ * in the single flight entry table. Consists of only a constructor, getters and setters.
+ */
 public class FlightEntryModel {
 
     private final SimpleIntegerProperty ID;
@@ -14,6 +21,16 @@ public class FlightEntryModel {
     private final SimpleDoubleProperty latitude;
     private final SimpleDoubleProperty longitude;
 
+    /**
+     * Constructor for FlightEntryModel
+     * @param id - Integer, Database ID of the flight entry
+     * @param flightID - Integer, Database ID of the overall flight
+     * @param locationType - String, type of location for the entry
+     * @param location - String, location code for the current location
+     * @param altitude - Integer, altitude of flight
+     * @param latitude - double, latitude of flight location
+     * @param longitude - double, longitude of flight location
+     */
     public FlightEntryModel(Integer id, Integer flightID, String locationType, String location, Integer altitude, double latitude, double longitude) {
         this.ID = new SimpleIntegerProperty(id);
         this.flightID = new SimpleIntegerProperty(flightID);

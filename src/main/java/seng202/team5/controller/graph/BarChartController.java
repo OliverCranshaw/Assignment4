@@ -1,4 +1,4 @@
-package seng202.team5.controller.graph;
+package seng202.team5.controller;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -9,29 +9,41 @@ import javafx.scene.chart.*;
 import javafx.stage.Stage;
 import seng202.team5.graph.RouteGraphChart;
 
+import javax.xml.catalog.Catalog;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BarChartController extends Application {
 
+    ObservableList<XYChart.Series<String, Number>> data;
     private BarChart<String, Number> chart;
     private String selection;
 
+
     @Override
     public void start(Stage stage) {
-        Scene scene = new Scene(new Group());
-        stage.setTitle("Bar Chart");
-        stage.setWidth(500);
-        stage.setHeight(500);
-        ((Group) scene.getRoot()).getChildren().add(chart);
-        stage.setScene(scene);
-        stage.show();
+        if (data.get(0).getData().size() != 0) {
+            Scene scene = new Scene(new Group());
+            stage.setTitle("Bar Chart");
+            stage.setWidth(500);
+            stage.setHeight(500);
+            ((Group) scene.getRoot()).getChildren().add(chart);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("Insufficient data to display this graph.");
+            alert.show();
+        }
     }
+
 
     public void inflateChart(ArrayList<ArrayList<Object>> routeIds, List<Object> metaData) {
         RouteGraphChart routeGraphChart = new RouteGraphChart(routeIds);
         routeGraphChart.setSelection((String) metaData.get(0));
-        ObservableList<XYChart.Series<String, Number>> data = FXCollections.observableArrayList();
+        data = FXCollections.observableArrayList();
         data.add(routeGraphChart.buildBarChart());
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -44,4 +56,8 @@ public class BarChartController extends Application {
         chart.setLegendVisible(false);
 
     }
+
+
+
+
 }
