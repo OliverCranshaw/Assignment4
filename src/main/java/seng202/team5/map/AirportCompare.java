@@ -5,11 +5,24 @@ public class AirportCompare {
     private static Coord location1;
     private static Coord location2;
 
+    /**
+     * AirportCompare
+     *
+     * Constructor for AirportCompare. Assigns null to both location variables.
+     */
     public AirportCompare() {
         this.location1 = null;
         this.location2 = null;
     }
 
+    /**
+     * setLocations
+     *
+     * Sets the first location to the given variable and sets the second location to
+     * the original first location.
+     *
+     * @param location1 The coordinates of a location on the map
+     */
     public void setLocations(Coord location1) {
         if (this.location1 != null) {
             this.location2 = this.location1;
@@ -27,6 +40,15 @@ public class AirportCompare {
         return location2;
     }
 
+    /**
+     * calculateDistance
+     *
+     * Using the two locations from this class and their longitudes and latitudes
+     * the haversine formula is used to calculate the distance between two points on
+     * the map.
+     *
+     * @return the distance between two locations in km rounded to 2 d.p.
+     */
     public double calculateDistance() {
 
         double coord1Long = Math.toRadians(location1.longitude);
