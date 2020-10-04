@@ -38,6 +38,7 @@ public class PieChartController extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
         if (data.size() != 0) {
             Scene scene = new Scene(new Group());
             stage.setTitle("PieChart");
@@ -141,7 +142,7 @@ public class PieChartController extends Application {
             } else if (this.selection.equals("AirportRoute")) {
                 currTip = new Tooltip("Airport: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
             } else if (this.selection.equals("AirportCountry")) {
-                currTip = new Tooltip("Airport: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
+                currTip = new Tooltip("Country: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
             } else if (this.selection.equals("AirlineCountry")) {
                 currTip = new Tooltip("Airline: " + data.getName() + "\nQuantity: " + (int) data.getPieValue());
             } else {

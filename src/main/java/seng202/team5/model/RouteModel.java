@@ -3,6 +3,13 @@ package seng202.team5.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+
+/**
+ * RouteModel
+ *
+ * Model class for route entries, used as the object by PropertyValueFactories
+ * in the route table. Consists of only a constructor, getters and setters.
+ */
 public class RouteModel {
 
 
@@ -17,7 +24,17 @@ public class RouteModel {
     private SimpleStringProperty routeDstAirportCode;
 
 
-
+    /**
+     * Constructor for RouteModel
+     * @param airline - String, airline code (IATA or ICAO)
+     * @param srcAirport - String, source airport name
+     * @param dstAirport - String, destination airport name
+     * @param stops - Integer, number of stops
+     * @param equipment - String, equipment of route
+     * @param id - Integer, Database ID of route
+     * @param srcCode - String, source airport code (IATA or ICAO)
+     * @param dstCode - String, destination airport code (IATA or ICAO)
+     */
     public RouteModel(String airline, String srcAirport, String dstAirport, Integer stops, String equipment, Integer id, String srcCode, String dstCode) {
         this.routeAirline = new SimpleStringProperty(airline);
         this.routeSrcAirport = new SimpleStringProperty(srcAirport);

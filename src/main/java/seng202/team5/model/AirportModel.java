@@ -6,6 +6,13 @@ import seng202.team5.service.AirportService;
 
 import java.sql.SQLException;
 
+
+/**
+ * Airport Model
+ *
+ * Model class for airports, used as the object by PropertyValueFactories
+ * in the airport table. Consists of only a constructor, getters and setters.
+ */
 public class AirportModel {
 
     private final SimpleStringProperty airportName;
@@ -15,6 +22,16 @@ public class AirportModel {
     private SimpleIntegerProperty noIncRoutes;
     private SimpleIntegerProperty noOutRoutes;
 
+
+    /**
+     * Constructor for AirportModel
+     * @param name - String, name of airport.
+     * @param city - String, city of airport.
+     * @param country String, country of airport.
+     * @param id - Integer, Database ID of airport.
+     * @param incCount - Integer, number of incoming routes to this airport.
+     * @param outCount - Integer, number of outgoing routes to this airport.
+     */
     public AirportModel(String name, String city, String country, Integer id, Integer incCount, Integer outCount) {
         this.airportName = new SimpleStringProperty(name);
         this.airportCity = new SimpleStringProperty(city);

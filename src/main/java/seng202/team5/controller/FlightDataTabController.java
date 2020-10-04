@@ -326,9 +326,9 @@ public class FlightDataTabController implements Initializable {
                 idRange.add((Integer) datum.get(7));
             }
             Integer flightId = (Integer) datum.get(1);
-            String srcLocation = (String) datum.get(2);
+            String srcLocation = (String) datum.get(3);
             String srcAirportIata = (String) datum.get(3);
-            String dstLocation = (String) datum.get(8);
+            String dstLocation = (String) datum.get(9);
             String dstAirportIata = (String) datum.get(9);
             ResultSet srcAirportSet = airportService.getData(srcAirportIata);
             String srcAirport = (srcAirportSet.next()) ? srcAirportSet.getString(2) : srcAirportIata;
