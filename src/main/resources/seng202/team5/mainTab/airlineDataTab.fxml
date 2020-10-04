@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -229,6 +230,17 @@
                         </AnchorPane>
                        <MapView fx:id="airlineMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map">
                           <properties helpText="Map displaying all routes for the selected airline" />
+                           <children>
+                              <HBox prefHeight="38.0" prefWidth="545.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="19.0" prefWidth="555.0" text="This Map Shows All Routes That The Selected Airport Flies" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
                        </MapView>
                     </items>
                      <FlowPane.margin>
