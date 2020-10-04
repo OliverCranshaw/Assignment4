@@ -370,9 +370,11 @@ public class RouteDataTabController implements Initializable {
             Integer stops = (Integer) datum.get(8);
             ArrayList<String> equipment = (ArrayList<String>) datum.get(9);
             StringBuffer equipmentString = new StringBuffer();
-            for (String s: equipment) {
-                equipmentString.append(s);
-                equipmentString.append(", ");
+            for (int i = 0; i < equipment.size(); i++) {
+                equipmentString.append(equipment.get(i));
+                if (i != equipment.size() - 1) {
+                    equipmentString.append(", ");
+                }
             }
             Integer id = (Integer) datum.get(0);
             if (!airlineCodes.contains(airline)) {
@@ -387,9 +389,17 @@ public class RouteDataTabController implements Initializable {
             list.add(new RouteModel(airline, srcAirport, dstAirport, stops, equipmentString.toString(), id));
         }
         Hashtable<String, String> airlineNames = airlineService.getAirlineNames(airlineCodes);
+        Hashtable<String, String> srcAirportNames = airportService.getAirportNames(srcAirportCodes);
+        Hashtable<String, String> dstAirportNames = airportService.getAirportNames(dstAirportCodes);
         for (RouteModel route : list) {
-            if (airlineNames.keySet().contains(route.getRouteAirline())) {
+            if (airlineNames.containsKey(route.getRouteAirline())) {
                 route.setRouteAirline(airlineNames.get(route.getRouteAirline()));
+            }
+            if (srcAirportNames.containsKey(route.getRouteSrcAirport())) {
+                route.setRouteSrcAirport(srcAirportNames.get(route.getRouteSrcAirport()));
+            }
+            if (dstAirportNames.containsKey(route.getRouteDstAirport())) {
+                route.setRouteDstAirport((dstAirportNames.get(route.getRouteDstAirport())));
             }
         }
         routeModels = FXCollections.observableArrayList(list);

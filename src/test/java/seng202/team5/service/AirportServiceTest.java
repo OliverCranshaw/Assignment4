@@ -1,5 +1,6 @@
 package seng202.team5.service;
 
+import io.cucumber.java.bs.A;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,10 @@ public class AirportServiceTest extends BaseDatabaseTest {
     private AirportService airportService;
 
     private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Time/Zone");
+    private final List<Object> testData2 = List.of("AirportName2", "CityName2", "CountryName2", "ATA", "CAOO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
+    private final List<Object> testData3 = List.of("AirportName3", "CityName3", "CountryName3", "FED", "SFBE", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
+
+
 
     @Before
     public void setUp() {
@@ -563,4 +568,59 @@ public class AirportServiceTest extends BaseDatabaseTest {
         Assert.assertFalse(outgoingRoutesCount2.containsKey(2));
         assertEquals(2, (int) outgoingRoutesCount2.get(1));
     }
+
+
+    @Test
+    public void testGetAirportNames() throws SQLException {
+
+        // Establishing connection with database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // Query to populate database
+        String query = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+        // Adds airports
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(query);
+        PreparedStatement stmt3 = dbHandler.prepareStatement(query);
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+            stmt2.setObject(i + 1, testData2.get(i));
+            stmt3.setObject(i + 1, testData3.get(i));
+            if (i == 3) {
+                stmt3.setObject(i + 1, null);
+            }
+        }
+        stmt.executeUpdate();
+        stmt2.executeUpdate();
+        stmt3.executeUpdate();
+
+
+        // Testing empty case
+        Hashtable<String, String> result = airportService.getAirportNames(new ArrayList<>());
+        Assert.assertEquals(0, result.size());
+
+
+        // Testing case with valid and invalid codes passed, as well as when the airport doesn't have an iata
+        ArrayList<String> testList1 = new ArrayList<>();
+        testList1.add((String) testData.get(3));
+        testList1.add((String) testData2.get(4));
+        testList1.add((String) testData3.get(4));
+        String nonExistantIata = "ENF";
+        testList1.add(nonExistantIata);
+        Hashtable<String, String> result2 = airportService.getAirportNames(testList1);
+        Assert.assertTrue(result2.containsKey((String) testData.get(3)));
+        Assert.assertTrue(result2.containsKey((String) testData2.get(3)));
+        Assert.assertTrue(result2.containsKey((String) testData3.get(4)));
+        Assert.assertEquals(result2.get((String) testData.get(3)), (String) testData.get(0));
+        Assert.assertEquals(result2.get((String) testData2.get(3)), (String) testData2.get(0));
+        Assert.assertEquals(result2.get((String) testData3.get(4)), (String) testData3.get(0));
+
+    }
+
 }

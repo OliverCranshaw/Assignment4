@@ -1,5 +1,7 @@
 package seng202.team5.service;
 
+import io.cucumber.java.bs.A;
+import io.cucumber.java.hu.Ha;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,6 +10,7 @@ import seng202.team5.database.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 public class AirlineServiceTest extends BaseDatabaseTest {
@@ -16,6 +19,9 @@ public class AirlineServiceTest extends BaseDatabaseTest {
     private RouteService routeService;
 
     private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
+    private final List<String> testData2 = List.of("AirlineName2", "AliasName2", "IF", "IGE", "CallsignStuff2", "CountryName2", "Y");
+    private final List<String> testData3 = List.of("AirlineName3", "AliasName3", "", "GEE", "CallsignStuff3", "CountryName3", "Y");
+
 
     @Before
     public void setUp() {
@@ -373,4 +379,62 @@ public class AirlineServiceTest extends BaseDatabaseTest {
         // Check that the route has the new airline ICAO code
         Assert.assertEquals("ARI", result.getString("airline"));
     }
+
+
+    @Test
+    public void testGetAirlineNames() throws SQLException {
+        // Establishing connection with database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // SQLITE query to insert airline data into database
+        String query = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(query);
+        PreparedStatement stmt3 = dbHandler.prepareStatement(query);
+
+
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+            stmt2.setObject(i + 1, testData2.get(i));
+            stmt3.setObject(i + 1, testData3.get(i));
+            if (i == 2) {
+                stmt3.setObject(i + 1, null);
+            }
+        }
+
+        stmt.executeUpdate();
+        stmt2.executeUpdate();
+        stmt3.executeUpdate();
+
+        Hashtable<String, String> test1 = airlineService.getAirlineNames(new ArrayList<>());
+        Assert.assertEquals(0, test1.size());
+
+        ArrayList<String> airlineCodes1 = new ArrayList<>();
+        airlineCodes1.add(testData.get(2));
+        airlineCodes1.add(testData2.get(3));
+        airlineCodes1.add(testData3.get(3));
+        String nonExistentIata = "EN";
+        airlineCodes1.add(nonExistentIata);
+        Hashtable<String, String> test2 = airlineService.getAirlineNames(airlineCodes1);
+        Assert.assertTrue(test2.containsKey(testData.get(2)));
+        Assert.assertTrue(test2.containsKey(testData2.get(2)));
+        Assert.assertTrue(test2.containsKey(testData3.get(3)));
+        Assert.assertEquals(test2.get(testData.get(2)), testData.get(0));
+        Assert.assertEquals(test2.get(testData2.get(2)), testData2.get(0));
+        Assert.assertEquals(test2.get(testData3.get(3)), testData3.get(0));
+
+
+
+
+
+
+    }
+
+
+
 }

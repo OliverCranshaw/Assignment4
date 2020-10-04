@@ -1,5 +1,6 @@
 package seng202.team5.accessor;
 
+import io.cucumber.java.bs.A;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -591,5 +592,57 @@ public class AirportAccessorTest extends BaseDatabaseTest {
         int incomingCount = actualOutput.getInt(2);
         Assert.assertEquals(result, incomingCount);
 
+    }
+
+
+    @Test
+    public void testGetAirportNames() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        String query = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(query);
+
+
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+            stmt2.setObject(i + 1, testData2.get(i));
+        }
+        stmt.executeUpdate();
+        stmt2.executeUpdate();
+
+        // Testing empty case
+        ResultSet test1 = airportAccessor.getAirportNames(new ArrayList<>());
+        Assert.assertNull(test1);
+
+        // Testing case with both valid and invalid codes provided
+        ArrayList<String> testList1 = new ArrayList<>();
+        testList1.add((String) testData2.get(3));
+        testList1.add((String) testData.get(4));
+        String nonExistentIata = "NFG";
+        testList1.add(nonExistentIata);
+        System.out.println(testList1);
+        ResultSet test2 = airportAccessor.getAirportNames(testList1);
+        while (test2.next()) {
+            String iata = test2.getString(1);
+            String icao = test2.getString(2);
+            String name = test2.getString(3);
+            if (iata == testData.get(3)) {
+                Assert.assertEquals(icao, testData.get(4));
+                Assert.assertEquals(name, testData.get(0));
+            } else if (icao == testData2.get(4)) {
+                Assert.assertEquals(iata, testData2.get(3));
+                Assert.assertEquals(name, testData2.get(0));
+            }
+            Assert.assertNotEquals(iata, nonExistentIata);
+        }
     }
 }

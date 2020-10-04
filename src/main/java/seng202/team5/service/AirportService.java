@@ -365,8 +365,13 @@ public class AirportService implements Service {
     }
 
 
-
-
+    /**
+     * Finds all Airport names for the given airport codes (IATA or ICAO) and returns it as a hashtable mapping the
+     * airport code to the name of the airline.
+     *
+     * @param airportCodes ArrayList of Strings - airportCodes (IATA or ICAO).
+     * @return Hashtable of String to String - airportCode to airportName.
+     */
     public Hashtable<String, String> getAirportNames(ArrayList<String> airportCodes) {
         Hashtable<String, String> result = new Hashtable<>();
         try {
