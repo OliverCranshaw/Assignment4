@@ -345,31 +345,6 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
 
 
     @Test
-    public void testGetAirlineIataIcao() throws SQLException {
-        Connection dbHandler = DBConnection.getConnection();
-        PreparedStatement stmt = dbHandler.prepareStatement(
-                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-        // Iterates through the List and adds the values to the insert statement
-        for (int i = 0; i<testData.size(); i++) {
-            stmt.setObject(i + 1, testData.get(i));
-        }
-
-        // Executes the insert operation, sets the result to the airport_id of the new airport
-        Assert.assertEquals(1, stmt.executeUpdate());
-
-        ArrayList iataIcao = airlineAccessor.getAirlineIataIcao(testData.get(0));
-
-        for (int i = 0; i<2; i++) {
-            Assert.assertEquals(testData.get(i + 2), iataIcao.get(i));
-        }
-
-        Assert.assertTrue(airlineAccessor.getAirlineIataIcao("Not in thee database").isEmpty());
-    }
-
-
-    @Test
     public void testDataExistsById() throws SQLException {
         Connection dbHandler = DBConnection.getConnection();
         PreparedStatement stmt = dbHandler.prepareStatement(

@@ -286,43 +286,6 @@ public class RouteAccessor implements Accessor {
         return result;
     }
 
-    /**
-     * Checks if an identical route exists.
-     *
-     * @param airline A string, an airline IATA/ICAO code.
-     * @param sourceAirport A string, an airport IATA/ICAO code.
-     * @param destAirport A string, an airport IATA/ICAO code.
-     * @param codeshare A string, "Y" if the route is run by a different airline.
-     * @param stops An integer, the number of stops, 0 for direct.
-     * @param equipment A string, a list of equipment codes separated by spaces.
-     * @return boolean result True if an identical route exists, False otherwise.
-     */
-    public boolean dataExists(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
-        boolean result = false;
-
-        try {
-            // The SQL search query - finds the number of identical routes
-            PreparedStatement stmt = dbHandler.prepareStatement(
-                    "SELECT COUNT(route_id) FROM ROUTE_DATA WHERE airline = ? and source_airport = ? " +
-                            "and destination_airport = ? and codeshare = ? and stops = ? and equipment = ?");
-            // Adds the given parameters to the search query
-            stmt.setString(1, airline);
-            stmt.setString(2, sourceAirport);
-            stmt.setString(3, destAirport);
-            stmt.setString(4, codeshare);
-            stmt.setInt(5, stops);
-            stmt.setString(6, equipment);
-
-            Object data = stmt.executeQuery().getObject(1);
-            result = (int) data != 0;
-        } catch (Exception e) {
-            // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve route data.");
-            System.out.println(e.getMessage());
-        }
-
-        return result;
-    }
 
     /**
      * Gets the maximum route_id contained in the database.

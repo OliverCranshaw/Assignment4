@@ -61,9 +61,7 @@ public class ConcreteAddData extends AddData {
                     airlineData.getICAO(), airlineData.getCallsign(), airlineData.getCountry(), airlineData.getActive());
 
             if (result != -1) {
-                int id = airlineService.getMaxID();
-                System.out.println("Airline added with id " + id);
-                return id;
+                return airlineService.getMaxID();
             }
             else {
                 System.out.println("Failed to add airline.");
@@ -111,9 +109,7 @@ public class ConcreteAddData extends AddData {
                     airportData.getAltitude(), airportData.getTimezone(), airportData.getDST(), airportData.getTZDatabaseTimezone());
 
             if (result != -1) {
-                int id = airportService.getMaxID();
-                System.out.println("Airport added with id " + id);
-                return id;
+                return airportService.getMaxID();
             }
             else {
                 System.out.println("Failed to add airport.");
@@ -154,9 +150,7 @@ public class ConcreteAddData extends AddData {
                                             flightData.getAltitude(), flightData.getLatitude(), flightData.getLongitude());
 
             if (result != -1) {
-                int id = flightService.getMaxID();
-                System.out.println("Flight entry added with id " + id + " and flight id " + flightID);
-                return id;
+                return flightService.getMaxID();
             }
             else {
                 System.out.println("Failed to add flight entry.");
@@ -198,9 +192,7 @@ public class ConcreteAddData extends AddData {
                                             routeData.getCodeshare(), routeData.getStops(), routeData.getEquipment());
 
             if (result != -1) {
-                int id = routeService.getMaxID();
-                System.out.println("Route added with id " + id);
-                return id;
+                return routeService.getMaxID();
             }
             else {
                 System.out.println("Failed to add route.");
