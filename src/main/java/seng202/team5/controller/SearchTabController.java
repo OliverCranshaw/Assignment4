@@ -327,6 +327,10 @@ public class SearchTabController implements Initializable {
             }
         });
 
+        // Setup the initial helpText for the flight search
+        firstSearchEntry.getProperties().put("helpText", "Flight location type to search");
+        secondSearchEntry.getProperties().put("helpText", "Flight location to search");
+
         // Setting the cell value factories for the search flight entry table
         flightDbIDS.setCellValueFactory(new PropertyValueFactory<>("ID"));
         flightIDS.setCellValueFactory(new PropertyValueFactory<>("FlightID"));
@@ -674,6 +678,9 @@ public class SearchTabController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
+        firstSearchEntry.getProperties().put("helpText", "Flight location type to search");
+        secondSearchEntry.getProperties().put("helpText", "Flight location to search");
+
         firstSearchType.setText("Location Type:");
         secondSearchType.setText("Location:");
         thirdSearchType.setVisible(false);
@@ -732,6 +739,10 @@ public class SearchTabController implements Initializable {
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
 
+        firstSearchEntry.getProperties().put("helpText", "Airport name to search");
+        secondSearchEntry.getProperties().put("helpText", "Airport city to search");
+        thirdSearchEntry.getProperties().put("helpText", "Airport country to search");
+
         firstSearchType.setText("Name:");
         secondSearchType.setText("City:");
         thirdSearchType.setVisible(true);
@@ -787,6 +798,10 @@ public class SearchTabController implements Initializable {
         secondSearchEntry.setText("");
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
+
+        firstSearchEntry.getProperties().put("helpText", "Airline name to search");
+        secondSearchEntry.getProperties().put("helpText", "Airline country to search");
+        thirdSearchEntry.getProperties().put("helpText", "Airline callsign to search");
 
         firstSearchType.setText("Name:");
         secondSearchType.setText("Country:");
@@ -845,6 +860,11 @@ public class SearchTabController implements Initializable {
         secondSearchEntry.setText("");
         thirdSearchEntry.setText("");
         fourthSearchEntry.setText("");
+
+        firstSearchEntry.getProperties().put("helpText", "Route source airport to search");
+        secondSearchEntry.getProperties().put("helpText", "Route destination airport to search");
+        thirdSearchEntry.getProperties().put("helpText", "Route stops to search");
+        fourthSearchEntry.getProperties().put("helpText", "Route plane types to search");
 
         firstSearchType.setText("Source Airport:");
         secondSearchType.setText("Dest. Airport:");
