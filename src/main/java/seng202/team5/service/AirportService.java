@@ -289,7 +289,6 @@ public class AirportService implements Service {
 
         // Checks if any flight entries contain the old code and updates them if it does
         if ((result = flightService.getData("APT", oldCode)) != null) {
-            System.out.println("WE IN BOI");
             while (result.next()) {
                 flightService.update(result.getInt("id"), result.getString("location_type"), newCode,
                         result.getInt("altitude"), result.getDouble("latitude"), result.getDouble("longitude"));
