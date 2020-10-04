@@ -163,6 +163,8 @@ public class AirportDataTabController implements Initializable {
 
     private String prevAirportName = "";
 
+    private String currentAirportName = "";
+
     private AirportCompare rawAirportCompare = new AirportCompare();
 
     private int airportMarkerId;
@@ -288,6 +290,8 @@ public class AirportDataTabController implements Initializable {
             mainMenuController.setLabels(airportData, elementsVisible);
             mainMenuController.setLabelsEmpty(lblElementsVisible, true);
             Coord airportCoord = new Coord(Double.parseDouble(airportLatitude.getText()), Double.parseDouble(airportLongitude.getText()));
+            prevAirportName = currentAirportName;
+            currentAirportName = airportName.getText();
 
             try {
                 airportMapView.removeMarker(airportMarkerId);
@@ -297,14 +301,12 @@ public class AirportDataTabController implements Initializable {
             }
 
             if (prevAirportName.equals("")) {
-                calculateDistanceButton.setText("Calculate Distance From Previous Airport");
+                distanceLabel.setText("No Previous Airport Selected");
             } else {
                 calculateDistanceButton.setDisable(false);
-                calculateDistanceButton.setText("Calculate Distance From Previous Airport (" + prevAirportName + ")");
+                distanceLabel.setText("Previous Airport: " + prevAirportName);
             }
 
-            prevAirportName = airportName.getText();
-            distanceLabel.setText("");
             rawAirportCompare.setLocations(airportCoord);
             airportMarkerId = airportMapView.addMarker(airportCoord, airportName.getText(), null);
             airportMapView.setCentre(airportCoord);
@@ -323,7 +325,7 @@ public class AirportDataTabController implements Initializable {
 
         double distance = rawAirportCompare.calculateDistance();
 
-        distanceLabel.setText(distance + "km");
+        distanceLabel.setText("Distance from " + currentAirportName + " to " + prevAirportName + ": " + distance + "km");
 
         ArrayList airportCoords = new ArrayList(Arrays.asList(rawAirportCompare.getLocation1(), rawAirportCompare.getLocation2()));
 

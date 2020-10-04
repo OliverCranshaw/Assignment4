@@ -49,7 +49,7 @@ public class AirportCompare {
         // calculate the distance
         double distance = value2 * radiusEarth;
 
-        return distance;
+        return Math.round(distance * 100.0) / 100.0;
     }
 
 }
