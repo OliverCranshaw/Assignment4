@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,21 +18,22 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 import seng202.team5.App;
-import seng202.team5.accessor.AirlineAccessor;
+import seng202.team5.controller.graph.BarChartController;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
+import seng202.team5.controller.graph.PieChartController;
+import seng202.team5.controller.uploadData.BaseUploadMenuController;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.data.DataExporter;
-import seng202.team5.graph.RouteGraphChart;
 import seng202.team5.map.Bounds;
 import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
 import seng202.team5.model.RouteModel;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
-import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
 import seng202.team5.table.RouteTable;
 

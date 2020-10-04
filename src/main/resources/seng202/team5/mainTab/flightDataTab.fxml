@@ -16,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import seng202.team5.map.MapView?>
 
-<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.FlightDataTabController">
+<StackPane prefHeight="645.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.mainTab.FlightDataTabController">
    <stylesheets>
-      <URL value="@style.css" />
+      <URL value="@../style.css" />
    </stylesheets>
    <properties helpText="Viewer for the raw flight data" />
    <children>

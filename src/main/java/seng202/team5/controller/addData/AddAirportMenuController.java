@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.addData;
 
 import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;

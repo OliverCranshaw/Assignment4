@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.graph;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;

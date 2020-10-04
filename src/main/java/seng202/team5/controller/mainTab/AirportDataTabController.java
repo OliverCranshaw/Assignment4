@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +20,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seng202.team5.App;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
+import seng202.team5.controller.graph.PieChartController;
+import seng202.team5.controller.uploadData.BaseUploadMenuController;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ConcreteUpdateData;
 import seng202.team5.data.DataExporter;

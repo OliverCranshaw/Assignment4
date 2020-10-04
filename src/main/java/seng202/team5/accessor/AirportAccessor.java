@@ -37,7 +37,7 @@ public class AirportAccessor implements Accessor {
      * timezone, dst, and tz timezone parameters, contained in an ArrayList.
      *
      * @param data An List containing the data to be inserted into an entry in the database.
-     * @return int result The airport_id of the airport that was just created.
+     * @return int result The airport_id of the airport that was just created, -1 if SQL exception occurs.
      */
     public int save(List<Object> data) {
         int result;
@@ -90,22 +90,29 @@ public class AirportAccessor implements Accessor {
      */
     public int update(int id, String newName, String newCity, String newCountry, String newIATA, String newICAO,
                       Double newLatitude, Double newLongitude, Integer newAltitude, Float newTimezone, String newDST, String newTZ) throws SQLException {
-        int result;
+        int result = -1;
 
         List<Object> element = Arrays.asList(newName, newCity, newCountry, newIATA, newICAO, newLatitude,
                                             newLongitude, newAltitude, newTimezone, newDST, newTZ);
         ArrayList<Object> elements = new ArrayList<>(element);
-        // The SQL update statement
-        String query = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, " +
-                        "longitude = ?, altitude = ?, timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
-        PreparedStatement stmt = dbHandler.prepareStatement(query);
-        // Adds the parameters to the SQL statement
-        for (int i = 0; i < elements.size(); i++) {
-            stmt.setObject(i+1, elements.get(i));
+
+        try {
+            // The SQL update statement
+            String query = "UPDATE AIRPORT_DATA SET airport_name = ?, city = ?, country = ?, iata = ?, icao = ?, latitude = ?, " +
+                    "longitude = ?, altitude = ?, timezone = ?, dst = ?, tz_database_timezone = ? WHERE airport_id = ?";
+            PreparedStatement stmt = dbHandler.prepareStatement(query);
+            // Adds the parameters to the SQL statement
+            for (int i = 0; i < elements.size(); i++) {
+                stmt.setObject(i+1, elements.get(i));
+            }
+            stmt.setObject(elements.size() + 1, id);
+            // Executes the update operation
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to update airport names with code.");
+            System.out.println(e.getMessage());
         }
-        stmt.setObject(elements.size() + 1, id);
-        // Executes the update operation
-        result = stmt.executeUpdate();
 
         return result;
     }
@@ -125,7 +132,7 @@ public class AirportAccessor implements Accessor {
             stmt.setInt(1, id); // Adds the airport_id to the delete statement
             // Executes the delete operation, returns True if successful
             result = stmt.executeUpdate() != 0;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // If any of the above fails, prints out an error message
             System.out.println("Unable to delete airport data with id " + id);
             System.out.println(e.getMessage());
@@ -138,7 +145,7 @@ public class AirportAccessor implements Accessor {
      * Retrieves the airport with the provided id.
      *
      * @param id int id of a airport.
-     * @return ResultSet of the airport data.
+     * @return ResultSet of the airport data, null if SQL exception occurs.
      */
     public ResultSet getData(int id) {
         ResultSet result = null;
@@ -149,6 +156,7 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
+            // If any of the above fails, prints an error message
             System.out.println("Failed to retrieve airport data with id " + id);
             System.out.println(e.getMessage());
         }
@@ -160,7 +168,7 @@ public class AirportAccessor implements Accessor {
      * Retrieves the airport with provided data.
      *
      * @param code String IATA/ICAO of an aiport.
-     * @return ResultSet of the airport data.
+     * @return ResultSet of the airport data, null if SQL exception occurs.
      */
     public ResultSet getData(String code) {
         ResultSet result = null;
@@ -190,7 +198,7 @@ public class AirportAccessor implements Accessor {
      * @param name String name of an airport, can be null.
      * @param city String city of an airport, can be null.
      * @param country String country an airport, can be null.
-     * @return ResultSet of all the airports.
+     * @return ResultSet of all the airports, null if SQL exception occurs.
      */
     public ResultSet getData(String name, String city, String country) {
         ResultSet result = null;
@@ -236,6 +244,13 @@ public class AirportAccessor implements Accessor {
         return result;
     }
 
+    /**
+     * Helper function that finds the related airport
+     * id with the provided code.
+     *
+     * @param code String either IATA or ICAO.
+     * @return int airport id.
+     */
     public int lookupCode(String code) {
         int result;
         if (cachedIds.containsKey(code)) {
@@ -251,7 +266,7 @@ public class AirportAccessor implements Accessor {
      * Gets the airport_id of an airport with a given IATA or ICAO code if one exists.
      *
      * @param code A 3-letter IATA or 4-letter ICAO code.
-     * @return int result The airport_id of the airport with the given IATA or ICAO code if one exists.
+     * @return int result The airport_id of the airport with the given IATA or ICAO code if one exists, -1 if SQL exception occurs.
      */
     public int getAirportId(String code) {
         int result;
@@ -280,10 +295,10 @@ public class AirportAccessor implements Accessor {
     }
 
     /**
-     * Gets the airport iata and icao of an airline with a given name.
+     * Gets the airport IATA and ICAO of an airline with a given name.
      *
      * @param name The name of the airline.
-     * @return iata result The iata of the airport with the name.
+     * @return ArrayList of airline's codes, null if SQL exception occurs.
      */
     public ArrayList<String> getAirportIataIcao(String name) {
         ArrayList<String> result = new ArrayList<>();
@@ -375,7 +390,7 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the maximum airport_id contained in the database.
      *
-     * @return int id The maximum airport_id in the database.
+     * @return int id The maximum airport_id in the database, 0 if SQL exception occurs.
      */
     public int getMaxID() {
         int id = 0;
@@ -399,14 +414,14 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of outgoing routes that contain the airport.
      *
-     *
-     * @return ResultSet number of routes.
+     * @return ResultSet number of routes, null if SQL exception occurs.
      */
     public ResultSet getOutgoingRoutes() {
         ResultSet result;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT source_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY source_airport_id");
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT source_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY source_airport_id");
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -422,14 +437,14 @@ public class AirportAccessor implements Accessor {
     /**
      * Gets the number of incoming routes that contain the airport.
      *
-     *
-     * @return ResultSet number of routes.
+     * @return ResultSet number of routes, null if SQL exception occurs.
      */
     public ResultSet getIncomingRoutes() {
         ResultSet result;
 
         try {
-            PreparedStatement stmt = dbHandler.prepareStatement("SELECT destination_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY destination_airport_id");
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "SELECT destination_airport_id, COUNT(1) FROM ROUTE_DATA GROUP BY destination_airport_id");
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
@@ -448,34 +463,41 @@ public class AirportAccessor implements Accessor {
      *  IATA, ICAO and airport name for the airport codes that were provided.
      *
      * @param airportCodes ArrayList String - airportCodes (IATA or ICAO).
-     * @return ResultSet - Containing IATA, ICAO and airport name info.
+     * @return ResultSet - Containing IATA, ICAO and airport name info, null if SQL exception occurs.
+     *
      * @throws SQLException Cause by ResultSet interactions.
      */
     public ResultSet getAirportNames(ArrayList<String> airportCodes) throws SQLException {
         String query = "SELECT iata, icao, airport_name FROM airport_data ";
         ResultSet result = null;
-        if (airportCodes.size() > 0) {
-            query = query + "WHERE";
-            String iataString = " iata IN (";
-            String icaoString = " or icao IN (";
-            for (int i = 0; i < airportCodes.size(); i++) {
-                iataString = iataString + "\"" + airportCodes.get(i) + "\"";
-                icaoString = icaoString + "\"" + airportCodes.get(i) + "\"";
-                if (i != airportCodes.size() - 1) {
-                    iataString = iataString + ", ";
-                    icaoString = icaoString + ", ";
+
+        try {
+            if (airportCodes.size() > 0) {
+                query = query + "WHERE";
+                String iataString = " iata IN (";
+                String icaoString = " or icao IN (";
+
+                for (int i = 0; i < airportCodes.size(); i++) {
+                    iataString = iataString + "\"" + airportCodes.get(i) + "\"";
+                    icaoString = icaoString + "\"" + airportCodes.get(i) + "\"";
+                    if (i != airportCodes.size() - 1) {
+                        iataString = iataString + ", ";
+                        icaoString = icaoString + ", ";
+                    }
                 }
+                iataString = iataString + ")";
+                icaoString = icaoString + ")";
+                query = query + iataString + icaoString;
+                PreparedStatement stmt = dbHandler.prepareStatement(query);
+
+                result = stmt.executeQuery();
             }
-            iataString = iataString + ")";
-            icaoString = icaoString + ")";
-            query = query + iataString + icaoString;
-            PreparedStatement stmt = dbHandler.prepareStatement(query);
-            result = stmt.executeQuery();
+        } catch (SQLException e) {
+            // If any of the above fails, prints an error message
+            System.out.println("Unable to get airport names with code.");
+            System.out.println(e.getMessage());
         }
+
         return result;
     }
-
-
-
-
 }

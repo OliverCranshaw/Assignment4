@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.addData;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

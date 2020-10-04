@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
 import seng202.team5.data.AirlineData;
 import seng202.team5.data.AirportData;
 import seng202.team5.data.DataExporter;

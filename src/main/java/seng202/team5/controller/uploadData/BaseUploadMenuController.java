@@ -1,4 +1,4 @@
-package seng202.team5.controller;
+package seng202.team5.controller.uploadData;
 
 import javafx.application.Platform;
 import javafx.concurrent.Service;

@@ -1,6 +1,5 @@
-package seng202.team5.controller;
+package seng202.team5.controller.mainTab;
 
-import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
@@ -20,11 +19,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Pair;
 import seng202.team5.App;
+import seng202.team5.controller.HelpHandler;
+import seng202.team5.controller.MainMenuController;
+import seng202.team5.controller.graph.PieChartController;
+import seng202.team5.controller.uploadData.BaseUploadMenuController;
 import seng202.team5.data.*;
-import seng202.team5.map.Bounds;
-import seng202.team5.map.Coord;
 import seng202.team5.map.MapView;
 import seng202.team5.model.AirlineModel;
 import seng202.team5.service.AirlineService;
@@ -38,7 +38,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.Function;
 
 public class AirlineDataTabController implements Initializable {
 
