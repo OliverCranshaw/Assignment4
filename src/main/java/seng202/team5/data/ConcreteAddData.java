@@ -191,10 +191,9 @@ public class ConcreteAddData extends AddData {
             int result = routeService.save(routeData.getAirline(), routeData.getSourceAirport(), routeData.getDestinationAirport(),
                                             routeData.getCodeshare(), routeData.getStops(), routeData.getEquipment());
 
-            if (result != -1) {
+            if (result >= 0) {
                 return routeService.getMaxID();
-            }
-            else {
+            } else {
                 System.out.println("Failed to add route.");
                 return -1;
             }
