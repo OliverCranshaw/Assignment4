@@ -1,5 +1,9 @@
 package seng202.team5.map;
 
+/**
+ * Class representing a custom map marker icon.
+ * Intended to be used with the MapView.addMarker method.
+ */
 public class MarkerIcon {
     /**
      * A simple plane marker icon.
