@@ -103,7 +103,7 @@
                         <Insets left="62.0" />
                      </FlowPane.margin>
                   </Text>
-                  <TextField fx:id="routeEquipmentField" promptText="Equipment1, ... ">
+                  <TextField fx:id="routeEquipmentField" promptText="Equipment 1, ... ">
                      <properties helpText="Enter a comma separated list of 3 letter plane codes to filter by" />
                      <FlowPane.margin>
                         <Insets left="11.0" />
@@ -137,6 +137,7 @@
                      <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
+                     <properties helpText="Press to upload route data into the database from a local CSV file"/>
                   </Button>
                </children>
                <VBox.margin>
@@ -291,25 +292,27 @@
                                     </Label>
                                     <TextField fx:id="routeCodeshare" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3">
                                          <properties helpText="'Y' if this route is a codeshare (operated by a different carrier), otherwise empty" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="routeStops" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                          <properties helpText="Number of stops before reaching the destination" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="routeEquip" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                          <properties helpText="Comma separated list of 3 letter plane type(s) codes that are used in this route" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="routeDesAirport" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                          <properties helpText="Destination airport's IATA/ICAO code" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="routeDesAirportID" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                          <properties helpText="Destination airport's internal database ID" />
-                                      </TextField>
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <Label fx:id="routeInvalidFormatLbl" layoutX="228.0" layoutY="196.0" prefHeight="17.0" prefWidth="248.0" />
                            </children>
                         </AnchorPane>
-                       <MapView fx:id="routeMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                       <MapView fx:id="routeMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map">
+                          <properties helpText="Map displaying the selected route" />
+                       </MapView>
                     </items>
                      <FlowPane.margin>
                         <Insets left="40.0" />
@@ -318,16 +321,19 @@
                   <FlowPane prefHeight="28.0" prefWidth="1232.0">
                      <children>
                         <Button fx:id="graphRouteBtn" mnemonicParsing="false" onAction="#onGraphRouteBtnPressed" styleClass="general-button" text="View Equipment per Route Graph">
+                           <properties helpText="Graphs pie chart of planes flown in the filtered table" />
                            <FlowPane.margin>
                               <Insets left="67.0" />
                            </FlowPane.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onGraphRouteAirlineBtnPressed" styleClass="general-button" text="View Airline per Route Graph">
+                           <properties helpText="Graphs routes flown by the fewest number of airlines" />
                            <FlowPane.margin>
                               <Insets left="50.0" />
                            </FlowPane.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                           <properties helpText="A helpful button full of boundless helpful hints" />
                            <FlowPane.margin>
                               <Insets left="632.0" />
                            </FlowPane.margin>

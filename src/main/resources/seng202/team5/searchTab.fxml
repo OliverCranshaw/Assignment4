@@ -140,6 +140,7 @@
             <FlowPane prefHeight="21.0" prefWidth="1232.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#onDownloadSearchDataPressed" styleClass="general-button" text="Download">
+                     <properties helpText="Downloads the current search results to a file" />
                      <FlowPane.margin>
                         <Insets left="532.0" />
                      </FlowPane.margin>
@@ -260,16 +261,36 @@
                                           <Font size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="routeIDS" GridPane.columnIndex="1" />
-                                    <TextField fx:id="routeAirlineS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="routeAirlineIDS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="routeDepAirportS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="routeDepAirportIDS" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <TextField fx:id="routeDesAirportS" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <TextField fx:id="routeDesAirportIDS" prefWidth="89.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <TextField fx:id="routeCodeshareS" GridPane.columnIndex="3" />
-                                    <TextField fx:id="routeStopsS" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="routeEquipS" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="routeIDS" GridPane.columnIndex="1">
+                                       <properties helpText="Internal database ID for this route" />
+                                    </TextField>
+                                    <TextField fx:id="routeAirlineS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <properties helpText="Airline IATA/ICAO code that flies this route" />
+                                    </TextField>
+                                    <TextField fx:id="routeAirlineIDS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <properties helpText="Airline internal database ID that flies this route" />
+                                    </TextField>
+                                    <TextField fx:id="routeDepAirportS" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <properties helpText="Source airport's IATA/ICAO code" />
+                                    </TextField>
+                                    <TextField fx:id="routeDepAirportIDS" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <properties helpText="Source airport's internal database ID" />
+                                    </TextField>
+                                    <TextField fx:id="routeDesAirportS" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                       <properties helpText="Destination airport's IATA/ICAO code" />
+                                    </TextField>
+                                    <TextField fx:id="routeDesAirportIDS" prefWidth="89.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                       <properties helpText="Destination airport's internal database ID" />
+                                    </TextField>
+                                    <TextField fx:id="routeCodeshareS" GridPane.columnIndex="3">
+                                       <properties helpText="'Y' if this route is a codeshare (operated by a different carrier), otherwise empty" />
+                                    </TextField>
+                                    <TextField fx:id="routeStopsS" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <properties helpText="Number of stops before reaching the destination" />
+                                    </TextField>
+                                    <TextField fx:id="routeEquipS" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <properties helpText="Comma separated list of 3 letter plane type(s) codes that are used in this route" />
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <GridPane prefHeight="169.0" prefWidth="552.0">
@@ -286,7 +307,6 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField fx:id="airlineIDS" GridPane.columnIndex="1" />
                                     <Label fx:id="lblAirlineActiveS" text="Active:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
@@ -327,13 +347,30 @@
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="airlineActiveS" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <TextField fx:id="airlineCountryS" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <TextField fx:id="airlineCallsignS" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="airlineICAOS" GridPane.columnIndex="3" />
-                                    <TextField fx:id="airlineIATAS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="airlineAliasS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="airlineNameS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="airlineIDS" GridPane.columnIndex="1">
+                                       <properties helpText="Internal database ID for this airline" />
+                                    </TextField>
+                                    <TextField fx:id="airlineActiveS" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                       <properties helpText="Whether this airline is active 'Y' or inactive 'N'" />
+                                    </TextField>
+                                    <TextField fx:id="airlineCountryS" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <properties helpText="Airline's registered country" />
+                                    </TextField>
+                                    <TextField fx:id="airlineCallsignS" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <properties helpText="Airline's unique callsign" />
+                                    </TextField>
+                                    <TextField fx:id="airlineICAOS" GridPane.columnIndex="3">
+                                       <properties helpText="Airline's 3 letter ICAO code" />
+                                    </TextField>
+                                    <TextField fx:id="airlineIATAS" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <properties helpText="Airline's 2 letter IATA code" />
+                                    </TextField>
+                                    <TextField fx:id="airlineAliasS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <properties helpText="Airline's alias" />
+                                    </TextField>
+                                    <TextField fx:id="airlineNameS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <properties helpText="Airline's name" />
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <GridPane prefHeight="173.0" prefWidth="549.0">
@@ -352,9 +389,15 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField fx:id="airportTZS" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                                    <TextField fx:id="airportDSTS" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <TextField fx:id="airportTimezoneS" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField fx:id="airportTZS" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                       <properties helpText="Timezone name in Olsen format"/>
+                                    </TextField>
+                                    <TextField fx:id="airportDSTS" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                       <properties helpText="Daylight savings time policy. Must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)"/>
+                                    </TextField>
+                                    <TextField fx:id="airportTimezoneS" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                       <properties helpText="Hour offset from UTC" />
+                                    </TextField>
                                     <Label fx:id="lblAirportIDS" text="Airport ID:" textFill="WHITE">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
@@ -415,18 +458,37 @@
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="airportIDS" GridPane.columnIndex="1" />
-                                    <TextField fx:id="airportNameS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="airportCityS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="airportLatitudeS" GridPane.columnIndex="3" />
-                                    <TextField fx:id="airportICAOS" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <TextField fx:id="airportCountryS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="airportIATAS" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <TextField fx:id="airportLongitudeS" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="airportAltitudeS" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="airportIDS" GridPane.columnIndex="1">
+                                       <properties helpText="Internal database ID for this airport" />
+                                    </TextField>
+                                    <TextField fx:id="airportNameS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <properties helpText="The name of the airport" />
+                                    </TextField>
+                                    <TextField fx:id="airportCityS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <properties helpText="City the airport is in" />
+                                    </TextField>
+                                    <TextField fx:id="airportLatitudeS" GridPane.columnIndex="3">
+                                       <properties helpText="Airport's latitude in degrees" />
+                                    </TextField>
+                                    <TextField fx:id="airportICAOS" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <properties helpText="Airport's 4 letter ICAO code" />
+                                    </TextField>
+                                    <TextField fx:id="airportCountryS" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <properties helpText="Country airport is in" />
+                                    </TextField>
+                                    <TextField fx:id="airportIATAS" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <properties helpText="Airport's 3 letter IATA code" />
+                                    </TextField>
+                                    <TextField fx:id="airportLongitudeS" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <properties helpText="Airport's longitude in degrees" />
+                                    </TextField>
+                                    <TextField fx:id="airportAltitudeS" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <properties helpText="Airport's altitude in feet above sea level" />
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <TableView fx:id="searchFlightSingleRecordTableView" prefHeight="187.0" prefWidth="575.0">
+                                 <properties helpText="Table of the selected flight's content" />
                                  <columns>
                                     <TableColumn fx:id="flightDbIDS" prefWidth="33.0" text="ID" />
                                     <TableColumn fx:id="flightIDS" prefWidth="78.0" text="Flight ID" />
@@ -439,7 +501,9 @@
                               </TableView>
                            </children>
                         </AnchorPane>
-                      <MapView fx:id="searchMapView" minHeight="0.0" minWidth="0.0" prefHeight="170.0" prefWidth="574.0" styleClass="map" />
+                      <MapView fx:id="searchMapView" minHeight="0.0" minWidth="0.0" prefHeight="170.0" prefWidth="574.0" styleClass="map">
+                         <properties helpText="Map displaying the selected search result" />
+                      </MapView>
                     </items>
                      <FlowPane.margin>
                         <Insets left="40.0" />
@@ -451,6 +515,7 @@
                      </FlowPane.margin>
                      <children>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                           <properties helpText="A helpful button full of boundless helpful hints" />
                            <FlowPane.margin>
                               <Insets left="1205.0" />
                            </FlowPane.margin>

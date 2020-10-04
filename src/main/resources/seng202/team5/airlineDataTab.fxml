@@ -51,7 +51,7 @@
             <FlowPane prefHeight="21.0" prefWidth="1232.0">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Countries:" />
-                  <TextField fx:id="countryAirlineField" promptText="Countrie1, Country2, ...">
+                  <TextField fx:id="countryAirlineField" promptText="Country 1, Country 2, ...">
                      <properties helpText="Enter a comma separated list of countries to filter by" />
                      <FlowPane.margin>
                         <Insets left="10.0" />
@@ -63,6 +63,7 @@
                      </FlowPane.margin>
                   </Text>
                   <ComboBox fx:id="airlineActiveDropdown" prefHeight="26.0" prefWidth="89.0" visibleRowCount="3">
+                     <properties helpText="Select 'Y' or 'N' to filter airlines by their active status" />
                      <FlowPane.margin>
                         <Insets left="10.0" />
                      </FlowPane.margin>
@@ -87,7 +88,7 @@
                      <FlowPane.margin>
                         <Insets left="115.0" />
                      </FlowPane.margin>
-                     <properties helpText="Press to refresh the airline data table" />
+                     <properties helpText="Refresh the airline table contents" />
                   </Button>
                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" styleClass="main-row-button" text="Add Airline">
                      <FlowPane.margin>
@@ -164,10 +165,10 @@
                                       </TextField>
                                     <TextField fx:id="airlineName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                          <properties helpText="Airline's name" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="airlineAlias" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                          <properties helpText="Airline's alias" />
-                                      </TextField>
+                                    </TextField>
                                     <Label fx:id="lblAirlineIATA" text="IATA:" textFill="WHITE" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
@@ -175,7 +176,7 @@
                                     </Label>
                                     <TextField fx:id="airlineIATA" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                          <properties helpText="Airline's 2 letter IATA code" />
-                                      </TextField>
+                                    </TextField>
                                     <Label fx:id="lblAirlineICAO" prefHeight="17.0" prefWidth="37.0" text="ICAO:" textFill="WHITE" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
@@ -198,16 +199,16 @@
                                     </Label>
                                     <TextField fx:id="airlineICAO" GridPane.columnIndex="3">
                                          <properties helpText="Airline's 3 letter ICAO code" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="airlineCallsign" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                         <properties helpText="Airline's callsign" />
-                                      </TextField>
+                                         <properties helpText="Airline's unique callsign" />
+                                    </TextField>
                                     <TextField fx:id="airlineCountry" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                          <properties helpText="Airline's registered country" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="airlineActive" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                          <properties helpText="Whether this airline is active 'Y' or inactive 'N'" />
-                                      </TextField>
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <Button fx:id="airlineSaveBtn" layoutX="494.0" layoutY="205.0" mnemonicParsing="false" onAction="#onAirlineSaveBtnPressed" styleClass="save-button" text="Save" textFill="WHITE">
@@ -226,7 +227,9 @@
                               <Label fx:id="airlineInvalidFormatLbl" layoutX="232.0" layoutY="207.0" prefHeight="17.0" prefWidth="249.0" />
                            </children>
                         </AnchorPane>
-                      <MapView fx:id="airlineMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                       <MapView fx:id="airlineMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map">
+                          <properties helpText="Map displaying all routes for the selected airline" />
+                       </MapView>
                     </items>
                      <FlowPane.margin>
                         <Insets left="40.0" />
@@ -235,11 +238,13 @@
                   <FlowPane prefHeight="28.0" prefWidth="1232.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onGraphAirlineCountryBtnPressed" styleClass="general-button" text="View Airlines per Country Graph">
+                           <properties helpText="Graphs pie chart of airlines per country in the filtered table" />
                            <FlowPane.margin>
                               <Insets left="210.0" />
                            </FlowPane.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                           <properties helpText="A helpful button full of boundless helpful hints" />
                            <FlowPane.margin>
                               <Insets left="761.0" />
                            </FlowPane.margin>

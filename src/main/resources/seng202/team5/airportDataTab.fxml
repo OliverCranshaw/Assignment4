@@ -51,7 +51,7 @@
             <FlowPane prefHeight="22.0" prefWidth="1232.0">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Countries:" />
-                  <TextField fx:id="airportCountryField" promptText="Countrie1, Country2, ...">
+                  <TextField fx:id="airportCountryField" promptText="Country 1, Country 2, ...">
                      <properties helpText="Enter a comma separated list of countries to filter by" />
                      <FlowPane.margin>
                         <Insets left="10.0" />
@@ -191,10 +191,10 @@
                                     </TextField>
                                     <TextField fx:id="airportLongitude" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                          <properties helpText="Airport's longitude in degrees" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="airportAltitude" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                         <properties helpText="Airport's longitude in feet above sea level" />
-                                      </TextField>
+                                         <properties helpText="Airport's altitude in feet above sea level" />
+                                    </TextField>
                                     <Label fx:id="lblAirportCountry" text="Country:" textFill="WHITE" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
@@ -211,11 +211,11 @@
                                        </GridPane.margin>
                                     </Label>
                                     <TextField fx:id="airportCountry" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                     <properties helpText="Country airport is in" />
-                                  </TextField>
+                                        <properties helpText="Country airport is in" />
+                                    </TextField>
                                     <TextField fx:id="airportIATA" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                     <properties helpText="Airport's 3 letter IATA code" />
-                                  </TextField>
+                                        <properties helpText="Airport's 3 letter IATA code" />
+                                    </TextField>
                                     <TextField fx:id="airportICAO" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                         <properties helpText="Airport's 4 letter ICAO code" />
                                     </TextField>
@@ -236,19 +236,20 @@
                                     </Label>
                                     <TextField fx:id="airportTimezone" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                          <properties helpText="Hour offset from UTC" />
-                                      </TextField>
+                                    </TextField>
                                     <TextField fx:id="airportDST" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                         <properties helpText="Daylight savings time policy. Must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)." />
-                                      </TextField>
+                                         <properties helpText="Daylight savings time policy. Must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)"/>
+                                    </TextField>
                                     <TextField fx:id="airportTZ" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                                         <properties helpText="Timezone name in Olsen format" />
-                                      </TextField>
+                                         <properties helpText="Timezone name in Olsen format"/>
+                                    </TextField>
                                  </children>
                               </GridPane>
                               <Label fx:id="airportInvalidFormatLbl" layoutX="233.0" layoutY="216.0" prefHeight="18.0" prefWidth="253.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
                            </children>
                         </AnchorPane>
                       <MapView fx:id="airportMapView" minHeight="0.0" minWidth="0.0" styleClass="map">
+                          <properties helpText="Map displaying a marker on the selected airport" />
                            <children>
                               <HBox prefHeight="35.0" prefWidth="545.0">
                                  <children>
@@ -272,22 +273,26 @@
                   <FlowPane prefHeight="33.0" prefWidth="1230.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onGraphAirportCountryBtnPressed" styleClass="general-button" text="View Airports per Country Graph">
+                            <properties helpText="Graphs pie chart of airports per country in the filtered table" />
                            <FlowPane.margin>
                               <Insets left="70.0" />
                            </FlowPane.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onGraphAirportRouteBtnPressed" styleClass="general-button" text="View Routes per Airport Graph">
-                           <FlowPane.margin>
-                              <Insets left="50.0" />
-                           </FlowPane.margin>
+                            <properties helpText="Graphs pie chart of routes in and out of the airport in the filtered table" />
+                            <FlowPane.margin>
+                                <Insets left="50.0" />
+                            </FlowPane.margin>
                         </Button>
                         <Button fx:id="calculateDistanceButton" disable="true" mnemonicParsing="false" onAction="#onCalculateDistancePressed" styleClass="general-button" text="Calculate Distance From Previous Airport">
-                           <FlowPane.margin>
-                              <Insets left="99.0" />
-                           </FlowPane.margin>
+                            <properties helpText="Computes the distance between the currently selected airport and the previously selected airport" />
+                            <FlowPane.margin>
+                                <Insets left="99.0" />
+                            </FlowPane.margin>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
-                           <FlowPane.margin>
+                            <properties helpText="A helpful button full of boundless helpful hints" />
+                            <FlowPane.margin>
                               <Insets left="228.0" />
                            </FlowPane.margin>
                         </Button>

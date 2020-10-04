@@ -35,12 +35,13 @@
             <FlowPane prefHeight="19.0" prefWidth="1232.0">
                <children>
                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onDownloadFlightsPressed" prefHeight="23.0" prefWidth="84.0" styleClass="general-button" text="Download">
-                     <properties helpText="Press to download all the airport data currently in the database to a CSV file" />
+                     <properties helpText="Press to download all flights in the database to a file" />
                      <FlowPane.margin>
                         <Insets left="530.0" />
                      </FlowPane.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#onFlightRefreshButton" styleClass="main-row-button" text="Refresh Table">
+                     <properties helpText="Refreshes the flight table contents"/>
                      <FlowPane.margin>
                         <Insets left="133.0" />
                      </FlowPane.margin>
@@ -52,6 +53,7 @@
                      </FlowPane.margin>
                   </Button>
                   <Button fx:id="flightDownloadBtn" mnemonicParsing="false" onAction="#onDownloadFlightPressed" styleClass="main-row-button" text="Download Flight">
+                     <properties helpText="Press to download the selected flight to a local CSV file" />
                      <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
@@ -86,7 +88,6 @@
                      </FlowPane.margin>
                   </TableView>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="535.0" prefWidth="573.0">
-                     <properties helpText="Flight status data list" />
                      <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
@@ -110,8 +111,11 @@
                                  </contextMenu>
                               </TableView>
                            </children>
+                         <properties helpText="Flight status data list" />
                         </AnchorPane>
-                        <MapView fx:id="flightMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map" />
+                        <MapView fx:id="flightMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map">
+                           <properties helpText="Map displaying the selected flight with a marker on the selected flight entry" />
+                        </MapView>
                     </items>
                      <FlowPane.margin>
                         <Insets left="40.0" />
@@ -120,6 +124,7 @@
                   <FlowPane prefHeight="28.0" prefWidth="1232.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
+                           <properties helpText="A helpful button full of boundless helpful hints" />
                            <FlowPane.margin>
                               <Insets left="1205.0" />
                            </FlowPane.margin>

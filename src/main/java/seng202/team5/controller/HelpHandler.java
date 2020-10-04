@@ -40,6 +40,8 @@ public class HelpHandler implements EventHandler<MouseEvent> {
 
         HelpHandler helpHandler = new HelpHandler(scene);
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, helpHandler);
+        scene.addEventFilter(MouseEvent.MOUSE_RELEASED, helpHandler);
+        scene.addEventFilter(MouseEvent.MOUSE_CLICKED, helpHandler);
     }
 
     private final Scene scene;
@@ -51,6 +53,12 @@ public class HelpHandler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent) {
+        // Both MOUSE_PRESSED, MOUSE_RELEASED and MOUSE_CLICKED and events are generated from a single click to avoid processing the same event too many times we discard some.
+        if (mouseEvent.getEventType() != MouseEvent.MOUSE_PRESSED) {
+            mouseEvent.consume();
+            return;
+        }
+
         // If the helpStage exists then we must being showing the help dialog. So when we click we can cancel the help
         if (helpStage != null) {
             helpStage.close();
@@ -67,6 +75,8 @@ public class HelpHandler implements EventHandler<MouseEvent> {
         // Prevents the event from being process further. As in it blocks input
         mouseEvent.consume();
 
+        System.out.println("Hello world");
+
         PickResult pickResult = mouseEvent.getPickResult();
 
         // Search the parent chain to find if there exists any help
@@ -81,20 +91,17 @@ public class HelpHandler implements EventHandler<MouseEvent> {
             node = node.getParent();
         }
 
-        try {
-            if (helpText == null) {
-                showHelpDialog("No help available at this location", new Point2D(mouseEvent.getScreenX(), mouseEvent.getScreenY()));
-            } else {
-                Bounds bounds = node.getBoundsInLocal();
-                showHelpDialog(helpText, node.localToScreen(bounds.getWidth() / 2, bounds.getHeight()));
-            }
-        } catch (IOException ignored) {
+        if (helpText == null) {
+            showHelpDialog("No help available at this location", new Point2D(mouseEvent.getScreenX(), mouseEvent.getScreenY()));
+        } else {
+            Bounds bounds = node.getBoundsInLocal();
+            showHelpDialog(helpText, node.localToScreen(bounds.getWidth() / 2, bounds.getHeight()));
         }
 
         scene.setCursor(null);
     }
 
-    private void showHelpDialog(String helpText, Point2D centre) throws IOException {
+    private void showHelpDialog(String helpText, Point2D centre) {
         helpStage = new Stage(StageStyle.UNDECORATED);
         VBox root = new VBox();
         root.setPadding(new Insets(8));
@@ -129,5 +136,7 @@ public class HelpHandler implements EventHandler<MouseEvent> {
     private void endHelp() {
         scene.setCursor(null);
         scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, this);
+        scene.removeEventFilter(MouseEvent.MOUSE_RELEASED, this);
+        scene.removeEventFilter(MouseEvent.MOUSE_CLICKED, this);
     }
 }
