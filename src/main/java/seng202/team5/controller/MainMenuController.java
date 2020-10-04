@@ -25,6 +25,11 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * MainMenuController
+ *
+ * Main controller that implements basic functions.
+ */
 public class MainMenuController {
 
     /**

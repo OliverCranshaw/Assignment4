@@ -3,7 +3,6 @@ package seng202.team5.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
 /**
  * Airport Model
  *
@@ -21,7 +20,8 @@ public class AirportModel {
 
 
     /**
-     * Constructor for AirportModel
+     * Constructor for AirportModel.
+     *
      * @param name - String, name of airport.
      * @param city - String, city of airport.
      * @param country String, country of airport.

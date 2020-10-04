@@ -22,13 +22,14 @@ public class FlightModel {
 
 
     /**
-     * Constructor for FlightModel
-     * @param id - Integer, Database ID of the flight
-     * @param srcLocation - String, Location of source airport
-     * @param srcAirport - String, name of source airport
-     * @param dstLocation - String, Location of destination airport
-     * @param dstAirport - String, name of destination airport
-     * @param ids - ArrayList of Integers, Database IDs of flight entries
+     * Constructor for FlightModel.
+     *
+     * @param id - Integer, Database ID of the flight.
+     * @param srcLocation - String, Location of source airport.
+     * @param srcAirport - String, name of source airport.
+     * @param dstLocation - String, Location of destination airport.
+     * @param dstAirport - String, name of destination airport.
+     * @param ids - ArrayList of Integers, Database IDs of flight entries.
      */
     public FlightModel(Integer id, String srcLocation, String srcAirport, String dstLocation, String dstAirport, ArrayList<Integer> ids) {
         this.flightId = new SimpleIntegerProperty(id);
