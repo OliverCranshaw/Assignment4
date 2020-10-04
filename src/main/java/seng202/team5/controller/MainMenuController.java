@@ -53,10 +53,9 @@ public class MainMenuController {
     private RouteService routeService = new RouteService();
 
     /**
-     * setFieldsEmpty
+     * Sets given arraylist of TextFields to be invisible and also sets their colour to black.
      *
-     * Sets given arraylist of TextFields to be invisible and also sets their colour to black
-     * @param elementsVisible - ArrayList of TextFields
+     * @param elementsVisible - ArrayList of TextFields.
      */
     public void setFieldsEmpty(ArrayList<TextField> elementsVisible) {
         for (TextField field : elementsVisible) {
@@ -69,11 +68,10 @@ public class MainMenuController {
     }
 
     /**
-     * setLabelsEmpty
+     * Sets given labels to be visible or not depending on the given boolean.
      *
-     * Sets given labels to be visible or not depending on the given boolean
-     * @param elementsVisible ArrayList of Labels
-     * @param bool boolean that determines if setting element to visible or not
+     * @param elementsVisible ArrayList of Labels.
+     * @param bool boolean that determines if setting element to visible or not.
      */
     public void setLabelsEmpty(ArrayList<Label> elementsVisible, Boolean bool) {
         for (Label lbl : elementsVisible) {
@@ -84,12 +82,12 @@ public class MainMenuController {
     }
 
     /**
-     * setLabels
+     * Sets given elementsVisible to contain the given elementData.
      *
-     * Sets given elementsVisible to contain the given elementData
-     * @param elementData ResultSet of data to populate TextFields with
-     * @param elementsVisible ArrayList of TextFields
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param elementData ResultSet of data to populate TextFields with.
+     * @param elementsVisible ArrayList of TextFields.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     public void setLabels(ResultSet elementData, ArrayList<TextField> elementsVisible) throws SQLException {
         for (TextField field : elementsVisible) {
@@ -102,10 +100,9 @@ public class MainMenuController {
     }
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -117,11 +114,10 @@ public class MainMenuController {
 
 
     /**
-     * selectFolder
+     * Gets input from the user on which file data should be downloaded to.
      *
-     * Gets input from the user on which file data should be downloaded to
-     * @param event user has clicked on an download button
-     * @return - File the file the user has created to download to
+     * @param event user has clicked on an download button.
+     * @return - File the file the user has created to download to.
      */
     public File selectFolder(ActionEvent event) {
         dataExporter = new DataExporter();
@@ -139,11 +135,10 @@ public class MainMenuController {
 
 
     /**
-     * convertCSStringToArrayList
+     * Converts a comma seperated string to an arraylist of strings.
      *
-     * Converts a comma seperated string to an arraylist of strings
-     * @param string
-     * @return ArrayList of String
+     * @param string String value of CSS string.
+     * @return ArrayList of String elements.
      */
     public ArrayList<String> convertCSStringToArrayList(String string) {
         String[] list = string.split(",");
@@ -162,11 +157,10 @@ public class MainMenuController {
 
 
     /**
-     * convertToArrayList
+     * Converts a primitive array of strings to an arraylist.
      *
-     * Converts a primitive array of strings to an arraylist
-     * @param list
-     * @return ArrayList of String
+     * @param list String[] of string elements.
+     * @return ArrayList of String elements.
      */
     public ArrayList<String> convertToArrayList(String[] list) {
         ArrayList<String> result = new ArrayList<>();
@@ -176,10 +170,10 @@ public class MainMenuController {
 
 
     /**
-     * setElementsEditable
+     * Sets the given TextFields to be editable or not (depending on given bool).
      *
-     * Sets the given TextFields to be editable or not (depending on given bool)
-     * @param bool - boolean
+     * @param bool - boolean.
+     * @param elementsEditable ArrayList of editable elements.
      */
     public void setElementsEditable(ArrayList<TextField> elementsEditable, Boolean bool) {
         for (TextField field : elementsEditable) {
@@ -188,11 +182,11 @@ public class MainMenuController {
     }
 
     /**
-     * Adds all the routes for a given airline to the provided MapView and sets the bounds to fit
+     * Adds all the routes for a given airline to the provided MapView and sets the bounds to fit.
      *
-     * @param mapView MapView to display the airline routes on
-     * @param airlineID Airline to display
-     * @return List of created path IDs
+     * @param mapView MapView to display the airline routes on.
+     * @param airlineID Airline to display.
+     * @return List of created path IDs.
      */
     public List<Integer> showAirline(MapView mapView, int airlineID) throws SQLException {
         AirlineData airline = new AirlineData(airlineService.getData(airlineID));
@@ -236,9 +230,6 @@ public class MainMenuController {
 
             createdPaths.add(mapView.addPath(route, REDUCED_ROUTE_SYMBOLS, colour, 1.0));
         }
-
-
-
         // Sets the correct map bounds, if there are any routes
         List<Coord> airportCoordinates = List.copyOf(airportCache.values());
         if (airportCoordinates.size() >= 2) {
