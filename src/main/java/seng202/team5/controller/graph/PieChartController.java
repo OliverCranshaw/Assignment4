@@ -13,6 +13,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import seng202.team5.App;
 import seng202.team5.graph.AirlineGraphChart;
 import seng202.team5.graph.AirportGraphChart;
 import seng202.team5.graph.RouteGraphChart;
@@ -44,9 +45,8 @@ public class PieChartController extends Application {
             // Case where data is present
             Scene scene = new Scene(new Group());
             stage.setTitle("PieChart");
-            stage.setWidth(500);
-            stage.setHeight(500);
             ((Group) scene.getRoot()).getChildren().add(chart);
+            scene.getStylesheets().add(App.class.getResource("graph_style.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
         } else {
@@ -59,12 +59,12 @@ public class PieChartController extends Application {
         }
     }
 
-
     /**
      * Inflates the pie chart with the given data
      *
      * @param data - ArrayList of ArrayList of Objects, representing an Arraylist of a data type
      * @param metaData - List of Object, data relating to setup of chart
+     *
      * @throws SQLException Due to ResultSet Interactions.
      */
     public void inflateChart(ArrayList<ArrayList<Object>> data, List<Object> metaData) throws SQLException {
@@ -101,7 +101,6 @@ public class PieChartController extends Application {
         }
     }
 
-
     /**
      * Adds the remove other option to the other segment of the pie chart
      *
@@ -124,7 +123,6 @@ public class PieChartController extends Application {
             removeContextMenu.show(node, robot.getMousePosition().getX(), robot.getMousePosition().getY());
         });
     }
-
 
     /**
      * Adds the return other option to the given segment of data
@@ -150,7 +148,6 @@ public class PieChartController extends Application {
             }
         });
     }
-
 
     /**
      * Method that sets up the highlighting affect on the pie chart segments,
