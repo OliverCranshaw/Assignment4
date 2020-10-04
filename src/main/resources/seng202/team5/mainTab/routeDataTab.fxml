@@ -137,7 +137,7 @@
                      <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
-                     <properties helpText="Press to upload route data into the database from a local CSV file"/>
+                     <properties helpText="Press to upload route data into the database from a local CSV file" />
                   </Button>
                </children>
                <VBox.margin>
@@ -320,7 +320,7 @@
                   </SplitPane>
                   <FlowPane prefHeight="28.0" prefWidth="1232.0">
                      <children>
-                        <Button fx:id="graphRouteBtn" mnemonicParsing="false" onAction="#onGraphRouteBtnPressed" styleClass="general-button" text="View Equipment per Route Graph">
+                        <Button fx:id="graphRouteBtn" mnemonicParsing="false" onAction="#onGraphRouteBtnPressed" styleClass="general-button" text="View Routes per Equipment Graph">
                            <properties helpText="Graphs pie chart of planes flown in the filtered table" />
                            <FlowPane.margin>
                               <Insets left="67.0" />

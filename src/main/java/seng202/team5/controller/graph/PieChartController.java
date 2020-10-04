@@ -46,7 +46,7 @@ public class PieChartController extends Application {
             Scene scene = new Scene(new Group());
             switch (selection) {
                 case "RouteEquipment":
-                    stage.setTitle("Quantities of Equipment used on Routes");
+                    stage.setTitle("Quantities of Routes per Equipment");
                     break;
                 case "AirlineCountry":
                     stage.setTitle("Airlines per Country");

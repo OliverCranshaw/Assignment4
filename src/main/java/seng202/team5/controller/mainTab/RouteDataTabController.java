@@ -656,7 +656,7 @@ public class RouteDataTabController implements Initializable {
     public void onGraphRouteBtnPressed() throws Exception {
 
         PieChartController controller = new PieChartController();
-        List<Object> metaData = List.of("RouteEquipment", "Quantities of Equipment used on Routes");
+        List<Object> metaData = List.of("RouteEquipment", "Quantities of Routes per Equipment");
         controller.inflateChart(routeTable.getData(), metaData);
         controller.start(new Stage(StageStyle.DECORATED));
     }

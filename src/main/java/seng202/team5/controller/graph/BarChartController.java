@@ -25,11 +25,13 @@ public class BarChartController extends Application {
     ObservableList<XYChart.Series<String, Number>> data;
     private BarChart<String, Number> chart;
 
+
+
     @Override
     public void start(Stage stage) {
         if (data.get(0).getData().size() != 0) {
             Scene scene = new Scene(new Group());
-            stage.setTitle("Bar Chart");
+            stage.setTitle("Routes Covered by the Fewest Number of Airlines");
             ((Group) scene.getRoot()).getChildren().add(chart);
             scene.getStylesheets().add(App.class.getResource("graph_style.css").toExternalForm());
             stage.setScene(scene);
