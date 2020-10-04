@@ -73,18 +73,18 @@
                         <Insets left="201.0" />
                      </FlowPane.margin>
                   </Button>
+                   <Button mnemonicParsing="false" onAction="#onAirportRefreshButton" styleClass="main-row-button" text="Refresh Table">
+                       <FlowPane.margin>
+                           <Insets left="115.0" />
+                       </FlowPane.margin>
+                       <properties helpText="Refresh the airport table contents" />
+                   </Button>
                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirportPressed" styleClass="main-row-button" text="Add Airport">
                      <properties helpText="Adds a single new airport record" />
                      <FlowPane.margin>
-                        <Insets left="115.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onAirportRefreshButton" styleClass="main-row-button" text="Refresh Table">
-                     <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
-                     <properties helpText="Refresh the airport table contents" />
-                     </Button>
+                  </Button>
                   <Button fx:id="modifyAirportBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModifyAirportBtnPressed" styleClass="main-row-button" text="Modify Airport">
                      <FlowPane.margin>
                         <Insets left="2.0" />

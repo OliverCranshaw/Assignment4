@@ -82,19 +82,19 @@
                         <Insets left="10.0" />
                      </FlowPane.margin>
                      <properties helpText="Press to download all the airline data currently in the database to a CSV file" />
-                     </Button>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" styleClass="main-row-button" text="Add Airline">
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onAirlineRefreshButton" styleClass="main-row-button" text="Refresh Table">
                      <FlowPane.margin>
                         <Insets left="115.0" />
                      </FlowPane.margin>
-                     <properties helpText="Adds a single new airline record" />
-                     </Button>
-                  <Button mnemonicParsing="false" onAction="#onAirlineRefreshButton" styleClass="main-row-button" text="Refresh Table">
+                     <properties helpText="Press to refresh the airline data table" />
+                  </Button>
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onAddAirlinePressed" styleClass="main-row-button" text="Add Airline">
                      <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
-                     <properties helpText="Press to refresh the airline data table" />
-                     </Button>
+                     <properties helpText="Adds a single new airline record" />
+                  </Button>
                   <Button fx:id="modifyAirlineBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModifyAirlineBtnPressed" styleClass="main-row-button" text="Modify Airline">
                      <FlowPane.margin>
                         <Insets left="2.0" />

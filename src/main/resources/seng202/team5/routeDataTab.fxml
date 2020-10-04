@@ -115,17 +115,17 @@
                      </FlowPane.margin>
                      <properties helpText="Press to download all the route data currently in the database to a CSV file" />
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" styleClass="main-row-button" text="Add Route">
-                     <properties helpText="Adds a single new route record" />
+                  <Button mnemonicParsing="false" onAction="#onRouteRefreshButton" styleClass="main-row-button" text="Refresh Table">
                      <FlowPane.margin>
                         <Insets left="82.0" />
                      </FlowPane.margin>
+                     <properties helpText="Refresh the route table contents" />
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onRouteRefreshButton" styleClass="main-row-button" text="Refresh Table">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#onAddRoutePressed" styleClass="main-row-button" text="Add Route">
+                     <properties helpText="Adds a single new route record" />
                      <FlowPane.margin>
                         <Insets left="2.0" />
                      </FlowPane.margin>
-                     <properties helpText="Refresh the route table contents" />
                   </Button>
                   <Button fx:id="modifyRouteBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModifyRouteBtnPressed" styleClass="main-row-button" text="Modify Route">
                      <FlowPane.margin>
