@@ -2,7 +2,6 @@ package seng202.team5.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-
 /**
  * AirlineModel
  *
@@ -18,12 +17,13 @@ public class AirlineModel {
     private Integer id;
 
     /**
-     * Constructor for AirlineModel
-     * @param name - String, name of airline
-     * @param alias - String, alias of airline
-     * @param country -  String, country of airline
-     * @param active - String, represents whether airline is active or not
-     * @param id Integer - Database ID of the airline
+     * Constructor for AirlineModel.
+     *
+     * @param name - String, name of airline.
+     * @param alias - String, alias of airline.
+     * @param country -  String, country of airline.
+     * @param active - String, represents whether airline is active or not.
+     * @param id Integer - Database ID of the airline.
      */
     public AirlineModel(String name, String alias, String country, String active, Integer id) {
         this.airlineName = new SimpleStringProperty(name);

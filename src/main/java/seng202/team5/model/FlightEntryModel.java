@@ -22,14 +22,15 @@ public class FlightEntryModel {
     private final SimpleDoubleProperty longitude;
 
     /**
-     * Constructor for FlightEntryModel
-     * @param id - Integer, Database ID of the flight entry
-     * @param flightID - Integer, Database ID of the overall flight
-     * @param locationType - String, type of location for the entry
-     * @param location - String, location code for the current location
-     * @param altitude - Integer, altitude of flight
-     * @param latitude - double, latitude of flight location
-     * @param longitude - double, longitude of flight location
+     * Constructor for FlightEntryModel.
+     *
+     * @param id - Integer, Database ID of the flight entry.
+     * @param flightID - Integer, Database ID of the overall flight.
+     * @param locationType - String, type of location for the entry.
+     * @param location - String, location code for the current location.
+     * @param altitude - Integer, altitude of flight.
+     * @param latitude - double, latitude of flight location.
+     * @param longitude - double, longitude of flight location.
      */
     public FlightEntryModel(Integer id, Integer flightID, String locationType, String location, Integer altitude, double latitude, double longitude) {
         this.ID = new SimpleIntegerProperty(id);
