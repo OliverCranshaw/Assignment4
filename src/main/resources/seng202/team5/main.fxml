@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import java.net.URL?>
 <VBox fx:id="backdrop" prefHeight="730.0" prefWidth="1280.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.MainMenuController">
    <stylesheets>
       <URL value="@style.css" />

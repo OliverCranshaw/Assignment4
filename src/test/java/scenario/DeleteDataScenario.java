@@ -1,11 +1,11 @@
 package scenario;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.After;
 import org.junit.Assert;
-import io.cucumber.java.Before;
 import seng202.team5.data.ConcreteDeleteData;
 import seng202.team5.data.ReadFile;
 import seng202.team5.database.DBConnection;

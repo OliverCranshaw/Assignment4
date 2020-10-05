@@ -3,11 +3,7 @@ package seng202.team5.data;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import seng202.team5.service.AirlineService;
-import seng202.team5.service.AirportService;
-import seng202.team5.service.FlightService;
-import seng202.team5.service.RouteService;
-import seng202.team5.service.BaseDatabaseTest;
+import seng202.team5.service.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
 package seng202.team5.table;
 
-import java.sql.*;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
