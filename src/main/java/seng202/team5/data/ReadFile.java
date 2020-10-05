@@ -5,6 +5,7 @@ import seng202.team5.service.FlightService;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 /**
  * ReadFile
@@ -19,6 +20,9 @@ public class ReadFile {
     private final ConcreteAddData concreteAddData;
     private final ConcreteDeleteData concreteDeleteData;
     private final FlightService flightService;
+
+    private Consumer<Long> lineChangeListener;
+    private boolean isCancelled = false;
 
     /**
      * Constructor for ReadFile.
@@ -41,9 +45,27 @@ public class ReadFile {
             FileReader fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to get file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get file.");
+            System.err.println(e.getMessage());
         }
+    }
+
+    /**
+     * Sets the listener for when a new line is read from one of the "readX" functions.
+     * The input to the listener is the new total bytes read so far.
+     *
+     * @param lineChangeListener The new listener, null for remove listener
+     */
+    public void setLineChangeListener(Consumer<Long> lineChangeListener) {
+        this.lineChangeListener = lineChangeListener;
+    }
+
+    /**
+     * Cancels the currently running operation.
+     * The operation that is cancelled with then return null.
+     */
+    public void cancel() {
+        isCancelled = true;
     }
 
     /**
@@ -60,7 +82,7 @@ public class ReadFile {
      * Splits a given string into multiple strings wherever there is a comma, then removes any quotation marks from each of them.
      *
      * @param line The line that is to be split into separate parts.
-     * @return ArrayList<String> splitline The list of strings from the line that has been split and have had any quotation marks removed from them.
+     * @return ArrayList splitline The list of strings from the line that has been split and have had any quotation marks removed from them.
      */
     public ArrayList<String> getEntries(String line) {
         // Splits the given line at every comma into an ArrayList of strings
@@ -89,9 +111,21 @@ public class ReadFile {
         ArrayList<String> errors = new ArrayList<>();
         String error;
 
+        long bytesRead = 0;
+
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
+                bytesRead += line.getBytes().length;
+
+                if (lineChangeListener != null) {
+                    lineChangeListener.accept(bytesRead);
+                }
+                if (isCancelled) {
+                    isCancelled = false;
+                    return null;
+                }
+
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the airline data has the right amount of entries
@@ -99,13 +133,11 @@ public class ReadFile {
                     id = -3;
                     error = "Line " + lineNum + ": Airline data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() < 7) {
                     id = -2;
                     error = "Line " + lineNum + ": Airline data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the airline data contains an airline_id already, removes it
@@ -115,7 +147,6 @@ public class ReadFile {
                     // Passes the parameters into the addAirline method of ConcreteAddData
                     id = concreteAddData.addAirline(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
                             splitLine.get(4), splitLine.get(5), splitLine.get(6).toUpperCase());
-                    System.out.println(id);
 
                     switch(id) {
                         case -1:
@@ -145,8 +176,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));
@@ -168,9 +199,21 @@ public class ReadFile {
         ArrayList<String> errors = new ArrayList<>();
         String error;
 
+        long bytesRead = 0;
+
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
+                bytesRead += line.getBytes().length;
+
+                if (lineChangeListener != null) {
+                    lineChangeListener.accept(bytesRead);
+                }
+                if (isCancelled) {
+                    isCancelled = false;
+                    return null;
+                }
+
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the airport data has the right amount of entries
@@ -178,13 +221,11 @@ public class ReadFile {
                     id = -3;
                     error = "Line " + lineNum +": Airport data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() < 11) {
                     id = -2;
                     error = "Line " + lineNum +": Airport data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the airport data contains an airport_id already, removes it
@@ -195,7 +236,6 @@ public class ReadFile {
                     id = concreteAddData.addAirport(splitLine.get(0), splitLine.get(1), splitLine.get(2), splitLine.get(3),
                             splitLine.get(4), splitLine.get(5), splitLine.get(6), splitLine.get(7),
                             splitLine.get(8), splitLine.get(9), splitLine.get(10));
-                    System.out.println(id);
 
                     switch(id) {
                         case -1:
@@ -253,8 +293,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));
@@ -265,7 +305,7 @@ public class ReadFile {
      * and then passes the data from each line into the addFlightEntry method of ConcreteAddData.
      *
      * @param file The input file to be read.
-     * @return ArrayList<Integer> ids An ArrayList containing the flight_id and the unique id of the new flight entry created by ConcreteAddData.
+     * @return ArrayList ids An ArrayList containing the flight_id and the unique id of the new flight entry created by ConcreteAddData.
      */
     public ArrayList<Object> readFlightData(File file) {
         int flightID = -1;
@@ -277,6 +317,8 @@ public class ReadFile {
         ArrayList<String> errors = new ArrayList<>();
         String error;
 
+        long bytesRead = 0;
+
         try {
             // Gets the next available flight_id
             // This will be the flight_id of the entries read from the file
@@ -284,13 +326,22 @@ public class ReadFile {
 
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
+                bytesRead += line.getBytes().length;
+
+                if (lineChangeListener != null) {
+                    lineChangeListener.accept(bytesRead);
+                }
+                if (isCancelled) {
+                    isCancelled = false;
+                    return null;
+                }
+
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the flight entry has the right number of entries
                 // If it doesn't then deletes all previously added entries, rejects the data, and informs the user of the problem
                 if (splitLine.size() != 5) {
                     error = "Line " + lineNum +": Flight entry in the wrong format, does not have 5 entries. Flight could not be added.";
-                    System.out.println(error);
                     errors.add(error);
 
                     concreteDeleteData.deleteFlight(flightID);
@@ -343,8 +394,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         // Creates an ArrayList containing the flightID and unique id of the flight entry that was created
@@ -368,9 +419,21 @@ public class ReadFile {
         ArrayList<String> errors = new ArrayList<>();
         String error;
 
+        long bytesRead = 0;
+
         try {
             // Reads each line in the file
             while ((line = bufferedReader.readLine()) != null) {
+                bytesRead += line.getBytes().length;
+
+                if (lineChangeListener != null) {
+                    lineChangeListener.accept(bytesRead);
+                }
+                if (isCancelled) {
+                    isCancelled = false;
+                    return null;
+                }
+
                 // Splits the line into individual strings
                 splitLine = getEntries(line);
                 // Checks that the route data has the right number of entries
@@ -378,19 +441,16 @@ public class ReadFile {
                     id = -2;
                     error = "Line " + lineNum + ": Route data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() > 6 && splitLine.size() < 9) {
                     id = -3;
                     error = "Line " + lineNum + ": Route data in wrong format, too many entries/too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() > 9) {
                     id = -4;
                     error = "Line " + lineNum + ": Route data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the route data already contained an airline_id, a source airport_id, and a destination airport_id, removes them
@@ -438,8 +498,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));

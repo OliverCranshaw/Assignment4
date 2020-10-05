@@ -23,7 +23,6 @@ import java.util.Arrays;
 public class AddDataScenario {
 
     private int id;
-    //private int flightID;
     private AirlineData airlineData;
     private AirportData airportData;
     private FlightData flightData;
@@ -34,7 +33,7 @@ public class AddDataScenario {
     private RouteService routeService;
     private ConcreteAddData concreteAddData;
 
-    @Before
+    @Before("@Add")
     public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
@@ -59,14 +58,10 @@ public class AddDataScenario {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
-
 
     // Adding Airlines
 
@@ -379,6 +374,7 @@ public class AddDataScenario {
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string}, {string}")
     public void validFlightEntryParameters(int flightID, String locationType, String location, String altitude, String latitude, String longitude) {
+        // Adds the airport needed for the flight entry to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
         flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
@@ -446,6 +442,7 @@ public class AddDataScenario {
 
     @Given("valid flight entry parameters {int}, {string}, {string}, {string}, {string} except for an invalid altitude {string}")
     public void flightEntryInvalidAltitude(int flightID, String locationType, String location, String latitude, String longitude, String altitude) {
+        // Adds the airport needed for the flight entry to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
 
         flightData = new FlightData(flightID, locationType, location, altitude, latitude, longitude);
@@ -498,6 +495,7 @@ public class AddDataScenario {
 
     @Given("valid route parameters {string}, {string}, {string}, {string}, {string}, {string}")
     public void validRouteParameters(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment) {
+        // Adds the airports and airline needed for the route to be created
         concreteAddData.addAirport("Christchurch Airport", "Christchurch", "New Zealand", "CHC", "NZCH", "100.0231", "-34.1271", "0", "2", "N", "Auckland/New Zealand");
         concreteAddData.addAirport("Mount Hagen", "Mount Hagen", "Papua New Guinea", "HGU", "AYMH", "-5.826789", "144.295861", "5388", "10", "U", "Pacific/Port_Moresby");
         concreteAddData.addAirline("Airfix Aviation", "", "", "FIX", "AIRFIX", "Finland", "Y");

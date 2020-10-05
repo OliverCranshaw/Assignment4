@@ -24,7 +24,13 @@ public class RouteTable extends DataTable {
         super(newOrgData);
     }
 
-
+    /**
+     * createTable() method overridden from DataTable.
+     * This method is overridden as the data to be shown in the gui is just the first entry
+     * for each route COMMENT, so the process of creating the table is different
+     *
+     * @throws SQLException Caused by ResultSet interactions.
+     */
     @Override
     public void createTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
@@ -33,7 +39,7 @@ public class RouteTable extends DataTable {
             // Gets the number of columns (ie the number of variables)
             int columns = md.getColumnCount();
             // Initializing an arraylist of arraylists to store the extracted data in
-            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
             // Iterates through the result set
             while(orgData.next()) {
                 // An arraylist of each instance of the data type
@@ -60,7 +66,6 @@ public class RouteTable extends DataTable {
             filteredData = new ArrayList<>();
             originalDataArrayList = new ArrayList<>();
         }
-
     }
 
     /**

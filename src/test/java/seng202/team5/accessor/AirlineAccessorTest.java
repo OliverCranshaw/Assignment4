@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirlineAccessorTest extends BaseDatabaseTest {
+
     private AirlineAccessor airlineAccessor;
 
     private final List<String> testData = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
+    private final List<String> testData2 = List.of("AirlineName2", "AliasName2", "IF", "IGE", "CallsignStuff2", "CountryName2", "Y");
+    private final List<String> testData3 = List.of("AirlineName3", "AliasName3", "", "GEE", "CallsignStuff3", "CountryName3", "Y");
 
     @Before
     public void setUp() {
@@ -275,6 +278,26 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             }
         }
 
+        ResultSet resultSet = airlineAccessor.getData("IT");
+
+        Assert.assertEquals("AirlineName", resultSet.getString("airline_name"));
+        Assert.assertEquals("AliasName", resultSet.getString("alias"));
+        Assert.assertEquals("IT", resultSet.getString("iata"));
+        Assert.assertEquals("ICA", resultSet.getString("icao"));
+        Assert.assertEquals("CallsignStuff", resultSet.getString("callsign"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("Y", resultSet.getString("active"));
+
+        resultSet = airlineAccessor.getData("ICA");
+
+        Assert.assertEquals("AirlineName", resultSet.getString("airline_name"));
+        Assert.assertEquals("AliasName", resultSet.getString("alias"));
+        Assert.assertEquals("IT", resultSet.getString("iata"));
+        Assert.assertEquals("ICA", resultSet.getString("icao"));
+        Assert.assertEquals("CallsignStuff", resultSet.getString("callsign"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("Y", resultSet.getString("active"));
+
         dbHandler.close();
     }
 
@@ -317,31 +340,6 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
         }
 
         Assert.assertEquals(-1, airlineAccessor.getAirlineId("Something else"));
-    }
-
-
-    @Test
-    public void testGetAirlineIataIcao() throws SQLException {
-        Connection dbHandler = DBConnection.getConnection();
-        PreparedStatement stmt = dbHandler.prepareStatement(
-                "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-        // Iterates through the List and adds the values to the insert statement
-        for (int i = 0; i<testData.size(); i++) {
-            stmt.setObject(i + 1, testData.get(i));
-        }
-
-        // Executes the insert operation, sets the result to the airport_id of the new airport
-        Assert.assertEquals(1, stmt.executeUpdate());
-
-        ArrayList iataIcao = airlineAccessor.getAirlineIataIcao(testData.get(0));
-
-        for (int i = 0; i<2; i++) {
-            Assert.assertEquals(testData.get(i + 2), iataIcao.get(i));
-        }
-
-        Assert.assertTrue(airlineAccessor.getAirlineIataIcao("Not in thee database").isEmpty());
     }
 
 
@@ -420,6 +418,64 @@ public class AirlineAccessorTest extends BaseDatabaseTest {
             maxKey = Math.max(maxKey, key);
 
             Assert.assertEquals(maxKey, airlineAccessor.getMaxID());
+        }
+    }
+
+
+    @Test
+    public void testGetAirlineNames() throws SQLException {
+        // Establishing connection with database
+        Connection dbHandler = DBConnection.getConnection();
+
+        // SQLITE query to insert airline data into database
+        String query = "INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, callsign, country, active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(query);
+        PreparedStatement stmt3 = dbHandler.prepareStatement(query);
+
+
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+            stmt2.setObject(i + 1, testData2.get(i));
+            stmt3.setObject(i + 1, testData3.get(i));
+            if (i == 2) {
+                stmt3.setObject(i + 1, null);
+            }
+        }
+
+        stmt.executeUpdate();
+        stmt2.executeUpdate();
+        stmt3.executeUpdate();
+
+        ResultSet test1 = airlineAccessor.getAirlineNames(new ArrayList<>());
+        Assert.assertNull(test1);
+
+        ArrayList<String> testList1 = new ArrayList<>();
+        testList1.add((String) testData.get(2));
+        testList1.add((String) testData2.get(3));
+        testList1.add((String) testData3.get(3));
+        String nonExistentIata = "FN";
+        testList1.add(nonExistentIata);
+        ResultSet test2 = airlineAccessor.getAirlineNames(testList1);
+        while (test2.next()) {
+            String iata = test2.getString(1);
+            String icao = test2.getString(2);
+            String name = test2.getString(3);
+            if (iata == null) {
+                Assert.assertEquals(name, testData3.get(0));
+            } else if (iata.equals(testData.get(2))) {
+                Assert.assertEquals(icao, testData.get(3));
+                Assert.assertEquals(name, testData.get(0));
+            } else if (iata.equals(testData2.get(2))) {
+                Assert.assertEquals(icao, testData2.get(3));
+                Assert.assertEquals(name, testData2.get(0));
+            }
+            Assert.assertNotEquals(iata, nonExistentIata);
         }
     }
 }

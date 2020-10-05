@@ -37,7 +37,7 @@ public class FlightService implements Service {
      * @param altitude The altitude of the plane at the time of the flight entry, in feet. An integer, cannot be null.
      * @param latitude The latitude of the plane at the time of the flight entry, a double. Negative is South, positive is North, cannot be null.
      * @param longitude The longitude of the plane at the time of the flight entry, a double. Negative is West, positive is East, cannot be null.
-     * @return int result The unique id of the flight entry that was just created by the FlightAccessor.
+     * @return int result The unique id of the flight entry that was just created by the FlightAccessor, -1 if checks fail or fails to save.
      */
     public int save(int flightID, String locationType, String location, int altitude, double latitude, double longitude) {
         
@@ -68,7 +68,7 @@ public class FlightService implements Service {
      * @param newAltitude The new altitude of the flight entry in feet, an integer. May be null if not to be updated.
      * @param newLatitude The new latitude of the flight entry, a double. Negative is South and positive is North. May be null if not to be updated.
      * @param newLongitude The new longitude of the flight entry, a double. Negative is West and positive is East. May be null if not to be updated.
-     * @return int result The unique id of the flight entry that was just updated by the FlightAccessor.
+     * @return int result The unique id of the flight entry that was just updated by the FlightAccessor, -1 if checks fail.
      */
     public int update(int id, String newLocationType, String newLocation, int newAltitude,
                       double newLatitude, double newLongitude) {
@@ -85,8 +85,7 @@ public class FlightService implements Service {
                 if (newLocationType.equals("APT"))  {
                     if (newLocation != null && !airportAccessor.dataExists(newLocation)) {
                         return -1;
-                    }
-                    else if (!airportAccessor.dataExists(location)) {
+                    } else if (!airportAccessor.dataExists(location) && location.equals(newLocation)) {
                         return -1;
                     }
                 }
@@ -97,7 +96,7 @@ public class FlightService implements Service {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
         // Passes the parameters into the update method of the FlightAccessor
@@ -112,7 +111,6 @@ public class FlightService implements Service {
      */
     public boolean delete(int flightID) {
         if (!accessor.flightExists(flightID)) {
-            System.out.println("Could not delete flight, does not exist.");
             return false;
         }
 
@@ -127,7 +125,6 @@ public class FlightService implements Service {
      */
     public boolean deleteEntry(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete flight data, does not exist.");
             return false;
         }
 

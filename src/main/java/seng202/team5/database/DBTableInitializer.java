@@ -16,11 +16,11 @@ public class DBTableInitializer {
      * Creates the airport, airline, flight, and route tables if they do not already exist.
      * Uses SQLite3.
      *
-     * @param url The url of the database, intended to be passed in from DBInitializer
+     * @param url The url of the database, intended to be passed in from DBInitializer.
      */
     public static void initializeTables(String url) {
 
-        String airport_sql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
+        String airportSql = "CREATE TABLE IF NOT EXISTS AIRPORT_DATA (\n"
                 + "     airport_id INTEGER PRIMARY KEY,\n" // Auto-increments as it is an integer primary key, unique
                 + "     airport_name TEXT NOT NULL,\n"
                 + "     city TEXT NOT NULL,\n"
@@ -35,7 +35,7 @@ public class DBTableInitializer {
                 + "     tz_database_timezone TEXT NOT NULL\n" // Timezone in "tz" (Olson) format, i.e. Country/Region
                 + ");";
 
-        String airline_sql = "CREATE TABLE IF NOT EXISTS AIRLINE_DATA (\n"
+        String airlineSql = "CREATE TABLE IF NOT EXISTS AIRLINE_DATA (\n"
                 + "     airline_id INTEGER PRIMARY KEY,\n"
                 + "     airline_name TEXT NOT NULL,\n"
                 + "     alias TEXT,\n"
@@ -46,7 +46,7 @@ public class DBTableInitializer {
                 + "     active TEXT NOT NULL\n" // "Y" if the airline is or has until recently been operational, "N" if it is defunct
                 + ");";
 
-        String route_sql = "CREATE TABLE IF NOT EXISTS ROUTE_DATA (\n"
+        String routeSql = "CREATE TABLE IF NOT EXISTS ROUTE_DATA (\n"
                 + "     route_id INTEGER PRIMARY KEY,\n"
                 + "     airline TEXT NOT NULL,\n" // IATA/ICAO code
                 + "     airline_id INTEGER NOT NULL,\n"
@@ -71,7 +71,7 @@ public class DBTableInitializer {
                 + "             ON DELETE CASCADE\n"
                 + ");";
 
-        String flight_sql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA (\n"
+        String flightSql = "CREATE TABLE IF NOT EXISTS FLIGHT_DATA (\n"
                 + "     id INTEGER PRIMARY KEY,\n" // Auto-increments as it is an integer primary key, unique
                 + "     flight_id INTEGER NOT NULL,\n" // Not unique, ties the different entries in a single flight together
                 + "     location_type TEXT NOT NULL,\n" // One of "APT", "VOR", or "FIX"
@@ -85,16 +85,13 @@ public class DBTableInitializer {
         try (Connection con = DriverManager.getConnection(url);
             Statement statement = con.createStatement()) {
             // Creates the tables for airlines, airports, routes, and flights
-            statement.execute(airline_sql);
-            statement.execute(airport_sql);
-            statement.execute(route_sql);
-            statement.execute(flight_sql);
-
-            System.out.println("Tables created.");
+            statement.execute(airlineSql);
+            statement.execute(airportSql);
+            statement.execute(routeSql);
+            statement.execute(flightSql);
         } catch (SQLException e) {
             // If any of the above fails, prints out an error message
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
-
 }

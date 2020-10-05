@@ -6,13 +6,13 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import seng202.team5.table.Search;
 import seng202.team5.database.DBConnection;
 import seng202.team5.database.DBInitializer;
 import seng202.team5.service.AirlineService;
 import seng202.team5.service.AirportService;
 import seng202.team5.service.FlightService;
 import seng202.team5.service.RouteService;
+import seng202.team5.table.Search;
 
 import java.io.File;
 import java.sql.Connection;
@@ -30,8 +30,7 @@ public class SearchScenario {
     private ArrayList<Object> data;
     private ResultSet searchResult;
 
-
-    @Before
+    @Before("@Search")
     public void setUp() {
 
         String filename = "test.db";
@@ -67,11 +66,8 @@ public class SearchScenario {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -516,7 +512,7 @@ public class SearchScenario {
     }
 
     @When("user searches for the route source airport {string} which isn't present in the database")
-    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) throws SQLException {
+    public void userSearchesForTheRouteSourceAirportWhichIsnTPresentInTheDatabase(String sourceAirport) {
         data.add(sourceAirport);
         data.add(null);
         data.add(-1);

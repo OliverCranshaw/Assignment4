@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<GridPane prefHeight="493.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team5.controller.uploadData.UploadRoutesMenuController">
+   <stylesheets>
+      <URL value="@../style.css" />
+   </stylesheets>
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="392.79998779296875" minHeight="10.0" prefHeight="282.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="289.59998168945316" minHeight="10.0" prefHeight="211.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="600.0" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints maxWidth="524.0" minWidth="10.0" prefWidth="20.800006103515624" />
+            <ColumnConstraints maxWidth="563.2000244140625" minWidth="60.0" prefWidth="558.3999938964844" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="524.0" minWidth="10.0" prefWidth="21.5999755859375" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="205.39999389648438" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="163.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="selectFileButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onSelectFilePressed" prefHeight="25.0" prefWidth="87.0" text="Select File" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <styleClass>
+                  <String fx:value="general-button" />
+                  <String fx:value="main-button" />
+               </styleClass></Button>
+            <ScrollPane maxHeight="154.0" prefHeight="154.0" prefWidth="558.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <content>
+                  <Text fx:id="errorList" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="551.7366828918457" />
+               </content>
+            </ScrollPane>
+         </children>
+      </GridPane>
+      <VBox alignment="BOTTOM_CENTER" prefHeight="226.0" prefWidth="600.0">
+         <children>
+            <Label alignment="TOP_CENTER" layoutX="10.0" layoutY="142.0" prefHeight="36.0" prefWidth="418.0" text="Upload Routes From File" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="File must be a .txt file and have lines in the format of &lt;airline code&gt;,&lt;source airport code&gt;,&lt;destination airport code&gt;,&lt;codeshare&gt;,&lt;stops&gt;,&lt;equipment&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="10.0" layoutY="160.0" text="File must have 6 or 9 fields, only &lt;codeshare&gt; is not necessary." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label text="Lines may contain IDs after each of the codes, however they will be removed." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label text="The airline code is an airline IATA or ICAO code, it must be 2 or 3 characters." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label prefHeight="40.0" prefWidth="566.0" text="The source and destination airport codes are both airport IATA or ICAO codes, they must be 3 or 4 characters." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="10.0" layoutY="212.0" text="Codeshare must either be &quot;Y&quot; if the flight is operated by another airline, or blank." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="96.0" layoutY="229.0" text="Stops is the number of stops for the flight, 0 is for direct." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="160.0" layoutY="229.0" prefHeight="40.0" prefWidth="566.0" text="Equipment is a series of 3 letter codes for plane types typically used for this flight, separated by spaces." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <ProgressBar fx:id="progressBar" maxWidth="500.0" minHeight="19.0" visible="false" />
+         </children>
+      </VBox>
+   </children>
+</GridPane>

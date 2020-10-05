@@ -20,7 +20,7 @@ public class FilterAirlineTable extends ConcreteFilterTable {
      *
      * @param data The ArrayList that is passed through with information from the table.
      */
-    public FilterAirlineTable(ArrayList data) { super(data); }
+    public FilterAirlineTable(ArrayList<ArrayList<Object>> data) { super(data); }
 
     /**
      * Overrides the the parent class.
@@ -108,7 +108,7 @@ public class FilterAirlineTable extends ConcreteFilterTable {
     /**
      * Gets elements and returns it.
      *
-     * @return ArrayList<ArrayList<Object>> of the elements.
+     * @return ArrayList of the elements.
      */
     public ArrayList<ArrayList<Object>> getElements() {
         return elements;

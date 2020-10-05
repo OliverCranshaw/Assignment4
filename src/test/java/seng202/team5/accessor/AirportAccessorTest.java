@@ -14,9 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AirportAccessorTest extends BaseDatabaseTest {
+
     private AirportAccessor airportAccessor;
 
     private final List<Object> testData = List.of("AirportName", "CityName", "CountryName", "IAT", "ICAO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
+    private final List<Object> testData2 = List.of("AirportName2", "CityName2", "CountryName2", "ATA", "CAOO", 4.5, 6.2, 424242, 535353f, "E", "Timezone");
+    private final List<String> testData3 = List.of("AirlineName", "AliasName", "IT", "ICA", "CallsignStuff", "CountryName", "Y");
+    private final List<Object> testData4 = List.of("IT", 1, "IAT", 1, "ATA", 2, "N", 100, "ABC");
 
     @Before
     public void setUp() {
@@ -283,6 +287,34 @@ public class AirportAccessorTest extends BaseDatabaseTest {
             }
         }
 
+        ResultSet resultSet = airportAccessor.getData("IAT");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Timezone", resultSet.getString("tz_database_timezone"));
+
+        resultSet = airportAccessor.getData("ICAO");
+
+        Assert.assertEquals("AirportName", resultSet.getString("airport_name"));
+        Assert.assertEquals("CityName", resultSet.getString("city"));
+        Assert.assertEquals("CountryName", resultSet.getString("country"));
+        Assert.assertEquals("IAT", resultSet.getString("iata"));
+        Assert.assertEquals("ICAO", resultSet.getString("icao"));
+        Assert.assertEquals(4.5, resultSet.getDouble("latitude"), 0.1);
+        Assert.assertEquals(6.2, resultSet.getDouble("longitude"), 0.1);
+        Assert.assertEquals(424242, resultSet.getInt("altitude"));
+        Assert.assertEquals(535353f, resultSet.getFloat("timezone"), 0.1);
+        Assert.assertEquals("E", resultSet.getString("dst"));
+        Assert.assertEquals("Timezone", resultSet.getString("tz_database_timezone"));
+
         dbHandler.close();
     }
 
@@ -438,6 +470,178 @@ public class AirportAccessorTest extends BaseDatabaseTest {
             maxKey = Math.max(maxKey, key);
 
             Assert.assertEquals(maxKey, airportAccessor.getMaxID());
+        }
+    }
+
+
+    @Test
+    public void testIncomingRoutes() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        {
+            // Add a airline to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement("INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                    + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData3.size(); i++) {
+                stmt.setObject(i + 1, testData3.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a source airport to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData.size(); i++) {
+                stmt.setObject(i + 1, testData.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a destination airport to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData2.size(); i++) {
+                stmt.setObject(i + 1, testData2.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a route to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, "
+                            + "destination_airport, destination_airport_id, codeshare, stops, equipment) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            // Iterates through the List and adds the values to the insert statement
+            for (int i = 0; i < testData4.size(); i++) {
+                stmt.setObject(i + 1, testData4.get(i));
+            }
+            stmt.executeUpdate();
+        }
+
+        PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE destination_airport_id = ?");
+        stmt.setObject(1, 2);
+
+        int result = stmt.executeQuery().getInt(1);
+        ResultSet actualOutput = airportAccessor.getIncomingRoutes();
+        int airportID = actualOutput.getInt(1);
+        int incomingCount = actualOutput.getInt(2);
+        Assert.assertEquals(result, incomingCount);
+    }
+
+
+    @Test
+    public void testOutgoingRoutes() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+        {
+            // Add a airline to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement("INSERT INTO AIRLINE_DATA(airline_name, alias, iata, icao, "
+                    + "callsign, country, active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData3.size(); i++) {
+                stmt.setObject(i + 1, testData3.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a source airport to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData.size(); i++) {
+                stmt.setObject(i + 1, testData.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a destination airport to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                            + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (int i = 0; i < testData2.size(); i++) {
+                stmt.setObject(i + 1, testData2.get(i));
+            }
+            stmt.executeUpdate();
+        }
+        {
+            // Add a route to the DB
+            PreparedStatement stmt = dbHandler.prepareStatement(
+                    "INSERT INTO ROUTE_DATA(airline, airline_id, source_airport, source_airport_id, "
+                            + "destination_airport, destination_airport_id, codeshare, stops, equipment) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            // Iterates through the List and adds the values to the insert statement
+            for (int i = 0; i < testData4.size(); i++) {
+                stmt.setObject(i + 1, testData4.get(i));
+            }
+            stmt.executeUpdate();
+        }
+
+        PreparedStatement stmt = dbHandler.prepareStatement("SELECT COUNT(*) FROM ROUTE_DATA WHERE source_airport_id = ?");
+        stmt.setObject(1, 1);
+
+        int result = stmt.executeQuery().getInt(1);
+        ResultSet actualOutput = airportAccessor.getOutgoingRoutes();
+        int airportID = actualOutput.getInt(1);
+        int incomingCount = actualOutput.getInt(2);
+        Assert.assertEquals(result, incomingCount);
+
+    }
+
+
+    @Test
+    public void testGetAirportNames() throws SQLException {
+        Connection dbHandler = DBConnection.getConnection();
+
+
+        String query = "INSERT INTO AIRPORT_DATA(airport_name, city, country, iata, icao, latitude, "
+                + "longitude, altitude, timezone, dst, tz_database_timezone) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+        // Adds an airport
+        PreparedStatement stmt = dbHandler.prepareStatement(query);
+        PreparedStatement stmt2 = dbHandler.prepareStatement(query);
+
+
+
+        // Iterates through the List and adds the values to the insert statement
+        for (int i = 0; i<testData.size(); i++) {
+            stmt.setObject(i + 1, testData.get(i));
+            stmt2.setObject(i + 1, testData2.get(i));
+        }
+        stmt.executeUpdate();
+        stmt2.executeUpdate();
+
+        // Testing empty case
+        ResultSet test1 = airportAccessor.getAirportNames(new ArrayList<>());
+        Assert.assertNull(test1);
+
+        // Testing case with both valid and invalid codes provided
+        ArrayList<String> testList1 = new ArrayList<>();
+        testList1.add((String) testData2.get(3));
+        testList1.add((String) testData.get(4));
+        String nonExistentIata = "NFG";
+        testList1.add(nonExistentIata);
+        ResultSet test2 = airportAccessor.getAirportNames(testList1);
+        while (test2.next()) {
+            String iata = test2.getString(1);
+            String icao = test2.getString(2);
+            String name = test2.getString(3);
+            if (iata == testData.get(3)) {
+                Assert.assertEquals(icao, testData.get(4));
+                Assert.assertEquals(name, testData.get(0));
+            } else if (icao == testData2.get(4)) {
+                Assert.assertEquals(iata, testData2.get(3));
+                Assert.assertEquals(name, testData2.get(0));
+            }
+            Assert.assertNotEquals(iata, nonExistentIata);
         }
     }
 }

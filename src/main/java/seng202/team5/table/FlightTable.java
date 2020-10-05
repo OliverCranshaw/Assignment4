@@ -1,6 +1,8 @@
 package seng202.team5.table;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +27,9 @@ public class FlightTable extends DataTable {
     /**
      * createTable() method overridden from DataTable.
      * This method is overridden as the data to be shown in the gui is just the first entry
-     * for each flight (each flight spans multiple entries), so the process of creating the table is different
+     * for each flight (each flight spans multiple entries), so the process of creating the table is different.
      *
-     * @throws SQLException
+     * @throws SQLException Caused by ResultSet interactions.
      */
     @Override
     public void createTable() throws SQLException {
@@ -41,7 +43,7 @@ public class FlightTable extends DataTable {
         ArrayList<ArrayList<Object>> result = new ArrayList<>();
         // Iterating through the list of all flight entries, adding it to the result when it is the first for each flight
         // Also adding the id, location type and location of each flight destination
-        Integer index = 0;
+        int index = 0;
         Integer currFlightId = null;
         for (ArrayList<Object> flight : list) {
             int flightID = (int) flight.get(1);
@@ -69,13 +71,13 @@ public class FlightTable extends DataTable {
         filteredData = result;
     }
 
-
     /**
      * createUnreducedTable() behaves as the createTable() method of the DataTable does,
-     * Converting the resultSet orgData to an ArrayList of ArrayList of Objects
+     * Converting the resultSet orgData to an ArrayList of ArrayList of Objects.
      *
-     * @return ArrayList(ArrayList(Object)) - ArrayList of FlightData
-     * @throws SQLException
+     * @return ArrayList(ArrayList(Object)) - ArrayList of FlightData.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public ArrayList<ArrayList<Object>> createUnreducedTable() throws SQLException {
         // Retrieves all of the meta data of the original data resultSet
@@ -84,7 +86,7 @@ public class FlightTable extends DataTable {
             // Gets the number of columns (ie the number of variables)
             int columns = md.getColumnCount();
             // Initializing an arraylist of arraylists to store the extracted data in
-            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
+            ArrayList<ArrayList<Object>> list = new ArrayList<>();
             // Iterates through the result set
             while(orgData.next()) {
                 // An arraylist of each instance of the data type
@@ -98,10 +100,7 @@ public class FlightTable extends DataTable {
             }
             return list;
         } else {
-            ArrayList<ArrayList<Object>> list = new ArrayList<ArrayList<Object>>();
-            return list;
+            return new ArrayList<>();
         }
-
     }
-
 }

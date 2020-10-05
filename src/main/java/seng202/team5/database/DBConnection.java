@@ -41,6 +41,7 @@ public class DBConnection {
                 config.enforceForeignKeys(true);
                 config.enableLoadExtension(true);
                 dataSource.setConfig(config);
+                conn.createStatement().execute("PRAGMA foreign_keys = ON");
             }
         } catch (SQLException e) {
             // Whenever using PrintStream statements to log errors, the 'err' property should be used instead of the default
@@ -50,5 +51,4 @@ public class DBConnection {
         }
         return conn;
     }
-
 }

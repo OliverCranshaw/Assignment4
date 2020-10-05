@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -41,33 +42,27 @@ public class RouteService implements Service {
      * @param codeshare "Y" if the flight is operated by a different airline, otherwise "N". Cannot be null.
      * @param stops The number of stops for the flight, 0 if it is direct. An integer, cannot be null.
      * @param equipment 3-letter codes for plane types(s) commonly used for this flight, separated by spaces. Cannot be null.
-     * @return int result The route_id of the route that was just created by the RouteAccessor.
+     * @return int result The route_id of the route that was just created by the RouteAccessor, -1 if checks fail or fails to save.
      */
     public int save(String airline, String sourceAirport, String destAirport, String codeshare, int stops, String equipment) {
-        
-        // Checks that there is no completely identical route existing in the database
-        if (accessor.dataExists(airline, sourceAirport, destAirport, codeshare, stops, equipment)) {
-            return -1;
-        }
+        int airlineID;
+        int sourceAirportID;
+        int destAirportID;
         
         // Checks that an airline with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airlineAccessor.dataExists(airline)) {
-            return -1;
+        if ((airlineID = airlineAccessor.lookupCode(airline)) == -1) {
+            return -2;
         }
         
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airportAccessor.dataExists(sourceAirport)) {
-            return -1;
+        if ((sourceAirportID = airportAccessor.lookupCode(sourceAirport)) == -1) {
+            return -3;
         }
         
         // Checks that an airport with the given IATA or ICAO code exists, if one doesn't, returns an error code of -1
-        if (!airportAccessor.dataExists(destAirport)) {
-            return -1;
+        if ((destAirportID = airportAccessor.lookupCode(destAirport)) == -1) {
+            return -4;
         }
-
-        int airlineID = airlineAccessor.getAirlineId(airline);
-        int sourceAirportID = airportAccessor.getAirportId(sourceAirport);
-        int destAirportID = airportAccessor.getAirportId(destAirport);
 
         // Adds the parameters into an List to pass into the save method of the RouteAccessor
         List<Object> elements = Arrays.asList(airline, airlineID, sourceAirport, sourceAirportID, destAirport,
@@ -86,14 +81,16 @@ public class RouteService implements Service {
      * @param newCodeshare The new codeshare of the route, "Y" or "N", may be null if not to be updated.
      * @param newStops The new number of stops for the route, an integer, may be -1 if not to be updated.
      * @param newEquipment The new equipment for the route, may be null if not to be updated.
-     * @return int result The route_id of the route that was just updated by the RouteAccessor.
+     * @return int result The route_id of the route that was just updated by the RouteAccessor, -1 if checks fail.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
      */
     public int update(int id, String newAirline, String newSourceAirport, String newDestAirport,
                       String newCodeshare, Integer newStops, String newEquipment) throws SQLException {
 
-        int newAirlineID = -1;
-        int newSourceAirportID = -1;
-        int newDestAirportID = -1;
+        int newAirlineID;
+        int newSourceAirportID;
+        int newDestAirportID;
 
         ResultSet data = getData(id);
         // Check for whether there exists an entry for this route id in the database
@@ -101,13 +98,12 @@ public class RouteService implements Service {
             return 0; // 0 rows were updated
         }
 
-
         String currAirline = data.getString(2);
-        Integer currAirlineID = data.getInt(3);
+        int currAirlineID = data.getInt(3);
         String currSrcAirport = data.getString(4);
-        Integer currSrcAirportID = data.getInt(5);
+        int currSrcAirportID = data.getInt(5);
         String currDstAIrport = data.getString(6);
-        Integer currDstAirportID = data.getInt(7);
+        int currDstAirportID = data.getInt(7);
 
         // If the airline is not null, checks that an airline with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
@@ -121,7 +117,6 @@ public class RouteService implements Service {
         } else {
             newAirlineID = currAirlineID;
         }
-
 
         // If the source airport is not null, checks that an airport with the given IATA or ICAO code exists
         // If one doesn't, returns an error code of -1
@@ -161,7 +156,6 @@ public class RouteService implements Service {
      */
     public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete route, does not exist.");
             return false;
         }
 
@@ -198,20 +192,18 @@ public class RouteService implements Service {
      * @return ResultSet of routes.
      */
     public ResultSet getData(String source_airport, String dest_airport, int stops, String equipment) {
-        ArrayList airportSourceIataIcao = null;
-        ArrayList airportDestIataIcao = null;
+        ArrayList<String> airportSourceIataIcao = null;
+        ArrayList<String> airportDestIataIcao = null;
 
         if (source_airport != null) {
             airportSourceIataIcao = airportAccessor.getAirportIataIcao(source_airport);
             if (airportSourceIataIcao.isEmpty()) {
-                airportSourceIataIcao = new ArrayList();
                 airportSourceIataIcao.add("N/A");
             }
         }
         if (dest_airport != null) {
             airportDestIataIcao = airportAccessor.getAirportIataIcao(dest_airport);
             if (airportDestIataIcao.isEmpty()) {
-                airportDestIataIcao = new ArrayList();
                 airportDestIataIcao.add("N/A");
             }
         }
@@ -226,5 +218,51 @@ public class RouteService implements Service {
      */
     public int getMaxID() {
         return accessor.getMaxID();
+    }
+
+
+    /**
+     * Return all airline IDS that cover the given route (from src to dst). If the given boolean if false, it doesn't
+     * return any inactive airlines.
+     * @param srcId - Integer source airport ID.
+     * @param dstId - Integer destination airport ID.
+     * @param includeInactive - Boolean determines if the result should include inactive airlines.
+     * @return - Arraylist of Integers of airline IDs.
+     *
+     * @throws SQLException Caused by ResultSet interactions.
+     */
+    public ArrayList<Integer> getAirlinesCoveringRoute(Integer srcId, Integer dstId, Boolean includeInactive) throws SQLException {
+        ArrayList<Integer> current = accessor.getAirlinesCovering(srcId, dstId);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer airlineId : current) {
+            ResultSet airlineInfo = airlineAccessor.getData(airlineId);
+            if (airlineInfo.getString(8).equals("Y") || includeInactive) {
+                result.add(airlineId);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns a hashtable of route descriptions (source code - destination code) mapped to how
+     * many airlines cover that route.
+     *
+     * @return Hashtable (String, Integer> of route description to count of airlines, null if SQL exception occurs.
+     */
+    public Hashtable<String, Integer> getCountAirlinesCovering(ArrayList<Integer> routeIds) {
+        ResultSet data = accessor.getCountAirlinesCovering(routeIds);
+        Hashtable<String, Integer> result = new Hashtable<>();
+
+        try {
+            while (data.next()) {
+                String routeDesc = data.getString(2) + " - " + data.getString(3);
+                Integer count = data.getInt(4);
+                result.put(routeDesc, count);
+            }
+            return result;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 }

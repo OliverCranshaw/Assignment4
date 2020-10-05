@@ -4,56 +4,52 @@ import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import jdk.jshell.spi.ExecutionControl;
+import javafx.util.Pair;
+import netscape.javascript.JSObject;
 import seng202.team5.App;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * A widget that shows an interactive map.
  *
  * Note that before using methods such as "setCentre", "setZoom", "addMarker", etc the
- * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method
- *
- * @author Nathan Smithies
+ * underlying WebView needs to be loaded. To ensure this please use the "addLoadListener" method.
  */
 public class MapView extends VBox {
-    private WebView webView;
+    private final WebView webView = new WebView();
+    private final Bridge bridge = new Bridge();
 
     /**
-     * The MapView constructor
-     *
-     * @throws IOException If the "map.html" file is not found
+     * The MapView constructor.
+     * After it is constructed the page will be in the loading state.
      */
-    public MapView() throws IOException {
-        webView = new WebView();
+    public MapView() {
+        addLoadListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                // New page has loaded, process:
 
-        try {
-            String content = Files.readString(Paths.get(App.class.getResource("map.html").toURI()));
-            webView.getEngine().loadContent(content);
-        } catch (URISyntaxException e) {
-            // Really shouldn't be possible
-            assert false;
-        }
+                JSObject window = (JSObject) webView.getEngine().executeScript("window");
+                window.setMember("bridge", bridge);
+            }
+        });
 
+        URL path = App.class.getResource("map.html");
+        webView.getEngine().load(path.toString());
 
-        webView.setMaxHeight(Double.POSITIVE_INFINITY);
-        webView.setMaxWidth(Double.POSITIVE_INFINITY);
+        webView.prefHeightProperty().bind(this.heightProperty());
+        webView.prefWidthProperty().bind(this.widthProperty());
 
         this.getChildren().add(webView);
     }
 
     /**
-     * Add a listener for changes in the underlying WebView load state
+     * Add a listener for changes in the underlying WebView load state.
      * If this widget isn't loaded then "setCentre", "setZoom", "addMarker", etc will not work.
      *
-     * @param listener The event listener to add
+     * @param listener The event listener to add.
      */
     public void addLoadListener(ChangeListener<Worker.State> listener) {
         webView.getEngine().getLoadWorker().stateProperty().addListener(listener);
@@ -62,7 +58,7 @@ public class MapView extends VBox {
     /**
      * Centres the map to the given coordinate.
      *
-     * @param coord New centre coordinate
+     * @param coord New centre coordinate.
      */
     public void setCentre(Coord coord) {
         setCentre(coord.latitude, coord.longitude);
@@ -71,8 +67,8 @@ public class MapView extends VBox {
     /**
      * Centres the map to the given coordinate.
      *
-     * @param latitude New centre latitude
-     * @param longitude New centre longitude
+     * @param latitude New centre latitude.
+     * @param longitude New centre longitude.
      */
     public void setCentre(double latitude, double longitude) {
         callFunction("setCentre", latitude, longitude);
@@ -88,75 +84,133 @@ public class MapView extends VBox {
      * 15: Streets
      * 20: Buildings
      *
-     * @param level New zoom level
+     * @param level New zoom level.
      */
     public void setZoom(int level) {
         callFunction("setZoom", level);
     }
 
     /**
-     * Adds a marker to the map with the given name and coordinate
+     * Ensures that this map view will fit the given bounds.
      *
-     * @param coord New marker coordinate
-     * @param name New marker name
-     * @return The created marker ID
+     * @param bounds Bounds to fit to.
+     * @param padding Extra padding to the given bounds.
      */
-    public int addMarker(Coord coord, String name) {
-        return addMarker(coord.latitude, coord.longitude, name);
+    public void fitBounds(Bounds bounds, double padding) { callFunction("fitBounds", bounds, padding); }
+
+    /**
+     * Adds a marker to the map with the given name and coordinate.
+     *
+     * @param coord New marker coordinate.
+     * @param name New marker name.
+     * @param icon Icon to use, null for default.
+     * @return The created marker ID.
+     */
+    public int addMarker(Coord coord, String name, MarkerIcon icon) {
+        return addMarker(coord.latitude, coord.longitude, name, icon);
     }
 
     /**
-     * Adds a marker to the map with the given name and coordinate
+     * Adds a marker to the map with the given name, icon and coordinate.
      *
-     * @param latitude New marker latitude
-     * @param longitude New marker longitude
-     * @param name New marker name
-     * @return The created marker ID
+     * @param latitude New marker latitude.
+     * @param longitude New marker longitude.
+     * @param name New marker name.
+     * @param icon Icon to use, null for default.
+     * @return The created marker ID.
      */
-    public int addMarker(double latitude, double longitude, String name) {
-        return (int) callFunction("addMarker", latitude, longitude, name);
+    public int addMarker(double latitude, double longitude, String name, MarkerIcon icon) {
+        return (int) callFunction("addMarker", latitude, longitude, name, icon);
     }
 
     /**
-     * Removes a marker from the map with the given marker ID
+     * Removes a marker from the map with the given marker ID.
      *
-     * @param markerID The marker ID to remove
+     * @param markerID The marker ID to remove.
      */
     public void removeMarker(int markerID) {
         callFunction("removeMarker", markerID);
+        setMarkerListener(markerID, null);
     }
 
     /**
-     * Creates a line on the map representing a path through the given points
+     * Sets the listener for when the given marker is clicked.
+     * If listener is null then the marker listener is removed.
      *
-     * @param points The list of points for the new path
-     * @return The create path ID
+     * @param markerID Marker to listen for.
+     * @param listener new listener for the given marker.
      */
-    public int addPath(List<Coord> points) {
+    public void setMarkerListener(int markerID, Consumer<Integer> listener) {
+        bridge.markerListeners.put(markerID, listener);
+    }
+
+    /**
+     * Creates a line on the map representing a path through the given points with symbols along it.
+     *
+     * Symbols are represent as a proportion between 0 and 1 and a symbol name.
+     * Valid symbol names are:
+     *  - BACKWARD_CLOSED_ARROW
+     *  - BACKWARD_OPEN_ARROW
+     *  - CIRCLE
+     *  - FORWARD_CLOSED_ARROW
+     *  - FORWARD_OPEN_ARROW
+     *
+     * @param points The list of points for the new path.
+     * @param symbols List of symbols along the path, null is interpreted as no symbols.
+     * @param colour Valid CSS3 colour string (except named colours) for the path, null for default colour.
+     * @param strokeWeight Width of the path and symbols.
+     * @return The created path ID.
+     */
+    public int addPath(List<Coord> points, List<Pair<Double, String>> symbols, String colour, double strokeWeight) {
         if (points.size() < 2) {
             throw new RuntimeException("Too few points to define a path");
         }
-        return (int) callFunction("addPath", points);
+        // Set default values
+        if (symbols == null) symbols = List.of();
+        if (colour == null) colour = "#FF0000";
+
+        // Check that all the symbols are valid
+        Set<String> validSymbols = new HashSet<>(List.of(
+                "BACKWARD_CLOSED_ARROW",
+                "BACKWARD_OPEN_ARROW",
+                "CIRCLE",
+                "FORWARD_CLOSED_ARROW",
+                "FORWARD_OPEN_ARROW"
+        ));
+        for (Pair<Double,String> symbol : symbols) {
+            if (!validSymbols.contains(symbol.getValue())) {
+                throw new RuntimeException("Invalid symbol name \"" + symbol.getValue() + "\"");
+            }
+        }
+
+        return (int) callFunction("addPath", points, symbols, colour, strokeWeight);
     }
 
     /**
-     * Removes a path on the map with the given path ID
+     * Removes a path on the map with the given path ID.
      *
-     * @param pathID The path ID to remove
+     * @param pathID The path ID to remove.
      */
     public void removePath(int pathID) {
         callFunction("removePath", pathID);
-    }
-
-    private Object callFunction(String functionName, Object... arguments) {
-        return callFunction(functionName, List.of(arguments));
     }
 
     private String convertToJSRepresentation(Object object) throws RuntimeException {
         if (object instanceof Coord) {
             Coord coord = (Coord)object;
             return String.format("{lat:%f,lng:%f}", coord.latitude, coord.longitude);
-        } if (object instanceof String) {
+        } else if (object instanceof Bounds) {
+            Bounds bounds = (Bounds) object;
+            return String.format("{south:%f,west:%f,north:%f,east:%f}", bounds.southwest.latitude, bounds.southwest.longitude, bounds.northeast.latitude, bounds.northeast.longitude);
+        } else if (object instanceof MarkerIcon) {
+            MarkerIcon icon = (MarkerIcon) object;
+            return String.format("{url:%s,anchor:{x:%f,y:%f}}", convertToJSRepresentation(icon.imageURL), icon.anchorX, icon.anchorY);
+        } else if (object instanceof Pair) {
+            Pair<?,?> pair = (Pair<?,?>) object;
+            return String.format("{first:%s,second:%s}", convertToJSRepresentation(pair.getKey()), convertToJSRepresentation(pair.getValue()));
+        } else if (object == null) {
+            return "null";
+        } else if (object instanceof String) {
             // Removes special characters
             String cleaned = ((String) object).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n");
             return "\"" + cleaned + "\"";
@@ -173,11 +227,33 @@ public class MapView extends VBox {
         }
     }
 
-    private Object callFunction(String functionName, List<Object> arguments) {
+    private Object callFunction(String functionName, Object... arguments) {
         List<String> stringified = new ArrayList<>();
         for (Object argument : arguments) {
             stringified.add(convertToJSRepresentation(argument));
         }
         return webView.getEngine().executeScript(functionName + "(" + String.join(",", stringified) + ");");
+    }
+
+    /**
+     * This class isn't intended to be used outside this class.
+     * It has to be public due to javascript being unable to interact with private inner classes.
+     */
+    public static class Bridge {
+        private final Map<Integer, Consumer<Integer>> markerListeners = new HashMap<>();
+
+        private Bridge() {}
+
+        public void notifyMarkerClicked(int markerID) {
+            Consumer<Integer> listener = markerListeners.get(markerID);
+            if (listener != null) {
+                listener.accept(markerID);
+            }
+        }
+
+        public void log(String text) {
+            System.out.println(text);
+        }
+
     }
 }

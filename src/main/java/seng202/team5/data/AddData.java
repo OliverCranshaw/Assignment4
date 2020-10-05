@@ -4,8 +4,6 @@ package seng202.team5.data;
  * AddData
  *
  * Contains abstract methods for adding airlines, airports, flight entries, and routes.
- *
- * @author Billie Johnson
  */
 public abstract class AddData {
 
@@ -67,5 +65,4 @@ public abstract class AddData {
      * @return int The route_id of the new route that has been created by RouteService.
      */
     public abstract int addRoute(String airline, String sourceAirport, String destAirport, String codeshare, String stops, String equipment);
-
 }

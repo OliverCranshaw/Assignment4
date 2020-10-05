@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightAccessorTest extends BaseDatabaseTest {
+
     private FlightAccessor flightAccessor;
 
     private final List<Object> testData = List.of(1, "ITA", "Location", 1, 2.0, 3.0);

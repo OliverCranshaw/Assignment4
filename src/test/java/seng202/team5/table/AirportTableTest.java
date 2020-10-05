@@ -9,7 +9,10 @@ import seng202.team5.database.DBInitializer;
 import seng202.team5.database.DBTableInitializer;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +23,6 @@ public class AirportTableTest {
 
     @Before
     public void setUp() {
-        System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
 
@@ -30,7 +32,6 @@ public class AirportTableTest {
 
     @After
     public void tearDown() throws SQLException {
-        System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
 

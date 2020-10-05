@@ -32,12 +32,12 @@ public class ReadFileScenario {
     private File airportFile;
     private File flightFile;
     private File routeFile;
-    AirlineService airlineService;
-    AirportService airportService;
-    FlightService flightService;
-    RouteService routeService;
+    private AirlineService airlineService;
+    private AirportService airportService;
+    private FlightService flightService;
+    private RouteService routeService;
 
-    @Before
+    @Before("@ReadFile")
     public void setup() {
         String filename = "test.db";
         File dbFile = new File(filename);
@@ -62,14 +62,10 @@ public class ReadFileScenario {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
-
 
     // Reading Airline Data
 

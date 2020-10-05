@@ -1,6 +1,7 @@
 package seng202.team5.data;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class AirlineDataTest {

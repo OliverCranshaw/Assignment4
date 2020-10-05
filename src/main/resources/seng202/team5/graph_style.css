@@ -1,0 +1,81 @@
+.chart {
+    -fx-fill: white;
+    -fx-background-color: #272727;
+    -fx-foreground-color: #272727;
+}
+
+.chart-bar {
+    -fx-fill: white;
+    -fx-bar-fill: #82B3B1;
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+}
+
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.data0.chart-pie { -fx-pie-color: #C0D9D8; }
+.data1.chart-pie { -fx-pie-color: #ABCCCB; }
+.data2.chart-pie { -fx-pie-color: #97BFBE; }
+.data3.chart-pie { -fx-pie-color: #82B3B1; }
+.data4.chart-pie { -fx-pie-color: #6DA6A4; }
+.data5.chart-pie { -fx-pie-color: #589A97; }
+.data6.chart-pie { -fx-pie-color: #438D8A; }
+.data7.chart-pie { -fx-pie-color: #2f817e; }
+.data8.chart-pie { -fx-pie-color: #2f817e; }
+.data9.chart-pie { -fx-pie-color: #2A7471; }
+.data10.chart-pie { -fx-pie-color: #256764; }
+.data11.chart-pie { -fx-pie-color: #205A58; }
+.data12.chart-pie { -fx-pie-color: #1C4D4B; }
+.data13.chart-pie { -fx-pie-color: #17403F; }
+.data14.chart-pie { -fx-pie-color: #123332; }
+.data15.chart-pie { -fx-pie-color: #808080; }
+
+.chart-pie-label-line {
+    -fx-stroke: white;
+    -fx-fill: white;
+}
+
+.chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 1em;
+}
+.chart-legend {
+    -fx-background-color: #F0FFFF;
+    -fx-stroke: black;
+    -fx-font-size: 11px;
+}
+
+.chart-plot-background {
+    -fx-background-color: #272727;
+    -fx-foreground-color: white;
+    -fx-stroke: white;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #898887;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #898887;
+}
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
+
+.axis-label {
+    -fx-text-fill: white;
+}
+
+.axis {
+    -fx-fill: white;
+    -fx-stroke: white;
+    -fx-tick-label-fill: white;
+    -fx-tick-length: 0;
+    -fx-minor-tick-length: 0;
+    -fx-font-size: 12px;
+}

@@ -1,9 +1,6 @@
 package seng202.team5.data;
 
-import seng202.team5.accessor.AirlineAccessor;
-import seng202.team5.accessor.AirportAccessor;
-import seng202.team5.accessor.FlightAccessor;
-import seng202.team5.accessor.RouteAccessor;
+import seng202.team5.service.FlightService;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * DataExporter
@@ -22,46 +20,38 @@ public class DataExporter {
 
     private BufferedWriter fileWriter;
     private String line;
-    private final AirlineAccessor airlineAccessor;
-    private final AirportAccessor airportAccessor;
-    private final FlightAccessor flightAccessor;
-    private final RouteAccessor routeAccessor;
+    private final FlightService flightService;
 
     /**
      * Constructor for DataExporter.
-     * Gets the connection to the database and initializes the Accessors to access the database.
+     * Gets the connection to the database and initializes the Services to access the database.
      */
     public DataExporter() {
-        airlineAccessor = new AirlineAccessor();
-        airportAccessor = new AirportAccessor();
-        flightAccessor = new FlightAccessor();
-        routeAccessor = new RouteAccessor();
+        flightService = new FlightService();
     }
 
     /**
-     * Exports all the airlines contained in the database to a csv file called airlines.csv.
+     * Exports all the airlines passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
+     * @param airlines An ArrayList of airlines.
      */
-    public void exportAirlines(File file) {
-        // Retrieves all the airlines from the database
-        ResultSet airlines = airlineAccessor.getData(null, null, null);
-
+    public void exportAirlines(File file, ArrayList<ArrayList<Object>> airlines) {
         try {
-            // Creates the FileWriter with the filename "airlines.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the airlines in the ResultSet
-            while (airlines.next()) {
+            // Loops through all the airlines in the ArrayList
+            for (ArrayList<Object> airline : airlines) {
                 // Gets the data from each column of the row
-                int airlineID = airlines.getInt("airline_id");
-                String name = airlines.getString("airline_name");
-                String alias = airlines.getString("alias");
-                String iata = airlines.getString("iata");
-                String icao = airlines.getString("icao");
-                String callsign = airlines.getString("callsign");
-                String country = airlines.getString("country");
-                String active = airlines.getString("active");
+                int airlineID = (int) airline.get(0);
+                String name = (String) airline.get(1);
+                String alias = (String) airline.get(2);
+                String iata = (String) airline.get(3);
+                String icao = (String) airline.get(4);
+                String callsign = (String) airline.get(5);
+                String country = (String) airline.get(6);
+                String active = (String) airline.get(7);
 
                 // Converts any null values to blank
                 if (alias == null) {
@@ -90,45 +80,39 @@ public class DataExporter {
 
             // Closes the FileWriter when everything is done
             fileWriter.close();
-        } catch (SQLException e) {
-            // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
     /**
-     * Exports all the airports contained in the database to a csv file called airports.csv.
+     * Exports all the airports passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
+     * @param airports An ArrayList of airports.
      */
-    public void exportAirports(File file) {
-        // Retrieves all the airports from the database
-        ResultSet airports = airportAccessor.getData(null, null, null);
-
+    public void exportAirports(File file, ArrayList<ArrayList<Object>> airports) {
         try {
-            // Creates the FileWriter with the filename "airports.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the airports in the ResultSet
-            while (airports.next()) {
+            // Loops through all the airports in the ArrayList
+            for (ArrayList<Object> airport : airports) {
                 // Gets the data from each column of the row
-                int airportID = airports.getInt("airport_id");
-                String name = airports.getString("airport_name");
-                String city = airports.getString("city");
-                String country = airports.getString("country");
-                String iata = airports.getString("iata");
-                String icao = airports.getString("icao");
-                double latitude = airports.getDouble("latitude");
-                double longitude = airports.getDouble("longitude");
-                int altitude = airports.getInt("altitude");
-                float timezone = airports.getFloat("timezone");
-                String dst = airports.getString("dst");
-                String tz = airports.getString("tz_database_timezone");
+                int airportID = (int) airport.get(0);
+                String name = (String) airport.get(1);
+                String city = (String) airport.get(2);
+                String country = (String) airport.get(3);
+                String iata = (String) airport.get(4);
+                String icao = (String) airport.get(5);
+                double latitude = (double) airport.get(6);
+                double longitude = (double) airport.get(7);
+                int altitude = (int) airport.get(8);
+                double timezone = (double) airport.get(9);
+                String dst = (String) airport.get(10);
+                String tz = (String) airport.get(11);
 
                 // Converts any null values to blank
                 if (iata == null) {
@@ -148,29 +132,25 @@ public class DataExporter {
 
             // Closes the FileWriter when everything is done
             fileWriter.close();
-        } catch (SQLException e) {
-            // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
     /**
-     * Exports all the entries of a particular flight in the database to a csv file called flight-[source]-[destination].csv.
+     * Exports all the entries of a particular flight in the database to a given csv file.
      *
      * @param flightID int The flightID of a given flight that you want to export.
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      */
     public void exportFlight(int flightID, File file) {
         // Retrieves all the flight entries with a given flightID from the database
-        ResultSet flight = flightAccessor.getData(flightID);
+        ResultSet flight = flightService.getData(flightID);
 
         try {
-            // Creates the FileWriter with the filename "flight-[source]-[destination].csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
@@ -195,26 +175,26 @@ public class DataExporter {
             fileWriter.close();
         } catch (SQLException e) {
             // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
     /**
-     * Exports all the flight entries contained in the database to a csv file called flights.csv.
+     * Exports all the flight entries contained in the database to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
      */
     public void exportFlights(File file) {
         // Retrieves all the flight entries from the database
-        ResultSet flights = flightAccessor.getData(null, null);
+        ResultSet flights = flightService.getData(null, null);
 
         try {
-            // Creates the FileWriter with the filename "flights.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
             // Loops through all the flight entries in the ResultSet
@@ -240,41 +220,87 @@ public class DataExporter {
             fileWriter.close();
         } catch (SQLException e) {
             // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
     /**
-     * Exports all the routes contained in the database to a csv file called routes.csv.
+     * Exports all the flight entries passed into the function to a given csv file.
      *
-     * @param file File file that the data will be exported into.
+     * @param file File that the data will be exported into.
+     * @param flights An ArrayList of flight entries.
      */
-    public void exportRoutes(File file) {
-        // Retrieves all the routes from the database
-        ResultSet routes = routeAccessor.getData(null, null, -1, null);
-
+    public void exportFlights(File file, ArrayList<ArrayList<Object>> flights) {
         try {
-            // Creates the FileWriter with the filename "routes.csv"
+            // Creates the FileWriter with the given file
             fileWriter = new BufferedWriter(new FileWriter(file));
 
-            // Loops through all the routes in the ResultSet
-            while (routes.next()) {
+            // Loops through all the flight entries in the ArrayList
+            for (ArrayList<Object> flight : flights) {
+                int flightID = (int) flight.get(1);
+                ResultSet flightEntries = flightService.getData(flightID);
+
+                // Loops through all the flight entries in the ResultSet
+                while (flightEntries.next()) {
+                    // Gets the data from each column of the row
+                    int id = flightEntries.getInt("id");
+                    String locationType = flightEntries.getString("location_type");
+                    String location = flightEntries.getString("location");
+                    int altitude = flightEntries.getInt("altitude");
+                    double latitude = flightEntries.getDouble("latitude");
+                    double longitude = flightEntries.getDouble("longitude");
+
+                    // Creates a formatted line with the values
+                    line = String.format("%d,%d,%s,%s,%d,%f,%f", id, flightID, locationType, location, altitude, latitude, longitude);
+
+                    // Creates a new line in the file, and then writes the formatted line into it
+                    fileWriter.write(line);
+                    fileWriter.newLine();
+                }
+            }
+
+            // Closes the FileWriter when everything is done
+            fileWriter.close();
+        } catch (SQLException e) {
+            // If anything goes wrong when extracting data from the ResultSet, outputs an error message
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
+        } catch (IOException e) {
+            // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Exports all the routes passed into the function to a given csv file.
+     *
+     * @param file File that the data will be exported into.
+     * @param routes An ArrayList of routes.
+     */
+    public void exportRoutes(File file, ArrayList<ArrayList<Object>> routes) {
+        try {
+            // Creates the FileWriter with the given file
+            fileWriter = new BufferedWriter(new FileWriter(file));
+
+            // Loops through all the routes in the ArrayList
+            for (ArrayList<Object> route : routes) {
                 // Gets the data from each column of the row
-                int routeID = routes.getInt("route_id");
-                String airline = routes.getString("airline");
-                int airlineID = routes.getInt("airline_id");
-                String sourceAirport = routes.getString("source_airport");
-                int sourceAirportID = routes.getInt("source_airport_id");
-                String destAirport = routes.getString("destination_airport");
-                int destAirportID = routes.getInt("destination_airport_id");
-                String codeshare = routes.getString("codeshare");
-                int stops = routes.getInt("stops");
-                String equipment = routes.getString("equipment");
+                int routeID = (int) route.get(0);
+                String airline = (String) route.get(1);
+                int airlineID = (int) route.get(2);
+                String sourceAirport = (String) route.get(3);
+                int sourceAirportID = (int) route.get(4);
+                String destAirport = (String) route.get(5);
+                int destAirportID = (int) route.get(6);
+                String codeshare = (String) route.get(7);
+                int stops = (int) route.get(8);
+                String equipment = (String) route.get(9);
 
                 // Converts any null values to blank
                 if (codeshare == null) {
@@ -291,14 +317,10 @@ public class DataExporter {
 
             // Closes the FileWriter when everything is done
             fileWriter.close();
-        } catch (SQLException e) {
-            // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 }
