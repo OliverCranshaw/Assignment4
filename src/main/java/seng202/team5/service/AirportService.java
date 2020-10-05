@@ -335,6 +335,9 @@ public class AirportService implements Service {
     public Hashtable<Integer, Integer> getIncRouteCount() throws SQLException {
         Hashtable<Integer, Integer> incAirportRouteCounts = new Hashtable<>();
         ResultSet data = accessor.getIncomingRoutes();
+        if (data == null) {
+            return incAirportRouteCounts;
+        }
 
         while (data.next()) {
             incAirportRouteCounts.put(data.getInt(1), data.getInt(2));
@@ -354,6 +357,9 @@ public class AirportService implements Service {
     public Hashtable<Integer, Integer> getOutRouteCount() throws SQLException {
         Hashtable<Integer, Integer> outAirportRouteCounts = new Hashtable<>();
         ResultSet data = accessor.getOutgoingRoutes();
+        if (data == null) {
+            return outAirportRouteCounts;
+        }
 
         while (data.next()) {
             outAirportRouteCounts.put(data.getInt(1), data.getInt(2));
