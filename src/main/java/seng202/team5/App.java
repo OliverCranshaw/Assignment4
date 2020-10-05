@@ -25,7 +25,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         mainStage.setTitle("Flight Data Manager");
         mainStage.setScene(new Scene(root));
-
+        mainStage.setResizable(false);
         mainStage.show();
     }
 
