@@ -84,6 +84,6 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Text fx:id="errorMessage" layoutX="99.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="398.0" />
+      <Text fx:id="errorMessage" layoutX="110.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="398.0" />
    </children>
 </AnchorPane>

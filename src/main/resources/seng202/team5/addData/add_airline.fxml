@@ -29,11 +29,11 @@
             <String fx:value="general-button" />
             <String fx:value="main-button" />
          </styleClass></Button>
-      <Text fx:id="errorMessage" layoutX="90.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="267.13671875" />
+      <Text fx:id="errorMessage" layoutX="95.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="267.13671875" />
       <GridPane layoutX="-25.0" layoutY="62.0" prefHeight="162.0" prefWidth="419.0">
         <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="114.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="99.0" />
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -44,7 +44,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="20.0" prefWidth="44.0" text="Name:" textAlignment="JUSTIFY" textFill="WHITE">
+            <Label prefHeight="20.0" prefWidth="49.0" text="Name:" textAlignment="JUSTIFY" textFill="WHITE">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -52,7 +52,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="36.0" text="Alias:" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1">
+            <Label prefHeight="20.0" prefWidth="39.0" text="Alias:" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -68,7 +68,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="37.0" text="ICAO:" textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="3">
+            <Label prefHeight="20.0" prefWidth="41.0" text="ICAO:" textAlignment="RIGHT" textFill="WHITE" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -76,7 +76,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="55.0" text="Country:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label prefHeight="20.0" prefWidth="61.0" text="Country:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -84,7 +84,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="54.0" text="Callsign:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2">
+            <Label prefHeight="20.0" prefWidth="60.0" text="Callsign:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -92,7 +92,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="45.0" text="Active:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label prefHeight="20.0" prefWidth="51.0" text="Active:" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

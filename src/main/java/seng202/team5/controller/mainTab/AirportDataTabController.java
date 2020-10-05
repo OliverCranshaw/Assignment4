@@ -508,7 +508,7 @@ public class AirportDataTabController implements Initializable {
             latitude = Double.parseDouble(airportLatitude.getText());
         } catch(NumberFormatException e) {
             airportLatitude.setStyle("-fx-border-color: #ff0000;");
-            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             airportInvalidFormatLbl.setTextFill(Color.RED);
             airportInvalidFormatLbl.setText("Invalid Latitude Provided");
             airportInvalidFormatLbl.setVisible(true);
@@ -517,7 +517,7 @@ public class AirportDataTabController implements Initializable {
             longitude = Double.parseDouble(airportLongitude.getText());
         } catch (NumberFormatException e) {
             airportLongitude.setStyle("-fx-border-color: #ff0000;");
-            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             airportInvalidFormatLbl.setTextFill(Color.RED);
             airportInvalidFormatLbl.setText("Invalid Longitude Provided");
             airportInvalidFormatLbl.setVisible(true);
@@ -526,7 +526,7 @@ public class AirportDataTabController implements Initializable {
             altitude = Integer.parseInt(airportAltitude.getText());
         } catch (NumberFormatException e) {
             airportAltitude.setStyle("-fx-border-color: #ff0000;");
-            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             airportInvalidFormatLbl.setTextFill(Color.RED);
             airportInvalidFormatLbl.setText("Invalid Altitude Provided");
             airportInvalidFormatLbl.setVisible(true);
@@ -535,7 +535,7 @@ public class AirportDataTabController implements Initializable {
             timezone = Float.parseFloat(airportTimezone.getText());
         } catch (NumberFormatException e) {
             airportTimezone.setStyle("-fx-border-color: #ff0000;");
-            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             airportInvalidFormatLbl.setTextFill(Color.RED);
             airportInvalidFormatLbl.setText("Invalid Timezone Provided");
             airportInvalidFormatLbl.setVisible(true);
@@ -558,13 +558,13 @@ public class AirportDataTabController implements Initializable {
             } else if (result == -1) {
                 setAirportUpdateColour(3);
                 setAirportUpdateColour(4);
-                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
                 airportInvalidFormatLbl.setTextFill(Color.RED);
                 airportInvalidFormatLbl.setText("Invalid IATA and/or ICAO Provided");
                 airportInvalidFormatLbl.setVisible(true);
             } else {
                 setAirportUpdateColour(abs(result) - 2);
-                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                airportInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
                 airportInvalidFormatLbl.setTextFill(Color.RED);
                 airportInvalidFormatLbl.setVisible(true);
 

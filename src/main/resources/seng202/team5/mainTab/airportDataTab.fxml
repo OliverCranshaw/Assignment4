@@ -238,14 +238,17 @@
                                          <properties helpText="Hour offset from UTC" />
                                     </TextField>
                                     <TextField fx:id="airportDST" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                                         <properties helpText="Daylight savings time policy. Must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)"/>
+                                         <properties helpText="Daylight savings time policy. Must be one of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)" />
                                     </TextField>
                                     <TextField fx:id="airportTZ" prefHeight="25.0" prefWidth="132.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                                         <properties helpText="Timezone name in Olsen format"/>
+                                         <properties helpText="Timezone name in Olsen format" />
                                     </TextField>
                                  </children>
                               </GridPane>
-                              <Label fx:id="airportInvalidFormatLbl" layoutX="233.0" layoutY="216.0" prefHeight="18.0" prefWidth="253.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false" />
+                              <Label fx:id="airportInvalidFormatLbl" layoutX="247.0" layoutY="216.0" prefHeight="18.0" prefWidth="253.0" text="Invalid Formatting - Please ensure modifed values are of the correct type" visible="false">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font></Label>
                            </children>
                         </AnchorPane>
                       <MapView fx:id="airportMapView" minHeight="0.0" minWidth="0.0" styleClass="map">

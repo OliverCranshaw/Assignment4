@@ -307,7 +307,10 @@
                                     </TextField>
                                  </children>
                               </GridPane>
-                              <Label fx:id="routeInvalidFormatLbl" layoutX="228.0" layoutY="196.0" prefHeight="17.0" prefWidth="248.0" />
+                              <Label fx:id="routeInvalidFormatLbl" layoutX="241.0" layoutY="182.0" prefHeight="40.0" prefWidth="237.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font></Label>
                            </children>
                         </AnchorPane>
                        <MapView fx:id="routeMapView" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="map">
@@ -335,7 +338,7 @@
                         <Button mnemonicParsing="false" onAction="#onHelp" prefHeight="25.0" prefWidth="25.0" styleClass="help-button" text="?">
                            <properties helpText="A helpful button full of boundless helpful hints" />
                            <FlowPane.margin>
-                              <Insets left="632.0" />
+                              <Insets left="625.0" />
                            </FlowPane.margin>
                         </Button>
                      </children>
