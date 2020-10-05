@@ -429,6 +429,10 @@ public class SearchTabController implements Initializable {
 
     }
 
+
+    /**
+     * Clears the MapView on the search tab of all markers and routes.
+     */
     private void clearSearchMap() {
         // Remove airport marker
         if (searchAirportMarker != -1) {
