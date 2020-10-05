@@ -22,10 +22,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AddRouteMenuController {
-    private AirlineService airlineService;
-    private AirportService airportService;
 
+/**
+ * AddRouteMenuController
+ *
+ * Controller class for the single add route interface.
+ */
+public class AddRouteMenuController {
+
+    private final AirlineService airlineService;
+    private final AirportService airportService;
+
+    /**
+     * Constructor for AddRouteMenuController.
+     * Initializes the airline and airport service.
+     */
     public AddRouteMenuController() {
         airlineService = new AirlineService();
         airportService = new AirportService();
@@ -57,6 +68,14 @@ public class AddRouteMenuController {
 
     }
 
+
+    /**
+     * Handler for the pressing of the add route button.
+     * Does error checking and displays an error message if the given values
+     * are invalid. Otherwise saves the given data to the database.
+     *
+     * @param event Add route button pressed.
+     */
     @FXML
     public void onAddPressed(ActionEvent event) {
 
@@ -73,6 +92,7 @@ public class AddRouteMenuController {
         setDefaults();
         try {
             {
+                // Attempting to get data on the airline of the route
                 ResultSet resultSet = airlineService.getData(airlineName, null, null);
                 AirlineData airline = new AirlineData(resultSet);
                 System.out.println(airline.getIATA());
@@ -94,6 +114,7 @@ public class AddRouteMenuController {
         }
         try {
             {
+                // Attempting to get data on the source airport of the route
                 ResultSet resultSet = airportService.getData(sourceName, null, null);
                 AirportData srcAirport = new AirportData(resultSet);
                 if (srcAirport.getAirportName() == null) {
@@ -114,6 +135,7 @@ public class AddRouteMenuController {
         }
         try {
             {
+                // Attempting to get data on the destination airport of the route
                 ResultSet resultSet = airportService.getData(destName, null, null);
                 AirportData dstAirport = new AirportData(resultSet);
                 if (dstAirport.getAirportName() == null) {
@@ -133,10 +155,9 @@ public class AddRouteMenuController {
             return;
         }
 
-
+        // Parsing the equipment of the route
         String equipmentString = equipmentField.getText();
         String[] equipmentStringSplit = equipmentString.split(",");
-
         ArrayList<String> equipmentList = new ArrayList<>();
         for (String component : equipmentStringSplit) {
             equipmentList.add(component.trim());
@@ -148,39 +169,48 @@ public class AddRouteMenuController {
             equipSpaceSeparated += " ";
         }
         equipSpaceSeparated = (String) equipSpaceSeparated.subSequence(0, equipSpaceSeparated.length() - 1);
-
+        // Attempting to save given data to the database
         int outcome = concreteAddData.addRoute(airlineCode, sourceCode, destCode, codeShare, stopsField.getText(), equipSpaceSeparated);
         setDefaults();
+        // If an error occurred in the saving of data, this statement handles the error messaging.
         if (outcome < 0) {
+            // Setting the error message to be visible and setting its style
             errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
             errorMessage.setFill(Color.RED);
             errorMessage.setVisible(true);
             if (outcome == -1) {
-                System.out.println("Service Error");
+                // IATA and/or ICAO conflict or null error
                 addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
                 addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
                 addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure the input source and/or destination exist within the database");
             } else if (outcome == -2) {
+                // Airline code formatting error
                 addRouteAirlineText.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure a valid airline code has been entered");
             } else if (outcome == -3) {
+                // Source airport code formatting error
                 addRouteSrcAirportText.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure a valid source airport code has been entered");
             } else if (outcome == -4) {
+                // Destination airport code formatting error
                 addRouteDstAirportText.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure a valid destination airport code has been entered");
             } else if (outcome == -5) {
+                // Code share formatting error
                 codeshareField.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure a valid codeshare has been entered");
             } else if (outcome == -6) {
+                // Stops formatting error
                 stopsField.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure stops is a positive value");
             } else if (outcome == -7) {
+                // Equipment formatting error
                 equipmentField.setStyle("-fx-border-color: #ff0000;");
                 errorMessage.setText("Please ensure the equipment field has valid input");
             }
         } else {
+            // Successful save case
             setDefaults();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Success");
@@ -192,6 +222,9 @@ public class AddRouteMenuController {
         }
     }
 
+    /**
+     * Sets the error message and error highlights to default values.
+     */
     public void setDefaults() {
         addRouteAirlineText.setStyle("-fx-border-color: #000000;");
         addRouteSrcAirportText.setStyle("-fx-border-color: #000000;");
@@ -202,6 +235,11 @@ public class AddRouteMenuController {
         errorMessage.setVisible(false);
     }
 
+    /**
+     * Closes the add route window.
+     *
+     * @param event Cancel button pressed
+     */
     @FXML
     public void onCancelPressed(ActionEvent event) {
         Window window = ((Node)event.getSource()).getScene().getWindow();
