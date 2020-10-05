@@ -6,7 +6,7 @@ import java.util.Comparator;
 /**
  * FlightComparator
  *
- * A class that implements the Comparator<ArrayList<Object>>
+ * A class that implements the Comparator(ArrayList(Object))
  * Is used to compare flight entries so that they can be sorted according to flightID,
  * unless flightID is the same, the sorted by ID
  */

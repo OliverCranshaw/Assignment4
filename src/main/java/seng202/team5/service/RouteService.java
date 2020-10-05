@@ -247,7 +247,7 @@ public class RouteService implements Service {
      * Returns a hashtable of route descriptions (source code - destination code) mapped to how
      * many airlines cover that route.
      *
-     * @return Hashtable (String, Integer> of route description to count of airlines, null if SQL exception occurs.
+     * @return Hashtable (String, Integer) of route description to count of airlines, null if SQL exception occurs.
      */
     public Hashtable<String, Integer> getCountAirlinesCovering(ArrayList<Integer> routeIds) {
         ResultSet data = accessor.getCountAirlinesCovering(routeIds);

@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"scenario"},{"l":"seng202.team5"},{"l":"seng202.team5.accessor"},{"l":"seng202.team5.controller"},{"l":"seng202.team5.data"},{"l":"seng202.team5.database"},{"l":"seng202.team5.map"},{"l":"seng202.team5.service"},{"l":"seng202.team5.table"}]

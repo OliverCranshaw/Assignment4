@@ -330,7 +330,6 @@ public class AirportService implements Service {
      * Gets the count of incoming routes for the all airports.
      *
      * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their incoming route counts.
-     * @return Hashtable of number of incoming routes per airport id.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
@@ -352,7 +351,6 @@ public class AirportService implements Service {
      * Gets the count of outgoing routes for all airports.
      *
      * @return Hashtable (Integer, Integer) - Mapping of airport IDs to their outgoing route counts.
-     * @return Hashtable of number of outgoing routes per airport id.
      *
      * @throws SQLException Caused by ResultSet interactions.
      */
