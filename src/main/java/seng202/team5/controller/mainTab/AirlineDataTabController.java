@@ -44,6 +44,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * AirlineDataTabController
+ *
+ * Initializes the airline tab and all the functionality within the tab.
+ */
 public class AirlineDataTabController implements Initializable {
 
     @FXML

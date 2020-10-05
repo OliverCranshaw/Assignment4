@@ -45,7 +45,6 @@ public class AddAirlineMenuController {
     @FXML
     private Text errorMessage;
 
-
     /**
      * Handler for the pressing of the add airline button.
      * Does error checking and displays an error message if the given values
@@ -116,11 +115,10 @@ public class AddAirlineMenuController {
         activeField.setStyle("-fx-border-color: #000000;");
     }
 
-
     /**
      * Closes the add airline window.
      *
-     * @param event Cancel button pressed
+     * @param event Cancel button pressed.
      */
     @FXML
     public void onCancelPressed(ActionEvent event) {

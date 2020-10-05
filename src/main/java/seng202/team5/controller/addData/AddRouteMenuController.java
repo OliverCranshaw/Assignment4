@@ -22,7 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 /**
  * AddRouteMenuController
  *
@@ -67,7 +66,6 @@ public class AddRouteMenuController {
     public void initialize() {
 
     }
-
 
     /**
      * Handler for the pressing of the add route button.

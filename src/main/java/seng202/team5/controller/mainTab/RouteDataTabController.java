@@ -46,6 +46,11 @@ import java.util.*;
 
 import static java.lang.Math.abs;
 
+/**
+ * RouteDataTabController
+ *
+ * Initializes the airline tab and all the functionality within the tab.
+ */
 public class RouteDataTabController implements Initializable {
 
     @FXML

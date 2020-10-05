@@ -28,6 +28,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * SearchTabController
+ *
+ * Initializes the airline tab and all the functionality within the tab.
+ */
 public class SearchTabController implements Initializable {
 
     private AirlineService airlineService;
