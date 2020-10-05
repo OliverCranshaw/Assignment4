@@ -173,8 +173,8 @@ public class RouteDataTabController implements Initializable {
     private MainMenuController mainMenuController = new MainMenuController();
 
     /**
-     * Initializer for RouteDataTabController
-     * Sets up all tables, buttons, listeners, services, etc
+     * Initializer for RouteDataTabController.
+     * Sets up all tables, buttons, listeners, services, etc.
      *
      * @param url URL.
      * @param resourceBundle ResourceBundle.

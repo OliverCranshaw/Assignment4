@@ -77,10 +77,10 @@ public class PieChartController extends Application {
     }
 
     /**
-     * Inflates the pie chart with the given data
+     * Inflates the pie chart with the given data.
      *
-     * @param data - ArrayList of ArrayList of Objects, representing an Arraylist of a data type
-     * @param metaData - List of Object, data relating to setup of chart
+     * @param data - ArrayList of ArrayList of Objects, representing an Arraylist of a data type.
+     * @param metaData - List of Object, data relating to setup of chart.
      *
      * @throws SQLException Due to ResultSet Interactions.
      */
@@ -119,9 +119,9 @@ public class PieChartController extends Application {
     }
 
     /**
-     * Adds the remove other option to the other segment of the pie chart
+     * Adds the remove other option to the other segment of the pie chart.
      *
-     * @param segment - PieChart.data, Other segment of pie chart
+     * @param segment - PieChart.data, Other segment of pie chart.
      */
     private void applyRemoveOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
@@ -142,9 +142,9 @@ public class PieChartController extends Application {
     }
 
     /**
-     * Adds the return other option to the given segment of data
+     * Adds the return other option to the given segment of data.
      *
-     * @param segment - PieChart.data, A segment of a pie chart
+     * @param segment - PieChart.data, A segment of a pie chart.
      */
     public void applyReturnOtherOption(PieChart.Data segment) {
         final Node node = segment.getNode();
@@ -170,7 +170,7 @@ public class PieChartController extends Application {
      * Method that sets up the highlighting affect on the pie chart segments,
      * as well as the popup tool tip showing the segment information.
      *
-     * @param data - PieChart.data, A segment of a pie chart
+     * @param data - PieChart.data, A segment of a pie chart.
      */
     public void applyMouseEvents(final PieChart.Data data) {
 
