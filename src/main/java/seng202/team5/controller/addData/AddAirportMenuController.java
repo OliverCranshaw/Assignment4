@@ -14,7 +14,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Window;
 import seng202.team5.data.ConcreteAddData;
 
-
 /**
  * AddAirportMenuController
  *
@@ -159,7 +158,7 @@ public class AddAirportMenuController {
     /**
      * Closes the add airport window.
      *
-     * @param event Cancel button pressed
+     * @param event Cancel button pressed.
      */
     @FXML
     public void onCancelPressed(ActionEvent event) {
@@ -183,6 +182,5 @@ public class AddAirportMenuController {
         dstField.setStyle("-fx-border-color: #000000;");
         tzField.setStyle("-fx-border-color: #000000;");
         errorMessage.setVisible(false);
-
     }
 }

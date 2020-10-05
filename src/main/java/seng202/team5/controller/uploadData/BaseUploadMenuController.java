@@ -20,6 +20,11 @@ import seng202.team5.data.ReadFile;
 
 import java.io.File;
 
+/**
+ * BaseUploadMenuController
+ *
+ * Contains all the common functions between all the tabs.
+ */
 public abstract class BaseUploadMenuController {
 
     private Service<Void> service = new Service<>() {

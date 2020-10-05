@@ -39,6 +39,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * AirlineDataTabController
+ *
+ * Initializes the airline tab and all the functionality within the tab.
+ */
 public class AirlineDataTabController implements Initializable {
 
     @FXML
