@@ -118,6 +118,7 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
+                airlineFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
@@ -176,6 +177,7 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
+                airportFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
@@ -219,7 +221,7 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
+                flightFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
@@ -263,6 +265,7 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
+                flightFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
@@ -329,6 +332,8 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
+
+                flightFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());
@@ -392,6 +397,8 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
+
+                routeFile.delete();
             }
         } catch (SQLException | IOException e) {
             System.err.println(e.getMessage());

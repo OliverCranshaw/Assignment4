@@ -132,6 +132,8 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
+            file.delete();
+
         }
     }
 
@@ -154,7 +156,10 @@ public class DataExporterScenario {
                 assertEquals("", line);
             }
             bufferedReader.close();
+            file.delete();
         }
+
+
     }
 
 
@@ -221,6 +226,8 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
+            file.delete();
+
         }
     }
 
@@ -280,6 +287,8 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
+            file.delete();
+
         }
     }
 
@@ -334,6 +343,8 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
+            file.delete();
+
         }
     }
 
@@ -407,6 +418,7 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
+            file.delete();
         }
     }
 
