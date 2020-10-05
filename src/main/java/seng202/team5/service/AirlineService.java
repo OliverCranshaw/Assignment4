@@ -138,7 +138,6 @@ public class AirlineService implements Service {
      */
     public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete airline, does not exist.");
             return false;
         }
 
@@ -265,7 +264,7 @@ public class AirlineService implements Service {
                 return result;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
         return result;

@@ -63,11 +63,8 @@ public class DataExporterTest {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -121,13 +118,9 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
-                if (airlineFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -183,13 +176,9 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
-                if (airportFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -231,12 +220,9 @@ public class DataExporterTest {
                 }
                 bufferedReader.close();
 
-                if (flightFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -277,13 +263,9 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
-                if (flightFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -347,13 +329,9 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
-                if (flightFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -414,13 +392,9 @@ public class DataExporterTest {
                     assertEquals(expectedLine, line);
                 }
                 bufferedReader.close();
-
-                if (routeFile.delete()) {
-                    System.out.println("File deleted.");
-                }
             }
         } catch (SQLException | IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 }

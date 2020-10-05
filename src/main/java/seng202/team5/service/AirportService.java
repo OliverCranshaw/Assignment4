@@ -156,14 +156,13 @@ public class AirportService implements Service {
      */
     public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete airport, does not exist.");
             return false;
         }
         // Checks if any flights contain the IATA/ICAO codes of the airport to be deleted and deletes them if they do
         try {
             deleteFlight(id);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
         return accessor.delete(id);
@@ -396,7 +395,7 @@ public class AirportService implements Service {
                 return result;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
         return result;

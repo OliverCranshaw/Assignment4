@@ -156,7 +156,6 @@ public class RouteService implements Service {
      */
     public boolean delete(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete route, does not exist.");
             return false;
         }
 
@@ -262,7 +261,7 @@ public class RouteService implements Service {
             }
             return result;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return null;
         }
     }

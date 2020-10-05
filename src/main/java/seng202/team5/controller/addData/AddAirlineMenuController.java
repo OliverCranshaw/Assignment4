@@ -65,12 +65,12 @@ public class AddAirlineMenuController {
             // If an error occurred in the saving of data, this statement handles the error messaging.
             if (outcome < 0) {
                 // Setting the error message to be visible and setting its style
+
                 errorMessage.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
                 errorMessage.setFill(Color.RED);
                 errorMessage.setVisible(true);
                 if (outcome == -1) {
                     // IATA and/or ICAO conflict or null error
-                    System.out.println("Service Error");
                     errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airline within the database and that they are not both empty");
                 } else if (outcome == -2) {
                     // Name formatting error
@@ -90,7 +90,7 @@ public class AddAirlineMenuController {
                     errorMessage.setText("Please ensure the active is of valid form (Y or N)");
                 }
             } else {
-                // Successful save case
+                // Successful save
                 setDefaults();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Success");
@@ -101,7 +101,7 @@ public class AddAirlineMenuController {
                 window.hide();
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number");
+            System.err.println("Invalid number");
 
         }
     }

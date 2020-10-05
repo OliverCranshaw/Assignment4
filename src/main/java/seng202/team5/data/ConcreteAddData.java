@@ -64,7 +64,6 @@ public class ConcreteAddData extends AddData {
                 return airlineService.getMaxID();
             }
             else {
-                System.out.println("Failed to add airline.");
                 return -1;
             }
         } else {
@@ -112,7 +111,6 @@ public class ConcreteAddData extends AddData {
                 return airportService.getMaxID();
             }
             else {
-                System.out.println("Failed to add airport.");
                 return -1;
             }
         } else {
@@ -153,7 +151,6 @@ public class ConcreteAddData extends AddData {
                 return flightService.getMaxID();
             }
             else {
-                System.out.println("Failed to add flight entry.");
                 return -1;
             }
         } else {
@@ -194,7 +191,6 @@ public class ConcreteAddData extends AddData {
             if (result >= 0) {
                 return routeService.getMaxID();
             } else {
-                System.out.println("Failed to add route.");
                 return -1;
             }
         } else {

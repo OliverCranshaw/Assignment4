@@ -61,8 +61,8 @@ public class AirportAccessor implements Accessor {
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
-            System.out.println("Failed to save new airport data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to save new airport data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -110,8 +110,8 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to update airport names with code.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to update airport names with code.");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -134,8 +134,8 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeUpdate() != 0;
         } catch (SQLException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to delete airport data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to delete airport data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -157,8 +157,8 @@ public class AirportAccessor implements Accessor {
             result = stmt.executeQuery();
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Failed to retrieve airport data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airport data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -185,8 +185,8 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airport data with IATA or ICAO " + code);
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airport data with IATA or ICAO " + code);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -237,8 +237,8 @@ public class AirportAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airport data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airport data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -287,8 +287,8 @@ public class AirportAccessor implements Accessor {
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
-            System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airport data with IATA or ICAO code " + code);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -321,8 +321,8 @@ public class AirportAccessor implements Accessor {
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = null;
-            System.out.println("Unable to retrieve airline data with name " + name);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airline data with name " + name);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -348,8 +348,8 @@ public class AirportAccessor implements Accessor {
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve airport data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airport data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -380,8 +380,8 @@ public class AirportAccessor implements Accessor {
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve airport data with IATA or ICAO code " + code);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airport data with IATA or ICAO code " + code);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -404,8 +404,8 @@ public class AirportAccessor implements Accessor {
             id = result.getInt(1);
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get maximum id.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get maximum id.");
+            System.err.println(e.getMessage());
         }
 
         return id;
@@ -427,8 +427,8 @@ public class AirportAccessor implements Accessor {
         } catch (SQLException e) {
             result = null;
             // If any of the above fails, prints an error message
-            System.out.println("Unable to retrieve number of routes.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve number of routes.");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -450,8 +450,8 @@ public class AirportAccessor implements Accessor {
         } catch (SQLException e) {
             result = null;
             // If any of the above fails, prints an error message
-            System.out.println("Unable to retrieve number of routes.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve number of routes.");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -494,8 +494,8 @@ public class AirportAccessor implements Accessor {
             }
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get airport names with code.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get airport names with code.");
+            System.err.println(e.getMessage());
         }
 
         return result;

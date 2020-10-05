@@ -79,7 +79,6 @@ public class UpdateDataTest extends BaseDatabaseTest {
                 (String)newFields.get(9),
                 (String)newFields.get(10)
         );
-        System.out.println("Result is " + result);
         Assert.assertTrue(result >= 0);
 
         ResultSet resultSet = airportService.getData(id);

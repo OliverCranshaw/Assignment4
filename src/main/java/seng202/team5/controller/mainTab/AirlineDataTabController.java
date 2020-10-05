@@ -524,7 +524,7 @@ public class AirlineDataTabController implements Initializable {
                     setAirlineSingleRecord(null);
                     updateAirlineTable();
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         });
@@ -550,8 +550,6 @@ public class AirlineDataTabController implements Initializable {
      * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
-        System.out.println("Help requested: " + event);
-
         Node e = (Node) event.getSource();
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);

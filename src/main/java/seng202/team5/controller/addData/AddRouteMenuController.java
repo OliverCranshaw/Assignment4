@@ -95,14 +95,7 @@ public class AddRouteMenuController {
                 // Attempting to get data on the airline of the route
                 ResultSet resultSet = airlineService.getData(airlineName, null, null);
                 AirlineData airline = new AirlineData(resultSet);
-                System.out.println(airline.getIATA());
-                if (airline.getName() == null) {
-                    System.out.println("Please ensure the given airline is in the database");
-                } else if (airline.getIATA() == null && airline.getICAO() == null) {
-                    System.out.println("Please ensure the selected Airline has an associated IATA or ICAO value");
-                } else {
-                    airlineCode = (airline.getIATA() == null) ? airline.getICAO() : airline.getIATA();
-                }
+                airlineCode = (airline.getIATA() == null) ? airline.getICAO() : airline.getIATA();
             }
         } catch (SQLException e) {
             errorMessage.setText("Failed to find corresponding Airline");
@@ -117,13 +110,7 @@ public class AddRouteMenuController {
                 // Attempting to get data on the source airport of the route
                 ResultSet resultSet = airportService.getData(sourceName, null, null);
                 AirportData srcAirport = new AirportData(resultSet);
-                if (srcAirport.getAirportName() == null) {
-                    System.out.println("Please ensure the given source airport is in the database");
-                } else if (srcAirport.getIATA() == null && srcAirport.getICAO() == null) {
-                    System.out.println("Please ensure the selected source airport has an associated IATA or ICAO value");
-                } else {
-                    sourceCode = (srcAirport.getIATA() == null) ? srcAirport.getICAO() : srcAirport.getIATA();
-                }
+                sourceCode = (srcAirport.getIATA() == null) ? srcAirport.getICAO() : srcAirport.getIATA();
             }
         } catch (SQLException e) {
             errorMessage.setText("Failed to find corresponding Source Airport");
@@ -138,13 +125,7 @@ public class AddRouteMenuController {
                 // Attempting to get data on the destination airport of the route
                 ResultSet resultSet = airportService.getData(destName, null, null);
                 AirportData dstAirport = new AirportData(resultSet);
-                if (dstAirport.getAirportName() == null) {
-                    System.out.println("Please ensure the given destination airport is in the database");
-                } else if (dstAirport.getIATA() == null && dstAirport.getICAO() == null) {
-                    System.out.println("Please ensure the selected destination airport has an associated IATA or ICAO value");
-                } else {
-                    destCode = (dstAirport.getIATA() == null) ? dstAirport.getICAO() : dstAirport.getIATA();
-                }
+                destCode = (dstAirport.getIATA() == null) ? dstAirport.getICAO() : dstAirport.getIATA();
             }
         } catch (SQLException e) {
             errorMessage.setText("Failed to find corresponding Destination Airport");

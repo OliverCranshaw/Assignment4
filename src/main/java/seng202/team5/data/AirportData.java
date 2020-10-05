@@ -87,28 +87,28 @@ public class AirportData implements Data {
             this.latitude = Double.parseDouble(latitude);
         } catch(NumberFormatException e){
             // Error message to console
-            System.out.println("Airport Data (latitude): " + e);
+            System.err.println("Airport Data (latitude): " + e);
         }
         // Parsing Longitude to a double
         try {
             this.longitude = Double.parseDouble(longitude);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Airport Data (longitude): " + e);
+            System.err.println("Airport Data (longitude): " + e);
         }
         // Parsing Altitude to a integer
         try {
             this.altitude = Integer.parseInt(altitude);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Airport Data (altitude): " + e);
+            System.err.println("Airport Data (altitude): " + e);
         }
         // Parsing Timezone to a float
         try {
             this.timezone = Float.parseFloat(timezone);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Airport Data (timezone): " + e);
+            System.err.println("Airport Data (timezone): " + e);
         }
     }
 

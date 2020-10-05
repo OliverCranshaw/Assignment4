@@ -629,7 +629,6 @@ public class AirportAccessorTest extends BaseDatabaseTest {
         testList1.add((String) testData.get(4));
         String nonExistentIata = "NFG";
         testList1.add(nonExistentIata);
-        System.out.println(testList1);
         ResultSet test2 = airportAccessor.getAirportNames(testList1);
         while (test2.next()) {
             String iata = test2.getString(1);

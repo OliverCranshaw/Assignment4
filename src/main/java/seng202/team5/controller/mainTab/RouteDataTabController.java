@@ -640,7 +640,7 @@ public class RouteDataTabController implements Initializable {
                     setRouteSingleRecord(null);
                     updateRouteTable();
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         });
@@ -682,7 +682,6 @@ public class RouteDataTabController implements Initializable {
         RouteModel route = (RouteModel) routeTableView.getSelectionModel().getSelectedItem();
         String srcIata = route.getRouteSrcAirportCode();
         String dstIata = route.getRouteDstAirportCode();
-        System.out.println(srcIata + " " + dstIata);
         ResultSet srcData = airportService.getData(srcIata);
         ResultSet dstData = airportService.getData(dstIata);
         ArrayList<Integer> airlines = routeService.getAirlinesCoveringRoute(srcData.getInt(1), dstData.getInt(1), true);
@@ -709,7 +708,6 @@ public class RouteDataTabController implements Initializable {
 
             toShow = toShow  + "\n";
         }
-        System.out.println(airlines);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Airlines that cover the " + srcIata + " - " + dstIata + " Route:");
         alert.setContentText(toShow);
@@ -723,8 +721,6 @@ public class RouteDataTabController implements Initializable {
      * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
-        System.out.println("Help requested: " + event);
-
         Node e = (Node) event.getSource();
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);

@@ -59,8 +59,8 @@ public class AirlineAccessor implements Accessor {
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
-            System.out.println("Failed to save new airline data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to save new airline data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -102,8 +102,8 @@ public class AirlineAccessor implements Accessor {
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to update airline data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to update airline data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -126,8 +126,8 @@ public class AirlineAccessor implements Accessor {
             result = stmt.executeUpdate() != 0;
         } catch (SQLException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to delete airline data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to delete airline data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -149,8 +149,8 @@ public class AirlineAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airline with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -177,8 +177,8 @@ public class AirlineAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airline data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -229,8 +229,8 @@ public class AirlineAccessor implements Accessor {
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve airline data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve airline data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -279,8 +279,8 @@ public class AirlineAccessor implements Accessor {
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
-            System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airline data with IATA or ICAO code " + code);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -307,8 +307,8 @@ public class AirlineAccessor implements Accessor {
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve airline data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airline data with id " + id);
+            System.err.println(e.getMessage());
         }
         return result;
     }
@@ -334,8 +334,8 @@ public class AirlineAccessor implements Accessor {
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve airline data with IATA or ICAO code " + code);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve airline data with IATA or ICAO code " + code);
+            System.err.println(e.getMessage());
         }
         return result;
     }
@@ -357,8 +357,8 @@ public class AirlineAccessor implements Accessor {
 
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get maximum airline id.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get maximum airline id.");
+            System.err.println(e.getMessage());
         }
 
         return id;
@@ -401,8 +401,8 @@ public class AirlineAccessor implements Accessor {
             }
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get airline names with code.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get airline names with code.");
+            System.err.println(e.getMessage());
         }
 
         return result;

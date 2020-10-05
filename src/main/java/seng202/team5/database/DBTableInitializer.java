@@ -89,11 +89,9 @@ public class DBTableInitializer {
             statement.execute(airportSql);
             statement.execute(routeSql);
             statement.execute(flightSql);
-
-            System.out.println("Tables created.");
         } catch (SQLException e) {
             // If any of the above fails, prints out an error message
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 }

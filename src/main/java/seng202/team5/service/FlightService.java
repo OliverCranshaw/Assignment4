@@ -96,7 +96,7 @@ public class FlightService implements Service {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
         // Passes the parameters into the update method of the FlightAccessor
@@ -111,7 +111,6 @@ public class FlightService implements Service {
      */
     public boolean delete(int flightID) {
         if (!accessor.flightExists(flightID)) {
-            System.out.println("Could not delete flight, does not exist.");
             return false;
         }
 
@@ -126,7 +125,6 @@ public class FlightService implements Service {
      */
     public boolean deleteEntry(int id) {
         if (!accessor.dataExists(id)) {
-            System.out.println("Could not delete flight data, does not exist.");
             return false;
         }
 

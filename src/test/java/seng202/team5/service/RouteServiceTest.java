@@ -341,9 +341,7 @@ public class RouteServiceTest extends BaseDatabaseTest {
         PreparedStatement stmtRouteId = dbHandler.prepareStatement(routeIdQuery);
         List<Object> tmpRouteId = Arrays.asList(airline, sourceAirport, destinationAirport, codeShare, stops, equipment);
         ArrayList<Object> testRouteIdList = new ArrayList<>(tmpRouteId);
-        System.out.println("Initial shit:");
         for (int i =1; i < 7; i++) {
-            System.out.println(testRouteList.get(i-1));
             stmtRouteId.setObject(i, testRouteIdList.get(i-1));
         }
         ResultSet resultRouteId = stmtRouteId.executeQuery();
@@ -357,11 +355,6 @@ public class RouteServiceTest extends BaseDatabaseTest {
         // Creating a statement to retrieve all data of the route.
         Statement stmtRouteFinal = dbHandler.createStatement();
         ResultSet resultRouteFinal = stmtRouteFinal.executeQuery(routeFinalQuery);
-
-        System.out.println("Final result shit:");
-        for (int i = 1; i<7; i++) {
-            System.out.println(resultRouteFinal.getObject(i));
-        }
 
 
         // Checking all of the route data is the same, bar the destination airport information

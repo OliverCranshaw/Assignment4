@@ -23,7 +23,6 @@ public class FilterAirportTableTest {
 
     @Before
     public void setUp() throws SQLException {
-        System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
 
@@ -76,13 +75,11 @@ public class FilterAirportTableTest {
         testTable.createTable();
 
         // Creating new instance of FilterAirportTable
-        System.out.println(testTable.getData());
         testFilter = new FilterAirportTable(testTable.getData());
     }
 
     @After
     public void tearDown() throws SQLException {
-        System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
 

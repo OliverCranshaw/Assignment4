@@ -89,7 +89,7 @@ public class RouteData implements Data {
             this.stops = Integer.parseInt(stops);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Route Data (stops): " + e);
+            System.err.println("Route Data (stops): " + e);
         }
     }
 

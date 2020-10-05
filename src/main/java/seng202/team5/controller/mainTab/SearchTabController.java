@@ -1243,8 +1243,6 @@ public class SearchTabController implements Initializable {
      * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
-        System.out.println("Help requested: " + event);
-
         Node e = (Node) event.getSource();
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);

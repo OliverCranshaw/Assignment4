@@ -250,9 +250,5 @@ public class MapView extends VBox {
                 listener.accept(markerID);
             }
         }
-
-        public void log(String text) {
-            System.out.println(text);
-        }
     }
 }

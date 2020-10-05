@@ -22,7 +22,6 @@ public class AirlineTableTest {
 
     @Before
     public void setUp() {
-        System.out.println("Setup");
         DBInitializer.createNewDatabase(dbFile);
         DBTableInitializer.initializeTables(dbFile);
 
@@ -32,7 +31,6 @@ public class AirlineTableTest {
 
     @After
     public void tearDown() throws SQLException {
-        System.out.println("Tear down");
         Connection conn = DBConnection.getConnection();
         conn.close();
 

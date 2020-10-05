@@ -58,11 +58,8 @@ public class AddDataScenario {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 

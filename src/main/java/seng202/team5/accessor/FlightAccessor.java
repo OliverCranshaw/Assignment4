@@ -55,8 +55,8 @@ public class FlightAccessor implements Accessor{
         } catch (SQLException e) {
             // If any of the above fails, sets result to the error code -1 and prints an error message
             result = -1;
-            System.out.println("Failed to save new flight data.");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to save new flight data.");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -136,14 +136,14 @@ public class FlightAccessor implements Accessor{
                 // If any of the above fails, sets result to the error code -1 and prints out an error message
                 result = -1;
                 String str = "Unable to update flight data with id " + id;
-                System.out.println(str);
-                System.out.println(e.getMessage());
+                System.err.println(str);
+                System.err.println(e.getMessage());
             }
         } catch (Exception e) {
             // If any of the above fails, sets result to the error code -1 and prints out an error message
             result = -1;
-            System.out.println("Unable to get flight id of data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get flight id of data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -166,8 +166,8 @@ public class FlightAccessor implements Accessor{
             result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to delete flight data with flight id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to delete flight data with flight id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -190,8 +190,8 @@ public class FlightAccessor implements Accessor{
             result = stmt.executeUpdate() != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to delete flight data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to delete flight data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -213,8 +213,8 @@ public class FlightAccessor implements Accessor{
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve flight with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve flight with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -255,8 +255,8 @@ public class FlightAccessor implements Accessor{
 
             result = stmt.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve flight data");
-            System.out.println(e.getMessage());
+            System.err.println("Failed to retrieve flight data");
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -282,8 +282,8 @@ public class FlightAccessor implements Accessor{
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve flight data with flight id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve flight data with flight id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -309,8 +309,8 @@ public class FlightAccessor implements Accessor{
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve flight data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve flight data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;
@@ -333,8 +333,8 @@ public class FlightAccessor implements Accessor{
 
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get maximum flight id.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get maximum flight id.");
+            System.err.println(e.getMessage());
         }
 
         return id;
@@ -357,8 +357,8 @@ public class FlightAccessor implements Accessor{
 
         } catch (SQLException e) {
             // If any of the above fails, prints an error message
-            System.out.println("Unable to get maximum id.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get maximum id.");
+            System.err.println(e.getMessage());
         }
 
         return id;
@@ -394,8 +394,8 @@ public class FlightAccessor implements Accessor{
             result = (int) data != 0;
         } catch (Exception e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to retrieve flight data with id " + id);
-            System.out.println(e.getMessage());
+            System.err.println("Unable to retrieve flight data with id " + id);
+            System.err.println(e.getMessage());
         }
 
         return result;

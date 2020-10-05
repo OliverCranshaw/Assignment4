@@ -90,7 +90,6 @@ public class AddAirportMenuController {
                     errorMessage.setVisible(true);
                     if (outcome == -1) {
                         // IATA and/or ICAO conflict or null error
-                        System.out.println("Service Error");
                         errorMessage.setText("Please ensure the input iata and/or icao are not already used for an airport within the database and that they are not both empty");
                         iataField.setStyle("-fx-border-color: #ff0000;");
                         icaoField.setStyle("-fx-border-color: #ff0000;");
@@ -152,7 +151,7 @@ public class AddAirportMenuController {
                 }
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number");
+            System.err.println("Invalid number");
         }
     }
 

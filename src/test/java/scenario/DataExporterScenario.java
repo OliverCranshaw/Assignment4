@@ -66,11 +66,8 @@ public class DataExporterScenario {
 
             boolean result = dbFile.delete();
 
-            if (result) {
-                System.out.println("DB deleted.");
-            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -135,10 +132,6 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 
@@ -161,10 +154,6 @@ public class DataExporterScenario {
                 assertEquals("", line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 
@@ -232,10 +221,6 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 
@@ -295,10 +280,6 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 
@@ -353,10 +334,6 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 
@@ -430,10 +407,6 @@ public class DataExporterScenario {
                 assertEquals(expectedLine, line);
             }
             bufferedReader.close();
-
-            if (file.delete()) {
-                System.out.println("File deleted.");
-            }
         }
     }
 

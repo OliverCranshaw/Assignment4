@@ -82,8 +82,8 @@ public class DataExporter {
             fileWriter.close();
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -134,8 +134,8 @@ public class DataExporter {
             fileWriter.close();
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -175,12 +175,12 @@ public class DataExporter {
             fileWriter.close();
         } catch (SQLException e) {
             // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -220,12 +220,12 @@ public class DataExporter {
             fileWriter.close();
         } catch (SQLException e) {
             // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -268,12 +268,12 @@ public class DataExporter {
             fileWriter.close();
         } catch (SQLException e) {
             // If anything goes wrong when extracting data from the ResultSet, outputs an error message
-            System.out.println("Error reading results from database.");
-            System.out.println(e.getMessage());
+            System.err.println("Error reading results from database.");
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -319,8 +319,8 @@ public class DataExporter {
             fileWriter.close();
         } catch (IOException e) {
             // If anything goes wrong involving the FileWriter or BufferedWriter, outputs an error message
-            System.out.println("Error writing to file.");
-            System.out.println(e.getMessage());
+            System.err.println("Error writing to file.");
+            System.err.println(e.getMessage());
         }
     }
 }

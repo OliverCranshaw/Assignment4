@@ -75,7 +75,7 @@ public class FlightData implements Data {
             this.altitude = Integer.parseInt(altitude);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Flight Data (altitude): " + e);
+            System.err.println("Flight Data (altitude): " + e);
         }
 
         // Parsing latitude to double
@@ -83,7 +83,7 @@ public class FlightData implements Data {
             this.latitude = Double.parseDouble(latitude);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Flight Data (latitude): " + e);
+            System.err.println("Flight Data (latitude): " + e);
         }
 
         // Parsing longitude to double
@@ -91,7 +91,7 @@ public class FlightData implements Data {
             this.longitude = Double.parseDouble(longitude);
         } catch(NumberFormatException e) {
             // Error message to console
-            System.out.println("Flight Data (longitude): " + e);
+            System.err.println("Flight Data (longitude): " + e);
         }
     }
 

@@ -45,8 +45,8 @@ public class ReadFile {
             FileReader fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to get file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to get file.");
+            System.err.println(e.getMessage());
         }
     }
 
@@ -133,13 +133,11 @@ public class ReadFile {
                     id = -3;
                     error = "Line " + lineNum + ": Airline data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() < 7) {
                     id = -2;
                     error = "Line " + lineNum + ": Airline data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the airline data contains an airline_id already, removes it
@@ -178,8 +176,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));
@@ -223,13 +221,11 @@ public class ReadFile {
                     id = -3;
                     error = "Line " + lineNum +": Airport data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() < 11) {
                     id = -2;
                     error = "Line " + lineNum +": Airport data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the airport data contains an airport_id already, removes it
@@ -297,8 +293,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));
@@ -346,7 +342,6 @@ public class ReadFile {
                 // If it doesn't then deletes all previously added entries, rejects the data, and informs the user of the problem
                 if (splitLine.size() != 5) {
                     error = "Line " + lineNum +": Flight entry in the wrong format, does not have 5 entries. Flight could not be added.";
-                    System.out.println(error);
                     errors.add(error);
 
                     concreteDeleteData.deleteFlight(flightID);
@@ -399,8 +394,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         // Creates an ArrayList containing the flightID and unique id of the flight entry that was created
@@ -446,19 +441,16 @@ public class ReadFile {
                     id = -2;
                     error = "Line " + lineNum + ": Route data in wrong format, too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() > 6 && splitLine.size() < 9) {
                     id = -3;
                     error = "Line " + lineNum + ": Route data in wrong format, too many entries/too few entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else if (splitLine.size() > 9) {
                     id = -4;
                     error = "Line " + lineNum + ": Route data in wrong format, too many entries.";
                     errors.add(error);
-                    System.out.println(error);
                 }
                 else {
                     // If the route data already contained an airline_id, a source airport_id, and a destination airport_id, removes them
@@ -506,8 +498,8 @@ public class ReadFile {
             bufferedReader.close();
         } catch (IOException e) {
             // If any of the above fails, prints out an error message
-            System.out.println("Unable to read file.");
-            System.out.println(e.getMessage());
+            System.err.println("Unable to read file.");
+            System.err.println(e.getMessage());
         }
 
         return new ArrayList<>(Arrays.asList(id, errors));

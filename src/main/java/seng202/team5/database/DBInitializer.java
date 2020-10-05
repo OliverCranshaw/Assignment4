@@ -34,17 +34,14 @@ public class DBInitializer {
             try (Connection con = DriverManager.getConnection(url)) {
                 if (con != null) {
                     DatabaseMetaData meta = con.getMetaData();
-                    System.out.println("The driver name is " + meta.getDriverName());
-                    System.out.println("DB created.");
+
 
                     tableInitializer.initializeTables(url);
                 }
             } catch (SQLException e) {
                 // If any of the above fails, prints out an error message
-                System.out.println(e.getMessage());
+                System.err.println(e.getMessage());
             }
-        } else {
-            System.out.println("Database already exists.");
         }
     }
 }
