@@ -14,7 +14,7 @@
 .chart-title {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 20px;
+    -fx-font-size: 16px;
 }
 
 .data0.chart-pie { -fx-pie-color: #C0D9D8; }
@@ -46,6 +46,7 @@
 .chart-legend {
     -fx-background-color: #F0FFFF;
     -fx-stroke: black;
+    -fx-font-size: 11px;
 }
 
 .chart-plot-background {
@@ -76,5 +77,5 @@
     -fx-tick-label-fill: white;
     -fx-tick-length: 0;
     -fx-minor-tick-length: 0;
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }

@@ -173,8 +173,8 @@ public class RouteDataTabController implements Initializable {
     private MainMenuController mainMenuController = new MainMenuController();
 
     /**
-     * Initializer for RouteDataTabController
-     * Sets up all tables, buttons, listeners, services, etc
+     * Initializer for RouteDataTabController.
+     * Sets up all tables, buttons, listeners, services, etc.
      *
      * @param url URL.
      * @param resourceBundle ResourceBundle.
@@ -519,7 +519,7 @@ public class RouteDataTabController implements Initializable {
 
         } catch (NumberFormatException e) {
             setRouteUpdateColour(4);
-            routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             routeInvalidFormatLbl.setTextFill(Color.RED);
             routeInvalidFormatLbl.setText("Invalid Stops Provided");
             routeInvalidFormatLbl.setVisible(true);
@@ -548,13 +548,13 @@ public class RouteDataTabController implements Initializable {
                 setRouteUpdateColour(0);
                 setRouteUpdateColour(1);
                 setRouteUpdateColour(2);
-                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 10));
                 routeInvalidFormatLbl.setTextFill(Color.RED);
                 routeInvalidFormatLbl.setText("Invalid Airline and/or Airports Provided");
                 routeInvalidFormatLbl.setVisible(true);
             } else {
                 setRouteUpdateColour(abs(result) - 2);
-                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+                routeInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
                 routeInvalidFormatLbl.setTextFill(Color.RED);
                 routeInvalidFormatLbl.setVisible(true);
                 switch (result) {

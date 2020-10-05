@@ -439,7 +439,7 @@ public class AirlineDataTabController implements Initializable {
             airlineDeleteBtn.setVisible(false);
             airlineCancelBtn.setVisible(false);
         } else {
-            airlineInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            airlineInvalidFormatLbl.setFont(Font.font("system", FontWeight.BOLD, FontPosture.REGULAR, 11));
             airlineInvalidFormatLbl.setTextFill(Color.RED);
             airlineInvalidFormatLbl.setVisible(true);
             switch (result) {

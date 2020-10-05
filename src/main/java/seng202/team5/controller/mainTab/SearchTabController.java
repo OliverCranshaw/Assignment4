@@ -309,8 +309,9 @@ public class SearchTabController implements Initializable {
     private MainMenuController mainMenuController = new MainMenuController();
 
     /**
-     * Initializer for SearchTabController
-     * Sets up all tables, buttons, listeners, services, etc
+     * Initializer for SearchTabController.
+     * Sets up all tables, buttons, listeners, services, etc.
+     *
      * @param url URL.
      * @param resourceBundle ResourceBundle.
      */
@@ -428,6 +429,10 @@ public class SearchTabController implements Initializable {
 
     }
 
+
+    /**
+     * Clears the MapView on the search tab of all markers and routes.
+     */
     private void clearSearchMap() {
         // Remove airport marker
         if (searchAirportMarker != -1) {
@@ -456,11 +461,11 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * setSearchFlightSingleRecord
+     * Sets the flight single record table for the search tab to contain relevant entries.
      *
-     * Sets the flight single record table for the search tab to contain relevant entries
-     * @param flightModel - flight Model used to populate table
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param flightModel - flight Model used to populate table.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setSearchFlightSingleRecord(FlightModel flightModel) throws SQLException {
         clearSearchMap();
@@ -498,11 +503,11 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchRouteSingleRecord
+     * Sets the route single record labels for the search tab to contain relevant data.
      *
-     * Sets the route single record labels for the search tab to contain relevant data
-     * @param routeModel - route model used to populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param routeModel - route model used to populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setSearchRouteSingleRecord(RouteModel routeModel) throws SQLException {
         List<TextField> elements = Arrays.asList(routeIDS, routeAirlineS, routeAirlineIDS, routeDepAirportS, routeDepAirportIDS, routeDesAirportS, routeDesAirportIDS,
@@ -539,11 +544,11 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchAirlineSingleRecord
+     * Sets the airline single record labels for the search tab to contain relevant data.
      *
-     * Sets the airline single record labels for the search tab to contain relevant data
-     * @param airlineModel - airline model used to populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param airlineModel - airline model used to populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setSearchAirlineSingleRecord(AirlineModel airlineModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airlineIDS, airlineNameS, airlineAliasS, airlineIATAS, airlineICAOS, airlineCallsignS, airlineCountryS, airlineActiveS);
@@ -566,11 +571,11 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchAirportSingleRecord
+     * Sets aiport single record labels for the search table to contain relevant data.
      *
-     * Sets aiport single record labels for the search table to contain relevant data
-     * @param airportModel - airport model used to populate labels
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param airportModel - airport model used to populate labels.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void setSearchAirportSingleRecord(AirportModel airportModel) throws SQLException {
         List<TextField> elements = Arrays.asList(airportIDS, airportNameS, airportCityS, airportCountryS, airportIATAS, airportICAOS, airportLatitudeS, airportLongitudeS,
@@ -598,9 +603,8 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * onDownloadSearchDataPressed
-     *
      * Starts the download window, allowing the user to download the data displayed in the search table.
+     *
      * @param event user has clicked on the download button in the search tab
      */
     @FXML
@@ -638,8 +642,6 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * onFlightsRadioPressed
-     *
      * Changes the UI of the search tab to be in the format to handle Flight searching,
      * flight results showing in tables, and flight single record viewing.
      */
@@ -698,8 +700,6 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * onAirportsRadioPressed
-     *
      * Changes the UI of the search tab to be in the format to handle Airport searching,
      * airport results showing in tables, and airport single record viewing.
      */
@@ -759,8 +759,6 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * onAirlinesRadioPressed
-     *
      * Changes the UI of the search tab to be in the format to handle Airlines searching,
      * airlines results showing in tables, and airlines single record viewing.
      */
@@ -820,8 +818,6 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * onRoutesRadioPressed
-     *
      * Changes the UI of the search tab to be in the format to handle Route searching,
      * route results showing in tables, and route single record viewing.
      */
@@ -884,11 +880,10 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * onSearchPressed
-     *
      * Searches for data from the database, depending on what radio button is selected, also displaying the result
-     * in the result tables, as well as setting up for the single record viewing
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * in the result tables, as well as setting up for the single record viewing.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     @FXML
     public void onSearchPressed() throws SQLException {
@@ -990,9 +985,7 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchTableFlights
-     *
-     * Changes all the columns in the search table to match the attributes to of the Flights
+     * Changes all the columns in the search table to match the attributes to of the Flights.
      */
     public void setSearchTableFlights() {
         searchTableView.getItems().clear();
@@ -1019,9 +1012,7 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchTableAirport
-     *
-     * Changes all the columns in the search table to match the attributes to of the Airports
+     * Changes all the columns in the search table to match the attributes to of the Airports.
      */
     public void setSearchTableAirports() {
         searchTableView.getItems().clear();
@@ -1042,9 +1033,7 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * setSearchTableAirlines
-     *
-     * Changes all the columns in the search table to match the attributes to of the Airlines
+     * Changes all the columns in the search table to match the attributes to of the Airlines.
      */
     public void setSearchTableAirlines() {
         searchTableView.getItems().clear();
@@ -1064,9 +1053,7 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * setSearchTableRoutes
-     *
-     * Changes all the columns in the search table to match the attributes to of the Routes
+     * Changes all the columns in the search table to match the attributes to of the Routes.
      */
     public void setSearchTableRoutes() {
         searchTableView.getItems().clear();
@@ -1093,12 +1080,12 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * populateFlightTable
+     * Populates the given flight table witht the given data.
      *
-     * Populates the given flight table witht the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of data
-     * @throws SQLException occurs when any interactions with the ResultSet fail
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of data.
+     *
+     * @throws SQLException occurs when any interactions with the ResultSet fail.
      */
     private void populateFlightTable(TableView tableView, ArrayList<ArrayList<Object>> data) throws SQLException {
         ArrayList<FlightModel> list = new ArrayList<>();
@@ -1125,11 +1112,10 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * populateAirportTable
+     * Populates the given airport table with the given data.
      *
-     * Populates the given airport table with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateAirportTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<AirportModel> list = new ArrayList<>();
@@ -1159,11 +1145,10 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * populateAirlineTable
+     * Populates the given airline tableView with the given data.
      *
-     * Populates the given airline tableView with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateAirlineTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
 
@@ -1181,11 +1166,10 @@ public class SearchTabController implements Initializable {
     }
 
     /**
-     * populateRouteTable
+     * Populates the given route table with the given data.
      *
-     * Populates the given route table with the given data
-     * @param tableView - TableView
-     * @param data - ArrayList of ArrayList of Object
+     * @param tableView - TableView.
+     * @param data - ArrayList of ArrayList of Object.
      */
     private void populateRouteTable(TableView tableView, ArrayList<ArrayList<Object>> data) {
         ArrayList<RouteModel> list = new ArrayList<>();
@@ -1239,8 +1223,6 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * onFlightEntrySelected
-     *
      * Called when the currently selected flight entry changes.
      */
     private void onFlightEntrySelected(FlightEntryModel flightEntryModel) {
@@ -1256,10 +1238,9 @@ public class SearchTabController implements Initializable {
 
 
     /**
-     * onHelp
+     * Handles the requesting of help by using the HelpHandler to call startHelp.
      *
-     * Handles the requesting of help by using the HelpHandler to call startHelp
-     * @param event user has clicked on the help button
+     * @param event user has clicked on the help button.
      */
     public void onHelp(ActionEvent event) {
         System.out.println("Help requested: " + event);
@@ -1268,5 +1249,4 @@ public class SearchTabController implements Initializable {
         Scene scene = e.getScene();
         HelpHandler.startHelp(scene);
     }
-
 }
